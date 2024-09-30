@@ -1,7 +1,7 @@
 export function ResgisterPage() {
   return (
     <div>
-      <h1 style={{ fontFamily: "Pretendard-Regular" }}>Register</h1>
+      <h1 className="font-sb">Register</h1>
     </div>
   );
 }
