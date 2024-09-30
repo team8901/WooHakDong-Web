@@ -2,11 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-size: 62.5%;
+  font-family: "Pretendard-Regular", sans-serif;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(245, 245, 245);
+  height: 100vh;
+}
+
+body {
+  font-size: 1.6rem;
+  width: 100%;
+  max-width: 400px;
+  min-width: 350px;
+  background-color: white;
+  position: relative;
+  height: 100vh;
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  height: 100%;
+}
+
+input:focus {
+  outline: none;
 }
 
 @font-face {
