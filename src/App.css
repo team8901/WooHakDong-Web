@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-primary: #1a74e8;
+  --color-black: #202020;
+  --color-gray: #b7b7b7;
+  --color-darkGray: #7e7e7e;
+  --color-lightGray: #e7e7e7;
+}
+
 html {
   font-size: 62.5%;
   font-family: "Pretendard-Regular", sans-serif;

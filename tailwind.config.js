@@ -7,8 +7,15 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        r: "Pretendard-Regular",
-        sb: "Pretendard-SemiBold",
+        regular: "Pretendard-Regular",
+        semiBold: "Pretendard-SemiBold",
+      },
+      textColor: {
+        primary: "var(--color-primary)",
+        black: "var(--color-black)",
+        gray: "var(--color-gray)",
+        darkGray: "var(--color-darkGray)",
+        lightGray: "var(--color-lightGray)",
       },
     },
   },
