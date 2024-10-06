@@ -1,6 +1,6 @@
 import Button from "@components/Button";
 
-export function LoginResgisterPage() {
+const LoginResgisterPage = () => {
   return (
     <div className="pt-[113px] pb-[40px] px-[20px] flex flex-col justify-between h-full">
       <div className="flex flex-col gap-[4px]">
@@ -30,4 +30,6 @@ export function LoginResgisterPage() {
       </div>
     </div>
   );
-}
+};
+
+export default LoginResgisterPage;
