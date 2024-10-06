@@ -9,8 +9,8 @@ const ClubJoinOnboardingPage = () => {
   };
 
   return (
-    <div className="pt-[70px] pb-[40px] px-[20px] flex flex-col justify-between h-full">
-      <div className="flex flex-col gap-[34px]">
+    <div className="h-full pt-[70px] pb-[110px] px-[20px] relative">
+      <div className="h-full flex flex-col gap-[34px] overflow-y-auto">
         <span className="font-semiBold text-[2.4rem] leading-[3.2rem]">
           아직 동아리 회원이 아니에요
           <br />
@@ -42,7 +42,9 @@ const ClubJoinOnboardingPage = () => {
         </div>
       </div>
 
-      <Button text="동아리 가입 신청하기" onClick={handleButtonClick} />
+      <div className="w-full absolute bottom-[40px] left-0 px-[20px]">
+        <Button text="동아리 가입 신청하기" onClick={handleButtonClick} />
+      </div>
     </div>
   );
 };

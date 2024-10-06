@@ -2,7 +2,7 @@ import Button from "@components/Button";
 
 const LoginResgisterPage = () => {
   return (
-    <div className="pt-[113px] pb-[40px] px-[20px] flex flex-col justify-between h-full">
+    <div className="h-full pt-[113px] pb-[40px] px-[20px] relative">
       <div className="flex flex-col gap-[4px]">
         <span className="font-semiBold text-[2.4rem] leading-[3.2rem]">
           Doit
@@ -16,17 +16,19 @@ const LoginResgisterPage = () => {
         </span>
       </div>
 
-      <div className="flex flex-col gap-[12px] justify-center items-center">
-        <span className="font-semiBold text-[1.4rem] text-primary">
-          학교 계정으로 로그인해 주세요
-        </span>
-        <Button
-          text="Google로 시작하기"
-          textColor="var(--color-black)"
-          bgColor="var(--color-lightGray)"
-          fontSize="1.4rem"
-          imageUrl="/assets/images/logos/google.svg"
-        />
+      <div className="w-full absolute bottom-[40px] left-0 px-[20px]">
+        <div className="flex flex-col gap-[12px] justify-center items-center">
+          <span className="font-semiBold text-[1.4rem] text-primary">
+            학교 계정으로 로그인해 주세요
+          </span>
+          <Button
+            text="Google로 시작하기"
+            textColor="var(--color-black)"
+            bgColor="var(--color-lightGray)"
+            fontSize="1.4rem"
+            imageUrl="/assets/images/logos/google.svg"
+          />
+        </div>
       </div>
     </div>
   );

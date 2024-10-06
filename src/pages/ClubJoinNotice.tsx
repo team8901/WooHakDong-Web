@@ -10,12 +10,12 @@ const ClubJoinNoticePage = () => {
   };
 
   return (
-    <div className="h-full pt-[56px] pb-[40px] px-[20px] flex flex-col justify-between">
+    <div className="h-full pt-[56px] pb-[110px] px-[20px] relative">
       <div className="absolute top-0 left-0">
         <AppBar />
       </div>
 
-      <div className="flex flex-col gap-[40px] pt-[20px]">
+      <div className="h-full flex flex-col gap-[40px] pt-[20px] overflow-y-auto">
         <span className="font-semiBold text-[2.4rem] leading-[3.2rem]">
           가입 신청 전에{" "}
           <span className="md:inline block">
@@ -66,7 +66,9 @@ const ClubJoinNoticePage = () => {
         </div>
       </div>
 
-      <Button text="확인했어요" onClick={handleButtonClick} />
+      <div className="w-full absolute bottom-[40px] left-0 px-[20px]">
+        <Button text="확인했어요" onClick={handleButtonClick} />
+      </div>
     </div>
   );
 };
