@@ -17,8 +17,11 @@ const ClubJoinNoticePage = () => {
 
       <div className="flex flex-col gap-[40px] pt-[20px]">
         <span className="font-semiBold text-[2.4rem] leading-[3.2rem]">
-          가입 신청 전에 <span className="text-primary">알아야 할 사항</span>
-          이에요
+          가입 신청 전에{" "}
+          <span className="md:inline block">
+            <span className="text-primary">알아야 할 사항</span>
+            이에요
+          </span>
         </span>
 
         <div className="flex flex-col gap-[32px]">
