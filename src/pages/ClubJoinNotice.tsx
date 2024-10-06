@@ -15,7 +15,7 @@ const ClubJoinNoticePage = () => {
         <AppBar />
       </div>
 
-      <div className="h-full flex flex-col gap-[40px] pt-[20px] overflow-y-auto">
+      <div className="h-full flex flex-col gap-[40px] pt-[20px] scrollbar-hide masked-overflow">
         <span className="font-semiBold text-[2.4rem] leading-[3.2rem]">
           가입 신청 전에{" "}
           <span className="md:inline block">

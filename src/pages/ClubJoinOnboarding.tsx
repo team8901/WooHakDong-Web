@@ -9,8 +9,8 @@ const ClubJoinOnboardingPage = () => {
   };
 
   return (
-    <div className="h-full pt-[70px] pb-[110px] px-[20px] relative">
-      <div className="h-full flex flex-col gap-[34px] overflow-y-auto">
+    <div className="h-full pt-[50px] pb-[110px] px-[20px] relative">
+      <div className="h-full flex flex-col gap-[34px] scrollbar-hide pt-[20px] masked-overflow">
         <span className="font-semiBold text-[2.4rem] leading-[3.2rem]">
           아직 동아리 회원이 아니에요
           <br />
