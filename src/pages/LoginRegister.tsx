@@ -16,7 +16,7 @@ const LoginResgisterPage = () => {
         </span>
       </div>
 
-      <div className="w-full absolute bottom-[40px] left-0 px-[20px]">
+      <div className="w-full absolute bottom-[20px] left-0 px-[20px]">
         <div className="flex flex-col gap-[12px] justify-center items-center">
           <span className="font-semiBold text-[1.4rem] text-primary">
             학교 계정으로 로그인해 주세요

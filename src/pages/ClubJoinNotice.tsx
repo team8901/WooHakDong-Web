@@ -10,7 +10,7 @@ const ClubJoinNoticePage = () => {
   };
 
   return (
-    <div className="h-full pt-[56px] pb-[110px] px-[20px] relative">
+    <div className="h-full pt-[56px] pb-[100px] px-[20px] relative">
       <div className="absolute top-0 left-0">
         <AppBar />
       </div>
@@ -24,7 +24,7 @@ const ClubJoinNoticePage = () => {
           </span>
         </span>
 
-        <div className="flex flex-col gap-[32px]">
+        <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[4px]">
             <span className="text-darkGray text-[1.4rem]">
               동아리 회비 납부
@@ -66,7 +66,7 @@ const ClubJoinNoticePage = () => {
         </div>
       </div>
 
-      <div className="w-full absolute bottom-[40px] left-0 px-[20px]">
+      <div className="w-full absolute bottom-[20px] left-0 px-[20px]">
         <Button text="확인했어요" onClick={handleButtonClick} />
       </div>
     </div>
