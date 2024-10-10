@@ -1,10 +1,9 @@
 import { createContext, useContext, ReactNode, useReducer } from "react";
 
-interface UserState {
-  accessToken: string;
-  refreshToken: string;
-  userID: number;
-}
+type UserState = {
+  memberEmail: string;
+  memberName: string;
+};
 
 interface AuthContextProps {
   user: UserState | null;
@@ -21,10 +20,8 @@ const initialUserState: UserState | null = null;
 const userReducer = (state: UserState | null, action: UserAction) => {
   switch (action.type) {
     case "LOGIN":
-      localStorage.setItem("userID", "12342");
       return { ...action.user };
     case "LOGOUT":
-      localStorage.removeItem("userID");
       return initialUserState;
     default:
       return state;
