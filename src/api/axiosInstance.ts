@@ -23,7 +23,10 @@ axiosInstance.interceptors.response.use(
   },
   async function (error) {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (
+      (error.response.status === 401 || error.response.status === 403) &&
+      !originalRequest._retry
+    ) {
       if (!localStorage.getItem("refreshToken")) {
         alert("로그인이 필요한 페이지입니다.");
         location.href = "/";

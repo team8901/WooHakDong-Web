@@ -18,7 +18,6 @@ const GoogleLoginButton = () => {
     const loginData = await fetchLoginData(oauthAccessToken);
     if (loginData) {
       login(loginData);
-      localStorage.setItem("refreshToken", loginData.refreshToken);
       navigate("/clubJoinOnboarding");
     } else {
       alert("로그인에 실패했습니다.");

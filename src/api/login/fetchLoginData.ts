@@ -1,10 +1,8 @@
 import axios from "axios";
 
-type LoginData = {
+export type LoginData = {
   accessToken: string;
   refreshToken: string;
-  memberEmail: string;
-  memberName: string;
 };
 
 export const fetchLoginData = async (accessToken: string) => {
@@ -12,8 +10,9 @@ export const fetchLoginData = async (accessToken: string) => {
     const res = await axios.post<LoginData>(`/api/auth/login/social`, {
       accessToken,
     });
+    console.log(`/api/auth/login/social`, res);
     return res.data;
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(`/api/auth/login/social`, error);
   }
 };
