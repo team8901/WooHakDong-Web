@@ -26,8 +26,6 @@
 ### Example
 
 ```
-Example
-
 WHD-1_feat-add_member_list_page
 
 WHD-12_fix-fix_overflow_in_login_page
@@ -54,8 +52,6 @@ WHD-12_fix-fix_overflow_in_login_page
 ### Example
 
 ```
-Example
-
 [WHD-1] Init: Create project
 - 프로젝트 생성
 - ...
