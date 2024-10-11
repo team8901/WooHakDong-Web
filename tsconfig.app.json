@@ -24,7 +24,10 @@
     "baseUrl": "src",
     "paths": {
       "@pages/*": ["pages/*"],
-      "@components/*": ["components/*"]
+      "@components/*": ["components/*"],
+      "@api/*": ["api/*"],
+      "@config/*": ["config/*"],
+      "@contexts/*": ["contexts/*"]
     }
   },
   "include": ["src"]

@@ -1,14 +1,14 @@
+import { LoginData } from "@api/login/fetchLoginData";
 import { createContext, useContext, ReactNode, useReducer } from "react";
 
-interface UserState {
-  accessToken: string;
-  refreshToken: string;
-  userID: number;
-}
+type UserState = {
+  memberEmail: string;
+  memberName: string;
+};
 
 interface AuthContextProps {
   user: UserState | null;
-  login: (newUser: UserState) => void;
+  login: (loginData: LoginData) => void;
   logout: () => void;
 }
 
@@ -21,10 +21,8 @@ const initialUserState: UserState | null = null;
 const userReducer = (state: UserState | null, action: UserAction) => {
   switch (action.type) {
     case "LOGIN":
-      localStorage.setItem("userID", "12342");
       return { ...action.user };
     case "LOGOUT":
-      localStorage.removeItem("userID");
       return initialUserState;
     default:
       return state;
@@ -38,11 +36,17 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, dispatch] = useReducer(userReducer, initialUserState);
 
-  const login = (newUser: UserState) => {
-    dispatch({ type: "LOGIN", user: newUser });
+  const login = (loginData: LoginData) => {
+    const { accessToken, refreshToken } = loginData;
+    // const newUser = { memberEmail, memberName };
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+    // dispatch({ type: "LOGIN", user: newUser });
   };
 
   const logout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     dispatch({ type: "LOGOUT" });
   };
 
