@@ -18,7 +18,17 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* Path Alias */
+    "baseUrl": "src",
+    "paths": {
+      "@pages/*": ["pages/*"],
+      "@components/*": ["components/*"],
+      "@api/*": ["api/*"],
+      "@config/*": ["config/*"],
+      "@contexts/*": ["contexts/*"]
+    }
   },
   "include": ["src"]
 }
