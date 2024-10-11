@@ -3,6 +3,8 @@ import axios, { AxiosRequestConfig } from "axios";
 
 const axiosInstance = axios.create();
 
+axiosInstance.defaults.baseURL = import.meta.env.VITE_API_URL;
+
 // Request interceptor for API calls
 axiosInstance.interceptors.request.use(
   async (config) => {

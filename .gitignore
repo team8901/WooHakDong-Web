@@ -25,3 +25,6 @@ dist-ssr
 
 # firebase config
 firebaseConfig.ts
+
+# env
+.env

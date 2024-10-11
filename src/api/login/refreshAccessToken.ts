@@ -3,9 +3,15 @@ import axios, { AxiosError } from "axios";
 
 export const refreshAccessToken = async () => {
   try {
-    const res = await axios.post<LoginData>("/api/auth/refresh", {
-      refreshToken: localStorage.getItem("refreshToken"),
-    });
+    // const res = await axios.post<LoginData>(`/api/v1/auth/refresh`, {
+    //   refreshToken: localStorage.getItem("refreshToken"),
+    // });
+    const res = await axios.post<LoginData>(
+      `${import.meta.env.VITE_API_URL}/v1/auth/refresh`,
+      {
+        refreshToken: localStorage.getItem("refreshToken"),
+      }
+    );
     console.log(`/api/auth/refresh`, res);
     const { accessToken, refreshToken } = res.data;
     localStorage.setItem("accessToken", accessToken);
