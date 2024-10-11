@@ -17,10 +17,12 @@ jobs:
           echo "VITE_API_URL=$VITE_API_URL" >> .env
           echo "VITE_AWS_ACCESS_KEY_ID=$VITE_AWS_ACCESS_KEY_ID" >> .env
           echo "VITE_AWS_SECRET_ACCESS_KEY=$VITE_AWS_SECRET_ACCESS_KEY" >> .env
+          echo "VITE_FIREBASE_API_KEY=$VITE_FIREBASE_API_KEY" >> .env
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
           VITE_AWS_ACCESS_KEY_ID: ${{ secrets.VITE_AWS_ACCESS_KEY_ID }}
           VITE_AWS_SECRET_ACCESS_KEY: ${{ secrets.VITE_AWS_SECRET_ACCESS_KEY }}
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
  
       - name: Cache node modules
         uses: actions/cache@v1
@@ -45,5 +47,4 @@ jobs:
           aws s3 sync \
             dist s3://woohakdong.web.deploy \
             --delete \
-            --region ap-northeast-2 \
-            --profile=woohakdong-dev
+            --region ap-northeast-2
