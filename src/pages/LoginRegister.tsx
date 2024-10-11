@@ -1,4 +1,4 @@
-import Button from "@components/Button";
+import GoogleLoginButton from "@components/GoogleLoginButton";
 
 const LoginResgisterPage = () => {
   return (
@@ -21,13 +21,7 @@ const LoginResgisterPage = () => {
           <span className="font-semiBold text-[1.4rem] text-primary">
             학교 계정으로 로그인해 주세요
           </span>
-          <Button
-            text="Google로 시작하기"
-            textColor="var(--color-black)"
-            bgColor="var(--color-lightGray)"
-            fontSize="1.4rem"
-            imageUrl="/assets/images/logos/google.svg"
-          />
+          <GoogleLoginButton />
         </div>
       </div>
     </div>
