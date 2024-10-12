@@ -9,7 +9,8 @@ const ClubJoinInfoConfirmPage = () => {
     location.state;
 
   const handleButtonClick = () => {
-    navigate("/clubJoinTempComplete");
+    const data = { email, name };
+    navigate("/clubJoinTempComplete", { state: data });
   };
 
   return (
