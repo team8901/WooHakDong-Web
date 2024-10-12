@@ -1,4 +1,5 @@
 import Button from "@components/Button";
+import Subtitle from "@components/Subtitle";
 import { useNavigate } from "react-router-dom";
 
 const ClubJoinOnboardingPage = () => {
@@ -19,11 +20,11 @@ const ClubJoinOnboardingPage = () => {
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[-4px]">
-            <span className="text-darkGray text-[1.4rem]">동아리 이름</span>
+            <Subtitle text="동아리 이름" />
             <span className="py-[9px] font-semiBold">Doit</span>
           </div>
           <div className="flex flex-col gap-[-4px]">
-            <span className="text-darkGray text-[1.4rem]">동아리 설명</span>
+            <Subtitle text="동아리 설명" />
             <span className="py-[9px] font-semiBold">
               아주대학교 프로그래밍 동아리 DoiT!의 이름은 Dream of interworking
               Team!의 약자입니다. 여기서 'interworking'이라는 단어는 '정보
@@ -32,11 +33,11 @@ const ClubJoinOnboardingPage = () => {
             </span>
           </div>
           <div className="flex flex-col gap-[-4px]">
-            <span className="text-darkGray text-[1.4rem]">동아리 방</span>
+            <Subtitle text="동아리 방" />
             <span className="py-[9px] font-semiBold">구학생회관 234호</span>
           </div>
           <div className="flex flex-col gap-[-4px]">
-            <span className="text-darkGray text-[1.4rem]">동아리 회비</span>
+            <Subtitle text="동아리 회비" />
             <span className="py-[9px] font-semiBold">20,000원</span>
           </div>
         </div>
