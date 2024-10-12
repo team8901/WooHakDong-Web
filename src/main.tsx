@@ -8,6 +8,7 @@ import ClubJoinOnboardingPage from "@pages/ClubJoinOnboarding";
 import ClubJoinNoticePage from "@pages/ClubJoinNotice";
 import { AuthProvider } from "@contexts/AuthContext";
 import ClubJoinInfoWritePage from "@pages/ClubJoinInfoWrite";
+import ClubJoinInfoConfirmPage from "@pages/ClubJoinInfoConfirm";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/clubJoinInfoWrite",
     element: <ClubJoinInfoWritePage />,
+  },
+  {
+    path: "/clubJoinInfoConfirm",
+    element: <ClubJoinInfoConfirmPage />,
   },
 ]);
 

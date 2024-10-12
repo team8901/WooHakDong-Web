@@ -20,7 +20,16 @@ const ClubJoinInfoWritePage = () => {
   }, []);
 
   const handleButtonClick = () => {
-    navigate("/clubJoinInfoConfirm");
+    const data = {
+      school,
+      email,
+      name,
+      gender,
+      department,
+      studentId,
+      phoneNumber,
+    };
+    navigate("/clubJoinInfoConfirm", { state: data });
   };
 
   return (
