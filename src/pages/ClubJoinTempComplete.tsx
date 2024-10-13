@@ -1,5 +1,6 @@
 import Button from "@components/Button";
 import Subtitle from "@components/Subtitle";
+import Title1 from "@components/Title1";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const ClubJoinTempCompletePage = () => {
@@ -15,9 +16,18 @@ const ClubJoinTempCompletePage = () => {
   return (
     <div className="h-full pt-[56px] pb-[100px] px-[20px] relative">
       <div className="h-full flex flex-col gap-[40px] pt-[20px] scrollbar-hide masked-overflow">
-        <span className="font-semiBold text-[2.4rem] leading-[3.2rem] text-primary">
-          Doit에 임시 가입 되었어요! 🎉
-        </span>
+        <Title1
+          lines={[
+            {
+              segments: [
+                {
+                  text: "Doit에 임시 가입 되었어요! 🎉",
+                  color: "var(--color-primary)",
+                },
+              ],
+            },
+          ]}
+        />
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[16px]">

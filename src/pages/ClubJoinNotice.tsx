@@ -1,6 +1,7 @@
 import AppBar from "@components/AppBar";
 import Button from "@components/Button";
 import Subtitle from "@components/Subtitle";
+import Title2 from "@components/Title2";
 import { useNavigate } from "react-router-dom";
 
 const ClubJoinNoticePage = () => {
@@ -17,10 +18,17 @@ const ClubJoinNoticePage = () => {
       </div>
 
       <div className="h-full flex flex-col gap-[40px] pt-[20px] scrollbar-hide masked-overflow">
-        <span className="font-semiBold text-[2rem] leading-[3.2rem]">
-          가입 신청 전에 <span className="text-primary">알아야 할 사항</span>
-          이에요
-        </span>
+        <Title2
+          lines={[
+            {
+              segments: [
+                { text: "가입 신청 전에 " },
+                { text: "알아야 할 사항", color: "var(--color-primary)" },
+                { text: "이에요" },
+              ],
+            },
+          ]}
+        />
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[4px]">

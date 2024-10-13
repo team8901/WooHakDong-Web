@@ -1,6 +1,7 @@
 import AppBar from "@components/AppBar";
 import Button from "@components/Button";
 import Subtitle from "@components/Subtitle";
+import Title2 from "@components/Title2";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -40,9 +41,13 @@ const ClubJoinInfoWritePage = () => {
       </div>
 
       <div className="h-full flex flex-col gap-[40px] pt-[20px] scrollbar-hide masked-overflow">
-        <span className="font-semiBold text-[2rem] leading-[3.2rem]">
-          회원님의 정보를 알려주세요
-        </span>
+        <Title2
+          lines={[
+            {
+              segments: [{ text: "회원님의 정보를 알려주세요" }],
+            },
+          ]}
+        />
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col">

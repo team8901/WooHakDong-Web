@@ -1,5 +1,6 @@
 import Button from "@components/Button";
 import Subtitle from "@components/Subtitle";
+import Title1 from "@components/Title1";
 import { useNavigate } from "react-router-dom";
 
 const ClubJoinOnboardingPage = () => {
@@ -12,11 +13,19 @@ const ClubJoinOnboardingPage = () => {
   return (
     <div className="h-full pt-[50px] pb-[100px] px-[20px] relative">
       <div className="h-full flex flex-col gap-[34px] scrollbar-hide pt-[20px] masked-overflow">
-        <span className="font-semiBold text-[2.4rem] leading-[3.2rem]">
-          아직 동아리 회원이 아니에요
-          <br />
-          <span className="text-primary">새로 가입 신청해볼까요?</span>
-        </span>
+        <Title1
+          lines={[
+            { segments: [{ text: "아직 동아리 회원이 아니에요" }] },
+            {
+              segments: [
+                {
+                  text: "새로 가입 신청해볼까요?",
+                  color: "var(--color-primary)",
+                },
+              ],
+            },
+          ]}
+        />
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[-4px]">
