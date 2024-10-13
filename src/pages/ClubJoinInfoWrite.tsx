@@ -2,6 +2,7 @@ import AppBar from "@components/AppBar";
 import Button from "@components/Button";
 import Subtitle from "@components/Subtitle";
 import Title2 from "@components/Title2";
+import Title3 from "@components/Title3";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -52,21 +53,24 @@ const ClubJoinInfoWritePage = () => {
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col">
             <Subtitle text="학교" />
-            <span className="leading-[2.2rem] py-[9px] font-semiBold border-b border-lightGray">
-              {school}
-            </span>
+            <Title3
+              text={school}
+              className="py-[9px] border-b border-lightGray"
+            />
           </div>
           <div className="flex flex-col">
             <Subtitle text="이메일 주소" />
-            <span className="leading-[2.2rem] py-[9px] font-semiBold border-b border-lightGray">
-              {email}
-            </span>
+            <Title3
+              text={email}
+              className="py-[9px] border-b border-lightGray"
+            />
           </div>
           <div className="flex flex-col">
             <Subtitle text="이름" />
-            <span className="leading-[2.2rem] py-[9px] font-semiBold border-b border-lightGray">
-              {name}
-            </span>
+            <Title3
+              text={name}
+              className="py-[9px] border-b border-lightGray"
+            />
           </div>
 
           <div className="flex gap-[8px] items-center">

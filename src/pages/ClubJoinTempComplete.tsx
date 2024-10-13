@@ -1,6 +1,7 @@
 import Button from "@components/Button";
 import Subtitle from "@components/Subtitle";
 import Title1 from "@components/Title1";
+import Title3 from "@components/Title3";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const ClubJoinTempCompletePage = () => {
@@ -32,9 +33,7 @@ const ClubJoinTempCompletePage = () => {
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[16px]">
             <div className="flex flex-col gap-[4px]">
-              <span className="leading-[2.2rem] font-semiBold">
-                동아리 정보 SMS 전송
-              </span>
+              <Title3 text="동아리 정보 SMS 전송" />
               <Subtitle
                 text={`${name}님의 이메일 주소로 동아리 정보를 보냈어요`}
               />
@@ -46,9 +45,7 @@ const ClubJoinTempCompletePage = () => {
 
           <div className="flex flex-col gap-[16px]">
             <div className="flex flex-col gap-[4px]">
-              <span className="leading-[2.2rem] font-semiBold">
-                동아리 회비 납부
-              </span>
+              <Title3 text="동아리 회비 납부" />
               <Subtitle
                 text={[
                   "동아리 회비를 납부해야 정식 동아리 회원이 될 수 있어요",

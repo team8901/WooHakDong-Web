@@ -2,6 +2,7 @@ import AppBar from "@components/AppBar";
 import Button from "@components/Button";
 import Subtitle from "@components/Subtitle";
 import Title2 from "@components/Title2";
+import Title3 from "@components/Title3";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const ClubJoinInfoConfirmPage = () => {
@@ -33,45 +34,31 @@ const ClubJoinInfoConfirmPage = () => {
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col">
             <Subtitle text="학교" />
-            <span className="leading-[2.2rem] py-[9px] font-semiBold">
-              {school}
-            </span>
+            <Title3 text={school} className="py-[9px]" />
           </div>
           <div className="flex flex-col">
             <Subtitle text="이메일 주소" />
-            <span className="leading-[2.2rem] py-[9px] font-semiBold">
-              {email}
-            </span>
+            <Title3 text={email} className="py-[9px]" />
           </div>
           <div className="flex flex-col">
             <Subtitle text="이름" />
-            <span className="leading-[2.2rem] py-[9px] font-semiBold">
-              {name}
-            </span>
+            <Title3 text={name} className="py-[9px]" />
           </div>
           <div className="flex flex-col">
             <Subtitle text="성별" />
-            <span className="leading-[2.2rem] py-[9px] font-semiBold">
-              {gender}
-            </span>
+            <Title3 text={gender} className="py-[9px]" />
           </div>
           <div className="flex flex-col">
             <Subtitle text="학과" />
-            <span className="leading-[2.2rem] py-[9px] font-semiBold">
-              {department}
-            </span>
+            <Title3 text={department} className="py-[9px]" />
           </div>
           <div className="flex flex-col">
             <Subtitle text="학번" />
-            <span className="leading-[2.2rem] py-[9px] font-semiBold">
-              {studentId}
-            </span>
+            <Title3 text={studentId} className="py-[9px]" />
           </div>
           <div className="flex flex-col">
             <Subtitle text="휴대폰 번호" />
-            <span className="leading-[2.2rem] py-[9px] font-semiBold">
-              {phoneNumber}
-            </span>
+            <Title3 text={phoneNumber} className="py-[9px]" />
           </div>
         </div>
       </div>

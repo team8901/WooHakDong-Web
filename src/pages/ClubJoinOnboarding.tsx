@@ -1,6 +1,7 @@
 import Button from "@components/Button";
 import Subtitle from "@components/Subtitle";
 import Title1 from "@components/Title1";
+import Title3 from "@components/Title3";
 import { useNavigate } from "react-router-dom";
 
 const ClubJoinOnboardingPage = () => {
@@ -28,26 +29,27 @@ const ClubJoinOnboardingPage = () => {
         />
 
         <div className="flex flex-col gap-[20px]">
-          <div className="flex flex-col gap-[-4px]">
+          <div className="flex flex-col gap-[4px]">
             <Subtitle text="동아리 이름" />
-            <span className="py-[9px] font-semiBold">Doit</span>
+            <Title3 text="Doit" />
           </div>
-          <div className="flex flex-col gap-[-4px]">
+          <div className="flex flex-col gap-[4px]">
             <Subtitle text="동아리 설명" />
-            <span className="py-[9px] font-semiBold">
-              아주대학교 프로그래밍 동아리 DoiT!의 이름은 Dream of interworking
+            <Title3
+              text="아주대학교 프로그래밍 동아리 DoiT!의 이름은 Dream of interworking
               Team!의 약자입니다. 여기서 'interworking'이라는 단어는 '정보
               연결이 가능하다', '두 시스템이 대화하기 위하여 필요한 프로세스'
-              등의 뜻을 가지고 있습니다.
-            </span>
+              등의 뜻을 가지고 있습니다."
+              className="text-justify"
+            />
           </div>
-          <div className="flex flex-col gap-[-4px]">
+          <div className="flex flex-col gap-[4px]">
             <Subtitle text="동아리 방" />
-            <span className="py-[9px] font-semiBold">구학생회관 234호</span>
+            <Title3 text="구학생회관 234호" />
           </div>
-          <div className="flex flex-col gap-[-4px]">
+          <div className="flex flex-col gap-[4px]">
             <Subtitle text="동아리 회비" />
-            <span className="py-[9px] font-semiBold">20,000원</span>
+            <Title3 text="20,000원" />
           </div>
         </div>
       </div>
