@@ -73,27 +73,30 @@ const ClubJoinInfoWritePage = () => {
             />
           </div>
 
-          <div className="flex gap-[8px] items-center">
-            <button
-              className={`rounded-[14px] border ${
-                gender === "남성"
-                  ? "border-primary text-primary bg-lightPrimary"
-                  : "border-lightGray text-gray"
-              } py-[4px] px-[16px] font-semiBold`}
-              onClick={() => setGender("남성")}
-            >
-              남성
-            </button>
-            <button
-              className={`rounded-[14px] border ${
-                gender === "여성"
-                  ? "border-primary text-primary bg-lightPrimary"
-                  : "border-lightGray text-gray"
-              } py-[4px] px-[16px] font-semiBold`}
-              onClick={() => setGender("여성")}
-            >
-              여성
-            </button>
+          <div className="flex flex-col">
+            <Subtitle text="성별" />
+            <div className="flex gap-[8px] items-center py-[9px]">
+              <button
+                className={`rounded-[14px] border ${
+                  gender === "남성"
+                    ? "border-primary text-primary bg-lightPrimary"
+                    : "border-lightGray text-gray"
+                } py-[4px] px-[16px] font-semiBold`}
+                onClick={() => setGender("남성")}
+              >
+                남성
+              </button>
+              <button
+                className={`rounded-[14px] border ${
+                  gender === "여성"
+                    ? "border-primary text-primary bg-lightPrimary"
+                    : "border-lightGray text-gray"
+                } py-[4px] px-[16px] font-semiBold`}
+                onClick={() => setGender("여성")}
+              >
+                여성
+              </button>
+            </div>
           </div>
           <input
             placeholder="학과"
