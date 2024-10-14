@@ -7,6 +7,10 @@ import LoginResgisterPage from "./pages/LoginRegister";
 import ClubJoinOnboardingPage from "@pages/ClubJoinOnboarding";
 import ClubJoinNoticePage from "@pages/ClubJoinNotice";
 import { AuthProvider } from "@contexts/AuthContext";
+import ClubJoinInfoWritePage from "@pages/ClubJoinInfoWrite";
+import ClubJoinInfoConfirmPage from "@pages/ClubJoinInfoConfirm";
+import ClubJoinTempCompletePage from "@pages/ClubJoinTempComplete";
+import ClubJoinTempOnboardingPage from "@pages/ClubJoinTempOnboarding";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +24,22 @@ const router = createBrowserRouter([
   {
     path: "/clubJoinNotice",
     element: <ClubJoinNoticePage />,
+  },
+  {
+    path: "/clubJoinInfoWrite",
+    element: <ClubJoinInfoWritePage />,
+  },
+  {
+    path: "/clubJoinInfoConfirm",
+    element: <ClubJoinInfoConfirmPage />,
+  },
+  {
+    path: "/clubJoinTempComplete",
+    element: <ClubJoinTempCompletePage />,
+  },
+  {
+    path: "/clubJoinTempOnboarding",
+    element: <ClubJoinTempOnboardingPage />,
   },
 ]);
 

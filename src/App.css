@@ -4,6 +4,7 @@
 
 :root {
   --color-primary: #1a74e8;
+  --color-lightPrimary: #e5f0ff;
   --color-black: #202020;
   --color-gray: #b7b7b7;
   --color-darkGray: #7e7e7e;
@@ -27,6 +28,7 @@ body {
   background-color: white;
   position: relative;
   height: 100vh;
+  color: var(--color-black);
 }
 
 #root {

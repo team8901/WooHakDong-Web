@@ -18,6 +18,15 @@ export default {
         darkGray: "var(--color-darkGray)",
         lightGray: "var(--color-lightGray)",
       },
+      borderColor: {
+        primary: "var(--color-primary)",
+        lightGray: "var(--color-lightGray)",
+      },
+      backgroundColor: {
+        primary: "var(--color-primary)",
+        lightPrimary: "var(--color-lightPrimary)",
+        lightGray: "var(--color-lightGray)",
+      },
     },
   },
   plugins: [require("tailwind-scrollbar-hide")],
