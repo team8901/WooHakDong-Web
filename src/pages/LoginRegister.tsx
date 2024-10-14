@@ -1,8 +1,19 @@
 import GoogleLoginButton from "@components/GoogleLoginButton";
 import Subtitle from "@components/Subtitle";
 import Title1 from "@components/Title1";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginResgisterPage = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const isLoggedIn = !!localStorage.getItem("accessToken");
+    if (isLoggedIn) {
+      navigate("/clubJoinTempOnboarding");
+    }
+  }, [navigate]);
+
   return (
     <div className="h-full pt-[113px] pb-[40px] px-[20px] relative">
       <div className="flex flex-col gap-[4px]">
