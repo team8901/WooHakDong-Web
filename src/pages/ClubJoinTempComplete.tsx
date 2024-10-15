@@ -10,8 +10,7 @@ const ClubJoinTempCompletePage = () => {
   const { email, name } = location.state;
 
   const handleButtonClick = () => {
-    console.log("회비 납부하기");
-    navigate("/clubMemberHome");
+    navigate("/payment");
   };
 
   return (

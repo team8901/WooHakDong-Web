@@ -11,6 +11,7 @@ import ClubJoinInfoWritePage from "@pages/ClubJoinInfoWrite";
 import ClubJoinInfoConfirmPage from "@pages/ClubJoinInfoConfirm";
 import ClubJoinTempCompletePage from "@pages/ClubJoinTempComplete";
 import ClubJoinTempOnboardingPage from "@pages/ClubJoinTempOnboarding";
+import PaymentPage from "@pages/Payment";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
   {
     path: "/clubJoinTempOnboarding",
     element: <ClubJoinTempOnboardingPage />,
+  },
+  {
+    path: "/payment",
+    element: <PaymentPage />,
   },
 ]);
 

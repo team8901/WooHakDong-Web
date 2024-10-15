@@ -6,8 +6,7 @@ const ClubJoinTempOnboardingPage = () => {
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
-    console.log("회비 납부하기");
-    navigate("/clubMemberHome");
+    navigate("/payment");
   };
 
   return (
