@@ -11,7 +11,7 @@ type GroupJoinRequestData = {
 };
 
 type GroupJoinResponseData = {
-  orderId: number;
+  orderId: string;
 };
 
 type ErrorResponseData = {
@@ -30,8 +30,8 @@ export const postGroupJoin = async ({
       `${import.meta.env.VITE_API_URL}/v1/groups/${groupId}/joins`,
       data
     );
-    console.log(res);
-    return res.data;
+    const { orderId } = res.data;
+    return orderId;
   } catch (error) {
     const errorResponseData = (error as AxiosError)?.response
       ?.data as ErrorResponseData;
