@@ -86,7 +86,7 @@ export const postPortOne = async ({
         const orderId = await postGroupJoin({ merchantUid, groupId });
         if (orderId) {
           await postGroupJoinConfirm({ merchantUid, groupId, impUid, orderId });
-          resolve();
+          resolve(null);
         } else {
           reject(new Error("orderId를 받아오는 데 실패했습니다."));
         }
