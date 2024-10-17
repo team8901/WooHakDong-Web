@@ -1,11 +1,8 @@
-type Title3Props = {
-  text: string;
-  className?: string;
-};
+import { TextProps } from "@components/Title1";
 
-const Title3 = ({ text, className }: Readonly<Title3Props>) => {
+const Title3 = ({ text, className }: Readonly<TextProps>) => {
   return (
-    <span className={`leading-[2.2rem] font-semiBold ${className}`}>
+    <span className={`text-[2rem] leading-[2.6rem] font-semiBold ${className}`}>
       {text}
     </span>
   );

@@ -1,8 +1,9 @@
 import AppBar from "@components/AppBar";
+import Body1 from "@components/Body1";
 import Button from "@components/Button";
+import Input from "@components/Input";
 import Subtitle from "@components/Subtitle";
 import Title2 from "@components/Title2";
-import Title3 from "@components/Title3";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -21,6 +22,18 @@ const ClubJoinInfoWritePage = () => {
     setEmail("mancity@ajou.ac.kr");
     setName("김덕배");
   }, []);
+
+  const handleDepartmentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDepartment(e.target.value);
+  };
+
+  const handleStudentIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setStudentId(e.target.value);
+  };
+
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(e.target.value);
+  };
 
   const handleButtonClick = () => {
     const data = {
@@ -42,35 +55,26 @@ const ClubJoinInfoWritePage = () => {
       </div>
 
       <div className="h-full flex flex-col gap-[40px] pt-[20px] scrollbar-hide masked-overflow">
-        <Title2
-          lines={[
-            {
-              segments: [{ text: "회원님의 정보를 알려주세요" }],
-            },
-          ]}
-        />
+        <Title2 text="회원님의 정보를 알려주세요" />
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col">
             <Subtitle text="학교" />
-            <Title3
+            <Body1
               text={school}
               className="py-[9px] border-b border-lightGray"
             />
           </div>
           <div className="flex flex-col">
             <Subtitle text="이메일 주소" />
-            <Title3
+            <Body1
               text={email}
               className="py-[9px] border-b border-lightGray"
             />
           </div>
           <div className="flex flex-col">
             <Subtitle text="이름" />
-            <Title3
-              text={name}
-              className="py-[9px] border-b border-lightGray"
-            />
+            <Body1 text={name} className="py-[9px] border-b border-lightGray" />
           </div>
 
           <div className="flex flex-col">
@@ -98,23 +102,20 @@ const ClubJoinInfoWritePage = () => {
               </button>
             </div>
           </div>
-          <input
+          <Input
             placeholder="학과"
             value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-            className="py-[9px] placeholder:font-semiBold placeholder:text-gray border-b border-lightGray"
+            onChange={handleDepartmentChange}
           />
-          <input
+          <Input
             placeholder="학번"
             value={studentId}
-            onChange={(e) => setStudentId(e.target.value)}
-            className="py-[9px] placeholder:font-semiBold placeholder:text-gray border-b border-lightGray"
+            onChange={handleStudentIdChange}
           />
-          <input
+          <Input
             placeholder="휴대폰 번호"
             value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            className="py-[9px] placeholder:font-semiBold placeholder:text-gray border-b border-lightGray"
+            onChange={handlePhoneNumberChange}
           />
         </div>
       </div>

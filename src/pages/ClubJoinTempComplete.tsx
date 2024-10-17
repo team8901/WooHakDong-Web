@@ -1,7 +1,8 @@
+import Body1 from "@components/Body1";
+import Body4 from "@components/Body4";
 import Button from "@components/Button";
-import Subtitle from "@components/Subtitle";
 import Title1 from "@components/Title1";
-import Title3 from "@components/Title3";
+import Title4 from "@components/Title4";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const ClubJoinTempCompletePage = () => {
@@ -16,44 +17,38 @@ const ClubJoinTempCompletePage = () => {
   return (
     <div className="h-full pt-[56px] pb-[100px] px-[20px] relative">
       <div className="h-full flex flex-col gap-[40px] pt-[20px] scrollbar-hide masked-overflow">
-        <Title1
-          lines={[
-            {
-              segments: [
-                {
-                  text: "Doit에 임시 가입 되었어요! 🎉",
-                  color: "var(--color-primary)",
-                },
-              ],
-            },
-          ]}
-        />
+        <Title1 text="Doit에 임시 가입 되었어요! 🎉" className="text-primary" />
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[16px]">
             <div className="flex flex-col gap-[4px]">
-              <Title3 text="동아리 정보 SMS 전송" />
-              <Subtitle
+              <Title4 text="동아리 정보 SMS 전송" />
+              <Body4
                 text={`${name}님의 이메일 주소로 동아리 정보를 보냈어요`}
+                className="text-darkGray"
               />
             </div>
             <div className="py-[14px] px-[16px] rounded-[14px] border border-lightGray">
-              <span className="text-[1.4rem] leading-[2rem]">{email}</span>
+              <Body1 text={email} />
             </div>
           </div>
 
           <div className="flex flex-col gap-[16px]">
             <div className="flex flex-col gap-[4px]">
-              <Title3 text="동아리 회비 납부" />
-              <Subtitle
-                text={[
-                  "동아리 회비를 납부해야 정식 동아리 회원이 될 수 있어요",
-                  "지금 납부하지 않아도 이메일로 전송된 주소로 나중에 납부할 수 있어요",
-                ]}
-              />
+              <Title4 text="동아리 회비 납부" />
+              <div className="flex flex-col">
+                <Body4
+                  text="동아리 회비를 납부해야 정식 동아리 회원이 될 수 있어요"
+                  className="text-darkGray"
+                />
+                <Body4
+                  text="지금 납부하지 않아도 나중에 납부할 수 있어요"
+                  className="text-darkGray"
+                />
+              </div>
             </div>
             <div className="py-[14px] px-[16px] rounded-[14px] border border-lightGray">
-              <span className="text-[1.4rem] leading-[2rem]">20,000원</span>
+              <Body1 text={"20,000원"} />
             </div>
           </div>
         </div>

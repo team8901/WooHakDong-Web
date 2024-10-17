@@ -1,26 +1,12 @@
-import { LineProps } from "@components/Title1";
+import { TextProps } from "@components/Title1";
 
-type Title2Props = {
-  lines: LineProps[];
-};
-
-const Title2 = ({ lines }: Readonly<Title2Props>) => {
+const Title2 = ({ text, className }: Readonly<TextProps>) => {
   return (
-    <div className="flex flex-col">
-      {lines.map((line, lineIndex) => (
-        <div key={lineIndex} className="flex">
-          {line.segments.map((segment, segmentIndex) => (
-            <span
-              key={segmentIndex}
-              className="font-semiBold text-[2rem] leading-[3.2rem] whitespace-pre-wrap"
-              style={{ color: segment.color }}
-            >
-              {segment.text}
-            </span>
-          ))}
-        </div>
-      ))}
-    </div>
+    <span
+      className={`text-[2.2rem] leading-[3rem] font-semiBold whitespace-pre-wrap ${className}`}
+    >
+      {text}
+    </span>
   );
 };
 
