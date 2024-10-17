@@ -2,7 +2,7 @@ import { postGroupJoin } from "@api/payment/postGroupJoin";
 import { postGroupJoinConfirm } from "@api/payment/postGroupJoinConfirm";
 import { IMPResponse } from "types/iamport";
 
-type PortOneProps = {
+export type PortOneProps = {
   pg: string;
   pay_method: string;
   name: string;
