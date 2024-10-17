@@ -84,9 +84,12 @@ export const postPortOne = async ({
         alert("서버에 결제 완료를 성공적으로 알렸습니다.");
         const groupId = 1;
         const orderId = await postGroupJoin({ merchantUid, groupId });
-        await postGroupJoinConfirm({ merchantUid, groupId, impUid });
-
-        resolve();
+        if (orderId) {
+          await postGroupJoinConfirm({ merchantUid, groupId, impUid, orderId });
+          resolve();
+        } else {
+          reject(new Error("orderId를 받아오는 데 실패했습니다."));
+        }
       });
     } catch (error) {
       reject(error);
