@@ -13,8 +13,8 @@ const ClubJoinInfoWritePage = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [gender, setGender] = useState("남성");
-  const [department, setDepartment] = useState("");
-  const [studentId, setStudentId] = useState("");
+  const [major, setMajor] = useState("");
+  const [studentNumber, setStudentNumber] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
   useEffect(() => {
@@ -23,12 +23,14 @@ const ClubJoinInfoWritePage = () => {
     setName("김덕배");
   }, []);
 
-  const handleDepartmentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDepartment(e.target.value);
+  const handleMajorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMajor(e.target.value);
   };
 
-  const handleStudentIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStudentId(e.target.value);
+  const handleStudentNumberChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setStudentNumber(e.target.value);
   };
 
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,8 +43,8 @@ const ClubJoinInfoWritePage = () => {
       email,
       name,
       gender,
-      department,
-      studentId,
+      major,
+      studentNumber,
       phoneNumber,
     };
     navigate("/clubJoinInfoConfirm", { state: data });
@@ -104,13 +106,13 @@ const ClubJoinInfoWritePage = () => {
           </div>
           <Input
             placeholder="학과"
-            value={department}
-            onChange={handleDepartmentChange}
+            value={major}
+            onChange={handleMajorChange}
           />
           <Input
             placeholder="학번"
-            value={studentId}
-            onChange={handleStudentIdChange}
+            value={studentNumber}
+            onChange={handleStudentNumberChange}
           />
           <Input
             placeholder="휴대폰 번호"

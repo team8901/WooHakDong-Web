@@ -1,3 +1,7 @@
+import {
+  MemberInfoRequestData,
+  postMemberInfo,
+} from "@api/member/postMemberInfo";
 import AppBar from "@components/AppBar";
 import Body1 from "@components/Body1";
 import Button from "@components/Button";
@@ -8,12 +12,24 @@ import { useLocation, useNavigate } from "react-router-dom";
 const ClubJoinInfoConfirmPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { school, email, name, gender, department, studentId, phoneNumber } =
+  const { school, email, name, gender, major, studentNumber, phoneNumber } =
     location.state;
 
-  const handleButtonClick = () => {
-    const data = { email, name };
-    navigate("/clubJoinTempComplete", { state: data });
+  const handleButtonClick = async () => {
+    try {
+      const postData: MemberInfoRequestData = {
+        memberPhoneNumber: phoneNumber,
+        memberMajor: major,
+        memberStudentNumber: studentNumber,
+        memberGender: gender === "남성" ? "MAN" : "WOMAN",
+      };
+      await postMemberInfo(postData);
+
+      const data = { email, name };
+      navigate("/clubJoinTempComplete", { state: data });
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -44,11 +60,11 @@ const ClubJoinInfoConfirmPage = () => {
           </div>
           <div className="flex flex-col">
             <Subtitle text="학과" />
-            <Body1 text={department} className="py-[9px]" />
+            <Body1 text={major} className="py-[9px]" />
           </div>
           <div className="flex flex-col">
             <Subtitle text="학번" />
-            <Body1 text={studentId} className="py-[9px]" />
+            <Body1 text={studentNumber} className="py-[9px]" />
           </div>
           <div className="flex flex-col">
             <Subtitle text="휴대폰 번호" />
