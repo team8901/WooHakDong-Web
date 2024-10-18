@@ -11,6 +11,7 @@ const PaymentPage = () => {
   const navigate = usePrefixedNavigate();
   // 결제 버튼 인덱스를 저장하는 상태
   const [paymentButtonIndex, setPaymentButtonIndex] = useState(0);
+  const [clubId, setClubId] = useState(0);
   const [clubName, setClubName] = useState("");
   const [clubDues, setClubDues] = useState(0);
   const [memberEmail, setMemberEmail] = useState("");
@@ -26,8 +27,9 @@ const PaymentPage = () => {
       const { memberEmail, memberName, memberPhoneNumber } =
         await getMemberInfo();
       const clubEnglishName = location.pathname.split("/")[1];
-      const { clubDues } = await getClubInfo({ clubEnglishName });
+      const { clubId, clubDues } = await getClubInfo({ clubEnglishName });
 
+      setClubId(clubId);
       setClubName(clubName);
       // setClubDues(20000);
       setClubDues(clubDues);
@@ -47,6 +49,7 @@ const PaymentPage = () => {
     const buyer_tel = memberPhoneNumber || "010-4242-4242";
 
     const data: PortOneProps = {
+      clubId,
       pg,
       pay_method,
       merchantUid: merchantUid.current,
@@ -57,12 +60,8 @@ const PaymentPage = () => {
       buyer_tel,
     };
 
-    try {
-      await postPortOne(data);
-      navigate("/");
-    } catch (error) {
-      alert(error);
-    }
+    await postPortOne(data);
+    navigate("/");
   };
 
   const handlePaymentKakao = async () => {

@@ -4,6 +4,7 @@ import { postGroupJoinConfirm } from "@api/payment/postGroupJoinConfirm";
 import { IMPResponse } from "types/iamport";
 
 export type PortOneProps = {
+  clubId: number;
   pg: string;
   pay_method: string;
   merchantUid: string;
@@ -30,6 +31,7 @@ type PortOneRequestData = {
 window.IMP.init("imp06661826");
 
 export const postPortOne = async ({
+  clubId,
   pg,
   pay_method,
   merchantUid,
@@ -40,7 +42,6 @@ export const postPortOne = async ({
   buyer_tel,
 }: Readonly<PortOneProps>) => {
   return new Promise((resolve, reject) => {
-    // try {
     const data: PortOneRequestData = {
       pg,
       pay_method,
@@ -64,8 +65,6 @@ export const postPortOne = async ({
         return;
       }
       const impUid = response.imp_uid;
-
-      const clubId = 1; // 따로 또 받아와야 함
       const { groupId } = await getGroupInfo({ clubId });
       console.log("groupId", groupId);
       const orderId = await postGroupJoin({ merchantUid, groupId });
@@ -77,8 +76,5 @@ export const postPortOne = async ({
         reject(new Error("orderId를 받아오는 데 실패했습니다."));
       }
     });
-    // } catch (error) {
-    //   reject(error);
-    // }
   });
 };
