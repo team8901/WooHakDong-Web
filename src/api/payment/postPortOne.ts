@@ -6,6 +6,7 @@ import { IMPResponse } from "types/iamport";
 export type PortOneProps = {
   pg: string;
   pay_method: string;
+  merchantUid: string;
   name: string;
   amount: number;
   buyer_email: string;
@@ -31,6 +32,7 @@ window.IMP.init("imp06661826");
 export const postPortOne = async ({
   pg,
   pay_method,
+  merchantUid,
   name,
   amount,
   buyer_email,
@@ -39,7 +41,6 @@ export const postPortOne = async ({
 }: Readonly<PortOneProps>) => {
   return new Promise((resolve, reject) => {
     // try {
-    const merchantUid = `payment-${crypto.randomUUID()}`.slice(0, 40);
     const data: PortOneRequestData = {
       pg,
       pay_method,

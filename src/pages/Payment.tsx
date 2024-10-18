@@ -5,7 +5,7 @@ import Button from "@components/Button";
 import PaymentMethodButton from "@components/payment/PaymentMethodButton";
 import Title2 from "@components/Title2";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const PaymentPage = () => {
   const navigate = usePrefixedNavigate();
@@ -16,8 +16,12 @@ const PaymentPage = () => {
   const [memberEmail, setMemberEmail] = useState("");
   const [memberName, setMemberName] = useState("");
   const [memberPhoneNumber, setMemberPhoneNumber] = useState("");
+  const merchantUid = useRef("");
 
   useEffect(() => {
+    merchantUid.current = `payment-${crypto.randomUUID()}`.slice(0, 40);
+    console.log("merchantUid.current", merchantUid.current);
+
     const getData = async () => {
       const { memberEmail, memberName, memberPhoneNumber } =
         await getMemberInfo();
@@ -45,6 +49,7 @@ const PaymentPage = () => {
     const data: PortOneProps = {
       pg,
       pay_method,
+      merchantUid: merchantUid.current,
       name,
       amount,
       buyer_email,
