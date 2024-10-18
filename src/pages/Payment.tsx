@@ -90,10 +90,15 @@ const PaymentPage = () => {
 
   const paymentMethods = [
     {
+      id: 0,
       alt: "카카오페이로 결제하기",
       src: "/assets/images/payment/kakaoPay.svg",
     },
-    { alt: "토스페이로 결제하기", src: "/assets/images/payment/tossPay.svg" },
+    {
+      id: 1,
+      alt: "토스페이로 결제하기",
+      src: "/assets/images/payment/tossPay.svg",
+    },
   ];
 
   return (
@@ -101,14 +106,14 @@ const PaymentPage = () => {
       <div className="h-full flex flex-col gap-[40px] pt-[20px] scrollbar-hide masked-overflow">
         <Title2 text="결제 방법을 선택해주세요" />
         <div className="grid grid-cols-2 gap-[20px] flex-wrap justify-center">
-          {paymentMethods.map((method, index) => (
+          {paymentMethods.map((method) => (
             <PaymentMethodButton
-              key={index}
+              key={method.id}
               alt={method.alt}
-              onClick={() => handlePaymentMethodButtonClick(index)}
+              onClick={() => handlePaymentMethodButtonClick(method.id)}
               src={method.src}
               className={`${
-                paymentButtonIndex === index ? "border-primary" : ""
+                paymentButtonIndex === method.id ? "border-primary" : ""
               }`}
             />
           ))}
