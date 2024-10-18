@@ -1,4 +1,4 @@
-import { landingPageURLs } from "@hooks/useAuthRedirect";
+import { invalidClubEnglishNames } from "@hooks/useAuthRedirect";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const usePrefixedNavigate = () => {
@@ -11,7 +11,7 @@ const usePrefixedNavigate = () => {
   ) => {
     // Check if the current path includes a prefix
     const firstSegment = location.pathname.split("/")[1];
-    const isClubURL = !landingPageURLs.includes(firstSegment);
+    const isClubURL = !invalidClubEnglishNames.includes(firstSegment);
     if (isClubURL) {
       navigate(`/${firstSegment}${path}`, options);
     } else {

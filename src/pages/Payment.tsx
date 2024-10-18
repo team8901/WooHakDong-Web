@@ -1,16 +1,57 @@
+import { getClubInfo } from "@api/club/getClubInfo";
+import { getMemberInfo } from "@api/member/getMemberInfo";
 import { PortOneProps, postPortOne } from "@api/payment/postPortOne";
 import Button from "@components/Button";
 import PaymentMethodButton from "@components/payment/PaymentMethodButton";
 import Title2 from "@components/Title2";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const PaymentPage = () => {
   const navigate = usePrefixedNavigate();
   // 결제 버튼 인덱스를 저장하는 상태
   const [paymentButtonIndex, setPaymentButtonIndex] = useState(0);
+  const [clubName, setClubName] = useState("");
+  const [clubDues, setClubDues] = useState(0);
+  const [memberEmail, setMemberEmail] = useState("");
+  const [memberName, setMemberName] = useState("");
+  const [memberPhoneNumber, setMemberPhoneNumber] = useState("");
 
-  const handlePostPortOne = async (data: PortOneProps) => {
+  useEffect(() => {
+    const getData = async () => {
+      const { memberEmail, memberName, memberPhoneNumber } =
+        await getMemberInfo();
+      const clubEnglishName = location.pathname.split("/")[1];
+      const { clubDues } = await getClubInfo({ clubEnglishName });
+
+      setClubName(clubName);
+      // setClubDues(20000);
+      setClubDues(clubDues);
+      setMemberEmail(memberEmail);
+      setMemberName(memberName);
+      setMemberPhoneNumber(memberPhoneNumber);
+    };
+    getData();
+  }, []);
+
+  const handlePostPortOne = async (pg: string) => {
+    const pay_method = "card";
+    const name = `${clubName} 동아리원 등록하기`;
+    const amount = clubDues;
+    const buyer_email = memberEmail || "8901test@test.com";
+    const buyer_name = memberName || "박박준";
+    const buyer_tel = memberPhoneNumber || "010-4242-4242";
+
+    const data: PortOneProps = {
+      pg,
+      pay_method,
+      name,
+      amount,
+      buyer_email,
+      buyer_name,
+      buyer_tel,
+    };
+
     try {
       await postPortOne(data);
       navigate("/");
@@ -21,44 +62,12 @@ const PaymentPage = () => {
 
   const handlePaymentKakao = async () => {
     const pg = `kakaopay.TC0ONETIME`;
-    const pay_method = "card";
-    const name = "동아리원 등록하기";
-    const amount = 20000;
-    const buyer_email = "8901test@test.com";
-    const buyer_name = "박박준";
-    const buyer_tel = "010-4242-4242";
-
-    const data: PortOneProps = {
-      pg,
-      pay_method,
-      name,
-      amount,
-      buyer_email,
-      buyer_name,
-      buyer_tel,
-    };
-    await handlePostPortOne(data);
+    await handlePostPortOne(pg);
   };
 
   const handlePaymentToss = async () => {
     const pg = `tosspay.tosstest`;
-    const pay_method = "card";
-    const name = "동아리원 등록하기";
-    const amount = 20000;
-    const buyer_email = "8901test@test.com";
-    const buyer_name = "박박준";
-    const buyer_tel = "010-4242-4242";
-
-    const data: PortOneProps = {
-      pg,
-      pay_method,
-      name,
-      amount,
-      buyer_email,
-      buyer_name,
-      buyer_tel,
-    };
-    await handlePostPortOne(data);
+    await handlePostPortOne(pg);
   };
 
   const handlePaymentMethodButtonClick = (index: number) => {

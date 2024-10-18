@@ -20,10 +20,5 @@ export const postMemberInfo = async ({
     memberGender,
   };
 
-  try {
-    await axiosInstance.post(`/v1/member/info`, data);
-  } catch (error) {
-    console.error(error);
-    throw Error(`회원 정보를 저장하는 데 실패하였습니다.`);
-  }
+  await axiosInstance.post(`/v1/member/info`, data);
 };

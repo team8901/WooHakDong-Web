@@ -11,13 +11,8 @@ type MemberInfoResponseData = {
 };
 
 export const getMemberInfo = async () => {
-  try {
-    const res = await axiosInstance.get<MemberInfoResponseData>(
-      `/v1/member/info`
-    );
-    return res.data;
-  } catch (error) {
-    console.error(error);
-    throw Error(`회원 정보를 불러오는 데 실패하였습니다.`);
-  }
+  const res = await axiosInstance.get<MemberInfoResponseData>(
+    `/v1/member/info`
+  );
+  return res.data;
 };

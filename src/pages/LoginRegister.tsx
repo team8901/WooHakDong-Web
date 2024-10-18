@@ -2,7 +2,7 @@ import Body3 from "@components/Body3";
 import GoogleLoginButton from "@components/login/GoogleLoginButton";
 import Subtitle from "@components/Subtitle";
 import Title1 from "@components/Title1";
-import { landingPageURLs } from "@hooks/useAuthRedirect";
+import { invalidClubEnglishNames } from "@hooks/useAuthRedirect";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -12,11 +12,11 @@ const LoginRegisterPage = () => {
 
   useEffect(() => {
     const firstSegment = location.pathname.split("/")[1];
-    const isClubURL = !landingPageURLs.includes(firstSegment);
-
+    const isClubURL = !invalidClubEnglishNames.includes(firstSegment);
     if (!isClubURL) return;
-    const clubName = firstSegment;
-    setClubName(clubName);
+
+    const clubEnglishName = firstSegment;
+    setClubName(clubEnglishName);
   }, []);
 
   return (

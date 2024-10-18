@@ -1,5 +1,4 @@
 import axiosInstance from "@api/axiosInstance";
-import { AxiosError } from "axios";
 
 type GroupJoinConfirmProps = {
   merchantUid: string;
@@ -14,11 +13,6 @@ type GroupJoinConfirmRequestData = {
   orderId: string; // 주문하기 시에, 서버 측으로부터 받은 값
 };
 
-type ErrorResponseData = {
-  ErrorCode: string;
-  ErrorDetail: string;
-};
-
 export const postGroupJoinConfirm = async ({
   merchantUid,
   groupId,
@@ -27,14 +21,8 @@ export const postGroupJoinConfirm = async ({
 }: Readonly<GroupJoinConfirmProps>) => {
   const data: GroupJoinConfirmRequestData = { merchantUid, impUid, orderId };
 
-  try {
-    await axiosInstance.post(
-      `${import.meta.env.VITE_API_URL}/v1/groups/${groupId}/join/confirm`,
-      data
-    );
-  } catch (error) {
-    const errorResponseData = (error as AxiosError)?.response
-      ?.data as ErrorResponseData;
-    console.error(errorResponseData);
-  }
+  await axiosInstance.post(
+    `${import.meta.env.VITE_API_URL}/v1/groups/${groupId}/join/confirm`,
+    data
+  );
 };

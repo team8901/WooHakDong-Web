@@ -17,19 +17,15 @@ const ClubJoinInfoConfirmPage = () => {
     location.state;
 
   const handleButtonClick = async () => {
-    try {
-      const postData: MemberInfoRequestData = {
-        memberPhoneNumber: phoneNumber,
-        memberMajor: major,
-        memberStudentNumber: studentNumber,
-        memberGender: gender === "남성" ? "MAN" : "WOMAN",
-      };
-      await postMemberInfo(postData);
+    const postData: MemberInfoRequestData = {
+      memberPhoneNumber: phoneNumber,
+      memberMajor: major,
+      memberStudentNumber: studentNumber,
+      memberGender: gender === "남성" ? "MAN" : "WOMAN",
+    };
+    await postMemberInfo(postData);
 
-      navigate("/clubJoinTempComplete");
-    } catch (error) {
-      alert(error);
-    }
+    navigate("/clubJoinTempComplete");
   };
 
   return (
