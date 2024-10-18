@@ -22,7 +22,7 @@ export const postGroupJoinConfirm = async ({
   const data: GroupJoinConfirmRequestData = { merchantUid, impUid, orderId };
 
   await axiosInstance.post(
-    `${import.meta.env.VITE_API_URL}/v1/groups/${groupId}/join/confirm`,
+    `${import.meta.env.VITE_API_URL}/v1/groups/${groupId}/joins/confirms`,
     data
   );
 };
