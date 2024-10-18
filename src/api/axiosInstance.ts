@@ -40,8 +40,8 @@ axiosInstance.interceptors.response.use(
       axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
       return axiosInstance(originalRequest);
     }
-    // return Promise.reject(error);
-    return Promise.reject(`${error.response.data.message}`);
+    console.error(`${error.response.data.message}`);
+    return Promise.reject(error);
   }
 );
 
