@@ -39,11 +39,6 @@ const ClubJoinTempCompletePage = () => {
     checkClub();
   }, []);
 
-  // 숫자 3자리마다 콤마 찍는 함수
-  const numberWithCommas = (x: number) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-
   return (
     <div className="h-full pt-[56px] pb-[100px] px-[20px] relative">
       <div className="h-full flex flex-col gap-[40px] pt-[20px] scrollbar-hide masked-overflow">
@@ -56,7 +51,7 @@ const ClubJoinTempCompletePage = () => {
           <div className="flex flex-col gap-[8px]">
             <Subtitle text="동아리 회비" />
             <div className="py-[14px] px-[16px] rounded-[14px] border border-lightGray">
-              <Body1 text={`${numberWithCommas(clubDues)}원`} />
+              <Body1 text={`${clubDues.toLocaleString()}원`} />
             </div>
           </div>
           <div className="flex flex-col gap-[8px]">
