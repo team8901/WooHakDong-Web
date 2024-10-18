@@ -14,7 +14,7 @@ const GoogleLoginButton = () => {
     const provider = new GoogleAuthProvider();
     const userCredential = await signInWithPopup(auth, provider);
     // console.log(userCredential);
-    const oauthAccessToken = ((userCredential as any)._tokenResponse as any)
+    const oauthAccessToken = (userCredential as any)._tokenResponse
       .oauthAccessToken;
     const loginData = await fetchLoginData(oauthAccessToken);
     if (!loginData) {
