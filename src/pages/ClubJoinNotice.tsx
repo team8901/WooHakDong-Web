@@ -64,7 +64,7 @@ const ClubJoinNoticePage = () => {
       </div>
 
       <div className="w-full absolute bottom-[20px] left-0 px-[20px]">
-        <Button text="확인했어요" onClick={handleButtonClick} />
+        <Button text="다 읽었어요" onClick={handleButtonClick} />
       </div>
     </div>
   );
