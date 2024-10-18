@@ -61,27 +61,12 @@ const ClubJoinInfoWritePage = () => {
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col">
-            <Subtitle text="학교" />
-            <Body1
-              text={school}
-              className="py-[9px] border-b border-lightGray"
-            />
-          </div>
-          <div className="flex flex-col">
-            <Subtitle text="이메일 주소" />
-            <Body1
-              text={email}
-              className="py-[9px] border-b border-lightGray"
-            />
-          </div>
-          <div className="flex flex-col">
             <Subtitle text="이름" />
             <Body1 text={name} className="py-[9px] border-b border-lightGray" />
           </div>
-
           <div className="flex flex-col">
             <Subtitle text="성별" />
-            <div className="flex gap-[8px] items-center py-[9px]">
+            <div className="flex gap-[8px] items-center pt-[9px]">
               <button
                 className={`rounded-[14px] border ${
                   gender === "남성"
@@ -105,6 +90,25 @@ const ClubJoinInfoWritePage = () => {
             </div>
           </div>
           <Input
+            placeholder="휴대폰 번호"
+            value={phoneNumber}
+            onChange={handlePhoneNumberChange}
+          />
+          <div className="flex flex-col">
+            <Subtitle text="이메일 주소" />
+            <Body1
+              text={email}
+              className="py-[9px] border-b border-lightGray"
+            />
+          </div>
+          <div className="flex flex-col">
+            <Subtitle text="학교" />
+            <Body1
+              text={school}
+              className="py-[9px] border-b border-lightGray"
+            />
+          </div>
+          <Input
             placeholder="학과"
             value={major}
             onChange={handleMajorChange}
@@ -113,11 +117,6 @@ const ClubJoinInfoWritePage = () => {
             placeholder="학번"
             value={studentNumber}
             onChange={handleStudentNumberChange}
-          />
-          <Input
-            placeholder="휴대폰 번호"
-            value={phoneNumber}
-            onChange={handlePhoneNumberChange}
           />
         </div>
       </div>
