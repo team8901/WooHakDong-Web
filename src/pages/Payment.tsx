@@ -2,22 +2,20 @@ import { PortOneProps, postPortOne } from "@api/payment/postPortOne";
 import Button from "@components/Button";
 import PaymentMethodButton from "@components/payment/PaymentMethodButton";
 import Title2 from "@components/Title2";
+import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const PaymentPage = () => {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
   // 결제 버튼 인덱스를 저장하는 상태
   const [paymentButtonIndex, setPaymentButtonIndex] = useState(0);
 
   const handlePostPortOne = async (data: PortOneProps) => {
     try {
       await postPortOne(data);
-
-      alert("동아리 가입이 완료되었습니다.");
       navigate("/");
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   };
 
@@ -43,7 +41,7 @@ const PaymentPage = () => {
   };
 
   const handlePaymentToss = async () => {
-    const pg = `tosspay.TC0ONETIME`;
+    const pg = `tosspay.tosstest`;
     const pay_method = "card";
     const name = "동아리원 등록하기";
     const amount = 20000;

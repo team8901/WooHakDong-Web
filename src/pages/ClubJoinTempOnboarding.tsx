@@ -1,9 +1,9 @@
 import Button from "@components/Button";
 import Title3 from "@components/Title3";
-import { useNavigate } from "react-router-dom";
+import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 
 const ClubJoinTempOnboardingPage = () => {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   const handleButtonClick = () => {
     navigate("/payment");

@@ -2,10 +2,10 @@ import Body1 from "@components/Body1";
 import Button from "@components/Button";
 import Subtitle from "@components/Subtitle";
 import Title1 from "@components/Title1";
-import { useNavigate } from "react-router-dom";
+import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 
 const ClubJoinTempCompletePage = () => {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   const handleButtonClick = () => {
     navigate("/payment");

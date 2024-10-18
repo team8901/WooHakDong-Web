@@ -4,11 +4,11 @@ import Button from "@components/Button";
 import Input from "@components/Input";
 import Subtitle from "@components/Subtitle";
 import Title2 from "@components/Title2";
+import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const ClubJoinInfoWritePage = () => {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
   const [school, setSchool] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");

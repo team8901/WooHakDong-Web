@@ -7,10 +7,11 @@ import Body1 from "@components/Body1";
 import Button from "@components/Button";
 import Subtitle from "@components/Subtitle";
 import Title2 from "@components/Title2";
-import { useLocation, useNavigate } from "react-router-dom";
+import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
+import { useLocation } from "react-router-dom";
 
 const ClubJoinInfoConfirmPage = () => {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
   const location = useLocation();
   const { school, email, name, gender, major, studentNumber, phoneNumber } =
     location.state;

@@ -1,14 +1,28 @@
 import AppBar from "@components/AppBar";
 import Button from "@components/Button";
 import Title2 from "@components/Title2";
-import { useNavigate } from "react-router-dom";
+import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
+import { useEffect } from "react";
+import { getMemberInfo } from "@api/member/getMemberInfo";
 
 const ClubJoinOnboardingPage = () => {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   const handleButtonClick = () => {
     navigate("/clubJoinNotice");
   };
+
+  useEffect(() => {
+    const checkMemberInfo = async () => {
+      const res = await getMemberInfo();
+      if (res.memberPhoneNumber) {
+        navigate(`/clubJoinTempComplete`);
+      } else {
+        navigate(`/clubJoinOnboarding`);
+      }
+    };
+    checkMemberInfo();
+  }, []);
 
   return (
     <div className="h-full pt-[116px] pb-[100px] px-[20px] relative">

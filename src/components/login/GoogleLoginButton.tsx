@@ -2,12 +2,12 @@ import { fetchLoginData } from "@api/login/fetchLoginData";
 import Button from "@components/Button";
 import { auth } from "@config/firebaseConfig";
 import { useAuth } from "@contexts/AuthContext";
+import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 
 const GoogleLoginButton = () => {
   const { login } = useAuth();
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();

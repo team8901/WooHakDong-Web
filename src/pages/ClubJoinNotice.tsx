@@ -3,10 +3,10 @@ import Body2 from "@components/Body2";
 import Button from "@components/Button";
 import Subtitle from "@components/Subtitle";
 import Title2 from "@components/Title2";
-import { useNavigate } from "react-router-dom";
+import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 
 const ClubJoinNoticePage = () => {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   const handleButtonClick = () => {
     navigate("/clubJoinInfoWrite");
