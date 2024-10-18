@@ -1,14 +1,11 @@
 import Body1 from "@components/Body1";
-import Body4 from "@components/Body4";
 import Button from "@components/Button";
+import Subtitle from "@components/Subtitle";
 import Title1 from "@components/Title1";
-import Title4 from "@components/Title4";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ClubJoinTempCompletePage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { email, name } = location.state;
 
   const handleButtonClick = () => {
     navigate("/payment");
@@ -17,38 +14,32 @@ const ClubJoinTempCompletePage = () => {
   return (
     <div className="h-full pt-[56px] pb-[100px] px-[20px] relative">
       <div className="h-full flex flex-col gap-[40px] pt-[20px] scrollbar-hide masked-overflow">
-        <Title1 text="Doit에 임시 가입 되었어요! 🎉" className="text-primary" />
+        <Title1
+          text="이제 Doit에 가입할 수 있어요! 🥳"
+          className="text-primary"
+        />
 
         <div className="flex flex-col gap-[20px]">
-          <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col gap-[4px]">
-              <Title4 text="동아리 정보 SMS 전송" />
-              <Body4
-                text={`${name}님의 이메일 주소로 동아리 정보를 보냈어요`}
-                className="text-darkGray"
-              />
-            </div>
-            <div className="py-[14px] px-[16px] rounded-[14px] border border-lightGray">
-              <Body1 text={email} />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-[16px]">
-            <div className="flex flex-col gap-[4px]">
-              <Title4 text="동아리 회비 납부" />
-              <div className="flex flex-col">
-                <Body4
-                  text="동아리 회비를 납부해야 정식 동아리 회원이 될 수 있어요"
-                  className="text-darkGray"
-                />
-                <Body4
-                  text="지금 납부하지 않아도 나중에 납부할 수 있어요"
-                  className="text-darkGray"
-                />
-              </div>
-            </div>
+          <div className="flex flex-col gap-[8px]">
+            <Subtitle text="동아리 회비" />
             <div className="py-[14px] px-[16px] rounded-[14px] border border-lightGray">
               <Body1 text={"20,000원"} />
+            </div>
+          </div>
+          <div className="flex flex-col gap-[8px]">
+            <Subtitle text="동아리 설명" />
+            <div className="py-[14px] px-[16px] rounded-[14px] border border-lightGray text-justify">
+              <Body1
+                text={
+                  "아주대학교 프로그래밍 동아리 DoiT!의 이름은 Dream of interworking Team!의 약자입니다. 여기서 'interworking'이라는 단어는 '정보 연결이 가능하다', '두 시스템이 대화하기 위하여 필요한 프로세스' 등의 뜻을 가지고 있습니다."
+                }
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-[8px]">
+            <Subtitle text="동아리 방" />
+            <div className="py-[14px] px-[16px] rounded-[14px] border border-lightGray">
+              <Body1 text={"구학생회관 234호"} />
             </div>
           </div>
         </div>
