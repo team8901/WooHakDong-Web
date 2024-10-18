@@ -26,17 +26,13 @@ const useAuthRedirect = () => {
     const firstSegment = location.pathname.split("/")[1];
     const isClubURL = !invalidClubEnglishNames.includes(firstSegment);
 
-    if (!isClubURL) {
-      if (!isLoggedIn) {
-        navigate(`/loginRegister`);
-      } else {
-        navigate(`/home`);
-      }
+    if (!isLoggedIn) {
+      navigate(`/loginRegister`);
       return;
     }
 
-    if (!isLoggedIn) {
-      navigate(`/loginRegister`);
+    if (!isClubURL) {
+      navigate(`/home`);
       return;
     }
 
