@@ -1,3 +1,4 @@
+import { getMemberInfo } from "@api/member/getMemberInfo";
 import Body3 from "@components/Body3";
 import GoogleLoginButton from "@components/GoogleLoginButton";
 import Subtitle from "@components/Subtitle";
@@ -10,9 +11,17 @@ const LoginResgisterPage = () => {
 
   useEffect(() => {
     const isLoggedIn = !!localStorage.getItem("accessToken");
-    if (isLoggedIn) {
-      navigate("/clubJoinTempOnboarding");
-    }
+    if (!isLoggedIn) return;
+
+    const checkMemberInfo = async () => {
+      const res = await getMemberInfo();
+      if (res.memberName) {
+        navigate("/clubJoinTempComplete");
+      } else {
+        navigate("/clubJoinOnboarding");
+      }
+    };
+    checkMemberInfo();
   }, [navigate]);
 
   return (
