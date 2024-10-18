@@ -25,8 +25,7 @@ const ClubJoinInfoConfirmPage = () => {
       };
       await postMemberInfo(postData);
 
-      const data = { email, name };
-      navigate("/clubJoinTempComplete", { state: data });
+      navigate("/clubJoinTempComplete");
     } catch (error) {
       alert(error);
     }
@@ -43,14 +42,6 @@ const ClubJoinInfoConfirmPage = () => {
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col">
-            <Subtitle text="학교" />
-            <Body1 text={school} className="py-[9px]" />
-          </div>
-          <div className="flex flex-col">
-            <Subtitle text="이메일 주소" />
-            <Body1 text={email} className="py-[9px]" />
-          </div>
-          <div className="flex flex-col">
             <Subtitle text="이름" />
             <Body1 text={name} className="py-[9px]" />
           </div>
@@ -59,16 +50,24 @@ const ClubJoinInfoConfirmPage = () => {
             <Body1 text={gender} className="py-[9px]" />
           </div>
           <div className="flex flex-col">
+            <Subtitle text="휴대폰 번호" />
+            <Body1 text={phoneNumber} className="py-[9px]" />
+          </div>
+          <div className="flex flex-col">
+            <Subtitle text="이메일 주소" />
+            <Body1 text={email} className="py-[9px]" />
+          </div>
+          <div className="flex flex-col">
+            <Subtitle text="학교" />
+            <Body1 text={school} className="py-[9px]" />
+          </div>
+          <div className="flex flex-col">
             <Subtitle text="학과" />
             <Body1 text={major} className="py-[9px]" />
           </div>
           <div className="flex flex-col">
             <Subtitle text="학번" />
             <Body1 text={studentNumber} className="py-[9px]" />
-          </div>
-          <div className="flex flex-col">
-            <Subtitle text="휴대폰 번호" />
-            <Body1 text={phoneNumber} className="py-[9px]" />
           </div>
         </div>
       </div>
