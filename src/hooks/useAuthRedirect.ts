@@ -1,3 +1,4 @@
+import { getClubsInfo } from "@api/club/getClubsInfo";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -36,9 +37,18 @@ const useAuthRedirect = () => {
 
     if (!isLoggedIn) {
       navigate(`/loginRegister`);
-    } else {
-      navigate(`/clubJoinOnboarding`);
+      return;
     }
+
+    const checkClubs = async () => {
+      const { result } = await getClubsInfo();
+      if (result.length === 0) {
+        navigate(`/clubJoinOnboarding`);
+      } else {
+        navigate(`/`);
+      }
+    };
+    checkClubs();
   }, []);
 };
 

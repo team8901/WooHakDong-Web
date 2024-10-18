@@ -12,6 +12,7 @@ import PaymentPage from "@pages/Payment";
 import AuthWrapper from "wrapper/AuthWrapper";
 import HomePage from "@pages/Home";
 import { AuthProvider } from "@contexts/AuthContext";
+import ClubMemberHomePage from "@pages/ClubMemberHome";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: "payment",
         element: <PaymentPage />,
+      },
+      {
+        path: "",
+        element: <ClubMemberHomePage />,
       },
     ],
   },
