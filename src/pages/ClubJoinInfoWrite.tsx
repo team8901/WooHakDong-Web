@@ -1,3 +1,4 @@
+import { getMemberInfo } from "@api/member/getMemberInfo";
 import AppBar from "@components/AppBar";
 import Body1 from "@components/Body1";
 import Button from "@components/Button";
@@ -18,9 +19,17 @@ const ClubJoinInfoWritePage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
 
   useEffect(() => {
-    setSchool("아주대학교");
-    setEmail("mancity@ajou.ac.kr");
-    setName("김덕배");
+    // setSchool("아주대학교");
+    // setEmail("mancity@ajou.ac.kr");
+    // setName("김덕배");
+
+    const checkMemberInfo = async () => {
+      const { memberName, memberEmail, memberSchool } = await getMemberInfo();
+      setSchool(memberSchool);
+      setEmail(memberEmail);
+      setName(memberName);
+    };
+    checkMemberInfo();
   }, []);
 
   const handleMajorChange = (e: React.ChangeEvent<HTMLInputElement>) => {

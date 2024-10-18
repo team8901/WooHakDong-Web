@@ -21,10 +21,7 @@ export const postMemberInfo = async ({
   };
 
   try {
-    await axiosInstance.post(
-      `${import.meta.env.VITE_API_URL}/v1/member/info`,
-      data
-    );
+    await axiosInstance.post(`/v1/member/info`, data);
   } catch (error) {
     console.error(error);
     throw Error(`회원 정보를 저장하는 데 실패하였습니다.`);

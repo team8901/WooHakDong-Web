@@ -2,13 +2,28 @@ import Body3 from "@components/Body3";
 import GoogleLoginButton from "@components/login/GoogleLoginButton";
 import Subtitle from "@components/Subtitle";
 import Title1 from "@components/Title1";
+import { landingPageURLs } from "@hooks/useAuthRedirect";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const LoginRegisterPage = () => {
+  const location = useLocation();
+  const [clubName, setClubName] = useState("");
+
+  useEffect(() => {
+    const firstSegment = location.pathname.split("/")[1];
+    const isClubURL = !landingPageURLs.includes(firstSegment);
+
+    if (!isClubURL) return;
+    const clubName = firstSegment;
+    setClubName(clubName);
+  }, []);
+
   return (
     <div className="h-full pt-[116px] pb-[40px] px-[20px] relative">
       <div className="flex flex-col gap-[4px]">
         <div>
-          <Title1 text="Doit" />
+          <Title1 text={clubName} />
           <div>
             <Title1 text="우학동" className="text-primary" />
             <Title1 text="으로 이용하기" />
