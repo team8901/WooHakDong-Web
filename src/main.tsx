@@ -8,7 +8,6 @@ import ClubJoinNoticePage from "@pages/ClubJoinNotice";
 import ClubJoinInfoWritePage from "@pages/ClubJoinInfoWrite";
 import ClubJoinInfoConfirmPage from "@pages/ClubJoinInfoConfirm";
 import ClubJoinTempCompletePage from "@pages/ClubJoinTempComplete";
-import ClubJoinTempOnboardingPage from "@pages/ClubJoinTempOnboarding";
 import PaymentPage from "@pages/Payment";
 import AuthWrapper from "wrapper/AuthWrapper";
 import HomePage from "@pages/Home";
@@ -55,10 +54,6 @@ const router = createBrowserRouter([
       {
         path: "clubJoinTempComplete",
         element: <ClubJoinTempCompletePage />,
-      },
-      {
-        path: "clubJoinTempOnboarding",
-        element: <ClubJoinTempOnboardingPage />,
       },
       {
         path: "payment",

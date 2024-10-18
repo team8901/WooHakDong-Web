@@ -2,11 +2,16 @@ import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-export const landingPageURLs = [
+export const invalidClubEnglishNames = [
   "",
   "home",
   "loginRegister",
   "clubJoinOnboarding",
+  "clubJoinNotice",
+  "clubJoinInfoWrite",
+  "clubJoinInfoConfirm",
+  "clubJoinTempComplete",
+  "payment",
 ];
 
 const useAuthRedirect = () => {
@@ -18,7 +23,7 @@ const useAuthRedirect = () => {
 
     // Extract the first segment of the path
     const firstSegment = location.pathname.split("/")[1];
-    const isClubURL = !landingPageURLs.includes(firstSegment);
+    const isClubURL = !invalidClubEnglishNames.includes(firstSegment);
 
     if (!isClubURL) {
       if (!isLoggedIn) {
