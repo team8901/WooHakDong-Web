@@ -99,7 +99,7 @@ const PaymentPage = () => {
     <div className="h-full pt-[56px] pb-[100px] px-[20px] relative">
       <div className="h-full flex flex-col gap-[40px] pt-[20px] scrollbar-hide masked-overflow">
         <Title2 text="결제 방법을 선택해주세요" />
-        <div className="flex gap-[8px] flex-wrap justify-center">
+        <div className="grid grid-cols-2 gap-[20px] flex-wrap justify-center">
           {paymentMethods.map((method, index) => (
             <PaymentMethodButton
               key={index}
