@@ -27,7 +27,9 @@ const PaymentPage = () => {
       const { memberEmail, memberName, memberPhoneNumber } =
         await getMemberInfo();
       const clubEnglishName = location.pathname.split("/")[1];
-      const { clubId, clubDues } = await getClubInfo({ clubEnglishName });
+      const { clubName, clubId, clubDues } = await getClubInfo({
+        clubEnglishName,
+      });
 
       setClubId(clubId);
       setClubName(clubName);
