@@ -8,8 +8,8 @@ import { getMemberInfo } from '@libs/api/member';
 import { getClubInfo } from '@libs/api/club';
 import { PortOneProps } from 'types/payment';
 import { postPortOne } from '@libs/api/payment';
-import KakaoPayIcon from 'assets/images/payment/kakaoPayIcon';
-import TossPayIcon from 'assets/images/payment/TossPayIcon';
+import KakaoPayIcon from '@assets/images/payment/KakaoPayIcon';
+import TossPayIcon from '@assets/images/payment/TossPayIcon';
 
 const PaymentPage = () => {
   const navigate = usePrefixedNavigate();
