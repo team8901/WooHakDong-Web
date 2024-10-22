@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useMemo } from 'react';
 
 interface DrawerContextProps {
   open: boolean;
@@ -17,5 +17,7 @@ export const DrawerProvider = ({ children }: { children: ReactNode }) => {
     setOpen(!open);
   };
 
-  return <DrawerContext.Provider value={{ open, toggleDrawer }}>{children}</DrawerContext.Provider>;
+  const contextValue = useMemo(() => ({ open, toggleDrawer }), [open]);
+
+  return <DrawerContext.Provider value={contextValue}>{children}</DrawerContext.Provider>;
 };
