@@ -28,7 +28,8 @@
       "@api/*": ["api/*"],
       "@config/*": ["config/*"],
       "@contexts/*": ["contexts/*"],
-      "@hooks/*": ["hooks/*"]
+      "@hooks/*": ["hooks/*"],
+      "@layouts/*": ["layouts/*"]
     }
   },
   "include": ["src"]
