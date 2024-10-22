@@ -1,3 +1,4 @@
+import GoogleIcon from "@assets/images/logos/GoogleIcon";
 import Button from "@components/Button";
 import { auth } from "@config/firebaseConfig";
 import { useAuth } from "@contexts/AuthContext";
@@ -42,7 +43,7 @@ const GoogleLoginButton = () => {
       textColor="var(--color-black)"
       bgColor="var(--color-lightGray)"
       fontSize="1.4rem"
-      imageUrl="/assets/images/logos/google.svg"
+      icon={<GoogleIcon />}
       onClick={handleGoogleLogin}
     />
   );

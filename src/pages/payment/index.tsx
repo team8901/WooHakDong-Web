@@ -8,6 +8,8 @@ import { getMemberInfo } from "@libs/api/member";
 import { getClubInfo } from "@libs/api/club";
 import { PortOneProps } from "types/payment";
 import { postPortOne } from "@libs/api/payment";
+import KakaoPayIcon from "assets/images/payment/kakaoPayIcon";
+import TossPayIcon from "assets/images/payment/TossPayIcon";
 
 const PaymentPage = () => {
   const navigate = usePrefixedNavigate();
@@ -93,13 +95,11 @@ const PaymentPage = () => {
   const paymentMethods = [
     {
       id: 0,
-      alt: "카카오페이로 결제하기",
-      src: "/assets/images/payment/kakaoPay.svg",
+      icon: <KakaoPayIcon className="w-[66px]" />,
     },
     {
       id: 1,
-      alt: "토스페이로 결제하기",
-      src: "/assets/images/payment/tossPay.svg",
+      icon: <TossPayIcon className="w-[66px]" />,
     },
   ];
 
@@ -111,9 +111,8 @@ const PaymentPage = () => {
           {paymentMethods.map((method) => (
             <PaymentMethodButton
               key={method.id}
-              alt={method.alt}
               onClick={() => handlePaymentMethodButtonClick(method.id)}
-              src={method.src}
+              icon={method.icon}
               className={`${
                 paymentButtonIndex === method.id ? "border-primary" : ""
               }`}

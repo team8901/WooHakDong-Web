@@ -3,7 +3,7 @@ type ButtonProps = {
   textColor?: string;
   bgColor?: string;
   fontSize?: string;
-  imageUrl?: string;
+  icon?: JSX.Element;
   onClick?: () => void;
   disabled?: boolean;
 };
@@ -13,7 +13,7 @@ const Button = ({
   textColor = "white",
   bgColor = "var(--color-primary)",
   fontSize = "1.8rem",
-  imageUrl,
+  icon,
   onClick,
   disabled = false,
 }: Readonly<ButtonProps>) => {
@@ -28,7 +28,7 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
     >
-      {imageUrl && <img alt="" src={imageUrl} />}
+      {icon}
       {text}
     </button>
   );

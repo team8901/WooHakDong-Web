@@ -41,12 +41,12 @@ input:focus {
 
 @font-face {
   font-family: "Pretendard-Regular";
-  src: url("/assets/fonts/pretendard/Pretendard-Regular.otf");
+  src: url("./assets/fonts/pretendard/Pretendard-Regular.otf");
 }
 
 @font-face {
   font-family: "Pretendard-SemiBold";
-  src: url("/assets/fonts/pretendard/Pretendard-SemiBold.otf");
+  src: url("./assets/fonts/pretendard/Pretendard-SemiBold.otf");
 }
 
 .masked-overflow {
