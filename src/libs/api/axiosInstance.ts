@@ -1,4 +1,5 @@
 import { refreshAccessToken } from '@libs/api/auth';
+import ROUTE from '@libs/constant/path';
 import axios, { AxiosRequestConfig } from 'axios';
 
 const axiosInstance = axios.create();
@@ -15,7 +16,7 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
-    Promise.reject(error);
+    Promise.reject(new Error(error.response.data.message));
   },
 );
 
@@ -29,7 +30,7 @@ axiosInstance.interceptors.response.use(
     if ((error.response.status === 401 || error.response.status === 403) && !originalRequest._retry) {
       if (!localStorage.getItem('refreshToken')) {
         alert('로그인이 필요한 페이지입니다.');
-        location.href = '/';
+        location.replace(ROUTE.ROOT);
         return;
       }
       originalRequest._retry = true;
@@ -38,7 +39,7 @@ axiosInstance.interceptors.response.use(
       return axiosInstance(originalRequest);
     }
     console.error(`${error.response.data.message}`);
-    return Promise.reject(error);
+    return Promise.reject(new Error(error.response.data.message));
   },
 );
 
