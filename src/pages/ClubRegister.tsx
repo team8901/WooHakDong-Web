@@ -6,7 +6,7 @@ import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useEffect, useState } from "react";
 import { getClubInfo } from "@api/club/getClubInfo";
 
-const ClubJoinTempCompletePage = () => {
+const ClubRegisterPage = () => {
   const navigate = usePrefixedNavigate();
   const [clubName, setClubName] = useState("");
   const [clubDues, setClubDues] = useState(0);
@@ -76,4 +76,4 @@ const ClubJoinTempCompletePage = () => {
   );
 };
 
-export default ClubJoinTempCompletePage;
+export default ClubRegisterPage;

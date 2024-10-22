@@ -27,7 +27,7 @@ const GoogleLoginButton = () => {
     const checkClubs = async () => {
       const { result } = await getClubsInfo();
       if (result.length === 0) {
-        navigate(`/clubJoinOnboarding`);
+        navigate(`/memberRegister`);
       } else {
         navigate(`/`);
       }

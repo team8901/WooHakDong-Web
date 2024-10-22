@@ -7,11 +7,11 @@ export const invalidClubEnglishNames = [
   "",
   "home",
   "loginRegister",
-  "clubJoinOnboarding",
+  "memberRegister",
   "clubJoinNotice",
   "clubJoinInfoWrite",
   "clubJoinInfoConfirm",
-  "clubJoinTempComplete",
+  "clubRegister",
   "payment",
 ];
 
@@ -39,7 +39,7 @@ const useAuthRedirect = () => {
     const checkClubs = async () => {
       const { result } = await getClubsInfo();
       if (result.length === 0) {
-        navigate(`/clubJoinOnboarding`);
+        navigate(`/memberRegister`);
       } else {
         navigate(`/`);
       }

@@ -25,7 +25,7 @@ const ClubJoinInfoConfirmPage = () => {
     };
     await postMemberInfo(postData);
 
-    navigate("/clubJoinTempComplete");
+    navigate("/clubRegister");
   };
 
   return (

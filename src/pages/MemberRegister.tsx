@@ -5,7 +5,7 @@ import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useEffect } from "react";
 import { getMemberInfo } from "@api/member/getMemberInfo";
 
-const ClubJoinOnboardingPage = () => {
+const MemberRegisterPage = () => {
   const navigate = usePrefixedNavigate();
 
   const handleButtonClick = () => {
@@ -16,9 +16,9 @@ const ClubJoinOnboardingPage = () => {
     const checkMemberInfo = async () => {
       const res = await getMemberInfo();
       if (res.memberPhoneNumber) {
-        navigate(`/clubJoinTempComplete`);
+        navigate(`/clubRegister`);
       } else {
-        navigate(`/clubJoinOnboarding`);
+        navigate(`/memberRegister`);
       }
     };
     checkMemberInfo();
@@ -45,4 +45,4 @@ const ClubJoinOnboardingPage = () => {
   );
 };
 
-export default ClubJoinOnboardingPage;
+export default MemberRegisterPage;
