@@ -1,4 +1,5 @@
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
+import ROUTE from "@libs/constant/path";
 import { useEffect } from "react";
 import { Outlet } from "react-router";
 
@@ -7,7 +8,7 @@ const AuthLayout = () => {
   const isAuth = !!localStorage.getItem("accessToken");
 
   useEffect(() => {
-    if (!isAuth) navigate("/loginRegister");
+    if (!isAuth) navigate(ROUTE.LOGIN_REGISTER);
   }, [isAuth]);
 
   return isAuth && <Outlet />;

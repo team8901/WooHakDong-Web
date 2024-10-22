@@ -4,12 +4,13 @@ import Button from "@components/Button";
 import Subtitle from "@components/Subtitle";
 import Title2 from "@components/Title2";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
+import ROUTE from "@libs/constant/path";
 
 const ClubJoinNoticePage = () => {
   const navigate = usePrefixedNavigate();
 
   const handleButtonClick = () => {
-    navigate("/memberInfoWrite");
+    navigate(ROUTE.MEMBER_INFO_WRITE);
   };
 
   return (

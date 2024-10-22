@@ -6,6 +6,7 @@ import PaymentMethodButton from "@pages/payment/components/PaymentMethodButton";
 import Title2 from "@components/Title2";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useEffect, useRef, useState } from "react";
+import ROUTE from "@libs/constant/path";
 
 const PaymentPage = () => {
   const navigate = usePrefixedNavigate();
@@ -63,7 +64,7 @@ const PaymentPage = () => {
     };
 
     await postPortOne(data);
-    navigate("/");
+    navigate(ROUTE.ROOT);
   };
 
   const handlePaymentKakao = async () => {

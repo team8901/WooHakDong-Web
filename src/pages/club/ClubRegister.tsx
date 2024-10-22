@@ -5,6 +5,7 @@ import Title1 from "@components/Title1";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useEffect, useState } from "react";
 import { getClubInfo } from "@api/club/getClubInfo";
+import ROUTE from "@libs/constant/path";
 
 const ClubRegisterPage = () => {
   const navigate = usePrefixedNavigate();
@@ -14,7 +15,7 @@ const ClubRegisterPage = () => {
   const [clubRoom, setClubRoom] = useState("");
 
   const handleButtonClick = () => {
-    navigate("/payment");
+    navigate(ROUTE.PAYMENT);
   };
 
   useEffect(() => {

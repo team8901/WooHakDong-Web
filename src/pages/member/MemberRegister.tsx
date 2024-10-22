@@ -4,21 +4,22 @@ import Title2 from "@components/Title2";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useEffect } from "react";
 import { getMemberInfo } from "@api/member/getMemberInfo";
+import ROUTE from "@libs/constant/path";
 
 const MemberRegisterPage = () => {
   const navigate = usePrefixedNavigate();
 
   const handleButtonClick = () => {
-    navigate("/clubJoinNotice");
+    navigate(ROUTE.CLUB_JOIN_NOTICE);
   };
 
   useEffect(() => {
     const checkMemberInfo = async () => {
       const res = await getMemberInfo();
       if (res.memberPhoneNumber) {
-        navigate(`/clubRegister`);
+        navigate(ROUTE.CLUB_REGISTER);
       } else {
-        navigate(`/memberRegister`);
+        navigate(ROUTE.MEMBER_REGISTER);
       }
     };
     checkMemberInfo();

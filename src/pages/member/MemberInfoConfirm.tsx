@@ -8,6 +8,7 @@ import Button from "@components/Button";
 import Subtitle from "@components/Subtitle";
 import Title2 from "@components/Title2";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
+import ROUTE from "@libs/constant/path";
 import { useLocation } from "react-router-dom";
 
 const MemberInfoConfirmPage = () => {
@@ -25,7 +26,7 @@ const MemberInfoConfirmPage = () => {
     };
     await postMemberInfo(postData);
 
-    navigate("/clubRegister");
+    navigate(ROUTE.CLUB_REGISTER);
   };
 
   return (

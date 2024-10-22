@@ -1,4 +1,5 @@
 import { useAuth } from "@contexts/AuthContext";
+import ROUTE from "@libs/constant/path";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -25,7 +26,7 @@ const LandingPage = () => {
           </button>
           <button
             className="w-[150px] h-[150px] rounded-[20px] shadow-md flex justify-center items-center bg-lightPrimary"
-            onClick={() => navigate("/clubList")}
+            onClick={() => navigate(ROUTE.CLUB_LIST)}
           >
             <span className="font-semiBold text-[2rem]">동아리 둘러보기</span>
           </button>
@@ -33,7 +34,7 @@ const LandingPage = () => {
       ) : (
         <button
           className="w-[150px] h-[150px] rounded-[20px] shadow-md flex justify-center items-center bg-lightPrimary"
-          onClick={() => navigate("/loginRegister")}
+          onClick={() => navigate(ROUTE.LOGIN_REGISTER)}
         >
           <span className="font-semiBold text-[2rem]">로그인하기</span>
         </button>

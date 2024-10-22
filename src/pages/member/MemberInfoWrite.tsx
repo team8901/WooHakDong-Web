@@ -6,6 +6,7 @@ import Input from "@components/Input";
 import Subtitle from "@components/Subtitle";
 import Title2 from "@components/Title2";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
+import ROUTE from "@libs/constant/path";
 import { useEffect, useState } from "react";
 
 const MemberInfoWritePage = () => {
@@ -56,7 +57,7 @@ const MemberInfoWritePage = () => {
       studentNumber,
       phoneNumber,
     };
-    navigate("/memberInfoConfirm", { state: data });
+    navigate(ROUTE.MEMBER_INFO_CONFIRM, { state: data });
   };
 
   return (
