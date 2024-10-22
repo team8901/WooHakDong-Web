@@ -4,8 +4,8 @@ import Subtitle from "@components/Subtitle";
 import Title1 from "@components/Title1";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useEffect, useState } from "react";
-import { getClubInfo } from "@api/club/getClubInfo";
 import ROUTE from "@libs/constant/path";
+import { getClubInfo } from "@libs/api/club";
 
 const ClubRegisterPage = () => {
   const navigate = usePrefixedNavigate();

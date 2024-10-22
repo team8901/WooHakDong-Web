@@ -1,4 +1,4 @@
-import { LoginData } from "@api/login/fetchLoginData";
+import { LoginData } from "types/auth";
 import { createContext, useContext, ReactNode, useReducer } from "react";
 
 type UserState = {

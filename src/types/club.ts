@@ -1,6 +1,8 @@
-import axiosInstance from "@api/axiosInstance";
+type ClubInfoProps = {
+  clubEnglishName: string;
+};
 
-export type ClubInfoResponseData = {
+type ClubInfoResponseData = {
   clubId: number;
   clubName: string;
   clubEnglishName: string;
@@ -15,7 +17,4 @@ type ClubsInfoResponseData = {
   result: ClubInfoResponseData[];
 };
 
-export const getClubsInfo = async () => {
-  const res = await axiosInstance.get<ClubsInfoResponseData>(`/v1/clubs`);
-  return res.data;
-};
+export type { ClubInfoProps, ClubInfoResponseData, ClubsInfoResponseData };

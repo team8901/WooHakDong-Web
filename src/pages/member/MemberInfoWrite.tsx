@@ -1,4 +1,3 @@
-import { getMemberInfo } from "@api/member/getMemberInfo";
 import AppBar from "@components/AppBar";
 import Body1 from "@components/Body1";
 import Button from "@components/Button";
@@ -6,6 +5,7 @@ import Input from "@components/Input";
 import Subtitle from "@components/Subtitle";
 import Title2 from "@components/Title2";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
+import { getMemberInfo } from "@libs/api/member";
 import ROUTE from "@libs/constant/path";
 import { useEffect, useState } from "react";
 

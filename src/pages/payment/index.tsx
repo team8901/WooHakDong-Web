@@ -1,12 +1,13 @@
-import { getClubInfo } from "@api/club/getClubInfo";
-import { getMemberInfo } from "@api/member/getMemberInfo";
-import { PortOneProps, postPortOne } from "@api/payment/postPortOne";
 import Button from "@components/Button";
 import PaymentMethodButton from "@pages/payment/components/PaymentMethodButton";
 import Title2 from "@components/Title2";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useEffect, useRef, useState } from "react";
 import ROUTE from "@libs/constant/path";
+import { getMemberInfo } from "@libs/api/member";
+import { getClubInfo } from "@libs/api/club";
+import { PortOneProps } from "types/payment";
+import { postPortOne } from "@libs/api/payment";
 
 const PaymentPage = () => {
   const navigate = usePrefixedNavigate();

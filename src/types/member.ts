@@ -1,4 +1,9 @@
-import axiosInstance from "@api/axiosInstance";
+type MemberInfoRequestData = {
+  memberPhoneNumber: string;
+  memberMajor: string;
+  memberStudentNumber: string;
+  memberGender: "MAN" | "WOMAN";
+};
 
 type MemberInfoResponseData = {
   memberName: string;
@@ -10,9 +15,4 @@ type MemberInfoResponseData = {
   memberGender: "MAN" | "WOMAN";
 };
 
-export const getMemberInfo = async () => {
-  const res = await axiosInstance.get<MemberInfoResponseData>(
-    `/v1/member/info`
-  );
-  return res.data;
-};
+export type { MemberInfoRequestData, MemberInfoResponseData };

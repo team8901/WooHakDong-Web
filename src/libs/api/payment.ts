@@ -1,36 +1,47 @@
-import { getGroupInfo } from "@api/group/getGroupInfo";
-import { postGroupJoin } from "@api/payment/postGroupJoin";
-import { postGroupJoinConfirm } from "@api/payment/postGroupJoinConfirm";
+import axiosInstance from "@libs/api/axiosInstance";
+import { getGroupInfo } from "@libs/api/group";
 import { IMPResponse } from "types/iamport";
+import {
+  GroupJoinConfirmProps,
+  GroupJoinConfirmRequestData,
+  GroupJoinProps,
+  GroupJoinRequestData,
+  GroupJoinResponseData,
+  PortOneProps,
+  PortOneRequestData,
+} from "types/payment";
 
-export type PortOneProps = {
-  clubId: number;
-  pg: string;
-  pay_method: string;
-  merchantUid: string;
-  name: string;
-  amount: number;
-  buyer_email: string;
-  buyer_name: string;
-  buyer_tel: string;
+const postGroupJoin = async ({
+  merchantUid,
+  groupId,
+}: Readonly<GroupJoinProps>) => {
+  const data: GroupJoinRequestData = { merchantUid };
+
+  const res = await axiosInstance.post<GroupJoinResponseData>(
+    `${import.meta.env.VITE_API_URL}/v1/groups/${groupId}/joins`,
+    data
+  );
+  const { orderId } = res.data;
+  return orderId;
 };
 
-type PortOneRequestData = {
-  pg: string;
-  pay_method: string;
-  merchant_uid: string;
-  name: string;
-  amount: number;
-  buyer_email: string;
-  buyer_name: string;
-  buyer_tel: string;
-  buyer_addr: string;
-  buyer_postcode: string;
+const postGroupJoinConfirm = async ({
+  merchantUid,
+  groupId,
+  impUid,
+  orderId,
+}: Readonly<GroupJoinConfirmProps>) => {
+  const data: GroupJoinConfirmRequestData = { merchantUid, impUid, orderId };
+
+  await axiosInstance.post(
+    `${import.meta.env.VITE_API_URL}/v1/groups/${groupId}/joins/confirms`,
+    data
+  );
 };
 
 window.IMP.init("imp06661826");
 
-export const postPortOne = async ({
+const postPortOne = async ({
   clubId,
   pg,
   pay_method,
@@ -78,3 +89,5 @@ export const postPortOne = async ({
     });
   });
 };
+
+export { postPortOne };

@@ -1,7 +1,22 @@
-import { LoginData } from "@api/login/fetchLoginData";
+import { LoginData } from "types/auth";
 import axios, { AxiosError } from "axios";
 
-export const refreshAccessToken = async () => {
+const fetchLoginData = async (accessToken: string) => {
+  try {
+    const res = await axios.post<LoginData>(
+      `${import.meta.env.VITE_API_URL}/v1/auth/login/social`,
+      {
+        accessToken,
+      }
+    );
+    console.log(`로그인 성공`, res);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const refreshAccessToken = async () => {
   try {
     const res = await axios.post<LoginData>(
       `${import.meta.env.VITE_API_URL}/v1/auth/refresh`,
@@ -27,3 +42,5 @@ export const refreshAccessToken = async () => {
     }
   }
 };
+
+export { fetchLoginData, refreshAccessToken };

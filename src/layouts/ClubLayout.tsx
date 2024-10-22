@@ -1,5 +1,5 @@
-import { getClubsInfo } from "@api/club/getClubsInfo";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
+import { getClubsInfo } from "@libs/api/club";
 import ROUTE from "@libs/constant/path";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";

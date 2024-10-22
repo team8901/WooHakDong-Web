@@ -1,15 +1,13 @@
-import {
-  MemberInfoRequestData,
-  postMemberInfo,
-} from "@api/member/postMemberInfo";
 import AppBar from "@components/AppBar";
 import Body1 from "@components/Body1";
 import Button from "@components/Button";
 import Subtitle from "@components/Subtitle";
 import Title2 from "@components/Title2";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
+import { postMemberInfo } from "@libs/api/member";
 import ROUTE from "@libs/constant/path";
 import { useLocation } from "react-router-dom";
+import { MemberInfoRequestData } from "types/member";
 
 const MemberInfoConfirmPage = () => {
   const navigate = usePrefixedNavigate();

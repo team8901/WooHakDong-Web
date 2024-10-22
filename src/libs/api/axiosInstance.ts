@@ -1,4 +1,4 @@
-import { refreshAccessToken } from "@api/login/refreshAccessToken";
+import { refreshAccessToken } from "@libs/api/auth";
 import axios, { AxiosRequestConfig } from "axios";
 
 const axiosInstance = axios.create();

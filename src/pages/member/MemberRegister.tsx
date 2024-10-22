@@ -3,8 +3,8 @@ import Button from "@components/Button";
 import Title2 from "@components/Title2";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useEffect } from "react";
-import { getMemberInfo } from "@api/member/getMemberInfo";
 import ROUTE from "@libs/constant/path";
+import { getMemberInfo } from "@libs/api/member";
 
 const MemberRegisterPage = () => {
   const navigate = usePrefixedNavigate();
