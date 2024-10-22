@@ -9,7 +9,7 @@ const ClubJoinNoticePage = () => {
   const navigate = usePrefixedNavigate();
 
   const handleButtonClick = () => {
-    navigate("/clubJoinInfoWrite");
+    navigate("/memberInfoWrite");
   };
 
   return (

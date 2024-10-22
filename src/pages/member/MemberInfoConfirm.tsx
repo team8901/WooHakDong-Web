@@ -10,7 +10,7 @@ import Title2 from "@components/Title2";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useLocation } from "react-router-dom";
 
-const ClubJoinInfoConfirmPage = () => {
+const MemberInfoConfirmPage = () => {
   const navigate = usePrefixedNavigate();
   const location = useLocation();
   const { school, email, name, gender, major, studentNumber, phoneNumber } =
@@ -76,4 +76,4 @@ const ClubJoinInfoConfirmPage = () => {
   );
 };
 
-export default ClubJoinInfoConfirmPage;
+export default MemberInfoConfirmPage;

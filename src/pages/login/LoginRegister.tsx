@@ -1,8 +1,8 @@
 import Body3 from "@components/Body3";
-import GoogleLoginButton from "@components/login/GoogleLoginButton";
 import Subtitle from "@components/Subtitle";
 import Title1 from "@components/Title1";
 import { invalidClubEnglishNames } from "@hooks/useAuthRedirect";
+import GoogleLoginButton from "@pages/login/components/GoogleLoginButton";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 

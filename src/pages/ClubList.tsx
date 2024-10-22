@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const HomePage = () => {
+const ClubListPage = () => {
   const navigate = useNavigate();
 
   return (
@@ -29,4 +29,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default ClubListPage;

@@ -8,7 +8,7 @@ import Title2 from "@components/Title2";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useEffect, useState } from "react";
 
-const ClubJoinInfoWritePage = () => {
+const MemberInfoWritePage = () => {
   const navigate = usePrefixedNavigate();
   const [school, setSchool] = useState("");
   const [email, setEmail] = useState("");
@@ -56,7 +56,7 @@ const ClubJoinInfoWritePage = () => {
       studentNumber,
       phoneNumber,
     };
-    navigate("/clubJoinInfoConfirm", { state: data });
+    navigate("/memberInfoConfirm", { state: data });
   };
 
   return (
@@ -143,4 +143,4 @@ const ClubJoinInfoWritePage = () => {
   );
 };
 
-export default ClubJoinInfoWritePage;
+export default MemberInfoWritePage;

@@ -5,12 +5,12 @@ import { useLocation } from "react-router-dom";
 
 export const invalidClubEnglishNames = [
   "",
-  "home",
+  "clubList",
   "loginRegister",
   "memberRegister",
   "clubJoinNotice",
-  "clubJoinInfoWrite",
-  "clubJoinInfoConfirm",
+  "memberInfoWrite",
+  "memberInfoConfirm",
   "clubRegister",
   "payment",
 ];
@@ -32,7 +32,7 @@ const useAuthRedirect = () => {
     }
 
     if (!isClubURL) {
-      navigate(`/home`);
+      navigate(`/clubList`);
       return;
     }
 

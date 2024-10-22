@@ -2,7 +2,7 @@ import { getClubInfo } from "@api/club/getClubInfo";
 import { getMemberInfo } from "@api/member/getMemberInfo";
 import { PortOneProps, postPortOne } from "@api/payment/postPortOne";
 import Button from "@components/Button";
-import PaymentMethodButton from "@components/payment/PaymentMethodButton";
+import PaymentMethodButton from "@pages/payment/components/PaymentMethodButton";
 import Title2 from "@components/Title2";
 import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
 import { useEffect, useRef, useState } from "react";

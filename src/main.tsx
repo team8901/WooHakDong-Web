@@ -2,17 +2,17 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 
-import LoginRegisterPage from "@pages/LoginRegister";
-import ClubJoinNoticePage from "@pages/ClubJoinNotice";
-import ClubJoinInfoWritePage from "@pages/ClubJoinInfoWrite";
-import ClubJoinInfoConfirmPage from "@pages/ClubJoinInfoConfirm";
-import PaymentPage from "@pages/Payment";
+import ClubJoinNoticePage from "@pages/club/ClubJoinNotice";
 import AuthWrapper from "wrapper/AuthWrapper";
-import HomePage from "@pages/Home";
 import { AuthProvider } from "@contexts/AuthContext";
-import ClubMemberHomePage from "@pages/ClubMemberHome";
-import MemberRegisterPage from "@pages/MemberRegister";
-import ClubRegisterPage from "@pages/ClubRegister";
+import ClubMemberHomePage from "@pages/club/ClubMemberHome";
+import ClubRegisterPage from "@pages/club/ClubRegister";
+import LoginRegisterPage from "@pages/login/LoginRegister";
+import MemberRegisterPage from "@pages/member/MemberRegister";
+import MemberInfoWritePage from "@pages/member/MemberInfoWrite";
+import MemberInfoConfirmPage from "@pages/member/MemberInfoConfirm";
+import PaymentPage from "@pages/payment";
+import ClubListPage from "@pages/ClubList";
 
 const router = createBrowserRouter([
   {
@@ -20,8 +20,8 @@ const router = createBrowserRouter([
     element: <AuthWrapper />,
   },
   {
-    path: "/home",
-    element: <HomePage />,
+    path: "/clubList",
+    element: <ClubListPage />,
   },
   {
     path: "/loginRegister",
@@ -45,12 +45,12 @@ const router = createBrowserRouter([
         element: <ClubJoinNoticePage />,
       },
       {
-        path: "clubJoinInfoWrite",
-        element: <ClubJoinInfoWritePage />,
+        path: "memberInfoWrite",
+        element: <MemberInfoWritePage />,
       },
       {
-        path: "clubJoinInfoConfirm",
-        element: <ClubJoinInfoConfirmPage />,
+        path: "memberInfoConfirm",
+        element: <MemberInfoConfirmPage />,
       },
       {
         path: "clubRegister",
