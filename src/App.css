@@ -13,7 +13,7 @@
 
 html {
   font-size: 62.5%;
-  font-family: "Pretendard-Regular", sans-serif;
+  font-family: 'Pretendard-Regular', sans-serif;
   display: flex;
   justify-content: center;
   background-color: rgb(245, 245, 245);
@@ -40,13 +40,13 @@ input:focus {
 }
 
 @font-face {
-  font-family: "Pretendard-Regular";
-  src: url("./assets/fonts/pretendard/Pretendard-Regular.otf");
+  font-family: 'Pretendard-Regular';
+  src: url('./assets/fonts/pretendard/Pretendard-Regular.otf');
 }
 
 @font-face {
-  font-family: "Pretendard-SemiBold";
-  src: url("./assets/fonts/pretendard/Pretendard-SemiBold.otf");
+  font-family: 'Pretendard-SemiBold';
+  src: url('./assets/fonts/pretendard/Pretendard-SemiBold.otf');
 }
 
 .masked-overflow {
@@ -97,7 +97,9 @@ The height is the full container height */
 
   /* Position the content gradient in the top left, and the 
 scroll gradient in the top right */
-  mask-position: 0 0, 100% 0;
+  mask-position:
+    0 0,
+    100% 0;
 
   /* We don't repeat our mask images */
   mask-repeat: no-repeat, no-repeat;

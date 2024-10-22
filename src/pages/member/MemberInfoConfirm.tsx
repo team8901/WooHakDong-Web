@@ -1,26 +1,25 @@
-import AppBar from "@components/AppBar";
-import Body1 from "@components/Body1";
-import Button from "@components/Button";
-import Subtitle from "@components/Subtitle";
-import Title2 from "@components/Title2";
-import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
-import { postMemberInfo } from "@libs/api/member";
-import ROUTE from "@libs/constant/path";
-import { useLocation } from "react-router-dom";
-import { MemberInfoRequestData } from "types/member";
+import AppBar from '@components/AppBar';
+import Body1 from '@components/Body1';
+import Button from '@components/Button';
+import Subtitle from '@components/Subtitle';
+import Title2 from '@components/Title2';
+import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import { postMemberInfo } from '@libs/api/member';
+import ROUTE from '@libs/constant/path';
+import { useLocation } from 'react-router-dom';
+import { MemberInfoRequestData } from 'types/member';
 
 const MemberInfoConfirmPage = () => {
   const navigate = usePrefixedNavigate();
   const location = useLocation();
-  const { school, email, name, gender, major, studentNumber, phoneNumber } =
-    location.state;
+  const { school, email, name, gender, major, studentNumber, phoneNumber } = location.state;
 
   const handleButtonClick = async () => {
     const postData: MemberInfoRequestData = {
       memberPhoneNumber: phoneNumber,
       memberMajor: major,
       memberStudentNumber: studentNumber,
-      memberGender: gender === "남성" ? "MAN" : "WOMAN",
+      memberGender: gender === '남성' ? 'MAN' : 'WOMAN',
     };
     await postMemberInfo(postData);
 
@@ -28,12 +27,12 @@ const MemberInfoConfirmPage = () => {
   };
 
   return (
-    <div className="h-full pt-[56px] pb-[100px] px-[20px] relative">
-      <div className="absolute top-0 left-0">
+    <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
+      <div className="absolute left-0 top-0">
         <AppBar />
       </div>
 
-      <div className="h-full flex flex-col gap-[40px] pt-[20px] scrollbar-hide masked-overflow">
+      <div className="masked-overflow flex h-full flex-col gap-[40px] pt-[20px] scrollbar-hide">
         <Title2 text="회원님의 정보가 맞으신가요?" />
 
         <div className="flex flex-col gap-[20px]">
@@ -68,7 +67,7 @@ const MemberInfoConfirmPage = () => {
         </div>
       </div>
 
-      <div className="w-full absolute bottom-[20px] left-0 px-[20px]">
+      <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button text="맞아요" onClick={handleButtonClick} />
       </div>
     </div>

@@ -1,10 +1,10 @@
-import ROUTE from "@libs/constant/path";
-import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router";
+import ROUTE from '@libs/constant/path';
+import { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router';
 
 const NotAuthLayout = () => {
   const navigate = useNavigate();
-  const isAuth = !!localStorage.getItem("accessToken");
+  const isAuth = !!localStorage.getItem('accessToken');
 
   useEffect(() => {
     if (isAuth) navigate(ROUTE.ROOT);

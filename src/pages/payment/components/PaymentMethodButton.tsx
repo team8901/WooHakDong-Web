@@ -4,15 +4,11 @@ type PaymentMethodButtonProps = {
   className?: string;
 };
 
-const PaymentMethodButton = ({
-  onClick,
-  icon,
-  className,
-}: Readonly<PaymentMethodButtonProps>) => {
+const PaymentMethodButton = ({ onClick, icon, className }: Readonly<PaymentMethodButtonProps>) => {
   return (
     <button
       onClick={onClick}
-      className={`h-[56px] border border-lightGray rounded-[8px] flex justify-center items-center ${className}`}
+      className={`flex h-[56px] items-center justify-center rounded-[8px] border border-lightGray ${className}`}
     >
       {icon}
     </button>

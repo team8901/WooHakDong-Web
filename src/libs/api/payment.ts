@@ -1,6 +1,6 @@
-import axiosInstance from "@libs/api/axiosInstance";
-import { getGroupInfo } from "@libs/api/group";
-import { IMPResponse } from "types/iamport";
+import axiosInstance from '@libs/api/axiosInstance';
+import { getGroupInfo } from '@libs/api/group';
+import { IMPResponse } from 'types/iamport';
 import {
   GroupJoinConfirmProps,
   GroupJoinConfirmRequestData,
@@ -9,37 +9,26 @@ import {
   GroupJoinResponseData,
   PortOneProps,
   PortOneRequestData,
-} from "types/payment";
+} from 'types/payment';
 
-const postGroupJoin = async ({
-  merchantUid,
-  groupId,
-}: Readonly<GroupJoinProps>) => {
+const postGroupJoin = async ({ merchantUid, groupId }: Readonly<GroupJoinProps>) => {
   const data: GroupJoinRequestData = { merchantUid };
 
   const res = await axiosInstance.post<GroupJoinResponseData>(
     `${import.meta.env.VITE_API_URL}/v1/groups/${groupId}/joins`,
-    data
+    data,
   );
   const { orderId } = res.data;
   return orderId;
 };
 
-const postGroupJoinConfirm = async ({
-  merchantUid,
-  groupId,
-  impUid,
-  orderId,
-}: Readonly<GroupJoinConfirmProps>) => {
+const postGroupJoinConfirm = async ({ merchantUid, groupId, impUid, orderId }: Readonly<GroupJoinConfirmProps>) => {
   const data: GroupJoinConfirmRequestData = { merchantUid, impUid, orderId };
 
-  await axiosInstance.post(
-    `${import.meta.env.VITE_API_URL}/v1/groups/${groupId}/joins/confirms`,
-    data
-  );
+  await axiosInstance.post(`${import.meta.env.VITE_API_URL}/v1/groups/${groupId}/joins/confirms`, data);
 };
 
-window.IMP.init("imp06661826");
+window.IMP.init('imp06661826');
 
 const postPortOne = async ({
   clubId,
@@ -62,8 +51,8 @@ const postPortOne = async ({
       buyer_email, // memberEmail
       buyer_name, // memberName
       buyer_tel, // memberPhoneNumber
-      buyer_addr: "", // 생략
-      buyer_postcode: "", // 생략
+      buyer_addr: '', // 생략
+      buyer_postcode: '', // 생략
     };
     window.IMP.request_pay(data, async (response: IMPResponse) => {
       // console.log(response);
@@ -77,14 +66,14 @@ const postPortOne = async ({
       }
       const impUid = response.imp_uid;
       const { groupId } = await getGroupInfo({ clubId });
-      console.log("groupId", groupId);
+      console.log('groupId', groupId);
       const orderId = await postGroupJoin({ merchantUid, groupId });
       // console.log(merchantUid, orderId);
       if (orderId) {
         await postGroupJoinConfirm({ merchantUid, groupId, impUid, orderId });
-        resolve("동아리 가입이 완료되었습니다.");
+        resolve('동아리 가입이 완료되었습니다.');
       } else {
-        reject(new Error("orderId를 받아오는 데 실패했습니다."));
+        reject(new Error('orderId를 받아오는 데 실패했습니다.'));
       }
     });
   });

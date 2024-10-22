@@ -1,10 +1,10 @@
-import AppBar from "@components/AppBar";
-import Body2 from "@components/Body2";
-import Button from "@components/Button";
-import Subtitle from "@components/Subtitle";
-import Title2 from "@components/Title2";
-import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
-import ROUTE from "@libs/constant/path";
+import AppBar from '@components/AppBar';
+import Body2 from '@components/Body2';
+import Button from '@components/Button';
+import Subtitle from '@components/Subtitle';
+import Title2 from '@components/Title2';
+import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import ROUTE from '@libs/constant/path';
 
 const ClubJoinNoticePage = () => {
   const navigate = usePrefixedNavigate();
@@ -14,12 +14,12 @@ const ClubJoinNoticePage = () => {
   };
 
   return (
-    <div className="h-full pt-[56px] pb-[100px] px-[20px] relative">
-      <div className="absolute top-0 left-0">
+    <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
+      <div className="absolute left-0 top-0">
         <AppBar />
       </div>
 
-      <div className="h-full flex flex-col gap-[40px] pt-[20px] scrollbar-hide masked-overflow">
+      <div className="masked-overflow flex h-full flex-col gap-[40px] pt-[20px] scrollbar-hide">
         <div>
           <Title2 text="가입 신청 전에 " />
           <Title2 text="알아야 할 사항" className="text-primary" />
@@ -42,10 +42,7 @@ const ClubJoinNoticePage = () => {
           </div>
           <div className="flex flex-col gap-[4px]">
             <Subtitle text="동아리 물품 대여" />
-            <Body2
-              text="동아리 공용 물품을 쉽게 대여해서 사용할 수 있어요."
-              className="text-justify"
-            />
+            <Body2 text="동아리 공용 물품을 쉽게 대여해서 사용할 수 있어요." className="text-justify" />
           </div>
           <div className="flex flex-col gap-[4px]">
             <Subtitle text="동아리 회비 사용 내역 열람" />
@@ -64,7 +61,7 @@ const ClubJoinNoticePage = () => {
         </div>
       </div>
 
-      <div className="w-full absolute bottom-[20px] left-0 px-[20px]">
+      <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button text="다 읽었어요" onClick={handleButtonClick} />
       </div>
     </div>

@@ -2,7 +2,7 @@ type MemberInfoRequestData = {
   memberPhoneNumber: string;
   memberMajor: string;
   memberStudentNumber: string;
-  memberGender: "MAN" | "WOMAN";
+  memberGender: 'MAN' | 'WOMAN';
 };
 
 type MemberInfoResponseData = {
@@ -12,7 +12,7 @@ type MemberInfoResponseData = {
   memberSchool: string;
   memberMajor: string;
   memberStudentNumber: string;
-  memberGender: "MAN" | "WOMAN";
+  memberGender: 'MAN' | 'WOMAN';
 };
 
 export type { MemberInfoRequestData, MemberInfoResponseData };

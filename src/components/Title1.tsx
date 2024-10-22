@@ -5,11 +5,7 @@ export type TextProps = {
 
 const Title1 = ({ text, className }: Readonly<TextProps>) => {
   return (
-    <span
-      className={`text-[2.4rem] leading-[3.2rem] font-semiBold whitespace-pre-wrap ${className}`}
-    >
-      {text}
-    </span>
+    <span className={`whitespace-pre-wrap font-semiBold text-[2.4rem] leading-[3.2rem] ${className}`}>{text}</span>
   );
 };
 

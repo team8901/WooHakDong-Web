@@ -1,10 +1,8 @@
-import axiosInstance from "@libs/api/axiosInstance";
-import { MemberInfoRequestData, MemberInfoResponseData } from "types/member";
+import axiosInstance from '@libs/api/axiosInstance';
+import { MemberInfoRequestData, MemberInfoResponseData } from 'types/member';
 
 const getMemberInfo = async () => {
-  const res = await axiosInstance.get<MemberInfoResponseData>(
-    `/v1/member/info`
-  );
+  const res = await axiosInstance.get<MemberInfoResponseData>(`/v1/member/info`);
   return res.data;
 };
 

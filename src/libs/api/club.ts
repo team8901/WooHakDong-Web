@@ -1,14 +1,8 @@
-import axiosInstance from "@libs/api/axiosInstance";
-import {
-  ClubInfoProps,
-  ClubInfoResponseData,
-  ClubsInfoResponseData,
-} from "types/club";
+import axiosInstance from '@libs/api/axiosInstance';
+import { ClubInfoProps, ClubInfoResponseData, ClubsInfoResponseData } from 'types/club';
 
 const getClubInfo = async ({ clubEnglishName }: Readonly<ClubInfoProps>) => {
-  const res = await axiosInstance.get<ClubInfoResponseData>(
-    `/v1/clubs/search?clubEnglishName=${clubEnglishName}`
-  );
+  const res = await axiosInstance.get<ClubInfoResponseData>(`/v1/clubs/search?clubEnglishName=${clubEnglishName}`);
   return res.data;
 };
 

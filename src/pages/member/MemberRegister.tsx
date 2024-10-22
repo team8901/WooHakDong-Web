@@ -1,10 +1,10 @@
-import AppBar from "@components/AppBar";
-import Button from "@components/Button";
-import Title2 from "@components/Title2";
-import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
-import { useEffect } from "react";
-import ROUTE from "@libs/constant/path";
-import { getMemberInfo } from "@libs/api/member";
+import AppBar from '@components/AppBar';
+import Button from '@components/Button';
+import Title2 from '@components/Title2';
+import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import { useEffect } from 'react';
+import ROUTE from '@libs/constant/path';
+import { getMemberInfo } from '@libs/api/member';
 
 const MemberRegisterPage = () => {
   const navigate = usePrefixedNavigate();
@@ -26,8 +26,8 @@ const MemberRegisterPage = () => {
   }, []);
 
   return (
-    <div className="h-full pt-[116px] pb-[100px] px-[20px] relative">
-      <div className="absolute top-0 left-0">
+    <div className="relative h-full px-[20px] pb-[100px] pt-[116px]">
+      <div className="absolute left-0 top-0">
         <AppBar />
       </div>
 
@@ -39,7 +39,7 @@ const MemberRegisterPage = () => {
         </div>
       </div>
 
-      <div className="w-full absolute bottom-[20px] left-0 px-[20px]">
+      <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button text="우학동 가입하기" onClick={handleButtonClick} />
       </div>
     </div>

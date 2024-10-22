@@ -1,25 +1,25 @@
-import Body1 from "@components/Body1";
-import Button from "@components/Button";
-import Subtitle from "@components/Subtitle";
-import Title1 from "@components/Title1";
-import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
-import { useEffect, useState } from "react";
-import ROUTE from "@libs/constant/path";
-import { getClubInfo } from "@libs/api/club";
+import Body1 from '@components/Body1';
+import Button from '@components/Button';
+import Subtitle from '@components/Subtitle';
+import Title1 from '@components/Title1';
+import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import { useEffect, useState } from 'react';
+import ROUTE from '@libs/constant/path';
+import { getClubInfo } from '@libs/api/club';
 
 const ClubRegisterPage = () => {
   const navigate = usePrefixedNavigate();
-  const [clubName, setClubName] = useState("");
+  const [clubName, setClubName] = useState('');
   const [clubDues, setClubDues] = useState(0);
-  const [clubDescription, setClubDescription] = useState("");
-  const [clubRoom, setClubRoom] = useState("");
+  const [clubDescription, setClubDescription] = useState('');
+  const [clubRoom, setClubRoom] = useState('');
 
   const handleButtonClick = () => {
     navigate(ROUTE.PAYMENT);
   };
 
   useEffect(() => {
-    const clubEnglishName = location.pathname.split("/")[1];
+    const clubEnglishName = location.pathname.split('/')[1];
     // setClubName(clubEnglishName);
     // setClubDues(20000);
     // setClubDescription(
@@ -28,10 +28,9 @@ const ClubRegisterPage = () => {
     // setClubRoom("구학생회관 234호");
 
     const checkClub = async () => {
-      const { clubName, clubDues, clubDescription, clubRoom } =
-        await getClubInfo({
-          clubEnglishName,
-        });
+      const { clubName, clubDues, clubDescription, clubRoom } = await getClubInfo({
+        clubEnglishName,
+      });
       setClubName(clubName);
       setClubDues(clubDues);
       setClubDescription(clubDescription);
@@ -41,36 +40,33 @@ const ClubRegisterPage = () => {
   }, []);
 
   return (
-    <div className="h-full pt-[56px] pb-[100px] px-[20px] relative">
-      <div className="h-full flex flex-col gap-[40px] pt-[20px] scrollbar-hide masked-overflow">
-        <Title1
-          text={`이제 ${clubName}에 가입할 수 있어요! 🥳`}
-          className="text-primary"
-        />
+    <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
+      <div className="masked-overflow flex h-full flex-col gap-[40px] pt-[20px] scrollbar-hide">
+        <Title1 text={`이제 ${clubName}에 가입할 수 있어요! 🥳`} className="text-primary" />
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[8px]">
             <Subtitle text="동아리 회비" />
-            <div className="py-[14px] px-[16px] rounded-[14px] border border-lightGray">
+            <div className="rounded-[14px] border border-lightGray px-[16px] py-[14px]">
               <Body1 text={`${clubDues.toLocaleString()}원`} />
             </div>
           </div>
           <div className="flex flex-col gap-[8px]">
             <Subtitle text="동아리 설명" />
-            <div className="py-[14px] px-[16px] rounded-[14px] border border-lightGray text-justify">
+            <div className="rounded-[14px] border border-lightGray px-[16px] py-[14px] text-justify">
               <Body1 text={clubDescription} />
             </div>
           </div>
           <div className="flex flex-col gap-[8px]">
             <Subtitle text="동아리 방" />
-            <div className="py-[14px] px-[16px] rounded-[14px] border border-lightGray">
+            <div className="rounded-[14px] border border-lightGray px-[16px] py-[14px]">
               <Body1 text={clubRoom} />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="w-full absolute bottom-[20px] left-0 px-[20px]">
+      <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button text="회비 납부하기" onClick={handleButtonClick} />
       </div>
     </div>

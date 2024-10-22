@@ -1,13 +1,11 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode } from 'react';
 
 interface DrawerContextProps {
   open: boolean;
   toggleDrawer: () => void;
 }
 
-const DrawerContext = createContext<DrawerContextProps>(
-  {} as DrawerContextProps
-);
+const DrawerContext = createContext<DrawerContextProps>({} as DrawerContextProps);
 
 export const useDrawer = () => {
   return useContext(DrawerContext);
@@ -19,9 +17,5 @@ export const DrawerProvider = ({ children }: { children: ReactNode }) => {
     setOpen(!open);
   };
 
-  return (
-    <DrawerContext.Provider value={{ open, toggleDrawer }}>
-      {children}
-    </DrawerContext.Provider>
-  );
+  return <DrawerContext.Provider value={{ open, toggleDrawer }}>{children}</DrawerContext.Provider>;
 };

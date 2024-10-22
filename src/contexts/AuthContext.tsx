@@ -1,5 +1,5 @@
-import { LoginData } from "types/auth";
-import { createContext, useContext, ReactNode, useReducer } from "react";
+import { LoginData } from 'types/auth';
+import { createContext, useContext, ReactNode, useReducer } from 'react';
 
 type UserState = {
   memberEmail: string;
@@ -12,7 +12,7 @@ interface AuthContextProps {
   logout: () => void;
 }
 
-type UserAction = { type: "LOGIN"; user: UserState } | { type: "LOGOUT" };
+type UserAction = { type: 'LOGIN'; user: UserState } | { type: 'LOGOUT' };
 
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
@@ -20,9 +20,9 @@ const initialUserState: UserState | null = null;
 
 const userReducer = (state: UserState | null, action: UserAction) => {
   switch (action.type) {
-    case "LOGIN":
+    case 'LOGIN':
       return { ...action.user };
-    case "LOGOUT":
+    case 'LOGOUT':
       return initialUserState;
     default:
       return state;
@@ -39,20 +39,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = (loginData: LoginData) => {
     const { accessToken, refreshToken } = loginData;
     // const newUser = { memberEmail, memberName };
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
     // dispatch({ type: "LOGIN", user: newUser });
   };
 
   const logout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    dispatch({ type: "LOGOUT" });
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    dispatch({ type: 'LOGOUT' });
   };
 
-  return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
 };

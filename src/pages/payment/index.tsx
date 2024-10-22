@@ -1,36 +1,35 @@
-import Button from "@components/Button";
-import PaymentMethodButton from "@pages/payment/components/PaymentMethodButton";
-import Title2 from "@components/Title2";
-import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
-import { useEffect, useRef, useState } from "react";
-import ROUTE from "@libs/constant/path";
-import { getMemberInfo } from "@libs/api/member";
-import { getClubInfo } from "@libs/api/club";
-import { PortOneProps } from "types/payment";
-import { postPortOne } from "@libs/api/payment";
-import KakaoPayIcon from "assets/images/payment/kakaoPayIcon";
-import TossPayIcon from "assets/images/payment/TossPayIcon";
+import Button from '@components/Button';
+import PaymentMethodButton from '@pages/payment/components/PaymentMethodButton';
+import Title2 from '@components/Title2';
+import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import { useEffect, useRef, useState } from 'react';
+import ROUTE from '@libs/constant/path';
+import { getMemberInfo } from '@libs/api/member';
+import { getClubInfo } from '@libs/api/club';
+import { PortOneProps } from 'types/payment';
+import { postPortOne } from '@libs/api/payment';
+import KakaoPayIcon from 'assets/images/payment/kakaoPayIcon';
+import TossPayIcon from 'assets/images/payment/TossPayIcon';
 
 const PaymentPage = () => {
   const navigate = usePrefixedNavigate();
   // 결제 버튼 인덱스를 저장하는 상태
   const [paymentButtonIndex, setPaymentButtonIndex] = useState(0);
   const [clubId, setClubId] = useState(0);
-  const [clubName, setClubName] = useState("");
+  const [clubName, setClubName] = useState('');
   const [clubDues, setClubDues] = useState(0);
-  const [memberEmail, setMemberEmail] = useState("");
-  const [memberName, setMemberName] = useState("");
-  const [memberPhoneNumber, setMemberPhoneNumber] = useState("");
-  const merchantUid = useRef("");
+  const [memberEmail, setMemberEmail] = useState('');
+  const [memberName, setMemberName] = useState('');
+  const [memberPhoneNumber, setMemberPhoneNumber] = useState('');
+  const merchantUid = useRef('');
 
   useEffect(() => {
     merchantUid.current = `payment-${crypto.randomUUID()}`.slice(0, 40);
-    console.log("merchantUid.current", merchantUid.current);
+    console.log('merchantUid.current', merchantUid.current);
 
     const getData = async () => {
-      const { memberEmail, memberName, memberPhoneNumber } =
-        await getMemberInfo();
-      const clubEnglishName = location.pathname.split("/")[1];
+      const { memberEmail, memberName, memberPhoneNumber } = await getMemberInfo();
+      const clubEnglishName = location.pathname.split('/')[1];
       const { clubName, clubId, clubDues } = await getClubInfo({
         clubEnglishName,
       });
@@ -47,12 +46,12 @@ const PaymentPage = () => {
   }, []);
 
   const handlePostPortOne = async (pg: string) => {
-    const pay_method = "card";
+    const pay_method = 'card';
     const name = `${clubName} 동아리원 등록하기`;
     const amount = clubDues;
-    const buyer_email = memberEmail || "8901test@test.com";
-    const buyer_name = memberName || "박박준";
-    const buyer_tel = memberPhoneNumber || "010-4242-4242";
+    const buyer_email = memberEmail || '8901test@test.com';
+    const buyer_name = memberName || '박박준';
+    const buyer_tel = memberPhoneNumber || '010-4242-4242';
 
     const data: PortOneProps = {
       clubId,
@@ -104,24 +103,22 @@ const PaymentPage = () => {
   ];
 
   return (
-    <div className="h-full pt-[56px] pb-[100px] px-[20px] relative">
-      <div className="h-full flex flex-col gap-[40px] pt-[20px] scrollbar-hide masked-overflow">
+    <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
+      <div className="masked-overflow flex h-full flex-col gap-[40px] pt-[20px] scrollbar-hide">
         <Title2 text="결제 방법을 선택해주세요" />
-        <div className="grid grid-cols-2 gap-[20px] flex-wrap justify-center">
+        <div className="grid grid-cols-2 flex-wrap justify-center gap-[20px]">
           {paymentMethods.map((method) => (
             <PaymentMethodButton
               key={method.id}
               onClick={() => handlePaymentMethodButtonClick(method.id)}
               icon={method.icon}
-              className={`${
-                paymentButtonIndex === method.id ? "border-primary" : ""
-              }`}
+              className={`${paymentButtonIndex === method.id ? 'border-primary' : ''}`}
             />
           ))}
         </div>
       </div>
 
-      <div className="w-full absolute bottom-[20px] left-0 px-[20px]">
+      <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button text="결제하기" onClick={handleButtonClick} />
       </div>
     </div>

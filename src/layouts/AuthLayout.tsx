@@ -1,11 +1,11 @@
-import usePrefixedNavigate from "@hooks/usePrefixedNavigate";
-import ROUTE from "@libs/constant/path";
-import { useEffect } from "react";
-import { Outlet } from "react-router";
+import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import ROUTE from '@libs/constant/path';
+import { useEffect } from 'react';
+import { Outlet } from 'react-router';
 
 const AuthLayout = () => {
   const navigate = usePrefixedNavigate();
-  const isAuth = !!localStorage.getItem("accessToken");
+  const isAuth = !!localStorage.getItem('accessToken');
 
   useEffect(() => {
     if (!isAuth) navigate(ROUTE.LOGIN_REGISTER);
