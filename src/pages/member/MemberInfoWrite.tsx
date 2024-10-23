@@ -42,7 +42,14 @@ const MemberInfoWritePage = () => {
   };
 
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhoneNumber(e.target.value);
+    const input = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+    setPhoneNumber(input);
+  };
+
+  const formatPhoneNumber = (number: string) => {
+    if (number.length <= 3) return number;
+    if (number.length <= 7) return `${number.slice(0, 3)}-${number.slice(3)}`;
+    return `${number.slice(0, 3)}-${number.slice(3, 7)}-${number.slice(7)}`;
   };
 
   const handleButtonClick = () => {
@@ -94,11 +101,10 @@ const MemberInfoWritePage = () => {
             </div>
           </div>
           <Input
-            type="number"
             inputMode="numeric"
             label="휴대폰 번호"
             placeholder="휴대폰 번호를 '-' 없이 입력해 주세요"
-            value={phoneNumber}
+            value={formatPhoneNumber(phoneNumber)}
             onChange={handlePhoneNumberChange}
           />
           <div className="flex flex-col">
@@ -109,7 +115,7 @@ const MemberInfoWritePage = () => {
             <Subtitle text="학교" />
             <Body1 text={school} className="border-b border-lightGray py-[9px]" />
           </div>
-          <Input type="text" label="학과" placeholder="소프트웨어학과" value={major} onChange={handleMajorChange} />
+          <Input label="학과" placeholder="소프트웨어학과" value={major} onChange={handleMajorChange} />
           <Input
             type="number"
             inputMode="numeric"

@@ -1,16 +1,24 @@
 import Subtitle from '@components/Subtitle';
 
 type InputProps = {
-  type: string;
   label: string;
   placeholder: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
+  type?: 'text' | 'number';
   inputMode?: 'text' | 'numeric';
 };
 
-const Input = ({ type, label, placeholder, value, onChange, className, inputMode = 'text' }: Readonly<InputProps>) => {
+const Input = ({
+  type = 'text',
+  label,
+  placeholder,
+  value,
+  onChange,
+  className,
+  inputMode = 'text',
+}: Readonly<InputProps>) => {
   return (
     <div className="flex flex-col">
       {value && <Subtitle text={label} />}
