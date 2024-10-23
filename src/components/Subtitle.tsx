@@ -1,20 +1,7 @@
-type SubtitleProps = {
-  text: string | string[];
-};
+import { TextProps } from '@components/Title1';
 
-const Subtitle = ({ text }: Readonly<SubtitleProps>) => {
-  if (Array.isArray(text)) {
-    return (
-      <div className="flex flex-col">
-        {text.map((line, index) => (
-          <span key={index} className="text-darkGray text-[1.2rem]">
-            {line}
-          </span>
-        ))}
-      </div>
-    );
-  }
-  return <span className="text-darkGray text-[1.2rem]">{text}</span>;
+const Subtitle = ({ text, className }: Readonly<TextProps>) => {
+  return <span className={`text-[1.2rem] leading-[1.6rem] text-darkGray ${className}`}>{text}</span>;
 };
 
 export default Subtitle;

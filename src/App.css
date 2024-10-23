@@ -13,11 +13,11 @@
 
 html {
   font-size: 62.5%;
-  font-family: "Pretendard-Regular", sans-serif;
+  font-family: 'Pretendard-Regular', sans-serif;
   display: flex;
   justify-content: center;
   background-color: rgb(245, 245, 245);
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 body {
@@ -27,7 +27,7 @@ body {
   min-width: 350px;
   background-color: white;
   position: relative;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   color: var(--color-black);
 }
 
@@ -39,14 +39,18 @@ input:focus {
   outline: none;
 }
 
-@font-face {
-  font-family: "Pretendard-Regular";
-  src: url("/assets/fonts/pretendard/Pretendard-Regular.otf");
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }
 
 @font-face {
-  font-family: "Pretendard-SemiBold";
-  src: url("/assets/fonts/pretendard/Pretendard-SemiBold.otf");
+  font-family: 'Pretendard-Regular';
+  src: url('./assets/fonts/pretendard/Pretendard-Regular.otf');
+}
+
+@font-face {
+  font-family: 'Pretendard-SemiBold';
+  src: url('./assets/fonts/pretendard/Pretendard-SemiBold.otf');
 }
 
 .masked-overflow {
@@ -97,7 +101,9 @@ The height is the full container height */
 
   /* Position the content gradient in the top left, and the 
 scroll gradient in the top right */
-  mask-position: 0 0, 100% 0;
+  mask-position:
+    0 0,
+    100% 0;
 
   /* We don't repeat our mask images */
   mask-repeat: no-repeat, no-repeat;

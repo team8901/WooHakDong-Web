@@ -1,33 +1,11 @@
-type TextSegment = {
+export type TextProps = {
   text: string;
-  color?: string;
+  className?: string;
 };
 
-export type LineProps = {
-  segments: TextSegment[];
-};
-
-type Title1Props = {
-  lines: LineProps[];
-};
-
-const Title1 = ({ lines }: Readonly<Title1Props>) => {
+const Title1 = ({ text, className }: Readonly<TextProps>) => {
   return (
-    <div className="flex flex-col">
-      {lines.map((line, lineIndex) => (
-        <div key={lineIndex} className="flex">
-          {line.segments.map((segment, segmentIndex) => (
-            <span
-              key={segmentIndex}
-              className="font-semiBold text-[2.4rem] leading-[3.2rem] whitespace-pre-wrap"
-              style={{ color: segment.color }}
-            >
-              {segment.text}
-            </span>
-          ))}
-        </div>
-      ))}
-    </div>
+    <span className={`whitespace-pre-wrap font-semiBold text-[2.4rem] leading-[3.2rem] ${className}`}>{text}</span>
   );
 };
 
