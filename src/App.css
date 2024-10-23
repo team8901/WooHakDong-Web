@@ -39,6 +39,10 @@ input:focus {
   outline: none;
 }
 
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
 @font-face {
   font-family: 'Pretendard-Regular';
   src: url('./assets/fonts/pretendard/Pretendard-Regular.otf');
