@@ -27,7 +27,11 @@
       "@components/*": ["components/*"],
       "@api/*": ["api/*"],
       "@config/*": ["config/*"],
-      "@contexts/*": ["contexts/*"]
+      "@contexts/*": ["contexts/*"],
+      "@hooks/*": ["hooks/*"],
+      "@layouts/*": ["layouts/*"],
+      "@libs/*": ["libs/*"],
+      "@assets/*": ["assets/*"]
     }
   },
   "include": ["src"]
