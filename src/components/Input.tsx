@@ -1,3 +1,5 @@
+import Subtitle from '@components/Subtitle';
+
 type InputProps = {
   placeholder: string;
   value: string;
@@ -7,12 +9,19 @@ type InputProps = {
 
 const Input = ({ placeholder, value, onChange, className }: Readonly<InputProps>) => {
   return (
-    <input
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      className={`border-b border-lightGray py-[9px] placeholder:font-semiBold placeholder:text-gray ${className}`}
-    />
+    <>
+      {
+        <div className="flex flex-col">
+          {value && <Subtitle text={placeholder} />}
+          <input
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            className={`border-b border-lightGray py-[9px] font-semiBold leading-[2.2rem] placeholder:font-semiBold placeholder:text-gray ${className}`}
+          />
+        </div>
+      }
+    </>
   );
 };
 
