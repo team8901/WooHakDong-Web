@@ -93,7 +93,12 @@ const MemberInfoWritePage = () => {
               </button>
             </div>
           </div>
-          <Input placeholder="휴대폰 번호" value={phoneNumber} onChange={handlePhoneNumberChange} />
+          <Input
+            label="휴대폰 번호"
+            placeholder="휴대폰 번호를 '-' 없이 입력해 주세요"
+            value={phoneNumber}
+            onChange={handlePhoneNumberChange}
+          />
           <div className="flex flex-col">
             <Subtitle text="이메일 주소" />
             <Body1 text={email} className="border-b border-lightGray py-[9px]" />
@@ -102,8 +107,8 @@ const MemberInfoWritePage = () => {
             <Subtitle text="학교" />
             <Body1 text={school} className="border-b border-lightGray py-[9px]" />
           </div>
-          <Input placeholder="학과" value={major} onChange={handleMajorChange} />
-          <Input placeholder="학번" value={studentNumber} onChange={handleStudentNumberChange} />
+          <Input label="학과" placeholder="소프트웨어학과" value={major} onChange={handleMajorChange} />
+          <Input label="학번" placeholder="202412345" value={studentNumber} onChange={handleStudentNumberChange} />
         </div>
       </div>
 

@@ -1,18 +1,19 @@
 import Subtitle from '@components/Subtitle';
 
 type InputProps = {
+  label: string;
   placeholder: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
 };
 
-const Input = ({ placeholder, value, onChange, className }: Readonly<InputProps>) => {
+const Input = ({ label, placeholder, value, onChange, className }: Readonly<InputProps>) => {
   return (
     <>
       {
         <div className="flex flex-col">
-          {value && <Subtitle text={placeholder} />}
+          {value && <Subtitle text={label} />}
           <input
             placeholder={placeholder}
             value={value}
