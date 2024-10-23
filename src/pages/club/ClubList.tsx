@@ -4,7 +4,7 @@ const ClubListPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex h-[100vh] flex-col items-center justify-center gap-[40px]">
+    <div className="flex h-full flex-col items-center justify-center gap-[40px]">
       <h1 className="font-semiBold text-[2.4rem]">우학동에 오신 걸 환영합니다.</h1>
       <div className="flex flex-col items-center gap-[10px]">
         <span>등록된 동아리 목록</span>

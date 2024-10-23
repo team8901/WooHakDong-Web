@@ -17,7 +17,7 @@ html {
   display: flex;
   justify-content: center;
   background-color: rgb(245, 245, 245);
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 body {
@@ -27,7 +27,7 @@ body {
   min-width: 350px;
   background-color: white;
   position: relative;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   color: var(--color-black);
 }
 

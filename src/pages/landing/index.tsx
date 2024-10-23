@@ -9,7 +9,7 @@ const LandingPage = () => {
   const { logout } = useAuth();
 
   return (
-    <div className="flex h-[100vh] flex-col items-center justify-center gap-[40px]">
+    <div className="flex h-full flex-col items-center justify-center gap-[40px]">
       <h1 className="font-semiBold text-[2.4rem]">안녕하세요. 우학동 랜딩페이지입니다.</h1>
       {isAuth ? (
         <div className="flex gap-4">
