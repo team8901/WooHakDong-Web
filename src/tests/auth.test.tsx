@@ -25,6 +25,7 @@ vi.mock('@libs/api/payment', () => ({
   postPortOne: vi.fn(),
 }));
 
+// US30, 32
 describe('동아리 회원은 우학동 서비스를 이용하기 위해 학교 이메일로 구글 로그인을 할 수 있다.', () => {
   beforeEach(() => {
     vi.clearAllMocks();
