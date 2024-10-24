@@ -6,9 +6,13 @@ vi.mock('@hooks/usePrefixedNavigate', () => ({
   default: () => vi.fn(),
 }));
 
-vi.mock('react-router-dom', () => ({
-  useNavigate: () => vi.fn(),
-}));
+vi.mock('react-router-dom', async () => {
+  const originalModule = await vi.importActual('react-router-dom');
+  return {
+    ...originalModule,
+    useNavigate: () => vi.fn(),
+  };
+});
 
 // US31
 describe('동아리 회원은 우학동 서비스를 이용하기 위해 자신의 인적사항(학교, 이메일, 이름, 성별, 학과, 학번, 휴대폰 번호)을 입력할 수 있다.', () => {
@@ -16,7 +20,7 @@ describe('동아리 회원은 우학동 서비스를 이용하기 위해 자신�
     vi.clearAllMocks();
   });
 
-  it('인적사항을 입력할 수 있다.', () => {
+  it('인적사항을 입력한다.', () => {
     render(<MemberInfoWritePage />);
 
     // fireEvent.change(screen.getByLabelText('이름'), { target: { value: '홍길동' } });
