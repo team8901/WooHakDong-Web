@@ -1,23 +1,23 @@
 import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
-import { getClubsInfo } from '@libs/api/club';
+import { getMemberInfo } from '@libs/api/member';
 import ROUTE from '@libs/constant/path';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
-const ClubLayout = () => {
+const NotMemberLayout = () => {
   const navigate = usePrefixedNavigate();
 
   useEffect(() => {
-    const checkClubs = async () => {
-      const { result } = await getClubsInfo();
-      if (result.length === 0) {
+    const checkMemberInfo = async () => {
+      const { memberPhoneNumber } = await getMemberInfo();
+      if (memberPhoneNumber) {
         navigate(ROUTE.CLUB_REGISTER);
       }
     };
-    checkClubs();
+    checkMemberInfo();
   }, []);
 
   return <Outlet />;
 };
 
-export default ClubLayout;
+export default NotMemberLayout;

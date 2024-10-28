@@ -28,6 +28,7 @@ const Input = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        aria-label={label}
         className={`border-b border-lightGray py-[9px] font-semiBold leading-[2.2rem] placeholder:font-semiBold placeholder:text-gray ${className}`}
       />
     </div>

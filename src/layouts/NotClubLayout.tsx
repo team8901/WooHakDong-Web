@@ -4,14 +4,14 @@ import ROUTE from '@libs/constant/path';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
-const ClubLayout = () => {
+const NotClubLayout = () => {
   const navigate = usePrefixedNavigate();
 
   useEffect(() => {
     const checkClubs = async () => {
       const { result } = await getClubsInfo();
-      if (result.length === 0) {
-        navigate(ROUTE.CLUB_REGISTER);
+      if (result.length > 0) {
+        navigate(ROUTE.ROOT);
       }
     };
     checkClubs();
@@ -20,4 +20,4 @@ const ClubLayout = () => {
   return <Outlet />;
 };
 
-export default ClubLayout;
+export default NotClubLayout;
