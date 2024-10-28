@@ -10,6 +10,7 @@ import { PortOneProps } from 'types/payment';
 import { postPortOne } from '@libs/api/payment';
 import KakaoPayIcon from '@assets/images/payment/KakaoPayIcon';
 import TossPayIcon from '@assets/images/payment/TossPayIcon';
+import { useParams } from 'react-router-dom';
 
 const PaymentPage = () => {
   const navigate = usePrefixedNavigate();
@@ -22,14 +23,16 @@ const PaymentPage = () => {
   const [memberName, setMemberName] = useState('');
   const [memberPhoneNumber, setMemberPhoneNumber] = useState('');
   const merchantUid = useRef('');
+  const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
 
   useEffect(() => {
+    if (!clubEnglishName) return;
+
     merchantUid.current = `payment-${crypto.randomUUID()}`.slice(0, 40);
     console.log('merchantUid.current', merchantUid.current);
 
     const getData = async () => {
       const { memberEmail, memberName, memberPhoneNumber } = await getMemberInfo();
-      const clubEnglishName = location.pathname.split('/')[1];
       const { clubName, clubId, clubDues } = await getClubInfo({
         clubEnglishName,
       });

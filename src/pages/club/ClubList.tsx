@@ -1,3 +1,4 @@
+import ROUTE from '@libs/constant/path';
 import { useNavigate } from 'react-router-dom';
 
 const ClubListPage = () => {
@@ -11,13 +12,13 @@ const ClubListPage = () => {
         <div className="grid grid-cols-2 gap-[20px]">
           <button
             className="flex h-[150px] w-[150px] items-center justify-center rounded-[20px] bg-lightPrimary shadow-md"
-            onClick={() => navigate('/doit')}
+            onClick={() => navigate(ROUTE.CLUB + '/doit')}
           >
             <span className="font-semiBold text-[2rem]">doit</span>
           </button>
           <button
             className="flex h-[150px] w-[150px] items-center justify-center rounded-[20px] bg-lightPrimary shadow-md"
-            onClick={() => navigate('/musicclub')}
+            onClick={() => navigate(ROUTE.CLUB + '/musicclub')}
           >
             <span className="font-semiBold text-[2rem]">음악동아리</span>
           </button>

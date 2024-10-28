@@ -1,3 +1,4 @@
+import ROUTE from '@libs/constant/path';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const usePrefixedNavigate = () => {
@@ -6,7 +7,7 @@ const usePrefixedNavigate = () => {
 
   const prefixedNavigate = (path: string, options?: { replace?: boolean; state?: any }) => {
     if (clubEnglishName) {
-      navigate(`/${clubEnglishName}${path}`, options);
+      navigate(`${ROUTE.CLUB}/${clubEnglishName}${path}`, options);
     } else {
       navigate(path, options);
     }

@@ -6,6 +6,7 @@ import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
 import { useEffect, useState } from 'react';
 import ROUTE from '@libs/constant/path';
 import { getClubInfo } from '@libs/api/club';
+import { useParams } from 'react-router-dom';
 
 const ClubRegisterPage = () => {
   const navigate = usePrefixedNavigate();
@@ -13,13 +14,14 @@ const ClubRegisterPage = () => {
   const [clubDues, setClubDues] = useState(0);
   const [clubDescription, setClubDescription] = useState('');
   const [clubRoom, setClubRoom] = useState('');
+  const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
 
   const handleButtonClick = () => {
     navigate(ROUTE.PAYMENT);
   };
 
   useEffect(() => {
-    const clubEnglishName = location.pathname.split('/')[1];
+    if (!clubEnglishName) return;
     // setClubName(clubEnglishName);
     // setClubDues(20000);
     // setClubDescription(
@@ -31,11 +33,13 @@ const ClubRegisterPage = () => {
       const { clubName, clubDues, clubDescription, clubRoom } = await getClubInfo({
         clubEnglishName,
       });
+
       setClubName(clubName);
       setClubDues(clubDues);
       setClubDescription(clubDescription);
       setClubRoom(clubRoom);
     };
+
     checkClub();
   }, []);
 

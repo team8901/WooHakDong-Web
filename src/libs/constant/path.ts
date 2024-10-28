@@ -8,6 +8,7 @@ const ROUTE = {
   CLUB_LIST: '/clubList',
   CLUB_JOIN_NOTICE: '/clubJoinNotice',
   PAYMENT: '/payment',
+  CLUB: '/clubs',
 };
 
 export default ROUTE;
