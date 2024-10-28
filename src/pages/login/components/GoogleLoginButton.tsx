@@ -4,7 +4,6 @@ import { auth } from '@config/firebaseConfig';
 import { useAuth } from '@contexts/AuthContext';
 import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
 import { fetchLoginData } from '@libs/api/auth';
-import { getClubsInfo } from '@libs/api/club';
 import ROUTE from '@libs/constant/path';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
@@ -25,15 +24,7 @@ const GoogleLoginButton = () => {
 
     login(loginData);
 
-    const checkClubs = async () => {
-      const { result } = await getClubsInfo();
-      if (result.length === 0) {
-        navigate(ROUTE.MEMBER_REGISTER);
-      } else {
-        navigate(ROUTE.ROOT);
-      }
-    };
-    checkClubs();
+    navigate(ROUTE.ROOT);
   };
 
   return (

@@ -25,12 +25,12 @@ export const Router = () => {
       {/* 인증된 사용자가 접근할 수 없는 페이지 */}
       <Route element={<NotAuthLayout />}>
         <Route path={ROUTE.LOGIN_REGISTER} element={<LoginRegisterPage />} />
-        <Route path={`/:clubEnglishName${ROUTE.LOGIN_REGISTER}`} element={<LoginRegisterPage />} />
+        <Route path={`${ROUTE.CLUB}/:clubEnglishName${ROUTE.LOGIN_REGISTER}`} element={<LoginRegisterPage />} />
       </Route>
       {/* 인증되지 않은 사용자가 접근할 수 없는 페이지 */}
       <Route element={<AuthLayout />}>
         <Route path={ROUTE.CLUB_LIST} element={<ClubListPage />} />
-        <Route path={ROUTE.CLUB + '/:clubEnglishName'}>
+        <Route path={`${ROUTE.CLUB}/:clubEnglishName`}>
           {/* 인적사항 등록한 사용자가 접근할 수 없는 페이지 */}
           <Route element={<NotMemberLayout />}>
             <Route path={ROUTE.MEMBER_REGISTER.slice(1)} element={<MemberRegisterPage />} />
