@@ -1,10 +1,12 @@
 import { getGroupInfo, postGroupJoin, postGroupJoinConfirm } from '@libs/api/group';
+import ROUTE from '@libs/constant/path';
 import { IMPResponse } from 'types/iamport';
 import { PortOneProps, PortOneRequestData } from 'types/payment';
 
 window.IMP.init('imp06661826');
 
 const postPortOne = async ({
+  clubEnglishName,
   clubId,
   pg,
   pay_method,
@@ -16,6 +18,8 @@ const postPortOne = async ({
   buyer_tel,
 }: Readonly<PortOneProps>) => {
   return new Promise((resolve, reject) => {
+    const m_redirect_url = `${import.meta.env.VITE_WEB_URL}${ROUTE.CLUB}/${clubEnglishName}${ROUTE.PAYMENT_REDIRECT}?clubId=${clubId}`;
+
     const data: PortOneRequestData = {
       pg,
       pay_method,
@@ -27,9 +31,10 @@ const postPortOne = async ({
       buyer_tel, // memberPhoneNumber
       buyer_addr: '', // 생략
       buyer_postcode: '', // 생략
-      m_redirect_url: '', // 생략
+      m_redirect_url, // 모바일에서 결제 완료 시 리다이렉트되는 URL
     };
-    window.IMP.request_pay(data, async (response: IMPResponse) => {
+
+    const paymentCallback = async (response: IMPResponse) => {
       // console.log(response);
       // if (response.error_code != null) {
       //   return alert(
@@ -50,7 +55,9 @@ const postPortOne = async ({
       } else {
         reject(new Error('orderId를 받아오는 데 실패했습니다.'));
       }
-    });
+    };
+
+    window.IMP.request_pay(data, paymentCallback);
   });
 };
 

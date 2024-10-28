@@ -1,4 +1,5 @@
 type PortOneProps = {
+  clubEnglishName: string;
   clubId: number;
   pg: string;
   pay_method: string;

@@ -60,12 +60,13 @@ const PaymentPage = () => {
       clubId,
       pg,
       pay_method,
-      merchantUid: merchantUid.current,
       name,
       amount,
       buyer_email,
       buyer_name,
       buyer_tel,
+      merchantUid: merchantUid.current,
+      clubEnglishName: clubEnglishName || '',
     };
 
     await postPortOne(data);

@@ -7,8 +7,9 @@ const ROUTE = {
   MEMBER_INFO_CONFIRM: '/memberInfoConfirm',
   CLUB_LIST: '/clubList',
   CLUB_JOIN_NOTICE: '/clubJoinNotice',
-  PAYMENT: '/payment',
   CLUB: '/clubs',
+  PAYMENT: '/payment',
+  PAYMENT_REDIRECT: '/payment/redirect',
 };
 
 export default ROUTE;
