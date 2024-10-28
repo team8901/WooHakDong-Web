@@ -27,6 +27,7 @@ const postPortOne = async ({
       buyer_tel, // memberPhoneNumber
       buyer_addr: '', // 생략
       buyer_postcode: '', // 생략
+      m_redirect_url: '', // 생략
     };
     window.IMP.request_pay(data, async (response: IMPResponse) => {
       // console.log(response);
