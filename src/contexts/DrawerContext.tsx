@@ -1,7 +1,8 @@
+import Drawer from '@components/Drawer';
 import { createContext, useContext, useState, ReactNode, useMemo } from 'react';
 
 interface DrawerContextProps {
-  open: boolean;
+  isOpen: boolean;
   toggleDrawer: () => void;
 }
 
@@ -12,12 +13,18 @@ export const useDrawer = () => {
 };
 
 export const DrawerProvider = ({ children }: { children: ReactNode }) => {
-  const [open, setOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+
   const toggleDrawer = () => {
-    setOpen(!open);
+    setIsOpen((prev) => !prev);
   };
 
-  const contextValue = useMemo(() => ({ open, toggleDrawer }), [open]);
+  const contextValue = useMemo(() => ({ isOpen, toggleDrawer }), [isOpen]);
 
-  return <DrawerContext.Provider value={contextValue}>{children}</DrawerContext.Provider>;
+  return (
+    <DrawerContext.Provider value={contextValue}>
+      <Drawer isOpen={isOpen} toggleDrawer={toggleDrawer} />
+      {children}
+    </DrawerContext.Provider>
+  );
 };

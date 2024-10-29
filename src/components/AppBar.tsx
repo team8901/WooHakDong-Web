@@ -1,14 +1,77 @@
+import MenuIcon from '@assets/images/appBar/MenuIcon';
+import SearchIcon from '@assets/images/appBar/SearchIcon';
 import ChevronLeftBlackIcon from '@assets/images/chevrons/ChevronLeftBlackIcon';
-import { useNavigate } from 'react-router-dom';
+import Title3 from '@components/Title3';
+import { useDrawer } from '@contexts/DrawerContext';
+import { useSearch } from '@contexts/SearchContext';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const AppBar = () => {
+type AppBarProps = {
+  hasMenu?: boolean;
+  hasSearch?: boolean;
+};
+
+const AppBar = ({ hasMenu = false, hasSearch }: Readonly<AppBarProps>) => {
   const navigate = useNavigate();
+  const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
+  const { toggleDrawer } = useDrawer();
+  const { setSearchQuery } = useSearch();
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
+
+  const handleSearchSubmit = () => {
+    if (!searchInput) {
+      setIsSearchVisible(false);
+      return;
+    }
+
+    setSearchQuery(searchInput);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearchSubmit();
+    }
+  };
 
   return (
-    <div className="flex h-[56px] w-full items-center px-[20px]">
-      <button onClick={() => navigate(-1)}>
-        <ChevronLeftBlackIcon />
-      </button>
+    <div className="flex h-[56px] w-full items-center gap-[20px] px-[20px]">
+      {hasMenu ? (
+        <div className="flex flex-shrink-0 items-center gap-[16px]">
+          <button type="button" onClick={toggleDrawer}>
+            <MenuIcon />
+          </button>
+          <Title3 text={clubEnglishName || ''} />
+        </div>
+      ) : (
+        <button type="button" onClick={() => navigate(-1)}>
+          <ChevronLeftBlackIcon />
+        </button>
+      )}
+      <div className="relative flex w-full items-center">
+        {hasSearch && (
+          <>
+            <input
+              type="text"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="검색어를 입력하세요"
+              className={`transition-width h-[40px] rounded-[14px] bg-lightGray duration-300 ease-in-out ${
+                isSearchVisible ? 'w-full px-[16px]' : 'w-0 px-0'
+              }`}
+            />
+            <button
+              type="button"
+              className="absolute right-[16px] top-1/2 -translate-y-1/2"
+              onClick={isSearchVisible ? handleSearchSubmit : () => setIsSearchVisible(true)}
+            >
+              <SearchIcon />
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 };
