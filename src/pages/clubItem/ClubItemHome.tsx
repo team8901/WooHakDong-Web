@@ -7,7 +7,7 @@ import { Item, ItemCategory } from 'types/item';
 const ClubItemHomePage = () => {
   const [activeTab, setActiveTab] = useState('ALL');
   const [itemList, setItemList] = useState<Item[]>([]);
-  const [filtereditemList, setFilteredItemList] = useState<Item[]>([]);
+  const [filteredItemList, setFilteredItemList] = useState<Item[]>([]);
 
   const listData: Item[] = [
     {
@@ -144,12 +144,12 @@ const ClubItemHomePage = () => {
       </div>
 
       <div className="masked-overflow flex h-full flex-col gap-[20px] p-[20px] scrollbar-hide">
-        {filtereditemList.length === 0 ? (
+        {filteredItemList.length === 0 ? (
           <div className="flex h-full items-center justify-center">아직 등록된 물품이 없습니다.</div>
         ) : (
           <div className="flex flex-col gap-[20px]">
-            <ListItem item={filtereditemList[0]} />
-            {filtereditemList.slice(1).map((item) => (
+            <ListItem item={filteredItemList[0]} />
+            {filteredItemList.slice(1).map((item) => (
               <div key={item.itemId} className="flex flex-col gap-[20px]">
                 <div className="h-[0.6px] bg-lightGray" />
                 <ListItem item={item} />
