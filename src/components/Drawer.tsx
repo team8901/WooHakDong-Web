@@ -52,8 +52,8 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
           </button>
         </div>
       </div>
-      <div
-        className={`absolute left-0 top-0 z-40 h-full w-full bg-[#20202040] transition-opacity duration-300 ease-in-out ${isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+      <button
+        className={`absolute left-0 top-0 z-40 h-full w-full bg-[#20202040] transition-opacity duration-300 ease-in-out ${isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'} cursor-default`}
         onClick={toggleDrawer}
       />
     </>
