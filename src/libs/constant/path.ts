@@ -11,6 +11,7 @@ const ROUTE = {
   PAYMENT: '/payment',
   PAYMENT_REDIRECT: '/payment/redirect',
   ITEM: '/items',
+  ITEM_SEARCH: '/items/search',
 };
 
 export default ROUTE;

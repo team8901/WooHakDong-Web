@@ -3,19 +3,11 @@ import LockIcon from '@assets/images/item/LockIcon';
 import LockOpenIcon from '@assets/images/item/LockOpenIcon';
 import Body2 from '@components/Body2';
 import Body4 from '@components/Body4';
+import { CATEGORY_MENU } from '@libs/constant/item';
 import { Item } from 'types/item';
 
 type ListItemProps = {
   item: Item;
-};
-
-const CATEGORY_MENU = {
-  DIGITAL: '디지털',
-  SPORT: '스포츠',
-  BOOK: '도서',
-  CLOTHES: '의류',
-  STATIONERY: '문구류',
-  ETC: '기타',
 };
 
 const ListItem = ({ item }: Readonly<ListItemProps>) => {

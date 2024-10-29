@@ -1,8 +1,10 @@
 import AppBar from '@components/AppBar';
 import Body3 from '@components/Body3';
 import { useSearch } from '@contexts/SearchContext';
+import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
 import { getClubInfo } from '@libs/api/club';
 import { getClubItems } from '@libs/api/item';
+import ROUTE from '@libs/constant/path';
 import ListItem from '@pages/clubItem/components/ListItem';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -11,10 +13,10 @@ import { Item, ItemCategory } from 'types/item';
 const ClubItemHomePage = () => {
   const [activeTab, setActiveTab] = useState('ALL');
   const [itemList, setItemList] = useState<Item[]>([]);
-  const [clubId, setClubId] = useState<number | null>(null);
   const [filteredItemList, setFilteredItemList] = useState<Item[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { searchQuery } = useSearch();
+  const navigate = usePrefixedNavigate();
 
   const handleTabChange = (categoryName: string) => {
     setActiveTab(categoryName);
@@ -27,7 +29,6 @@ const ClubItemHomePage = () => {
       const { clubId } = await getClubInfo({
         clubEnglishName,
       });
-      setClubId(clubId);
 
       const { result } = await getClubItems({ clubId });
       setItemList(result);
@@ -38,15 +39,9 @@ const ClubItemHomePage = () => {
   }, []);
 
   useEffect(() => {
-    const getSearchData = async () => {
-      if (clubId === null) return;
+    if (!searchQuery) return;
 
-      const { result } = await getClubItems({ clubId, keyword: searchQuery });
-      setItemList(result);
-      setFilteredItemList(result);
-    };
-
-    getSearchData();
+    navigate(ROUTE.ITEM_SEARCH);
   }, [searchQuery]);
 
   useEffect(() => {

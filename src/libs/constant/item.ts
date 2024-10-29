@@ -1,5 +1,14 @@
 import { Item } from 'types/item';
 
+const CATEGORY_MENU = {
+  DIGITAL: '디지털',
+  SPORT: '스포츠',
+  BOOK: '도서',
+  CLOTHES: '의류',
+  STATIONERY: '문구류',
+  ETC: '기타',
+};
+
 const ITEM_DATA: Item[] = [
   {
     itemId: 0,
@@ -81,4 +90,4 @@ const ITEM_DATA: Item[] = [
   },
 ];
 
-export { ITEM_DATA };
+export { CATEGORY_MENU, ITEM_DATA };
