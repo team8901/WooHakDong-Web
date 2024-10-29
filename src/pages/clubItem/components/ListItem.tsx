@@ -13,7 +13,11 @@ type ListItemProps = {
 const ListItem = ({ item }: Readonly<ListItemProps>) => {
   return (
     <div className="flex cursor-pointer gap-[12px]">
-      <img alt="물품" src="/logo.svg" className="h-[72px] w-[72px] rounded-[14px] border border-lightGray" />
+      <img
+        alt="물품"
+        src={item.itemPhoto || '/logo.svg'}
+        className="h-[72px] w-[72px] rounded-[14px] border border-lightGray"
+      />
       <div className="flex w-full flex-col gap-[4px]">
         <div className="flex flex-col gap-[2px]">
           <Body2 text={item.itemName} />
