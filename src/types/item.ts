@@ -1,18 +1,18 @@
-type ItemProps = {
+type ClubItemProps = {
   clubId: number;
   keyword?: string;
-  category?: ItemCategory;
+  category?: ClubItemCategory;
 };
 
-type ItemCategory = 'DIGITAL' | 'SPORT' | 'BOOK' | 'CLOTHES' | 'STATIONERY' | 'ETC';
+type ClubItemCategory = 'DIGITAL' | 'SPORT' | 'BOOK' | 'CLOTHES' | 'STATIONERY' | 'ETC';
 
-type Item = {
+type ClubItem = {
   itemId: number;
   itemName: string;
   itemPhoto: string;
   itemDescription: string;
   itemLocation: string;
-  itemCategory: ItemCategory;
+  itemCategory: ClubItemCategory;
   itemRentalMaxDay: number;
   itemAvailable: boolean;
   itemUsing: boolean;
@@ -20,8 +20,32 @@ type Item = {
   itemRentalTime: number;
 };
 
-type ItemResponseData = {
-  result: Item[];
+type ClubItemListProps = {
+  item: ClubItem;
 };
 
-export type { ItemCategory, Item, ItemProps, ItemResponseData };
+type ItemResponseData = {
+  result: ClubItem[];
+};
+
+type ClubItemBorrowProps = {
+  clubId: number;
+  itemId: number;
+};
+
+type ClubItemBorrowResponseData = {
+  itemId: number;
+  itemHistoryId: number;
+  itemRentalDate: string;
+  itemDueDate: string;
+};
+
+export type {
+  ClubItemCategory,
+  ClubItem,
+  ClubItemProps,
+  ItemResponseData,
+  ClubItemBorrowProps,
+  ClubItemListProps,
+  ClubItemBorrowResponseData,
+};
