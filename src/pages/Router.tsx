@@ -20,6 +20,7 @@ import NotClubLayout from '@layouts/NotClubLayout';
 import PaymentRedirectPage from '@pages/payment/PaymentRedirect';
 import ClubItemHomePage from '@pages/clubItem/ClubItemHome';
 import ClubItemSearchPage from '@pages/clubItem/ClubItemSearch';
+import ClubItemDetailPage from '@pages/clubItem/ClubItemDetail';
 
 export const Router = () => {
   return (
@@ -54,6 +55,7 @@ export const Router = () => {
               <Route path={ROUTE.ROOT.slice(1)} element={<ClubMemberHomePage />} />
               <Route path={ROUTE.ITEM.slice(1)} element={<ClubItemHomePage />} />
               <Route path={ROUTE.ITEM_SEARCH.slice(1)} element={<ClubItemSearchPage />} />
+              <Route path={`${ROUTE.ITEM.slice(1)}/:itemId`} element={<ClubItemDetailPage />} />
             </Route>
           </Route>
         </Route>

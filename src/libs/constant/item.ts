@@ -1,6 +1,6 @@
-import { Item } from 'types/item';
+import { Item, ItemCategory } from 'types/item';
 
-const CATEGORY_MENU = {
+const ITEM_CATEGORY = {
   DIGITAL: '디지털',
   SPORT: '스포츠',
   BOOK: '도서',
@@ -8,6 +8,15 @@ const CATEGORY_MENU = {
   STATIONERY: '문구류',
   ETC: '기타',
 };
+
+const ITEM_CATEGORY_MENU: { label: string; category: ItemCategory }[] = [
+  { label: '디지털', category: 'DIGITAL' },
+  { label: '스포츠', category: 'SPORT' },
+  { label: '도서', category: 'BOOK' },
+  { label: '의류', category: 'CLOTHES' },
+  { label: '문구류', category: 'STATIONERY' },
+  { label: '기타', category: 'ETC' },
+];
 
 const ITEM_DATA: Item[] = [
   {
@@ -90,4 +99,4 @@ const ITEM_DATA: Item[] = [
   },
 ];
 
-export { CATEGORY_MENU, ITEM_DATA };
+export { ITEM_CATEGORY, ITEM_CATEGORY_MENU, ITEM_DATA };

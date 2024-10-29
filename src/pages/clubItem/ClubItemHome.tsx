@@ -4,11 +4,12 @@ import { useSearch } from '@contexts/SearchContext';
 import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
 import { getClubInfo } from '@libs/api/club';
 import { getClubItems } from '@libs/api/item';
+import { ITEM_CATEGORY_MENU, ITEM_DATA } from '@libs/constant/item';
 import ROUTE from '@libs/constant/path';
 import ListItem from '@pages/clubItem/components/ListItem';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Item, ItemCategory } from 'types/item';
+import { Item } from 'types/item';
 
 const ClubItemHomePage = () => {
   const [activeTab, setActiveTab] = useState('ALL');
@@ -36,6 +37,8 @@ const ClubItemHomePage = () => {
     };
 
     getData();
+    // setItemList(ITEM_DATA);
+    // setFilteredItemList(ITEM_DATA);
   }, []);
 
   useEffect(() => {
@@ -53,15 +56,6 @@ const ClubItemHomePage = () => {
     }
   }, [activeTab]);
 
-  const CATEGORY_MENU: { label: string; category: ItemCategory }[] = [
-    { label: '디지털', category: 'DIGITAL' },
-    { label: '스포츠', category: 'SPORT' },
-    { label: '도서', category: 'BOOK' },
-    { label: '의류', category: 'CLOTHES' },
-    { label: '문구류', category: 'STATIONERY' },
-    { label: '기타', category: 'ETC' },
-  ];
-
   return (
     <div className="relative h-full pb-[50px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
@@ -76,7 +70,7 @@ const ClubItemHomePage = () => {
         >
           <Body3 text={'전체'} />
         </button>
-        {CATEGORY_MENU.map((menu) => (
+        {ITEM_CATEGORY_MENU.map((menu) => (
           <button
             key={menu.category}
             type="button"

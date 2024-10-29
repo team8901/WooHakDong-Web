@@ -3,7 +3,9 @@ import LockIcon from '@assets/images/item/LockIcon';
 import LockOpenIcon from '@assets/images/item/LockOpenIcon';
 import Body2 from '@components/Body2';
 import Body4 from '@components/Body4';
-import { CATEGORY_MENU } from '@libs/constant/item';
+import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import { ITEM_CATEGORY } from '@libs/constant/item';
+import ROUTE from '@libs/constant/path';
 import { Item } from 'types/item';
 
 type ListItemProps = {
@@ -11,8 +13,14 @@ type ListItemProps = {
 };
 
 const ListItem = ({ item }: Readonly<ListItemProps>) => {
+  const navigate = usePrefixedNavigate();
+
+  const handleItemClick = (item: Item) => {
+    navigate(`${ROUTE.ITEM}/${item.itemId}`, { state: { item } });
+  };
+
   return (
-    <div className="flex cursor-pointer gap-[12px]">
+    <div className="flex cursor-pointer gap-[12px]" onClick={() => handleItemClick(item)}>
       <img
         alt="물품"
         src={item.itemPhoto || '/logo.svg'}
@@ -22,7 +30,7 @@ const ListItem = ({ item }: Readonly<ListItemProps>) => {
         <div className="flex flex-col gap-[2px]">
           <Body2 text={item.itemName} />
           <div className="flex items-center gap-[4px]">
-            <Body4 text={CATEGORY_MENU[item.itemCategory]} className="text-darkGray" />
+            <Body4 text={ITEM_CATEGORY[item.itemCategory]} className="text-darkGray" />
             <div className="h-[8px] w-[1px] bg-gray"></div>
             <Body4 text={item.itemLocation} className="text-darkGray" />
           </div>
