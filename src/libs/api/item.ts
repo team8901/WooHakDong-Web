@@ -3,7 +3,7 @@ import { ClubItemBorrowProps, ClubItemBorrowResponseData, ClubItemProps, ItemRes
 
 const getClubItems = async ({ clubId, keyword = '', category }: Readonly<ClubItemProps>) => {
   const res = await axiosInstance.get<ItemResponseData>(
-    `/v1/clubs/${clubId}/items?keyword=${keyword}&category=${category || ''}`,
+    `/v1/clubs/${clubId}/items?keyword=${keyword}&category=${category ?? ''}`,
   );
   return res.data;
 };
