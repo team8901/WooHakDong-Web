@@ -118,7 +118,7 @@ const ClubItemHomePage = () => {
   ];
 
   return (
-    <div className="relative h-full pb-[100px] pt-[56px]">
+    <div className="relative h-full pb-[50px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
         <AppBar hasMenu hasSearch />
       </div>
