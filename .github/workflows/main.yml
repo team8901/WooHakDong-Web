@@ -18,11 +18,17 @@ jobs:
           echo "VITE_AWS_ACCESS_KEY_ID=$VITE_AWS_ACCESS_KEY_ID" >> .env
           echo "VITE_AWS_SECRET_ACCESS_KEY=$VITE_AWS_SECRET_ACCESS_KEY" >> .env
           echo "VITE_FIREBASE_API_KEY=$VITE_FIREBASE_API_KEY" >> .env
+          echo "VITE_WEB_URL=$VITE_WEB_URL" >> .env
+          echo "VITE_SENTRY_DSN=$VITE_SENTRY_DSN" >> .env
+          echo "VITE_SENTRY_AUTH_TOKEN=$VITE_SENTRY_AUTH_TOKEN" >> .env
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
           VITE_AWS_ACCESS_KEY_ID: ${{ secrets.VITE_AWS_ACCESS_KEY_ID }}
           VITE_AWS_SECRET_ACCESS_KEY: ${{ secrets.VITE_AWS_SECRET_ACCESS_KEY }}
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_WEB_URL: ${{ secrets.VITE_WEB_URL }}
+          VITE_SENTRY_DSN: ${{ secrets.VITE_SENTRY_DSN }}
+          VITE_SENTRY_AUTH_TOKEN: ${{ secrets.VITE_SENTRY_AUTH_TOKEN }}
  
       - name: Cache node modules
         uses: actions/cache@v1
