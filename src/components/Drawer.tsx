@@ -23,7 +23,6 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
     <>
       <dialog
         ref={dialogRef}
-        aria-hidden={!isOpen}
         className={`absolute left-0 top-0 z-50 h-full w-[55%] transform bg-white transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0 shadow-lg' : '-translate-x-full'}`}
       >
         <div className="flex flex-col gap-[20px] px-[20px] py-[103px]">
