@@ -30,14 +30,19 @@ const ClubRegisterPage = () => {
     // setClubRoom("구학생회관 234호");
 
     const checkClub = async () => {
-      const { clubName, clubDues, clubDescription, clubRoom } = await getClubInfo({
-        clubEnglishName,
-      });
+      try {
+        const { clubName, clubDues, clubDescription, clubRoom } = await getClubInfo({
+          clubEnglishName,
+        });
 
-      setClubName(clubName);
-      setClubDues(clubDues);
-      setClubDescription(clubDescription);
-      setClubRoom(clubRoom);
+        setClubName(clubName);
+        setClubDues(clubDues);
+        setClubDescription(clubDescription);
+        setClubRoom(clubRoom);
+      } catch (error) {
+        alert(`동아리 정보를 불러오는 중 오류가 발생했습니다. ${error}`);
+        location.replace(ROUTE.CLUB_LIST);
+      }
     };
 
     checkClub();
