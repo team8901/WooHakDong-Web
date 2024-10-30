@@ -9,7 +9,7 @@ const ListItem = () => {
         <Body2 text="회식비" />
         <Body4 text="8월 15일 오후 5:00" className="text-darkGray" />
       </div>
-      <Body1 text="45,000원" />
+      <Body1 text="45,000원" className="text-[#E53935]" />
     </div>
   );
 };
