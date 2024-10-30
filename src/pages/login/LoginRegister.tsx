@@ -18,8 +18,8 @@ const LoginRegisterPage = () => {
           </div>
         </div>
         <div className="flex flex-col">
-          <Caption2 text="우리 동아리 인원, 물품, 회비 그리고 일정을" />
-          <Caption2 text="한 눈에 살펴보고 이용하게 해드릴게요!" />
+          <Caption2 text="우리 동아리 인원, 물품, 회비 그리고 일정을" className="text-darkGray" />
+          <Caption2 text="한 눈에 살펴보고 이용하게 해드릴게요!" className="text-darkGray" />
         </div>
       </div>
 
