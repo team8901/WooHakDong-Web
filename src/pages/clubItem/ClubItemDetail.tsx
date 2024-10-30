@@ -2,7 +2,7 @@ import AppBar from '@components/AppBar';
 import Body1 from '@components/Body1';
 import Body2 from '@components/Body2';
 import Body3 from '@components/Body3';
-import Subtitle from '@components/Subtitle';
+import Caption2 from '@components/Caption2';
 import Title3 from '@components/Title3';
 import { getClubInfo } from '@libs/api/club';
 import { postClubItemBorrow } from '@libs/api/item';
@@ -63,13 +63,13 @@ const ClubItemDetailPage = () => {
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[8px]">
-            <Subtitle text="물품 설명" />
+            <Caption2 text="물품 설명" />
             <div className="rounded-[14px] border border-lightGray p-[16px]">
               <Body1 text={item.itemDescription} className="text-justify" />
             </div>
           </div>
           <div className="flex flex-col gap-[8px]">
-            <Subtitle text="물품 위치 및 대여 가능 일 수" />
+            <Caption2 text="물품 위치 및 대여 가능 일 수" />
             <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray p-[16px]">
               <Body1 text={item.itemLocation} />
               <Body1 text={`${item.itemRentalMaxDay}일`} />

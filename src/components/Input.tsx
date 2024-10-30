@@ -1,5 +1,3 @@
-import Subtitle from '@components/Subtitle';
-
 type InputProps = {
   label: string;
   placeholder: string;
@@ -20,8 +18,12 @@ const Input = ({
   inputMode = 'text',
 }: Readonly<InputProps>) => {
   return (
-    <div className="flex flex-col">
-      {value && <Subtitle text={label} />}
+    <div className="relative">
+      <span
+        className={`absolute left-[16px] bg-white text-[0.9rem] text-darkGray transition-all duration-200 ease-in-out ${value ? 'top-[-5px] opacity-100' : 'top-[4px] opacity-0'}`}
+      >
+        {label}
+      </span>
       <input
         type={type}
         inputMode={inputMode}
@@ -29,7 +31,7 @@ const Input = ({
         value={value}
         onChange={onChange}
         aria-label={label}
-        className={`border-b border-lightGray py-[9px] font-semiBold leading-[2.2rem] placeholder:font-semiBold placeholder:text-gray ${className}`}
+        className={`w-full rounded-[14px] border border-lightGray px-[16px] py-[12px] font-semiBold leading-[2.2rem] placeholder:font-semiBold placeholder:text-gray ${className}`}
       />
     </div>
   );

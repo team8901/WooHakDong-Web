@@ -1,5 +1,5 @@
 import Body3 from '@components/Body3';
-import Subtitle from '@components/Subtitle';
+import Caption2 from '@components/Caption2';
 import Title1 from '@components/Title1';
 import GoogleLoginButton from '@pages/login/components/GoogleLoginButton';
 import { useParams } from 'react-router-dom';
@@ -18,8 +18,8 @@ const LoginRegisterPage = () => {
           </div>
         </div>
         <div className="flex flex-col">
-          <Subtitle text="우리 동아리 인원, 물품, 회비 그리고 일정을" />
-          <Subtitle text="한 눈에 살펴보고 이용하게 해드릴게요!" />
+          <Caption2 text="우리 동아리 인원, 물품, 회비 그리고 일정을" />
+          <Caption2 text="한 눈에 살펴보고 이용하게 해드릴게요!" />
         </div>
       </div>
 

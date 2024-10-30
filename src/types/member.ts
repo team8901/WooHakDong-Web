@@ -1,8 +1,10 @@
+type Gender = 'MAN' | 'WOMAN';
+
 type MemberInfoRequestData = {
   memberPhoneNumber: string;
   memberMajor: string;
   memberStudentNumber: string;
-  memberGender: 'MAN' | 'WOMAN';
+  memberGender: Gender;
 };
 
 type MemberInfoResponseData = {
@@ -12,7 +14,7 @@ type MemberInfoResponseData = {
   memberSchool: string;
   memberMajor: string;
   memberStudentNumber: string;
-  memberGender: 'MAN' | 'WOMAN';
+  memberGender: Gender;
 };
 
-export type { MemberInfoRequestData, MemberInfoResponseData };
+export type { Gender, MemberInfoRequestData, MemberInfoResponseData };
