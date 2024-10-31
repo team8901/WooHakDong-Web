@@ -14,7 +14,7 @@ const PaymentRedirectPage = () => {
   const navigate = usePrefixedNavigate();
 
   useEffect(() => {
-    if (!clubId || !impUid || !merchantUid) return;
+    if (clubId === null || clubId === undefined || !impUid || !merchantUid) return;
 
     if (impSuccess !== 'true') {
       alert('결제에 실패했습니다.');
