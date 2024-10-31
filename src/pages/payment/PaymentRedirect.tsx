@@ -40,7 +40,11 @@ const PaymentRedirectPage = () => {
     getData();
   }, []);
 
-  return <h1>결제 성공!</h1>;
+  return (
+    <div className="flex h-full items-center justify-center">
+      <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
+    </div>
+  );
 };
 
 export default PaymentRedirectPage;
