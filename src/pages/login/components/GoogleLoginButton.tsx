@@ -6,12 +6,15 @@ import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
 import { fetchLoginData } from '@libs/api/auth';
 import ROUTE from '@libs/constant/path';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { useState } from 'react';
 
 const GoogleLoginButton = () => {
   const { login } = useAuth();
   const navigate = usePrefixedNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleGoogleLogin = async () => {
+    setLoading(true);
     const provider = new GoogleAuthProvider();
     const userCredential = await signInWithPopup(auth, provider);
     // console.log(userCredential);
@@ -19,6 +22,7 @@ const GoogleLoginButton = () => {
     const loginData = await fetchLoginData(oauthAccessToken);
     if (!loginData) {
       alert('로그인에 실패했습니다.');
+      setLoading(false);
       return;
     }
 
@@ -35,6 +39,7 @@ const GoogleLoginButton = () => {
       fontSize="1.4rem"
       icon={<GoogleIcon />}
       onClick={handleGoogleLogin}
+      loading={loading}
     />
   );
 };

@@ -1,3 +1,4 @@
+import LoadingSpinner from '@components/LoadingSpinner';
 import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
 import { getGroupInfo, postGroupJoin, postGroupJoinConfirm } from '@libs/api/group';
 import ROUTE from '@libs/constant/path';
@@ -42,7 +43,7 @@ const PaymentRedirectPage = () => {
 
   return (
     <div className="flex h-full items-center justify-center">
-      <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
+      <LoadingSpinner />
     </div>
   );
 };
