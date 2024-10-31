@@ -1,23 +1,29 @@
 import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
 import { getMemberInfo } from '@libs/api/member';
 import ROUTE from '@libs/constant/path';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 const MemberLayout = () => {
   const navigate = usePrefixedNavigate();
+  const [isMember, setIsMember] = useState(false);
 
   useEffect(() => {
     const checkMemberInfo = async () => {
       const { memberPhoneNumber } = await getMemberInfo();
+
       if (!memberPhoneNumber) {
         navigate(ROUTE.MEMBER_REGISTER);
+        return;
       }
+
+      setIsMember(true);
     };
+
     checkMemberInfo();
   }, []);
 
-  return <Outlet />;
+  return isMember && <Outlet />;
 };
 
 export default MemberLayout;
