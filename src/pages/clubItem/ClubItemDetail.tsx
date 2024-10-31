@@ -7,12 +7,14 @@ import Title3 from '@components/Title3';
 import { getClubInfo } from '@libs/api/club';
 import { postClubItemBorrow } from '@libs/api/item';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
+import { useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { ClubItem } from 'types/item';
 
 const ClubItemDetailPage = () => {
   const { state } = useLocation();
-  const item: ClubItem = state.item;
+  const initialItem: ClubItem = state.item;
+  const [item, setItem] = useState<ClubItem>(initialItem);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
 
   const handleBorrow = async () => {
@@ -29,7 +31,13 @@ const ClubItemDetailPage = () => {
 
     try {
       await postClubItemBorrow({ clubId, itemId: item.itemId });
+
       alert('대여 신청이 완료되었습니다.');
+
+      setItem((prevItem) => ({
+        ...prevItem,
+        itemUsing: true,
+      }));
     } catch (error) {
       alert(`대여 신청 중 오류가 발생했습니다. ${error}`);
     }
