@@ -45,10 +45,10 @@ const postPortOne = async ({
         return;
       }
       const impUid = response.imp_uid;
+
       const { groupId } = await getGroupInfo({ clubId });
-      console.log('groupId', groupId);
       const orderId = await postGroupJoin({ merchantUid, groupId });
-      // console.log(merchantUid, orderId);
+
       if (orderId) {
         await postGroupJoinConfirm({ merchantUid, groupId, impUid, orderId });
         resolve('동아리 가입이 완료되었습니다.');
