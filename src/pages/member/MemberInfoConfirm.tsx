@@ -21,7 +21,7 @@ const MemberInfoConfirmPage = () => {
       memberPhoneNumber: phoneNumber,
       memberMajor: major,
       memberStudentNumber: studentNumber,
-      memberGender: gender === '남성' ? 'MAN' : 'WOMAN',
+      memberGender: gender,
     };
     await postMemberInfo(postData);
 
