@@ -5,7 +5,7 @@ const usePrefixedNavigate = () => {
   const navigate = useNavigate();
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
 
-  const prefixedNavigate = (path: string, options?: { replace?: boolean; state?: any }) => {
+  const prefixedNavigate = (path: string, options?: { replace?: boolean; state?: Record<string, unknown> }) => {
     if (clubEnglishName) {
       navigate(`${ROUTE.CLUB}/${clubEnglishName}${path}`, options);
     } else {
