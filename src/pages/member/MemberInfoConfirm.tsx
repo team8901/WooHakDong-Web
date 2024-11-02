@@ -1,13 +1,15 @@
 import AppBar from '@components/AppBar';
 import Body1 from '@components/Body1';
 import Button from '@components/Button';
-import Subtitle from '@components/Subtitle';
+import Caption2 from '@components/Caption2';
 import Title2 from '@components/Title2';
 import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
 import { postMemberInfo } from '@libs/api/member';
+import { GENDER_TYPE } from '@libs/constant/member';
 import ROUTE from '@libs/constant/path';
+import formatPhoneNumber from '@libs/util/formatPhoneNumber';
 import { useLocation } from 'react-router-dom';
-import { MemberInfoRequestData } from 'types/member';
+import { Gender, MemberInfoRequestData } from 'types/member';
 
 const MemberInfoConfirmPage = () => {
   const navigate = usePrefixedNavigate();
@@ -19,7 +21,7 @@ const MemberInfoConfirmPage = () => {
       memberPhoneNumber: phoneNumber,
       memberMajor: major,
       memberStudentNumber: studentNumber,
-      memberGender: gender === '남성' ? 'MAN' : 'WOMAN',
+      memberGender: gender,
     };
     await postMemberInfo(postData);
 
@@ -36,33 +38,23 @@ const MemberInfoConfirmPage = () => {
         <Title2 text="회원님의 정보가 맞으신가요?" />
 
         <div className="flex flex-col gap-[20px]">
-          <div className="flex flex-col">
-            <Subtitle text="이름" />
-            <Body1 text={name} className="py-[9px]" />
+          <div className="flex flex-col gap-[12px]">
+            <Caption2 text="기본 정보" />
+            <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray px-[16px] py-[12px]">
+              <Body1 text={name} />
+              <Body1 text={GENDER_TYPE[gender as Gender]} />
+              <Body1 text={formatPhoneNumber(phoneNumber)} />
+              <Body1 text={email} />
+            </div>
           </div>
-          <div className="flex flex-col">
-            <Subtitle text="성별" />
-            <Body1 text={gender} className="py-[9px]" />
-          </div>
-          <div className="flex flex-col">
-            <Subtitle text="휴대폰 번호" />
-            <Body1 text={phoneNumber} className="py-[9px]" />
-          </div>
-          <div className="flex flex-col">
-            <Subtitle text="이메일 주소" />
-            <Body1 text={email} className="py-[9px]" />
-          </div>
-          <div className="flex flex-col">
-            <Subtitle text="학교" />
-            <Body1 text={school} className="py-[9px]" />
-          </div>
-          <div className="flex flex-col">
-            <Subtitle text="학과" />
-            <Body1 text={major} className="py-[9px]" />
-          </div>
-          <div className="flex flex-col">
-            <Subtitle text="학번" />
-            <Body1 text={studentNumber} className="py-[9px]" />
+
+          <div className="flex flex-col gap-[12px]">
+            <Caption2 text="학교 정보" />
+            <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray px-[16px] py-[12px]">
+              <Body1 text={school} />
+              <Body1 text={major} />
+              <Body1 text={studentNumber} />
+            </div>
           </div>
         </div>
       </div>

@@ -1,6 +1,8 @@
 import ChevronRightGrayIcon from '@assets/images/chevrons/ChevronRightGrayIcon';
 import Body1 from '@components/Body1';
 import Title1 from '@components/Title1';
+import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import ROUTE from '@libs/constant/path';
 import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -12,12 +14,18 @@ type DrawerProps = {
 const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const navigate = usePrefixedNavigate();
 
   useEffect(() => {
     if (!dialogRef.current) return;
 
     dialogRef.current.show();
   }, []);
+
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    toggleDrawer();
+  };
 
   return (
     <>
@@ -35,7 +43,7 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
 
           <div className="h-[1px] bg-lightGray" />
 
-          <button className="flex items-center justify-between">
+          <button className="flex items-center justify-between" onClick={() => handleNavigate(ROUTE.ITEM)}>
             <Body1 text="물품" />
             <ChevronRightGrayIcon />
           </button>
@@ -46,7 +54,7 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
 
           <div className="h-[1px] bg-lightGray" />
 
-          <button className="flex items-center justify-between">
+          <button className="flex items-center justify-between" onClick={() => handleNavigate(ROUTE.DUES)}>
             <Body1 text="회비" />
             <ChevronRightGrayIcon />
           </button>

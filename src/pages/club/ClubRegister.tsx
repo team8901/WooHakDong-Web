@@ -1,12 +1,12 @@
-import Body1 from '@components/Body1';
 import Button from '@components/Button';
-import Subtitle from '@components/Subtitle';
 import Title1 from '@components/Title1';
 import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
 import { useEffect, useState } from 'react';
 import ROUTE from '@libs/constant/path';
 import { getClubInfo } from '@libs/api/club';
 import { useParams } from 'react-router-dom';
+import Caption2 from '@components/Caption2';
+import InputBox from '@components/InputBox';
 
 const ClubRegisterPage = () => {
   const navigate = usePrefixedNavigate();
@@ -30,14 +30,19 @@ const ClubRegisterPage = () => {
     // setClubRoom("구학생회관 234호");
 
     const checkClub = async () => {
-      const { clubName, clubDues, clubDescription, clubRoom } = await getClubInfo({
-        clubEnglishName,
-      });
+      try {
+        const { clubName, clubDues, clubDescription, clubRoom } = await getClubInfo({
+          clubEnglishName,
+        });
 
-      setClubName(clubName);
-      setClubDues(clubDues);
-      setClubDescription(clubDescription);
-      setClubRoom(clubRoom);
+        setClubName(clubName);
+        setClubDues(clubDues);
+        setClubDescription(clubDescription);
+        setClubRoom(clubRoom);
+      } catch (error) {
+        alert(`동아리 정보를 불러오는 중 오류가 발생했습니다. ${error}`);
+        location.replace(ROUTE.CLUB_LIST);
+      }
     };
 
     checkClub();
@@ -50,22 +55,22 @@ const ClubRegisterPage = () => {
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[8px]">
-            <Subtitle text="동아리 회비" />
-            <div className="rounded-[14px] border border-lightGray px-[16px] py-[14px]">
-              <Body1 text={`${clubDues.toLocaleString()}원`} />
-            </div>
+            <Caption2 text="동아리 회비" />
+            <InputBox text={`${clubDues.toLocaleString()} 원`} />
           </div>
           <div className="flex flex-col gap-[8px]">
-            <Subtitle text="동아리 설명" />
-            <div className="rounded-[14px] border border-lightGray px-[16px] py-[14px] text-justify">
-              <Body1 text={clubDescription} />
-            </div>
+            <Caption2 text="동아리 설명" />
+            <InputBox
+              text={clubDescription || '등록된 정보가 없습니다.'}
+              className={`${clubDescription === '' ? 'text-darkGray' : ''}`}
+            />
           </div>
           <div className="flex flex-col gap-[8px]">
-            <Subtitle text="동아리 방" />
-            <div className="rounded-[14px] border border-lightGray px-[16px] py-[14px]">
-              <Body1 text={clubRoom} />
-            </div>
+            <Caption2 text="동아리 방" />
+            <InputBox
+              text={clubRoom || '등록된 정보가 없습니다.'}
+              className={`${clubRoom === '' ? 'text-darkGray' : ''}`}
+            />
           </div>
         </div>
       </div>

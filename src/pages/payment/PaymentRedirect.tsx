@@ -1,3 +1,4 @@
+import LoadingSpinner from '@components/LoadingSpinner';
 import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
 import { getGroupInfo, postGroupJoin, postGroupJoinConfirm } from '@libs/api/group';
 import ROUTE from '@libs/constant/path';
@@ -14,7 +15,7 @@ const PaymentRedirectPage = () => {
   const navigate = usePrefixedNavigate();
 
   useEffect(() => {
-    if (!clubId || !impUid || !merchantUid) return;
+    if (clubId === null || clubId === undefined || !impUid || !merchantUid) return;
 
     if (impSuccess !== 'true') {
       alert('결제에 실패했습니다.');
@@ -40,7 +41,11 @@ const PaymentRedirectPage = () => {
     getData();
   }, []);
 
-  return <h1>결제 성공!</h1>;
+  return (
+    <div className="flex h-full items-center justify-center">
+      <LoadingSpinner />
+    </div>
+  );
 };
 
 export default PaymentRedirectPage;

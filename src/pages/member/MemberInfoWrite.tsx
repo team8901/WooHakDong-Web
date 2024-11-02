@@ -1,20 +1,23 @@
 import AppBar from '@components/AppBar';
-import Body1 from '@components/Body1';
 import Button from '@components/Button';
 import Input from '@components/Input';
-import Subtitle from '@components/Subtitle';
+import Caption2 from '@components/Caption2';
 import Title2 from '@components/Title2';
 import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
 import { getMemberInfo } from '@libs/api/member';
 import ROUTE from '@libs/constant/path';
 import { useEffect, useState } from 'react';
+import InputBox from '@components/InputBox';
+import GenderSelection from '@pages/member/components/GenderSelection';
+import { Gender } from 'types/member';
+import formatPhoneNumber from '@libs/util/formatPhoneNumber';
 
 const MemberInfoWritePage = () => {
   const navigate = usePrefixedNavigate();
   const [school, setSchool] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [gender, setGender] = useState('남성');
+  const [gender, setGender] = useState<Gender>('MAN');
   const [major, setMajor] = useState('');
   const [studentNumber, setStudentNumber] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -46,12 +49,6 @@ const MemberInfoWritePage = () => {
     setPhoneNumber(input);
   };
 
-  const formatPhoneNumber = (number: string) => {
-    if (number.length <= 3) return number;
-    if (number.length <= 7) return `${number.slice(0, 3)}-${number.slice(3)}`;
-    return `${number.slice(0, 3)}-${number.slice(3, 7)}-${number.slice(7)}`;
-  };
-
   const handleButtonClick = () => {
     const data = {
       school,
@@ -75,55 +72,33 @@ const MemberInfoWritePage = () => {
         <Title2 text="회원님의 정보를 알려주세요" />
 
         <div className="flex flex-col gap-[20px]">
-          <div className="flex flex-col">
-            <Subtitle text="이름" />
-            <Body1 text={name} className="border-b border-lightGray py-[9px]" />
+          <div className="flex flex-col gap-[12px]">
+            <Caption2 text="기본 정보" />
+            <InputBox text={name} />
+            <GenderSelection gender={gender} setGender={setGender} />
+            <Input
+              inputMode="numeric"
+              label="휴대폰 번호"
+              placeholder="휴대폰 번호를 '-' 없이 입력해 주세요"
+              value={formatPhoneNumber(phoneNumber)}
+              onChange={handlePhoneNumberChange}
+            />
+            <InputBox text={email} />
           </div>
-          <div className="flex flex-col">
-            <Subtitle text="성별" />
-            <div className="flex items-center gap-[8px] pt-[9px]">
-              <button
-                className={`rounded-[14px] border ${
-                  gender === '남성' ? 'border-primary bg-lightPrimary text-primary' : 'border-lightGray text-gray'
-                } px-[16px] py-[4px] font-semiBold`}
-                onClick={() => setGender('남성')}
-              >
-                남성
-              </button>
-              <button
-                className={`rounded-[14px] border ${
-                  gender === '여성' ? 'border-primary bg-lightPrimary text-primary' : 'border-lightGray text-gray'
-                } px-[16px] py-[4px] font-semiBold`}
-                onClick={() => setGender('여성')}
-              >
-                여성
-              </button>
-            </div>
+
+          <div className="flex flex-col gap-[12px]">
+            <Caption2 text="학교 정보" />
+            <InputBox text={school} />
+            <Input label="학과" placeholder="학과를 입력해 주세요" value={major} onChange={handleMajorChange} />
+            <Input
+              type="number"
+              inputMode="numeric"
+              label="학번"
+              placeholder="학번을 입력해 주세요"
+              value={studentNumber}
+              onChange={handleStudentNumberChange}
+            />
           </div>
-          <Input
-            inputMode="numeric"
-            label="휴대폰 번호"
-            placeholder="휴대폰 번호를 '-' 없이 입력해 주세요"
-            value={formatPhoneNumber(phoneNumber)}
-            onChange={handlePhoneNumberChange}
-          />
-          <div className="flex flex-col">
-            <Subtitle text="이메일 주소" />
-            <Body1 text={email} className="border-b border-lightGray py-[9px]" />
-          </div>
-          <div className="flex flex-col">
-            <Subtitle text="학교" />
-            <Body1 text={school} className="border-b border-lightGray py-[9px]" />
-          </div>
-          <Input label="학과" placeholder="소프트웨어학과" value={major} onChange={handleMajorChange} />
-          <Input
-            type="number"
-            inputMode="numeric"
-            label="학번"
-            placeholder="202412345"
-            value={studentNumber}
-            onChange={handleStudentNumberChange}
-          />
         </div>
       </div>
 
