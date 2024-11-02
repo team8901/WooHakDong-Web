@@ -18,6 +18,7 @@ import MemberLayout from '@layouts/MemberLayout';
 import NotMemberLayout from '@layouts/NotMemberLayout';
 import NotClubLayout from '@layouts/NotClubLayout';
 import PaymentRedirectPage from '@pages/payment/PaymentRedirect';
+import ClubItemHomePage from '@pages/clubItem/ClubItemHome';
 
 export const Router = () => {
   return (
@@ -50,6 +51,7 @@ export const Router = () => {
             {/* 해당 동아리에 가입하지 않은 사용자가 접근할 수 없는 페이지 */}
             <Route element={<ClubLayout />}>
               <Route path={ROUTE.ROOT.slice(1)} element={<ClubMemberHomePage />} />
+              <Route path={ROUTE.ITEM.slice(1)} element={<ClubItemHomePage />} />
             </Route>
           </Route>
         </Route>

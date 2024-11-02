@@ -23,6 +23,7 @@ export default {
       backgroundColor: {
         primary: 'var(--color-primary)',
         lightPrimary: 'var(--color-lightPrimary)',
+        gray: 'var(--color-gray)',
         lightGray: 'var(--color-lightGray)',
       },
     },

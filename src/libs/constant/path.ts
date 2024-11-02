@@ -10,6 +10,7 @@ const ROUTE = {
   CLUB: '/clubs',
   PAYMENT: '/payment',
   PAYMENT_REDIRECT: '/payment/redirect',
+  ITEM: '/items',
 };
 
 export default ROUTE;

@@ -1,3 +1,5 @@
+import { DrawerProvider } from '@contexts/DrawerContext';
+import { SearchProvider } from '@contexts/SearchContext';
 import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
 import { getClubsInfo } from '@libs/api/club';
 import ROUTE from '@libs/constant/path';
@@ -17,7 +19,13 @@ const ClubLayout = () => {
     checkClubs();
   }, []);
 
-  return <Outlet />;
+  return (
+    <DrawerProvider>
+      <SearchProvider>
+        <Outlet />
+      </SearchProvider>
+    </DrawerProvider>
+  );
 };
 
 export default ClubLayout;
