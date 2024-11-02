@@ -1,11 +1,11 @@
-import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { getMemberInfo } from '@libs/api/member';
 import ROUTE from '@libs/constant/path';
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 const NotMemberLayout = () => {
-  const navigate = usePrefixedNavigate();
+  const navigate = useCustomNavigate();
   const [isMember, setIsMember] = useState(true);
 
   useEffect(() => {

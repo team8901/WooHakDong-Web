@@ -1,11 +1,11 @@
 import AppBar from '@components/AppBar';
 import Button from '@components/Button';
 import Title2 from '@components/Title2';
-import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import ROUTE from '@libs/constant/path';
 
 const MemberRegisterPage = () => {
-  const navigate = usePrefixedNavigate();
+  const navigate = useCustomNavigate();
 
   const handleButtonClick = () => {
     navigate(ROUTE.CLUB_JOIN_NOTICE);

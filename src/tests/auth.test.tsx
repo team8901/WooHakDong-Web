@@ -9,7 +9,7 @@ import { getMemberInfo } from '@libs/api/member';
 
 const mockNavigate = vi.fn();
 
-vi.mock('@hooks/usePrefixedNavigate', () => ({
+vi.mock('@hooks/useCustomNavigate', () => ({
   default: () => mockNavigate,
 }));
 

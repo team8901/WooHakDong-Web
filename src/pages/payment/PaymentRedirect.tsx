@@ -1,5 +1,5 @@
 import LoadingSpinner from '@components/LoadingSpinner';
-import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { getGroupInfo, postGroupJoin, postGroupJoinConfirm } from '@libs/api/group';
 import ROUTE from '@libs/constant/path';
 import { useEffect } from 'react';
@@ -12,7 +12,7 @@ const PaymentRedirectPage = () => {
   const impUid = searchParams.get('imp_uid');
   const merchantUid = searchParams.get('merchant_uid');
   const impSuccess = searchParams.get('imp_success');
-  const navigate = usePrefixedNavigate();
+  const navigate = useCustomNavigate();
 
   useEffect(() => {
     if (clubId === null || clubId === undefined || !impUid || !merchantUid) return;

@@ -3,7 +3,7 @@ import Body1 from '@components/Body1';
 import Button from '@components/Button';
 import Caption2 from '@components/Caption2';
 import Title2 from '@components/Title2';
-import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { postMemberInfo } from '@libs/api/member';
 import { GENDER_TYPE } from '@libs/constant/member';
 import ROUTE from '@libs/constant/path';
@@ -12,7 +12,7 @@ import { useLocation } from 'react-router-dom';
 import { Gender, MemberInfoRequestData } from 'types/member';
 
 const MemberInfoConfirmPage = () => {
-  const navigate = usePrefixedNavigate();
+  const navigate = useCustomNavigate();
   const location = useLocation();
   const { school, email, name, gender, major, studentNumber, phoneNumber } = location.state;
 

@@ -1,7 +1,7 @@
 import ChevronRightGrayIcon from '@assets/images/chevrons/ChevronRightGrayIcon';
 import Body1 from '@components/Body1';
 import Title1 from '@components/Title1';
-import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import ROUTE from '@libs/constant/path';
 import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
@@ -14,7 +14,7 @@ type DrawerProps = {
 const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const navigate = usePrefixedNavigate();
+  const navigate = useCustomNavigate();
 
   useEffect(() => {
     if (!dialogRef.current) return;

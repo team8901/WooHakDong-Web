@@ -3,11 +3,11 @@ import Body2 from '@components/Body2';
 import Body4 from '@components/Body4';
 import Button from '@components/Button';
 import Title2 from '@components/Title2';
-import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import ROUTE from '@libs/constant/path';
 
 const ClubJoinNoticePage = () => {
-  const navigate = usePrefixedNavigate();
+  const navigate = useCustomNavigate();
 
   const handleButtonClick = () => {
     navigate(ROUTE.MEMBER_INFO_WRITE);

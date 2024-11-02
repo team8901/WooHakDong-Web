@@ -3,13 +3,13 @@ import LockIcon from '@assets/images/item/LockIcon';
 import LockOpenIcon from '@assets/images/item/LockOpenIcon';
 import Body2 from '@components/Body2';
 import Body4 from '@components/Body4';
-import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
 import ROUTE from '@libs/constant/path';
 import { ClubItem, ClubItemListProps } from 'types/item';
 
 const ListItem = ({ item }: Readonly<ClubItemListProps>) => {
-  const navigate = usePrefixedNavigate();
+  const navigate = useCustomNavigate();
 
   const handleItemClick = (item: ClubItem) => {
     navigate(`${ROUTE.ITEM}/${item.itemId}`, { state: { item } });

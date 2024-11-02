@@ -3,7 +3,7 @@ import Button from '@components/Button';
 import Input from '@components/Input';
 import Caption2 from '@components/Caption2';
 import Title2 from '@components/Title2';
-import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { getMemberInfo } from '@libs/api/member';
 import ROUTE from '@libs/constant/path';
 import { useEffect, useState } from 'react';
@@ -13,7 +13,7 @@ import { Gender } from 'types/member';
 import formatPhoneNumber from '@libs/util/formatPhoneNumber';
 
 const MemberInfoWritePage = () => {
-  const navigate = usePrefixedNavigate();
+  const navigate = useCustomNavigate();
   const [school, setSchool] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');

@@ -1,13 +1,13 @@
 import { DrawerProvider } from '@contexts/DrawerContext';
 import { SearchProvider } from '@contexts/SearchContext';
-import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { getClubsInfo } from '@libs/api/club';
 import ROUTE from '@libs/constant/path';
 import { useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 
 const ClubLayout = () => {
-  const navigate = usePrefixedNavigate();
+  const navigate = useCustomNavigate();
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const [isClubJoin, setIsClubJoin] = useState(false);
 

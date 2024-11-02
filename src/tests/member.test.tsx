@@ -2,7 +2,7 @@ import MemberInfoWritePage from '@pages/member/MemberInfoWrite';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@hooks/usePrefixedNavigate', () => ({
+vi.mock('@hooks/useCustomNavigate', () => ({
   default: () => vi.fn(),
 }));
 
