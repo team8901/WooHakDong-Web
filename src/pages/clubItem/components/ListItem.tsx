@@ -20,7 +20,7 @@ const ListItem = ({ item }: Readonly<ClubItemListProps>) => {
       <img
         alt="물품"
         src={item.itemPhoto || '/logo.svg'}
-        className="h-[72px] w-[72px] rounded-[14px] border border-lightGray"
+        className="h-[72px] w-[72px] flex-shrink-0 rounded-[14px] border border-lightGray"
       />
       <div className="flex w-full flex-col items-start gap-[4px]">
         <div className="flex flex-col items-start gap-[2px]">
