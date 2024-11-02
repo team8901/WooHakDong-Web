@@ -53,8 +53,8 @@ const ClubItemDetailPage = () => {
         <div className="flex flex-col items-center gap-[20px]">
           <img
             alt="물품"
-            src={item.itemPhoto || '/logo.svg'}
-            // src={'/logo.svg'}
+            // src={item.itemPhoto || '/logo.svg'}
+            src={'/logo.svg'}
             className="h-[192px] w-[192px] rounded-[14px] border border-lightGray"
           />
           <div className="flex flex-col items-center gap-[8px]">
