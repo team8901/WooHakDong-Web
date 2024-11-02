@@ -1,6 +1,6 @@
-import { Item, ItemCategory } from 'types/item';
+import { ClubItem, ClubItemCategory } from 'types/item';
 
-const ITEM_CATEGORY = {
+const CLUB_ITEM_CATEGORY = {
   DIGITAL: '디지털',
   SPORT: '스포츠',
   BOOK: '도서',
@@ -9,7 +9,7 @@ const ITEM_CATEGORY = {
   ETC: '기타',
 };
 
-const ITEM_CATEGORY_MENU: { label: string; category: ItemCategory }[] = [
+const CLIB_ITEM_CATEGORY_MENU: { label: string; category: ClubItemCategory }[] = [
   { label: '디지털', category: 'DIGITAL' },
   { label: '스포츠', category: 'SPORT' },
   { label: '도서', category: 'BOOK' },
@@ -18,7 +18,7 @@ const ITEM_CATEGORY_MENU: { label: string; category: ItemCategory }[] = [
   { label: '기타', category: 'ETC' },
 ];
 
-const ITEM_DATA: Item[] = [
+const CLUB_ITEM_DATA: ClubItem[] = [
   {
     itemId: 0,
     itemName: '27인치 모니터',
@@ -99,4 +99,4 @@ const ITEM_DATA: Item[] = [
   },
 ];
 
-export { ITEM_CATEGORY, ITEM_CATEGORY_MENU, ITEM_DATA };
+export { CLUB_ITEM_CATEGORY, CLIB_ITEM_CATEGORY_MENU, CLUB_ITEM_DATA };

@@ -45,6 +45,10 @@ input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
+dialog {
+  margin: 0;
+}
+
 @font-face {
   font-family: 'Pretendard-Regular';
   src: url('./assets/fonts/pretendard/Pretendard-Regular.otf');

@@ -4,17 +4,17 @@ import { useSearch } from '@contexts/SearchContext';
 import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
 import { getClubInfo } from '@libs/api/club';
 import { getClubItems } from '@libs/api/item';
-import { ITEM_CATEGORY_MENU, ITEM_DATA } from '@libs/constant/item';
+import { CLIB_ITEM_CATEGORY_MENU, CLUB_ITEM_DATA } from '@libs/constant/item';
 import ROUTE from '@libs/constant/path';
 import ListItem from '@pages/clubItem/components/ListItem';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Item } from 'types/item';
+import { ClubItem } from 'types/item';
 
 const ClubItemHomePage = () => {
   const [activeTab, setActiveTab] = useState('ALL');
-  const [itemList, setItemList] = useState<Item[]>([]);
-  const [filteredItemList, setFilteredItemList] = useState<Item[]>([]);
+  const [itemList, setItemList] = useState<ClubItem[]>([]);
+  const [filteredItemList, setFilteredItemList] = useState<ClubItem[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { searchQuery } = useSearch();
   const navigate = usePrefixedNavigate();
@@ -37,8 +37,8 @@ const ClubItemHomePage = () => {
     };
 
     getData();
-    // setItemList(ITEM_DATA);
-    // setFilteredItemList(ITEM_DATA);
+    // setItemList(CLUB_ITEM_DATA);
+    // setFilteredItemList(CLUB_ITEM_DATA);
   }, []);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ const ClubItemHomePage = () => {
         >
           <Body3 text={'전체'} />
         </button>
-        {ITEM_CATEGORY_MENU.map((menu) => (
+        {CLIB_ITEM_CATEGORY_MENU.map((menu) => (
           <button
             key={menu.category}
             type="button"

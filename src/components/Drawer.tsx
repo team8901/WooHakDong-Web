@@ -1,6 +1,7 @@
 import ChevronRightGrayIcon from '@assets/images/chevrons/ChevronRightGrayIcon';
 import Body1 from '@components/Body1';
 import Title1 from '@components/Title1';
+import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 type DrawerProps = {
@@ -10,11 +11,18 @@ type DrawerProps = {
 
 const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (!dialogRef.current) return;
+
+    dialogRef.current.show();
+  }, []);
 
   return (
     <>
-      <div
-        role="dialog"
+      <dialog
+        ref={dialogRef}
         aria-hidden={!isOpen}
         className={`absolute left-0 top-0 z-50 h-full w-[55%] transform bg-white transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0 shadow-lg' : '-translate-x-full'}`}
       >
@@ -51,7 +59,7 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
             <ChevronRightGrayIcon />
           </button>
         </div>
-      </div>
+      </dialog>
       <button
         className={`absolute left-0 top-0 z-40 h-full w-full bg-[#20202040] transition-opacity duration-300 ease-in-out ${isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'} cursor-default`}
         onClick={toggleDrawer}
