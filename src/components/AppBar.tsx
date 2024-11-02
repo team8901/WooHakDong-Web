@@ -10,14 +10,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 type AppBarProps = {
   hasMenu?: boolean;
   hasSearch?: boolean;
+  showSearchInput?: boolean;
+  goBackCallback?: () => void;
 };
 
-const AppBar = ({ hasMenu = false, hasSearch }: Readonly<AppBarProps>) => {
+const AppBar = ({ hasMenu = false, hasSearch, showSearchInput = false, goBackCallback }: Readonly<AppBarProps>) => {
   const navigate = useNavigate();
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { toggleDrawer } = useDrawer();
   const { setSearchQuery } = useSearch();
-  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [isSearchVisible, setIsSearchVisible] = useState(showSearchInput);
   const [searchInput, setSearchInput] = useState('');
 
   const handleSearchSubmit = () => {
@@ -45,7 +47,7 @@ const AppBar = ({ hasMenu = false, hasSearch }: Readonly<AppBarProps>) => {
           <Title3 text={clubEnglishName || ''} />
         </div>
       ) : (
-        <button type="button" onClick={() => navigate(-1)}>
+        <button type="button" onClick={goBackCallback ? () => goBackCallback() : () => navigate(-1)}>
           <ChevronLeftBlackIcon />
         </button>
       )}

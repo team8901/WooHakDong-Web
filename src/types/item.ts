@@ -1,3 +1,9 @@
+type ItemProps = {
+  clubId: number;
+  keyword?: string;
+  category?: ItemCategory;
+};
+
 type ItemCategory = 'DIGITAL' | 'SPORT' | 'BOOK' | 'CLOTHES' | 'STATIONERY' | 'ETC';
 
 type Item = {
@@ -14,4 +20,8 @@ type Item = {
   itemRentalTime: number;
 };
 
-export type { ItemCategory, Item };
+type ItemResponseData = {
+  result: Item[];
+};
+
+export type { ItemCategory, Item, ItemProps, ItemResponseData };
