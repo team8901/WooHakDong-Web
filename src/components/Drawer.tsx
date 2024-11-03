@@ -19,7 +19,7 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
   useEffect(() => {
     if (!dialogRef.current) return;
 
-    dialogRef.current.show();
+    dialogRef.current.setAttribute('open', 'true');
   }, []);
 
   const handleNavigate = (path: string) => {
