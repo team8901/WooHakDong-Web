@@ -1,7 +1,9 @@
-const formatPhoneNumber = (number: string) => {
-  if (number.length <= 3) return number;
-  if (number.length <= 7) return `${number.slice(0, 3)}-${number.slice(3)}`;
-  return `${number.slice(0, 3)}-${number.slice(3, 7)}-${number.slice(7)}`;
+const formatPhoneNumber = (numberString: string) => {
+  if (!numberString) return '';
+
+  if (numberString.length <= 3) return numberString;
+  if (numberString.length <= 7) return `${numberString.slice(0, 3)}-${numberString.slice(3)}`;
+  return `${numberString.slice(0, 3)}-${numberString.slice(3, 7)}-${numberString.slice(7)}`;
 };
 
 export default formatPhoneNumber;
