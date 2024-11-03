@@ -13,7 +13,7 @@ const NotClubLayout = () => {
     const checkClubs = async () => {
       const { result } = await getClubsInfo();
 
-      if (result.length > 0 && result.find((club) => club.clubEnglishName === clubEnglishName)) {
+      if (result.length > 0 && result.find((club) => club.clubEnglishName === clubEnglishName) !== undefined) {
         navigate(ROUTE.ROOT);
         return;
       }
