@@ -51,7 +51,7 @@ const ClubRegisterPage = () => {
   return (
     <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
       <div className="masked-overflow flex h-full flex-col gap-[40px] pt-[20px] scrollbar-hide">
-        <Title1 text={`이제 ${clubName}에 가입할 수 있어요! 🥳`} className="text-primary" />
+        <Title1 text={`${clubName}과 함께해요! 🥳`} className="text-primary" />
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[8px]">
