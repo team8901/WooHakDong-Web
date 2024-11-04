@@ -59,7 +59,7 @@ const ClubItemDetailPage = () => {
           />
           <div className="flex flex-col items-center gap-[8px]">
             <Body2 text={CLUB_ITEM_CATEGORY[item.itemCategory]} className="text-darkGray" />
-            <Title3 text={item.itemName} />
+            <Title3 text={item.itemName} className="text-center" />
           </div>
         </div>
 
