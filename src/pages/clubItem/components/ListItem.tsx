@@ -1,6 +1,7 @@
 import HistoryIcon from '@assets/images/item/HistoryIcon';
 import LockIcon from '@assets/images/item/LockIcon';
 import LockOpenIcon from '@assets/images/item/LockOpenIcon';
+import UnavailableIcon from '@assets/images/item/UnavailableIcon';
 import Body2 from '@components/Body2';
 import Body4 from '@components/Body4';
 import useCustomNavigate from '@hooks/useCustomNavigate';
@@ -33,6 +34,12 @@ const ListItem = ({ item }: Readonly<ClubItemListProps>) => {
           </div>
         </div>
         <div className="flex items-center gap-[4px] self-end">
+          {!item.itemAvailable && (
+            <div className="flex items-center gap-[2px]">
+              <UnavailableIcon />
+              <span className="text-red text-[1.2rem]">대여 불가</span>
+            </div>
+          )}
           <div className="flex items-center gap-[2px]">
             {item.itemUsing ? <LockIcon /> : <LockOpenIcon />}
             <span className={`text-[1.2rem] ${item.itemUsing ? 'text-primary' : 'text-gray'}`}>

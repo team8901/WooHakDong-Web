@@ -13,7 +13,7 @@ const ListItem = ({ dues }: { dues: ClubDuesResponseData }) => {
       </div>
       <Body1
         text={`${dues.clubAccountHistoryTranAmount.toLocaleString()}원`}
-        className={`${dues.clubAccountHistoryInOutType === 'DEPOSIT' ? 'text-primary' : 'text-[#E53935]'}`}
+        className={`${dues.clubAccountHistoryInOutType === 'DEPOSIT' ? 'text-primary' : 'text-red'}`}
       />
     </div>
   );

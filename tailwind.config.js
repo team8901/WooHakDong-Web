@@ -15,6 +15,7 @@ export default {
         gray: 'var(--color-gray)',
         darkGray: 'var(--color-darkGray)',
         lightGray: 'var(--color-lightGray)',
+        red: 'var(--color-red)',
       },
       borderColor: {
         primary: 'var(--color-primary)',
