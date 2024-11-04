@@ -20,6 +20,7 @@ export default {
       borderColor: {
         primary: 'var(--color-primary)',
         lightGray: 'var(--color-lightGray)',
+        lightRed: 'var(--color-lightRed)',
       },
       backgroundColor: {
         primary: 'var(--color-primary)',

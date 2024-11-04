@@ -81,7 +81,19 @@ const ClubItemDetailPage = () => {
       </div>
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
-        <Button text={item.itemUsing ? '대여 중' : '대여하기'} onClick={handleBorrow} disabled={item.itemUsing} />
+        <Button
+          text={!item.itemAvailable ? '대여 불가' : item.itemUsing ? '대여 중' : '대여하기'}
+          onClick={handleBorrow}
+          disabled={!item.itemAvailable || item.itemUsing}
+          bgColor={
+            !item.itemAvailable
+              ? 'var(--color-lightRed)'
+              : item.itemUsing
+                ? 'var(--color-lightGray)'
+                : 'var(--color-primary)'
+          }
+          textColor={!item.itemAvailable ? 'var(--color-red)' : item.itemUsing ? 'var(--color-darkGray)' : 'white'}
+        />
       </div>
     </div>
   );
