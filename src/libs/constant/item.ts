@@ -9,14 +9,9 @@ const CLUB_ITEM_CATEGORY = {
   ETC: '기타',
 };
 
-const CLIB_ITEM_CATEGORY_MENU: { label: string; category: ClubItemCategory }[] = [
-  { label: '디지털', category: 'DIGITAL' },
-  { label: '스포츠', category: 'SPORT' },
-  { label: '도서', category: 'BOOK' },
-  { label: '의류', category: 'CLOTHES' },
-  { label: '문구류', category: 'STATIONERY' },
-  { label: '기타', category: 'ETC' },
-];
+const CLIB_ITEM_CATEGORY_MENU: { category: ClubItemCategory; label: string }[] = Object.entries(CLUB_ITEM_CATEGORY).map(
+  ([category, label]) => ({ category: category as ClubItemCategory, label }),
+);
 
 const CLUB_ITEM_DATA: ClubItem[] = [
   {

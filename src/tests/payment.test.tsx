@@ -7,7 +7,7 @@ import ROUTE from '@libs/constant/path';
 
 const mockNavigate = vi.fn();
 
-vi.mock('@hooks/usePrefixedNavigate', () => ({
+vi.mock('@hooks/useCustomNavigate', () => ({
   default: () => mockNavigate,
 }));
 

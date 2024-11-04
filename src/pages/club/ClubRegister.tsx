@@ -1,6 +1,6 @@
 import Button from '@components/Button';
 import Title1 from '@components/Title1';
-import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { useEffect, useState } from 'react';
 import ROUTE from '@libs/constant/path';
 import { getClubInfo } from '@libs/api/club';
@@ -9,7 +9,7 @@ import Caption2 from '@components/Caption2';
 import InputBox from '@components/InputBox';
 
 const ClubRegisterPage = () => {
-  const navigate = usePrefixedNavigate();
+  const navigate = useCustomNavigate();
   const [clubName, setClubName] = useState('');
   const [clubDues, setClubDues] = useState(0);
   const [clubDescription, setClubDescription] = useState('');

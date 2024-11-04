@@ -2,6 +2,7 @@ type InputProps = {
   label: string;
   placeholder: string;
   value: string;
+  name: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   type?: 'text' | 'number';
@@ -13,6 +14,7 @@ const Input = ({
   label,
   placeholder,
   value,
+  name,
   onChange,
   className,
   inputMode = 'text',
@@ -29,6 +31,7 @@ const Input = ({
         inputMode={inputMode}
         placeholder={placeholder}
         value={value}
+        name={name}
         onChange={onChange}
         aria-label={label}
         className={`w-full rounded-[14px] border border-lightGray px-[16px] py-[12px] font-semiBold leading-[2.2rem] placeholder:font-semiBold placeholder:text-gray ${className}`}

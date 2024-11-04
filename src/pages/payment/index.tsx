@@ -1,7 +1,7 @@
 import Button from '@components/Button';
 import PaymentMethodButton from '@pages/payment/components/PaymentMethodButton';
 import Title2 from '@components/Title2';
-import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { useEffect, useRef, useState } from 'react';
 import ROUTE from '@libs/constant/path';
 import { getMemberInfo } from '@libs/api/member';
@@ -13,7 +13,7 @@ import TossPayIcon from '@assets/images/payment/TossPayIcon';
 import { useParams } from 'react-router-dom';
 
 const PaymentPage = () => {
-  const navigate = usePrefixedNavigate();
+  const navigate = useCustomNavigate();
   // 결제 버튼 인덱스를 저장하는 상태
   const [paymentButtonIndex, setPaymentButtonIndex] = useState(0);
   const [clubId, setClubId] = useState(0);

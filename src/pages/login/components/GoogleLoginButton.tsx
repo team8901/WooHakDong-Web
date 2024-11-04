@@ -2,7 +2,7 @@ import GoogleIcon from '@assets/images/logos/GoogleIcon';
 import Button from '@components/Button';
 import { auth } from '@config/firebaseConfig';
 import { useAuth } from '@contexts/AuthContext';
-import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { fetchLoginData } from '@libs/api/auth';
 import ROUTE from '@libs/constant/path';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
@@ -10,7 +10,7 @@ import { useState } from 'react';
 
 const GoogleLoginButton = () => {
   const { login } = useAuth();
-  const navigate = usePrefixedNavigate();
+  const navigate = useCustomNavigate();
   const [loading, setLoading] = useState(false);
 
   const handleGoogleLogin = async () => {

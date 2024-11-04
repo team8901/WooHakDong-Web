@@ -1,11 +1,7 @@
 import Body1 from '@components/Body1';
+import { TextProps } from '@components/Title1';
 
-type InputBoxProps = {
-  text: string;
-  className?: string;
-};
-
-const InputBox = ({ text, className }: Readonly<InputBoxProps>) => {
+const InputBox = ({ text, className }: Readonly<TextProps>) => {
   return (
     <Body1
       text={text}

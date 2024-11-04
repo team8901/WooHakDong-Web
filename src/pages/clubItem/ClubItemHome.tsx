@@ -1,7 +1,7 @@
 import AppBar from '@components/AppBar';
 import Body3 from '@components/Body3';
 import { useSearch } from '@contexts/SearchContext';
-import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { getClubInfo } from '@libs/api/club';
 import { getClubItems } from '@libs/api/item';
 import { CLIB_ITEM_CATEGORY_MENU } from '@libs/constant/item';
@@ -18,7 +18,7 @@ const ClubItemHomePage = () => {
   const [filteredItemList, setFilteredItemList] = useState<ClubItem[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { searchQuery } = useSearch();
-  const navigate = usePrefixedNavigate();
+  const navigate = useCustomNavigate();
 
   const handleTabChange = (categoryName: string) => {
     setActiveTab(categoryName);
