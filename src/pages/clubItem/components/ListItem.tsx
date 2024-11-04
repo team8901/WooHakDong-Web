@@ -25,10 +25,10 @@ const ListItem = ({ item }: Readonly<ClubItemListProps>) => {
       />
       <div className="flex w-full flex-col items-start gap-[4px]">
         <div className="flex flex-col items-start gap-[2px]">
-          <Body2 text={item.itemName} />
+          <Body2 text={item.itemName} className="line-clamp-1 text-start" />
           <div className="flex items-center gap-[4px]">
             <Body4 text={CLUB_ITEM_CATEGORY[item.itemCategory]} className="text-darkGray" />
-            <div className="h-[8px] w-[1px] bg-gray"></div>
+            <div className="h-[8px] w-[1px] bg-gray" />
             <Body4 text={item.itemLocation} className="text-darkGray" />
           </div>
         </div>
