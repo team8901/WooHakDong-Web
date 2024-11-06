@@ -14,7 +14,7 @@ const BottomSheet = ({ isOpen, selectedOption, bottomSheetRef, setSelectedOption
   return (
     <div ref={bottomSheetRef} className={`absolute left-0 top-0 z-20 h-full w-full bg-black/30 ${isOpen || 'hidden'}`}>
       <div className="absolute bottom-0 left-0 w-full">
-        <div className="flex flex-col gap-[20px] rounded-t-[14px] bg-white pb-[30px] pt-[20px]">
+        <div className="flex flex-col gap-[20px] rounded-t-[14px] bg-white pb-[52px] pt-[20px]">
           <div className="h-[5px] w-[50px] self-center rounded-[14px] bg-lightGray" />
           <div className="flex flex-col gap-[20px] px-[20px]">
             <Title3 text="회비 내역 유형 선택" />

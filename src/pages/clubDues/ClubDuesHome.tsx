@@ -60,26 +60,34 @@ const ClubDuesHomePage = () => {
         <AppBar hasMenu />
       </div>
 
-      <div className="flex flex-col items-end gap-[4px] px-[20px] pb-[16px]">
+      <div className="flex flex-col items-end gap-[4px] px-[20px] py-[20px] pb-[40px]">
         <Caption2 text="현재 남은 회비" />
-        <Title1 text="1,240,000원" />
+        <Title1 text="1,240,000원" className="text-[2.8rem] font-extrabold" />
       </div>
-
-      <div className="h-[5px] bg-lightGray" />
 
       <button
         type="button"
-        className="flex items-center gap-[4px] px-[20px] pt-[16px]"
+        className="flex items-center gap-[4px] px-[20px]"
         onClick={() => setIsOpen((prev) => !prev)}
       >
         <Body4 text={CLUB_DUES_SORT_OPTIONS[selectedOption].label} className="text-darkGray" />
         <ChevronBottomGrayIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
       </button>
 
-      <ScrollView fadeTop className="flex h-full flex-col gap-[16px] px-[20px] py-[16px]">
-        {filteredDuesList.map((dues) => (
-          <ListItem key={dues.clubAccountHistoryId} dues={dues} />
-        ))}
+      <ScrollView fadeTop className="h-full flex-col gap-[20px] px-[20px] pt-[20px]">
+        {filteredDuesList.length === 0 ? (
+          <div className="flex h-full items-center justify-center">아직 사용한 회비가 없습니다.</div>
+        ) : (
+          <div className="flex flex-col gap-[20px]">
+            <ListItem dues={filteredDuesList[0]} />
+            {filteredDuesList.slice(1).map((dues) => (
+              <div key={dues.clubAccountHistoryTranDate} className="flex flex-col gap-[20px]">
+                <div className="h-[0.6px] bg-lightGray" />
+                <ListItem key={dues.clubAccountHistoryId} dues={dues} />
+              </div>
+            ))}
+          </div>
+        )}
       </ScrollView>
 
       <BottomSheet
