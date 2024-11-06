@@ -24,7 +24,9 @@ const ListItem = ({ member }: Readonly<ClubMemberListProps>) => {
             </div>
           )}
           {member.memberId === 4 && (
-            <Caption2 text={'나'} className="h-[18px] rounded-[7px] bg-gray px-[6px] text-white" />
+            <div className="flex h-[18px] items-center justify-center rounded-[7px] bg-gray px-[6px] text-white">
+              <Caption2 text={'나'} />
+            </div>
           )}
         </div>
         <Body2 text={member.memberMajor} className="text-darkGray" />
