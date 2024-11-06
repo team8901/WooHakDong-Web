@@ -7,6 +7,7 @@ import { getClubInfo } from '@libs/api/club';
 import { useParams } from 'react-router-dom';
 import Caption2 from '@components/Caption2';
 import InputBox from '@components/InputBox';
+import ScrollView from '@components/ScrollView';
 
 const ClubRegisterPage = () => {
   const navigate = useCustomNavigate();
@@ -50,7 +51,7 @@ const ClubRegisterPage = () => {
 
   return (
     <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
-      <div className="masked-overflow flex h-full flex-col gap-[40px] pt-[20px] scrollbar-hide">
+      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px] pt-[20px]">
         <Title1 text={`${clubName}과 함께해요! 🥳`} className="text-primary" />
 
         <div className="flex flex-col gap-[20px]">
@@ -73,7 +74,7 @@ const ClubRegisterPage = () => {
             />
           </div>
         </div>
-      </div>
+      </ScrollView>
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button text="회비 납부하기" onClick={handleButtonClick} />

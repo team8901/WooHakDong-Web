@@ -26,7 +26,7 @@ const ClubCard = ({ club, onClick }: Readonly<ClubCardProps>) => {
           </div>
           <div className="flex items-center gap-[4px]">
             <LocationIcon />
-            <Body2 text={club.clubRoom} className="line-clamp-2" />
+            <Body2 text={club.clubRoom} className="line-clamp-2 text-start" />
           </div>
           <div className="flex items-center gap-[4px]">
             <DuesIcon />

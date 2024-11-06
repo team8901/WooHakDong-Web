@@ -2,6 +2,7 @@ import AppBar from '@components/AppBar';
 import Body2 from '@components/Body2';
 import Body4 from '@components/Body4';
 import Button from '@components/Button';
+import ScrollView from '@components/ScrollView';
 import Title2 from '@components/Title2';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import ROUTE from '@libs/constant/path';
@@ -19,7 +20,7 @@ const ClubJoinNoticePage = () => {
         <AppBar />
       </div>
 
-      <div className="masked-overflow flex h-full flex-col gap-[40px] pt-[20px] scrollbar-hide">
+      <ScrollView className="flex h-full flex-col gap-[40px] pt-[20px]">
         <div>
           <Title2 text="가입 신청 전에 " />
           <Title2 text="알아야 할 사항" className="text-primary" />
@@ -59,7 +60,7 @@ const ClubJoinNoticePage = () => {
             />
           </div>
         </div>
-      </div>
+      </ScrollView>
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button text="다 읽었어요" onClick={handleButtonClick} />

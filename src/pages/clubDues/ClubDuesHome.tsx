@@ -2,6 +2,7 @@ import ChevronBottomGrayIcon from '@assets/images/chevrons/ChevronBottomGrayIcon
 import AppBar from '@components/AppBar';
 import Body4 from '@components/Body4';
 import Caption2 from '@components/Caption2';
+import ScrollView from '@components/ScrollView';
 import Title1 from '@components/Title1';
 import { getClubInfo } from '@libs/api/club';
 import { getClubDues } from '@libs/api/dues';
@@ -52,11 +53,11 @@ const ClubDuesHomePage = () => {
         <ChevronBottomGrayIcon />
       </button>
 
-      <div className="masked-overflow flex h-full flex-col gap-[16px] px-[20px] py-[16px] scrollbar-hide">
+      <ScrollView fadeTop className="flex h-full flex-col gap-[16px] px-[20px] py-[16px]">
         {duesList.map((dues) => (
           <ListItem key={dues.clubAccountHistoryId} dues={dues} />
         ))}
-      </div>
+      </ScrollView>
     </div>
   );
 };

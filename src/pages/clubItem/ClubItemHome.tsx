@@ -1,5 +1,6 @@
 import AppBar from '@components/AppBar';
 import Body3 from '@components/Body3';
+import ScrollView from '@components/ScrollView';
 import { useSearch } from '@contexts/SearchContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { getClubInfo } from '@libs/api/club';
@@ -83,7 +84,7 @@ const ClubItemHomePage = () => {
         ))}
       </div>
 
-      <div className="masked-overflow flex h-full flex-col gap-[20px] p-[20px] scrollbar-hide">
+      <ScrollView fadeTop className="flex h-full flex-col gap-[20px] p-[20px]">
         {filteredItemList.length === 0 ? (
           <div className="flex h-full items-center justify-center">아직 등록된 물품이 없습니다.</div>
         ) : (
@@ -97,7 +98,7 @@ const ClubItemHomePage = () => {
             ))}
           </div>
         )}
-      </div>
+      </ScrollView>
     </div>
   );
 };

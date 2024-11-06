@@ -1,3 +1,4 @@
+import ScrollView from '@components/ScrollView';
 import Title2 from '@components/Title2';
 import { CLUB_LIST_DATA } from '@libs/constant/club';
 import ROUTE from '@libs/constant/path';
@@ -17,11 +18,11 @@ const ClubListPage = () => {
         <Title2 text="아주대학교 동아리 목록이에요" />
       </div>
 
-      <div className="masked-overflow grid grid-cols-2 gap-[12px] py-[20px] scrollbar-hide">
+      <ScrollView fadeTop className="grid grid-cols-2 gap-[12px] py-[20px]">
         {CLUB_LIST_DATA.map((club) => (
           <ClubCard key={club.clubId} club={club} onClick={() => navigate(`${ROUTE.CLUB}/${club.clubEnglishName}`)} />
         ))}
-      </div>
+      </ScrollView>
     </div>
   );
 };

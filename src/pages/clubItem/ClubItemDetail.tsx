@@ -3,6 +3,7 @@ import Body1 from '@components/Body1';
 import Body2 from '@components/Body2';
 import Button from '@components/Button';
 import Caption2 from '@components/Caption2';
+import ScrollView from '@components/ScrollView';
 import Title3 from '@components/Title3';
 import { getClubInfo } from '@libs/api/club';
 import { postClubItemBorrow } from '@libs/api/item';
@@ -49,7 +50,7 @@ const ClubItemDetailPage = () => {
         <AppBar />
       </div>
 
-      <div className="masked-overflow flex h-full flex-col gap-[40px] p-[20px] scrollbar-hide">
+      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px] p-[20px]">
         <div className="flex flex-col items-center gap-[20px]">
           <img
             alt="물품"
@@ -78,7 +79,7 @@ const ClubItemDetailPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </ScrollView>
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button

@@ -1,4 +1,5 @@
 import AppBar from '@components/AppBar';
+import ScrollView from '@components/ScrollView';
 import { useSearch } from '@contexts/SearchContext';
 import { getClubInfo } from '@libs/api/club';
 import { getClubItems } from '@libs/api/item';
@@ -39,7 +40,7 @@ const ClubItemSearchPage = () => {
         <AppBar goBackCallback={handleGoBack} hasSearch showSearchInput />
       </div>
 
-      <div className="masked-overflow flex h-full flex-col gap-[20px] p-[20px] scrollbar-hide">
+      <ScrollView fadeTop className="flex h-full flex-col gap-[20px] p-[20px]">
         {itemList.length === 0 ? (
           <div className="flex h-full items-center justify-center">아직 등록된 물품이 없습니다.</div>
         ) : (
@@ -53,7 +54,7 @@ const ClubItemSearchPage = () => {
             ))}
           </div>
         )}
-      </div>
+      </ScrollView>
     </div>
   );
 };
