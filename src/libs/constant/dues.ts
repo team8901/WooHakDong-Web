@@ -35,4 +35,10 @@ const CLUB_DUES_DATA: ClubDuesResponseData[] = [
   },
 ];
 
-export { CLUB_DUES_DATA };
+const CLUB_DUES_SORT_OPTIONS = [
+  { label: '전체', value: 'ALL', id: 0 },
+  { label: '입금', value: 'DEPOSIT', id: 1 },
+  { label: '출금', value: 'WITHDRAW', id: 2 },
+];
+
+export { CLUB_DUES_DATA, CLUB_DUES_SORT_OPTIONS };
