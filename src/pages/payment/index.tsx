@@ -11,6 +11,7 @@ import { postPortOne } from '@libs/api/payment';
 import KakaoPayIcon from '@assets/images/payment/KakaoPayIcon';
 import TossPayIcon from '@assets/images/payment/TossPayIcon';
 import { useParams } from 'react-router-dom';
+import ScrollView from '@components/ScrollView';
 
 const PaymentPage = () => {
   const navigate = useCustomNavigate();
@@ -108,7 +109,7 @@ const PaymentPage = () => {
 
   return (
     <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
-      <div className="masked-overflow flex h-full flex-col gap-[40px] pt-[20px] scrollbar-hide">
+      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px] pt-[20px]">
         <Title2 text="결제 방법을 선택해주세요" />
         <div className="grid grid-cols-2 flex-wrap justify-center gap-[20px]">
           {paymentMethods.map((method) => (
@@ -120,7 +121,7 @@ const PaymentPage = () => {
             />
           ))}
         </div>
-      </div>
+      </ScrollView>
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button text="결제하기" onClick={handleButtonClick} />

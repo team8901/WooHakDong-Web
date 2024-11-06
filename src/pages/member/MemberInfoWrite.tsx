@@ -11,6 +11,7 @@ import InputBox from '@components/InputBox';
 import GenderSelection from '@pages/member/components/GenderSelection';
 import { Gender, MemberInfoResponseData } from 'types/member';
 import formatPhoneNumber from '@libs/util/formatPhoneNumber';
+import ScrollView from '@components/ScrollView';
 
 const MemberInfoWritePage = () => {
   const navigate = useCustomNavigate();
@@ -51,7 +52,7 @@ const MemberInfoWritePage = () => {
         <AppBar />
       </div>
 
-      <div className="masked-overflow flex h-full flex-col gap-[40px] pt-[20px] scrollbar-hide">
+      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px] pt-[20px]">
         <Title2 text="회원님의 정보를 알려주세요" />
 
         <div className="flex flex-col gap-[20px]">
@@ -91,7 +92,7 @@ const MemberInfoWritePage = () => {
             />
           </div>
         </div>
-      </div>
+      </ScrollView>
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button

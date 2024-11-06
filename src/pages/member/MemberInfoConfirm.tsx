@@ -2,6 +2,7 @@ import AppBar from '@components/AppBar';
 import Body1 from '@components/Body1';
 import Button from '@components/Button';
 import Caption2 from '@components/Caption2';
+import ScrollView from '@components/ScrollView';
 import Title2 from '@components/Title2';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { postMemberInfo } from '@libs/api/member';
@@ -46,7 +47,7 @@ const MemberInfoConfirmPage = () => {
         <AppBar />
       </div>
 
-      <div className="masked-overflow flex h-full flex-col gap-[40px] pt-[20px] scrollbar-hide">
+      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px] pt-[20px]">
         <Title2 text="회원님의 정보가 맞으신가요?" />
 
         <div className="flex flex-col gap-[20px]">
@@ -69,7 +70,7 @@ const MemberInfoConfirmPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </ScrollView>
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button text="맞아요" onClick={handleButtonClick} />
