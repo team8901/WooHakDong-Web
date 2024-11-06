@@ -36,7 +36,7 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
         <div className="flex flex-col gap-[20px] px-[20px] py-[103px]">
           <Title1 text={clubEnglishName || ''} />
 
-          <button className="flex items-center justify-between">
+          <button className="flex items-center justify-between" onClick={() => handleNavigate(ROUTE.MEMBER)}>
             <Body1 text="회원" />
             <ChevronRightGrayIcon />
           </button>
