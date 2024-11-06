@@ -1,19 +1,36 @@
 import AppBar from '@components/AppBar';
 import Body4 from '@components/Body4';
 import ScrollView from '@components/ScrollView';
-import { CLUB_MEMBER_DATA } from '@libs/constant/clubMember';
+import { getClubInfo } from '@libs/api/club';
+import { getClubMemberList } from '@libs/api/clubMember';
+// import { CLUB_MEMBER_DATA } from '@libs/constant/clubMember';
 import ListItem from '@pages/clubMember/components/ListItem';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { ClubMemberResponseData } from 'types/clubMember';
 
 const ClubMemberHomePage = () => {
   const [officeMemberList, setOfficeMemberList] = useState<ClubMemberResponseData[]>([]);
   const [memberList, setMemberList] = useState<ClubMemberResponseData[]>([]);
+  const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
 
   useEffect(() => {
     (async () => {
-      const officeMember = CLUB_MEMBER_DATA.filter((member) => member.clubMemberRole !== 'MEMBER');
-      const member = CLUB_MEMBER_DATA.filter((member) => member.clubMemberRole === 'MEMBER');
+      if (!clubEnglishName) return;
+
+      const { clubId } = await getClubInfo({
+        clubEnglishName,
+      });
+
+      const now = new Date();
+      const formattedDate = now.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
+      const { result } = await getClubMemberList({ clubId, clubMemberAssignedTerm: formattedDate });
+
+      const officeMember = result.filter((member) => member.clubMemberRole !== 'MEMBER');
+      const member = result.filter((member) => member.clubMemberRole === 'MEMBER');
+      // const officeMember = CLUB_MEMBER_DATA.filter((member) => member.clubMemberRole !== 'MEMBER');
+      // const member = CLUB_MEMBER_DATA.filter((member) => member.clubMemberRole === 'MEMBER');
 
       setOfficeMemberList(officeMember);
       setMemberList(member);
