@@ -12,7 +12,7 @@ type ClubMemberRole = 'MEMBER' | 'OFFICER' | 'PRESIDENT' | 'VICEPRESIDENT' | 'SE
 
 type ClubMemberRequestData = {
   clubId: number;
-  clubMemberAssignedTerm: string; // 24-1
+  clubMemberAssignedTerm: string;
 };
 
 type ClubMemberResponseData = {

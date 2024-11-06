@@ -9,20 +9,19 @@ import { ClubMemberListProps } from 'types/clubMember';
 const ListItem = ({ member }: Readonly<ClubMemberListProps>) => {
   const navigate = useCustomNavigate();
 
-  const handleMemberClick = (memberId: number) => {
-    navigate(`${ROUTE.MEMBER}/${memberId}`, { state: { member } });
+  const handleMemberClick = () => {
+    navigate(`${ROUTE.MEMBER}/${member.memberId}`, { state: { member } });
   };
 
   return (
-    <button className="flex items-center justify-between" onClick={() => handleMemberClick(member.memberId)}>
+    <button className="flex items-center justify-between" onClick={() => handleMemberClick()}>
       <div className="flex flex-col items-start gap-[2px]">
         <div className="flex items-center gap-[4px]">
           <Body2 text={member.memberName} className="line-clamp-1 text-start" />
           {member.clubMemberRole !== 'MEMBER' && (
-            <Caption2
-              text={CLUB_MEMBER_ROLE[member.clubMemberRole]}
-              className="h-[18px] rounded-[7px] bg-lightPrimary px-[6px] text-primary"
-            />
+            <div className="flex h-[18px] items-center justify-center rounded-[7px] bg-lightPrimary px-[6px] text-primary">
+              <Caption2 text={CLUB_MEMBER_ROLE[member.clubMemberRole]} />
+            </div>
           )}
           {member.memberId === 4 && (
             <Caption2 text={'나'} className="h-[18px] rounded-[7px] bg-gray px-[6px] text-white" />
