@@ -6,15 +6,18 @@ import { ClubDuesResponseData } from 'types/dues';
 
 const ListItem = ({ dues }: { dues: ClubDuesResponseData }) => {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex flex-col gap-[4px]">
       <div className="flex flex-col gap-[2px]">
-        <Body2 text={dues.clubAccountHistoryContent} />
         <Body4 text={formatDate(dues.clubAccountHistoryTranDate)} className="text-darkGray" />
+        <Body2 text={dues.clubAccountHistoryContent} className="text-[1.8rem]" />
       </div>
-      <Body1
-        text={`${dues.clubAccountHistoryTranAmount.toLocaleString()}원`}
-        className={`${dues.clubAccountHistoryInOutType === 'DEPOSIT' ? 'text-primary' : 'text-red'}`}
-      />
+      <div className="flex flex-col items-end gap-[2px] self-end">
+        <Body1
+          text={`${dues.clubAccountHistoryInOutType === 'DEPOSIT' ? '' : '-'}${dues.clubAccountHistoryTranAmount.toLocaleString()}원`}
+          className={`${dues.clubAccountHistoryInOutType === 'DEPOSIT' ? 'text-primary' : 'text-red'}`}
+        />
+        <Body4 text={`${dues.clubAccountHistoryBalanceAmount.toLocaleString()}원`} className="text-darkGray" />
+      </div>
     </div>
   );
 };
