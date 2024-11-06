@@ -1,17 +1,10 @@
 import axiosInstance from '@libs/api/axiosInstance';
-import ROUTE from '@libs/constant/path';
 import { MemberInfoRequestData, MemberInfoResponseData } from 'types/member';
 
 const getMemberInfo = async () => {
-  try {
-    const res = await axiosInstance.get<MemberInfoResponseData>(`/v1/members/info`);
+  const res = await axiosInstance.get<MemberInfoResponseData>(`/v1/members/info`);
 
-    return res.data;
-  } catch (error) {
-    console.error(error);
-    alert('등록되지 않은 회원입니다.');
-    location.replace(ROUTE.LOGIN_REGISTER);
-  }
+  return res.data;
 };
 
 const postMemberInfo = async ({

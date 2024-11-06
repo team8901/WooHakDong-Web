@@ -27,18 +27,29 @@ axiosInstance.interceptors.response.use(
   },
   async function (error) {
     const originalRequest = error.config;
+
     if ((error.response.status === 401 || error.response.status === 403) && !originalRequest._retry) {
       if (!localStorage.getItem('refreshToken')) {
         alert('로그인이 필요한 페이지입니다.');
         location.replace(ROUTE.ROOT);
         return;
       }
+
       originalRequest._retry = true;
       const accessToken = await refreshAccessToken();
       axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
       return axiosInstance(originalRequest);
     }
+
     console.error(`${error.response.data.message}`);
+
+    if (error.response.data.message === 'member not found') {
+      alert('로그인이 필요한 페이지입니다.');
+      location.replace(ROUTE.ROOT);
+      return;
+    }
+
     return Promise.reject(new Error(error.response.data.message));
   },
 );
