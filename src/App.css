@@ -71,26 +71,20 @@ dialog {
   /* If content exceeds height of container, overflow! */
   overflow-y: auto;
 
-  /* Our height limit */
-  /* height: 300px; */
+  /* Our height limit
+  height: 300px; */
 
   /* Need to make sure container has bottom space,
 otherwise content at the bottom is always faded out */
   padding-bottom: var(--mask-height);
 
-  /* Keep some space between content and scrollbar */
-  /* padding-right: 20px; */
+  /* Keep some space between content and scrollbar
+  padding-right: 20px; */
 
   /* The CSS mask */
 
-  /* The content mask is a linear gradient from top to bottom */
-  /* --mask-image-content: linear-gradient(
-    to bottom,
-    transparent,
-    white var(--mask-height),
-    white calc(100% - var(--mask-height)),
-    transparent
-  ); */
+  /* The content mask is a linear gradient from top to bottom
+  Replace into ScrollView Component */
 
   /* Here we scale the content gradient to the width of the container 
 minus the scrollbar width. The height is the full container height */
