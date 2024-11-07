@@ -2,8 +2,9 @@ import ChevronRightGrayIcon from '@assets/images/chevrons/ChevronRightGrayIcon';
 import Body1 from '@components/Body1';
 import Title1 from '@components/Title1';
 import useCustomNavigate from '@hooks/useCustomNavigate';
+import { getClubInfo } from '@libs/api/club';
 import ROUTE from '@libs/constant/path';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 type DrawerProps = {
@@ -15,6 +16,19 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const navigate = useCustomNavigate();
+  const [clubName, setClubName] = useState('');
+
+  useEffect(() => {
+    if (!clubEnglishName) return;
+
+    (async () => {
+      const { clubName } = await getClubInfo({
+        clubEnglishName,
+      });
+
+      setClubName(clubName);
+    })();
+  }, [clubEnglishName]);
 
   useEffect(() => {
     if (!dialogRef.current) return;
@@ -34,7 +48,7 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
         className={`absolute left-0 top-0 z-50 h-full w-[55%] transform bg-white transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0 shadow-lg' : '-translate-x-full'}`}
       >
         <div className="flex flex-col gap-[20px] px-[20px] py-[103px]">
-          <Title1 text={clubEnglishName || ''} />
+          <Title1 text={clubName} />
 
           <button className="flex items-center justify-between" onClick={() => handleNavigate(ROUTE.MEMBER)}>
             <Body1 text="회원" />
