@@ -13,6 +13,7 @@ const ROUTE = {
   ITEM: '/items',
   ITEM_SEARCH: '/items/search',
   DUES: '/dues',
+  MEMBER: '/members',
 };
 
 export default ROUTE;

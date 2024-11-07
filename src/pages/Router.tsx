@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 import ClubJoinNoticePage from '@pages/club/ClubJoinNotice';
-import ClubMemberHomePage from '@pages/club/ClubMemberHome';
+import ClubMemberHomePage from '@pages/clubMember/ClubMemberHome';
 import ClubRegisterPage from '@pages/club/ClubRegister';
 import MemberRegisterPage from '@pages/member/MemberRegister';
 import MemberInfoWritePage from '@pages/member/MemberInfoWrite';
@@ -22,6 +22,7 @@ import ClubItemHomePage from '@pages/clubItem/ClubItemHome';
 import ClubItemSearchPage from '@pages/clubItem/ClubItemSearch';
 import ClubItemDetailPage from '@pages/clubItem/ClubItemDetail';
 import ClubDuesHomePage from '@pages/clubDues/ClubDuesHome';
+import ClubMemberDetailPage from '@pages/clubMember/ClubMemberDetail';
 
 export const Router = () => {
   return (
@@ -54,6 +55,8 @@ export const Router = () => {
             {/* 해당 동아리에 가입하지 않은 사용자가 접근할 수 없는 페이지 */}
             <Route element={<ClubLayout />}>
               <Route path={ROUTE.ROOT.slice(1)} element={<ClubMemberHomePage />} />
+              <Route path={ROUTE.MEMBER.slice(1)} element={<ClubMemberHomePage />} />
+              <Route path={`${ROUTE.MEMBER.slice(1)}/:memberId`} element={<ClubMemberDetailPage />} />
               <Route path={ROUTE.ITEM.slice(1)} element={<ClubItemHomePage />} />
               <Route path={ROUTE.ITEM_SEARCH.slice(1)} element={<ClubItemSearchPage />} />
               <Route path={`${ROUTE.ITEM.slice(1)}/:itemId`} element={<ClubItemDetailPage />} />

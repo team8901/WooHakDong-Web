@@ -66,13 +66,13 @@ const ClubItemDetailPage = () => {
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[8px]">
-            <Caption2 text="물품 설명" />
+            <Caption2 text="물품 설명" className="text-darkGray" />
             <div className="rounded-[14px] border border-lightGray p-[16px]">
               <Body1 text={item.itemDescription} className="text-justify" />
             </div>
           </div>
           <div className="flex flex-col gap-[8px]">
-            <Caption2 text="물품 위치 및 대여 가능 일 수" />
+            <Caption2 text="물품 위치 및 대여 가능 일 수" className="text-darkGray" />
             <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray p-[16px]">
               <Body1 text={item.itemLocation} />
               <Body1 text={`${item.itemRentalMaxDay}일`} />
