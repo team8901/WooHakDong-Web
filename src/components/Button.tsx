@@ -1,3 +1,5 @@
+import LoadingSpinner from '@components/LoadingSpinner';
+
 type ButtonProps = {
   text: string;
   textColor?: string;
@@ -6,6 +8,7 @@ type ButtonProps = {
   icon?: JSX.Element;
   onClick?: () => void;
   disabled?: boolean;
+  loading?: boolean;
 };
 
 const Button = ({
@@ -16,10 +19,11 @@ const Button = ({
   icon,
   onClick,
   disabled = false,
+  loading = false,
 }: Readonly<ButtonProps>) => {
   return (
     <button
-      className="round-[20px] flex h-[52px] w-full items-center justify-center gap-[11px] rounded-[14px] font-semiBold"
+      className="round-[20px] flex h-[52px] w-full items-center justify-center rounded-[14px] font-semiBold"
       style={{
         fontSize,
         color: textColor,
@@ -28,8 +32,14 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
     >
-      {icon}
-      {text}
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <div className="flex items-center gap-[11px]">
+          {icon}
+          <span>{text}</span>
+        </div>
+      )}
     </button>
   );
 };

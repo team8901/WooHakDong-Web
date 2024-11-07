@@ -1,25 +1,28 @@
-import Body1 from '@components/Body1';
 import Button from '@components/Button';
-import Subtitle from '@components/Subtitle';
 import Title1 from '@components/Title1';
-import usePrefixedNavigate from '@hooks/usePrefixedNavigate';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { useEffect, useState } from 'react';
 import ROUTE from '@libs/constant/path';
 import { getClubInfo } from '@libs/api/club';
+import { useParams } from 'react-router-dom';
+import Caption2 from '@components/Caption2';
+import InputBox from '@components/InputBox';
+import ScrollView from '@components/ScrollView';
 
 const ClubRegisterPage = () => {
-  const navigate = usePrefixedNavigate();
+  const navigate = useCustomNavigate();
   const [clubName, setClubName] = useState('');
   const [clubDues, setClubDues] = useState(0);
   const [clubDescription, setClubDescription] = useState('');
   const [clubRoom, setClubRoom] = useState('');
+  const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
 
   const handleButtonClick = () => {
     navigate(ROUTE.PAYMENT);
   };
 
   useEffect(() => {
-    const clubEnglishName = location.pathname.split('/')[1];
+    if (!clubEnglishName) return;
     // setClubName(clubEnglishName);
     // setClubDues(20000);
     // setClubDescription(
@@ -28,43 +31,50 @@ const ClubRegisterPage = () => {
     // setClubRoom("구학생회관 234호");
 
     const checkClub = async () => {
-      const { clubName, clubDues, clubDescription, clubRoom } = await getClubInfo({
-        clubEnglishName,
-      });
-      setClubName(clubName);
-      setClubDues(clubDues);
-      setClubDescription(clubDescription);
-      setClubRoom(clubRoom);
+      try {
+        const { clubName, clubDues, clubDescription, clubRoom } = await getClubInfo({
+          clubEnglishName,
+        });
+
+        setClubName(clubName);
+        setClubDues(clubDues);
+        setClubDescription(clubDescription);
+        setClubRoom(clubRoom);
+      } catch (error) {
+        alert(`동아리 정보를 불러오는 중 오류가 발생했습니다. ${error}`);
+        location.replace(ROUTE.CLUB_LIST);
+      }
     };
+
     checkClub();
   }, []);
 
   return (
     <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
-      <div className="masked-overflow flex h-full flex-col gap-[40px] pt-[20px] scrollbar-hide">
-        <Title1 text={`이제 ${clubName}에 가입할 수 있어요! 🥳`} className="text-primary" />
+      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px] pt-[20px]">
+        <Title1 text={`${clubName}과 함께해요! 🥳`} className="text-primary" />
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[8px]">
-            <Subtitle text="동아리 회비" />
-            <div className="rounded-[14px] border border-lightGray px-[16px] py-[14px]">
-              <Body1 text={`${clubDues.toLocaleString()}원`} />
-            </div>
+            <Caption2 text="동아리 회비" />
+            <InputBox text={`${clubDues.toLocaleString()} 원`} />
           </div>
           <div className="flex flex-col gap-[8px]">
-            <Subtitle text="동아리 설명" />
-            <div className="rounded-[14px] border border-lightGray px-[16px] py-[14px] text-justify">
-              <Body1 text={clubDescription} />
-            </div>
+            <Caption2 text="동아리 설명" />
+            <InputBox
+              text={clubDescription || '등록된 정보가 없습니다.'}
+              className={`${clubDescription === '' ? 'text-darkGray' : ''}`}
+            />
           </div>
           <div className="flex flex-col gap-[8px]">
-            <Subtitle text="동아리 방" />
-            <div className="rounded-[14px] border border-lightGray px-[16px] py-[14px]">
-              <Body1 text={clubRoom} />
-            </div>
+            <Caption2 text="동아리 방" />
+            <InputBox
+              text={clubRoom || '등록된 정보가 없습니다.'}
+              className={`${clubRoom === '' ? 'text-darkGray' : ''}`}
+            />
           </div>
         </div>
-      </div>
+      </ScrollView>
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button text="회비 납부하기" onClick={handleButtonClick} />

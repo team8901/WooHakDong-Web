@@ -2,7 +2,8 @@ import axiosInstance from '@libs/api/axiosInstance';
 import { MemberInfoRequestData, MemberInfoResponseData } from 'types/member';
 
 const getMemberInfo = async () => {
-  const res = await axiosInstance.get<MemberInfoResponseData>(`/v1/member/info`);
+  const res = await axiosInstance.get<MemberInfoResponseData>(`/v1/members/info`);
+
   return res.data;
 };
 
@@ -19,7 +20,7 @@ const postMemberInfo = async ({
     memberGender,
   };
 
-  await axiosInstance.post(`/v1/member/info`, data);
+  await axiosInstance.post(`/v1/members/info`, data);
 };
 
 export { getMemberInfo, postMemberInfo };
