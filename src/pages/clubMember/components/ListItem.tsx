@@ -9,12 +9,17 @@ import { ClubMemberListProps } from 'types/clubMember';
 const ListItem = ({ member }: Readonly<ClubMemberListProps>) => {
   const navigate = useCustomNavigate();
 
+  const isOffice = member.clubMemberRole !== 'MEMBER';
+
   const handleMemberClick = () => {
     navigate(`${ROUTE.MEMBER}/${member.memberId}`, { state: { member } });
   };
 
   return (
-    <button className="flex items-center justify-between" onClick={() => handleMemberClick()}>
+    <button
+      className={`flex items-center justify-between ${isOffice ? '' : 'cursor-default'}`}
+      onClick={() => (isOffice ? handleMemberClick() : null)}
+    >
       <div className="flex flex-col items-start gap-[2px]">
         <div className="flex items-center gap-[4px]">
           <Body2 text={member.memberName} className="line-clamp-1 text-start" />
@@ -31,7 +36,7 @@ const ListItem = ({ member }: Readonly<ClubMemberListProps>) => {
         </div>
         <Body2 text={member.memberMajor} className="text-darkGray" />
       </div>
-      <ChevronRightGrayIcon />
+      {isOffice && <ChevronRightGrayIcon />}
     </button>
   );
 };
