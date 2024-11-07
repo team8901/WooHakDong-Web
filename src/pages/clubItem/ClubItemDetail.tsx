@@ -44,6 +44,42 @@ const ClubItemDetailPage = () => {
     }
   };
 
+  const getButtonText = (item: ClubItem) => {
+    if (!item.itemAvailable) {
+      return '대여 불가';
+    }
+
+    if (item.itemUsing) {
+      return '대여 중';
+    }
+
+    return '대여하기';
+  };
+
+  const getButtonBgColor = (item: ClubItem) => {
+    if (!item.itemAvailable) {
+      return 'var(--color-lightRed)';
+    }
+
+    if (item.itemUsing) {
+      return 'var(--color-lightGray)';
+    }
+
+    return 'var(--color-primary)';
+  };
+
+  const getTextColor = (item: ClubItem) => {
+    if (!item.itemAvailable) {
+      return 'var(--color-red)';
+    }
+
+    if (item.itemUsing) {
+      return 'var(--color-darkGray)';
+    }
+
+    return 'white';
+  };
+
   return (
     <div className="relative h-full pb-[70px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
@@ -83,17 +119,11 @@ const ClubItemDetailPage = () => {
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button
-          text={!item.itemAvailable ? '대여 불가' : item.itemUsing ? '대여 중' : '대여하기'}
+          text={getButtonText(item)}
           onClick={handleBorrow}
           disabled={!item.itemAvailable || item.itemUsing}
-          bgColor={
-            !item.itemAvailable
-              ? 'var(--color-lightRed)'
-              : item.itemUsing
-                ? 'var(--color-lightGray)'
-                : 'var(--color-primary)'
-          }
-          textColor={!item.itemAvailable ? 'var(--color-red)' : item.itemUsing ? 'var(--color-darkGray)' : 'white'}
+          bgColor={getButtonBgColor(item)}
+          textColor={getTextColor(item)}
         />
       </div>
     </div>
