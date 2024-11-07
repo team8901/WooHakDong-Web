@@ -1,4 +1,5 @@
 import LoadingSpinner from '@components/LoadingSpinner';
+import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { getGroupInfo, postGroupJoin, postGroupJoinConfirm } from '@libs/api/group';
 import ROUTE from '@libs/constant/path';
@@ -13,12 +14,13 @@ const PaymentRedirectPage = () => {
   const merchantUid = searchParams.get('merchant_uid');
   const impSuccess = searchParams.get('imp_success');
   const navigate = useCustomNavigate();
+  const { setToastMessage } = useToast();
 
   useEffect(() => {
     if (clubId === null || clubId === undefined || !impUid || !merchantUid) return;
 
     if (impSuccess !== 'true') {
-      alert('결제에 실패했습니다.');
+      setToastMessage('결제에 실패했어요');
       navigate(ROUTE.ROOT);
       return;
     }
@@ -30,9 +32,9 @@ const PaymentRedirectPage = () => {
       // console.log(merchantUid, orderId);
       if (orderId) {
         await postGroupJoinConfirm({ merchantUid, groupId, impUid, orderId });
-        alert('동아리 가입이 완료되었습니다.');
+        setToastMessage('동아리 가입이 완료되었어요');
       } else {
-        alert('orderId를 받아오는 데 실패했습니다.');
+        setToastMessage('동아리 가입에 실패했어요');
       }
 
       navigate(ROUTE.ROOT);

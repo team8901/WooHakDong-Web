@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import Caption2 from '@components/Caption2';
 import InputBox from '@components/InputBox';
 import ScrollView from '@components/ScrollView';
+import { useToast } from '@contexts/ToastContext';
 
 const ClubRegisterPage = () => {
   const navigate = useCustomNavigate();
@@ -16,6 +17,7 @@ const ClubRegisterPage = () => {
   const [clubDescription, setClubDescription] = useState('');
   const [clubRoom, setClubRoom] = useState('');
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
+  const { setToastMessage } = useToast();
 
   const handleButtonClick = () => {
     navigate(ROUTE.PAYMENT);
@@ -41,7 +43,8 @@ const ClubRegisterPage = () => {
         setClubDescription(clubDescription);
         setClubRoom(clubRoom);
       } catch (error) {
-        alert(`동아리 정보를 불러오는 중 오류가 발생했습니다. ${error}`);
+        setToastMessage('동아리 정보를 불러오는 중 오류가 발생했어요');
+        console.error(error);
         location.replace(ROUTE.CLUB_LIST);
       }
     };

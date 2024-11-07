@@ -5,6 +5,7 @@ import Button from '@components/Button';
 import Caption2 from '@components/Caption2';
 import ScrollView from '@components/ScrollView';
 import Title3 from '@components/Title3';
+import { useToast } from '@contexts/ToastContext';
 import { getClubInfo } from '@libs/api/club';
 import { postClubItemBorrow } from '@libs/api/item';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
@@ -17,12 +18,13 @@ const ClubItemDetailPage = () => {
   const initialItem: ClubItem = state.item;
   const [item, setItem] = useState<ClubItem>(initialItem);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
+  const { setToastMessage } = useToast();
 
   const handleBorrow = async () => {
     if (!clubEnglishName) return;
 
-    if (!item.itemAvailable) {
-      alert('대여가능한 물품이 아닙니다.');
+    if (!item.itemAvailable || item.itemUsing) {
+      setToastMessage('대여가능한 물품이 아니에요');
       return;
     }
 
@@ -33,14 +35,15 @@ const ClubItemDetailPage = () => {
     try {
       await postClubItemBorrow({ clubId, itemId: item.itemId });
 
-      alert('대여 신청이 완료되었습니다.');
+      setToastMessage('대여 신청이 완료되었어요');
 
       setItem((prevItem) => ({
         ...prevItem,
         itemUsing: true,
       }));
     } catch (error) {
-      alert(`대여 신청 중 오류가 발생했습니다. ${error}`);
+      console.error(error);
+      setToastMessage('대여 신청 중 오류가 발생했어요');
     }
   };
 
@@ -121,7 +124,7 @@ const ClubItemDetailPage = () => {
         <Button
           text={getButtonText(item)}
           onClick={handleBorrow}
-          disabled={!item.itemAvailable || item.itemUsing}
+          // disabled={!item.itemAvailable || item.itemUsing}
           bgColor={getButtonBgColor(item)}
           textColor={getTextColor(item)}
         />

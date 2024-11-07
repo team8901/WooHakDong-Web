@@ -2,6 +2,7 @@ import GoogleIcon from '@assets/images/logos/GoogleIcon';
 import Button from '@components/Button';
 import { auth } from '@config/firebaseConfig';
 import { useAuth } from '@contexts/AuthContext';
+import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { fetchLoginData } from '@libs/api/auth';
 import ROUTE from '@libs/constant/path';
@@ -12,6 +13,7 @@ const GoogleLoginButton = () => {
   const { login } = useAuth();
   const navigate = useCustomNavigate();
   const [loading, setLoading] = useState(false);
+  const { setToastMessage } = useToast();
 
   const handleGoogleLogin = async () => {
     setLoading(true);
@@ -21,7 +23,7 @@ const GoogleLoginButton = () => {
     const oauthAccessToken = (userCredential as any)._tokenResponse.oauthAccessToken;
     const loginData = await fetchLoginData(oauthAccessToken);
     if (!loginData) {
-      alert('로그인에 실패했습니다.');
+      setToastMessage('로그인에 실패했어요');
       setLoading(false);
       return;
     }

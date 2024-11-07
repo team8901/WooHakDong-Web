@@ -3,6 +3,7 @@ import './App.css';
 import App from 'App';
 import { AuthProvider } from '@contexts/AuthContext';
 import { createRoot } from 'react-dom/client';
+import { ToastProvider } from '@contexts/ToastContext';
 // import * as Sentry from '@sentry/react';
 
 // Sentry.init({
@@ -24,9 +25,11 @@ const root = document.getElementById('root') as HTMLElement;
 const element = (
   <BrowserRouter>
     <AuthProvider>
-      {/* <Sentry.ErrorBoundary fallback={<span>에러가 발생하였습니다. 잠시 후 다시 시도해주세요.</span>}> */}
-      <App />
-      {/* </Sentry.ErrorBoundary> */}
+      <ToastProvider>
+        {/* <Sentry.ErrorBoundary fallback={<span>에러가 발생하였습니다. 잠시 후 다시 시도해주세요.</span>}> */}
+        <App />
+        {/* </Sentry.ErrorBoundary> */}
+      </ToastProvider>
     </AuthProvider>
   </BrowserRouter>
 );
