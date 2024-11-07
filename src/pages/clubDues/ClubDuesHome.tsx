@@ -2,6 +2,7 @@ import ChevronBottomGrayIcon from '@assets/images/chevrons/ChevronBottomGrayIcon
 import AppBar from '@components/AppBar';
 import Body4 from '@components/Body4';
 import Caption2 from '@components/Caption2';
+import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import Title1 from '@components/Title1';
 import useBottomSheet from '@hooks/useBottomSheet';
@@ -90,7 +91,9 @@ const ClubDuesHomePage = () => {
 
       <ScrollView fadeTop className="h-full flex-col gap-[20px] px-[20px] pt-[20px]">
         {filteredDuesList.length === 0 ? (
-          <div className="flex h-full items-center justify-center">아직 사용한 회비가 없습니다.</div>
+          <div className="flex h-full items-center justify-center">
+            <EmptyText text="아직 사용한 회비가 없어요" />
+          </div>
         ) : (
           <div className="flex flex-col gap-[20px]">
             <ListItem dues={filteredDuesList[0]} />

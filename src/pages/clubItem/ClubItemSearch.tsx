@@ -1,4 +1,5 @@
 import AppBar from '@components/AppBar';
+import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import { useSearch } from '@contexts/SearchContext';
 import { getClubInfo } from '@libs/api/club';
@@ -42,7 +43,9 @@ const ClubItemSearchPage = () => {
 
       <ScrollView fadeTop className="flex h-full flex-col gap-[20px] p-[20px]">
         {itemList.length === 0 ? (
-          <div className="flex h-full items-center justify-center">아직 등록된 물품이 없습니다.</div>
+          <div className="flex h-full items-center justify-center">
+            <EmptyText text="아직 등록된 물품이 없어요" />
+          </div>
         ) : (
           <div className="flex flex-col gap-[20px]">
             <SearchListItem item={itemList[0]} />

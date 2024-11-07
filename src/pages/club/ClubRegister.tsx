@@ -62,15 +62,15 @@ const ClubRegisterPage = () => {
           <div className="flex flex-col gap-[8px]">
             <Caption2 text="동아리 설명" />
             <InputBox
-              text={clubDescription || '등록된 정보가 없습니다.'}
-              className={`${clubDescription === '' ? 'text-darkGray' : ''}`}
+              text={clubDescription || '등록된 정보가 없어요'}
+              className={`${clubDescription === '' ? 'text-[1.4rem] text-darkGray' : ''}`}
             />
           </div>
           <div className="flex flex-col gap-[8px]">
             <Caption2 text="동아리 방" />
             <InputBox
-              text={clubRoom || '등록된 정보가 없습니다.'}
-              className={`${clubRoom === '' ? 'text-darkGray' : ''}`}
+              text={clubRoom || '등록된 정보가 없어요'}
+              className={`${clubRoom === '' ? 'text-[1.4rem] text-darkGray' : ''}`}
             />
           </div>
         </div>

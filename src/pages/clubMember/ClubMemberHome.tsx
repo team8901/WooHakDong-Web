@@ -1,5 +1,6 @@
 import AppBar from '@components/AppBar';
 import Body4 from '@components/Body4';
+import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import { getClubInfo } from '@libs/api/club';
 import { getClubMemberList } from '@libs/api/clubMember';
@@ -47,7 +48,9 @@ const ClubMemberHomePage = () => {
         <div className="flex flex-col gap-[20px] px-[20px] pt-[20px]">
           <Body4 text="임원진" className="text-darkGray" />
           {officeMemberList.length === 0 ? (
-            <div className="flex h-full items-center justify-center">아직 가입한 회원이 없어요.</div>
+            <div className="flex h-full items-center justify-center">
+              <EmptyText text="아직 가입한 회원이 없어요" />
+            </div>
           ) : (
             <div className="flex flex-col gap-[20px]">
               <ListItem member={officeMemberList[0]} />
@@ -66,7 +69,9 @@ const ClubMemberHomePage = () => {
         <div className="flex flex-col gap-[20px] px-[20px]">
           <Body4 text="일반 회원" className="text-darkGray" />
           {memberList.length === 0 ? (
-            <div className="flex h-full items-center justify-center">아직 가입한 회원이 없어요.</div>
+            <div className="flex h-full items-center justify-center">
+              <EmptyText text="아직 가입한 회원이 없어요" />
+            </div>
           ) : (
             <div className="flex flex-col gap-[20px]">
               <ListItem member={memberList[0]} />
