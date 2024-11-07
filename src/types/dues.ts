@@ -19,4 +19,24 @@ type ClubsDuesResponseData = {
   result: ClubDuesResponseData[];
 };
 
-export type { ClubDuesProps, ClubDuesResponseData, ClubsDuesResponseData };
+type ClubAccountRequestData = {
+  clubId: number;
+};
+
+type ClubAccountResponseData = {
+  clubAccountId: number;
+  clubAccountBankName: string;
+  clubAccountNumber: string;
+  clubAccountPinTechNumber: string;
+  clubAccountLastUpdateDate: string;
+  clubAccountBankCode: string;
+  clubAccountBalance: number;
+};
+
+export type {
+  ClubDuesProps,
+  ClubDuesResponseData,
+  ClubsDuesResponseData,
+  ClubAccountRequestData,
+  ClubAccountResponseData,
+};

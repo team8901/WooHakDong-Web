@@ -6,8 +6,10 @@ import ScrollView from '@components/ScrollView';
 import Title1 from '@components/Title1';
 import useBottomSheet from '@hooks/useBottomSheet';
 import { getClubInfo } from '@libs/api/club';
-import { getClubDues } from '@libs/api/dues';
+import { getClubAccount, getClubDues } from '@libs/api/dues';
 import { CLUB_DUES_SORT_OPTIONS } from '@libs/constant/dues';
+import formatDate from '@libs/util/formatDate';
+import formatMoney from '@libs/util/formatMoney';
 import BottomSheet from '@pages/clubDues/components/BottomSheet';
 // import { CLUB_DUES_DATA } from '@libs/constant/dues';
 import ListItem from '@pages/clubDues/components/ListItem';
@@ -19,6 +21,12 @@ const ClubDuesHomePage = () => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const [duesList, setDuesList] = useState<ClubDuesResponseData[]>([]);
   const [filteredDuesList, setFilteredDuesList] = useState<ClubDuesResponseData[]>([]);
+  const [accountInfo, setAccountInfo] = useState({
+    clubAccountBankName: '',
+    clubAccountNumber: '',
+    clubAccountLastUpdateDate: '',
+    clubAccountBalance: 0,
+  });
 
   const filterData = () => {
     if (CLUB_DUES_SORT_OPTIONS[selectedOption].value === 'ALL') {
@@ -50,6 +58,10 @@ const ClubDuesHomePage = () => {
 
       setDuesList(result);
       setFilteredDuesList(result);
+
+      const { clubAccountBankName, clubAccountNumber, clubAccountLastUpdateDate, clubAccountBalance } =
+        await getClubAccount({ clubId });
+      setAccountInfo({ clubAccountBankName, clubAccountNumber, clubAccountLastUpdateDate, clubAccountBalance });
     })();
     // setDuesList(CLUB_DUES_DATA);
   }, []);
@@ -61,18 +73,20 @@ const ClubDuesHomePage = () => {
       </div>
 
       <div className="flex flex-col items-end gap-[4px] px-[20px] py-[20px] pb-[40px]">
-        <Caption2 text="현재 남은 회비" />
-        <Title1 text="1,240,000원" className="text-[2.8rem] font-extrabold" />
+        <Caption2 text={`${accountInfo.clubAccountBankName} ${accountInfo.clubAccountNumber}`} />
+        <Title1 text={formatMoney(accountInfo.clubAccountBalance)} className="text-[2.8rem] font-extrabold" />
       </div>
 
-      <button
-        type="button"
-        className="flex items-center gap-[4px] px-[20px]"
-        onClick={() => setIsOpen((prev) => !prev)}
-      >
-        <Body4 text={CLUB_DUES_SORT_OPTIONS[selectedOption].label} className="text-darkGray" />
-        <ChevronBottomGrayIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
-      </button>
+      <div className="flex items-center justify-between px-[20px]">
+        <button type="button" className="flex items-center gap-[4px]" onClick={() => setIsOpen((prev) => !prev)}>
+          <Body4 text={CLUB_DUES_SORT_OPTIONS[selectedOption].label} className="text-darkGray" />
+          <ChevronBottomGrayIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
+        </button>
+        <Body4
+          text={`${new Date(accountInfo.clubAccountLastUpdateDate).getFullYear()}년 ${formatDate(accountInfo.clubAccountLastUpdateDate)} 기준`}
+          className="text-darkGray"
+        />
+      </div>
 
       <ScrollView fadeTop className="h-full flex-col gap-[20px] px-[20px] pt-[20px]">
         {filteredDuesList.length === 0 ? (
