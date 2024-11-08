@@ -3,11 +3,14 @@ import Body1 from '@components/Body1';
 import Body3 from '@components/Body3';
 import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
-import { CLUB_SCHEDULE_DATA } from '@libs/constant/clubSchedule';
+import { getClubInfo } from '@libs/api/club';
+import { getClubSchedules } from '@libs/api/clubSchedule';
+// import { CLUB_SCHEDULE_DATA } from '@libs/constant/clubSchedule';
 import isSameDateBetweenDateString from '@libs/util/isSameDateBetweenDateString';
 import CustomCalendar from '@pages/clubSchedule/components/CustomCalendar';
 import ListItem from '@pages/clubSchedule/components/ListItem';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { ClubScheduleResponseData } from 'types/clubSchedule';
 
 export type DatePiece = Date | null;
@@ -17,15 +20,44 @@ const ClubScheduleHomePage = () => {
   const [selectedDate, setSelectedDate] = useState<SelectedDate>(new Date());
   const [scheduleList, setScheduleList] = useState<ClubScheduleResponseData[]>([]);
   const [filteredScheduleList, setFilteredScheduleList] = useState<ClubScheduleResponseData[]>([]);
+  const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
+  const [clubId, setClubId] = useState<number | null>(null);
 
   useEffect(() => {
-    setScheduleList(CLUB_SCHEDULE_DATA);
+    (async () => {
+      if (!clubEnglishName) return;
 
-    const filteredSchedule = CLUB_SCHEDULE_DATA.filter((schedule) =>
-      isSameDateBetweenDateString(selectedDate as Date, schedule.scheduleDateTime),
-    );
+      const { clubId } = await getClubInfo({
+        clubEnglishName,
+      });
 
-    setFilteredScheduleList(filteredSchedule);
+      setClubId(clubId);
+    })();
+
+    /* 더미데이터 테스트 */
+    // setScheduleList(CLUB_SCHEDULE_DATA);
+
+    // const filteredSchedule = CLUB_SCHEDULE_DATA.filter((schedule) =>
+    //   isSameDateBetweenDateString(selectedDate as Date, schedule.scheduleDateTime),
+    // );
+
+    // setFilteredScheduleList(filteredSchedule);
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (!clubId || !selectedDate) return;
+
+      const { result } = await getClubSchedules({ clubId, date: (selectedDate as Date).toISOString() });
+
+      setScheduleList(result);
+
+      const filteredSchedule = result.filter((schedule) =>
+        isSameDateBetweenDateString(selectedDate as Date, schedule.scheduleDateTime),
+      );
+
+      setFilteredScheduleList(filteredSchedule);
+    })();
   }, [selectedDate]);
 
   const formatDate = (date: Date) => {
