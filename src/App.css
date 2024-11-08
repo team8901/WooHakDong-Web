@@ -115,7 +115,7 @@ scroll gradient in the top right */
 
 /* Calendar */
 .react-calendar {
-  font-family: 'Pretendard-SemiBold' !important;
+  font-family: 'Pretendard-SemiBold', sans-serif !important;
   border: none !important;
   border-bottom: 1px solid var(--color-lightGray) !important;
   width: 100% !important;
