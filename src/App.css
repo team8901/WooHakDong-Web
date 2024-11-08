@@ -67,7 +67,7 @@ dialog {
   --scrollbar-width: 8px;
 
   /* mask fade distance, for use in mask calculations */
-  --mask-height: 32px;
+  --mask-height: 20px;
 
   /* If content exceeds height of container, overflow! */
   overflow-y: auto;
@@ -77,6 +77,7 @@ dialog {
 
   /* Need to make sure container has bottom space,
 otherwise content at the bottom is always faded out */
+  padding-top: var(--mask-height);
   padding-bottom: var(--mask-height);
 
   /* Keep some space between content and scrollbar

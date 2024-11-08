@@ -1,5 +1,5 @@
-const formatDate = (dateStr: string) => {
-  const date = new Date(dateStr);
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
   const options: Intl.DateTimeFormatOptions = {
     month: 'long',
     day: 'numeric',

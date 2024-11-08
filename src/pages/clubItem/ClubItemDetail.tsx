@@ -89,7 +89,7 @@ const ClubItemDetailPage = () => {
         <AppBar />
       </div>
 
-      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px] p-[20px]">
+      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px] px-[20px]">
         <div className="flex flex-col items-center gap-[20px]">
           <img
             alt="물품"

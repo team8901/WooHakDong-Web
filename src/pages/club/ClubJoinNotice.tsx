@@ -20,7 +20,7 @@ const ClubJoinNoticePage = () => {
         <AppBar />
       </div>
 
-      <ScrollView className="flex h-full flex-col gap-[40px] pt-[20px]">
+      <ScrollView className="flex h-full flex-col gap-[40px]">
         <div>
           <Title2 text="가입 신청 전에 " />
           <Title2 text="알아야 할 사항" className="text-primary" />

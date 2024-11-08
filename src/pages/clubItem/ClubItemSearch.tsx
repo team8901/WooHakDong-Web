@@ -41,7 +41,7 @@ const ClubItemSearchPage = () => {
         <AppBar goBackCallback={handleGoBack} hasSearch showSearchInput />
       </div>
 
-      <ScrollView fadeTop className="flex h-full flex-col gap-[20px] p-[20px]">
+      <ScrollView fadeTop className="flex h-full flex-col gap-[20px] px-[20px]">
         {itemList.length === 0 ? (
           <div className="flex h-full items-center justify-center">
             <EmptyText text="아직 등록된 물품이 없어요" />

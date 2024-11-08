@@ -1,16 +1,32 @@
 import AppBar from '@components/AppBar';
 import Body1 from '@components/Body1';
-import Body2 from '@components/Body2';
 import Body3 from '@components/Body3';
-import Body4 from '@components/Body4';
+import EmptyText from '@components/EmptyText';
+import ScrollView from '@components/ScrollView';
+import { CLUB_SCHEDULE_DATA } from '@libs/constant/clubSchedule';
+import isSameDateBetweenDateString from '@libs/util/isSameDateBetweenDateString';
 import CustomCalendar from '@pages/clubSchedule/components/CustomCalendar';
-import { useState } from 'react';
+import ListItem from '@pages/clubSchedule/components/ListItem';
+import { useEffect, useState } from 'react';
+import { ClubScheduleResponseData } from 'types/clubSchedule';
 
 export type DatePiece = Date | null;
 export type SelectedDate = DatePiece | [DatePiece, DatePiece];
 
 const ClubScheduleHomePage = () => {
   const [selectedDate, setSelectedDate] = useState<SelectedDate>(new Date());
+  const [scheduleList, setScheduleList] = useState<ClubScheduleResponseData[]>([]);
+  const [filteredScheduleList, setFilteredScheduleList] = useState<ClubScheduleResponseData[]>([]);
+
+  useEffect(() => {
+    setScheduleList(CLUB_SCHEDULE_DATA);
+
+    const filteredSchedule = CLUB_SCHEDULE_DATA.filter((schedule) =>
+      isSameDateBetweenDateString(selectedDate as Date, schedule.scheduleDateTime),
+    );
+
+    setFilteredScheduleList(filteredSchedule);
+  }, [selectedDate]);
 
   const formatDate = (date: Date) => {
     if (date === null) return '';
@@ -23,7 +39,7 @@ const ClubScheduleHomePage = () => {
   };
 
   return (
-    <div className="relative h-full pb-[50px] pt-[56px]">
+    <div className="relative h-full pb-[100px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
         <AppBar hasMenu />
       </div>
@@ -35,28 +51,33 @@ const ClubScheduleHomePage = () => {
       >
         <Body3 text="오늘" />
       </button>
+      {scheduleList && (
+        <CustomCalendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} scheduleList={scheduleList} />
+      )}
 
-      <CustomCalendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+      <Body1 text={formatDate(selectedDate as Date)} className="inline-block px-[20px] pt-[20px]" />
 
-      <div className="flex flex-col gap-[20px] p-[20px]">
-        <Body1 text={formatDate(selectedDate as Date)} />
-
-        <div className="flex items-center gap-[16px]">
-          <div className="h-[44px] w-[6px] rounded-[10px] bg-gray" />
-          <div className="flex flex-col gap-[4px]">
-            <Body2 text="행사1" />
-            <Body4 text="0:20" className="text-darkGray" />
+      <ScrollView
+        fadeTop
+        className="h-full flex-col gap-[20px] px-[20px] pb-[350px]"
+        style={{ paddingBottom: '350px' }}
+      >
+        {filteredScheduleList.length === 0 ? (
+          <div className="flex h-full items-center justify-center">
+            <EmptyText text="아직 등록된 일정이 없어요" />
           </div>
-        </div>
-
-        <div className="flex items-center gap-[16px]">
-          <div className="h-[44px] w-[6px] rounded-[10px] bg-gray" />
-          <div className="flex flex-col gap-[4px]">
-            <Body2 text="행사1" />
-            <Body4 text="0:20" className="text-darkGray" />
+        ) : (
+          <div className="flex flex-col gap-[20px]">
+            <ListItem schedule={filteredScheduleList[0]} />
+            {filteredScheduleList.slice(1).map((schedule) => (
+              <div key={schedule.scheduleId} className="flex flex-col gap-[20px]">
+                <div className="h-[0.6px] bg-lightGray" />
+                <ListItem key={schedule.scheduleId} schedule={schedule} />
+              </div>
+            ))}
           </div>
-        </div>
-      </div>
+        )}
+      </ScrollView>
     </div>
   );
 };
