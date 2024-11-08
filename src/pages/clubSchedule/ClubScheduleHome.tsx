@@ -48,7 +48,7 @@ const ClubScheduleHomePage = () => {
     (async () => {
       if (!clubId || !selectedDate) return;
 
-      const { result } = await getClubSchedules({ clubId, date: (selectedDate as Date).toISOString() });
+      const { result } = await getClubSchedules({ clubId, date: (selectedDate as Date).toISOString().split('T')[0] });
 
       setScheduleList(result);
 
