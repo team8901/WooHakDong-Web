@@ -19,17 +19,17 @@ const GoogleLoginButton = () => {
     setLoading(true);
     const provider = new GoogleAuthProvider();
     const userCredential = await signInWithPopup(auth, provider);
-    // console.log(userCredential);
     const oauthAccessToken = (userCredential as any)._tokenResponse.oauthAccessToken;
-    const loginData = await fetchLoginData(oauthAccessToken);
-    if (!loginData) {
+
+    const res = await fetchLoginData({ accessToken: oauthAccessToken });
+
+    if (!res) {
       setToastMessage('로그인에 실패했어요');
       setLoading(false);
       return;
     }
 
-    login(loginData);
-
+    login(res);
     navigate(ROUTE.ROOT);
   };
 

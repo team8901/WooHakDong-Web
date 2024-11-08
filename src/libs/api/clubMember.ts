@@ -1,8 +1,8 @@
 import axiosInstance from '@libs/api/axiosInstance';
-import { ClubMemberRequestData, ClubMembersResponseData } from 'types/clubMember';
+import { ClubMemberRequestData, ClubMemberResultResponseData } from 'types/clubMember';
 
 const getClubMemberList = async ({ clubId, clubMemberAssignedTerm }: Readonly<ClubMemberRequestData>) => {
-  const res = await axiosInstance.get<ClubMembersResponseData>(
+  const res = await axiosInstance.get<ClubMemberResultResponseData>(
     `/v1/clubs/${clubId}/members?clubMemberAssignedTerm=${clubMemberAssignedTerm}`,
   );
 

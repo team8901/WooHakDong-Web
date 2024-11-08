@@ -13,8 +13,8 @@ type ClubScheduleResponseData = {
   scheduleColor: ClubScheduleColor;
 };
 
-type ClubSchedulesResponseData = {
+type ClubScheduleResultResponseData = {
   result: ClubScheduleResponseData[];
 };
 
-export type { ClubScheduleColor, ClubScheduleRequestData, ClubScheduleResponseData, ClubSchedulesResponseData };
+export type { ClubScheduleColor, ClubScheduleRequestData, ClubScheduleResponseData, ClubScheduleResultResponseData };

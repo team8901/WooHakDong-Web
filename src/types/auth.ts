@@ -1,6 +1,10 @@
-type LoginData = {
+type LoginRequestData = {
+  accessToken: string;
+};
+
+type LoginResponseData = {
   accessToken: string;
   refreshToken: string;
 };
 
-export type { LoginData };
+export type { LoginRequestData, LoginResponseData };

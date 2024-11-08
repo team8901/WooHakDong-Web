@@ -1,12 +1,12 @@
-type ClubItemProps = {
+type ClubItemCategory = 'DIGITAL' | 'SPORT' | 'BOOK' | 'CLOTHES' | 'STATIONERY' | 'ETC';
+
+type ClubItemRequestData = {
   clubId: number;
   keyword?: string;
   category?: ClubItemCategory;
 };
 
-type ClubItemCategory = 'DIGITAL' | 'SPORT' | 'BOOK' | 'CLOTHES' | 'STATIONERY' | 'ETC';
-
-type ClubItem = {
+type ClubItemResponseData = {
   itemId: number;
   itemName: string;
   itemPhoto: string;
@@ -21,14 +21,14 @@ type ClubItem = {
 };
 
 type ClubItemListProps = {
-  item: ClubItem;
+  item: ClubItemResponseData;
 };
 
-type ItemResponseData = {
-  result: ClubItem[];
+type ClubItemResultResponseData = {
+  result: ClubItemResponseData[];
 };
 
-type ClubItemBorrowProps = {
+type ClubItemBorrowRequestData = {
   clubId: number;
   itemId: number;
 };
@@ -42,10 +42,10 @@ type ClubItemBorrowResponseData = {
 
 export type {
   ClubItemCategory,
-  ClubItem,
-  ClubItemProps,
-  ItemResponseData,
-  ClubItemBorrowProps,
+  ClubItemResponseData,
+  ClubItemRequestData,
+  ClubItemResultResponseData,
+  ClubItemBorrowRequestData,
   ClubItemListProps,
   ClubItemBorrowResponseData,
 };

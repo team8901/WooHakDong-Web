@@ -12,12 +12,12 @@ import ROUTE from '@libs/constant/path';
 import ListItem from '@pages/clubItem/components/ListItem';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ClubItem } from 'types/item';
+import { ClubItemResponseData } from 'types/item';
 
 const ClubItemHomePage = () => {
   const [activeTab, setActiveTab] = useState('ALL');
-  const [itemList, setItemList] = useState<ClubItem[]>([]);
-  const [filteredItemList, setFilteredItemList] = useState<ClubItem[]>([]);
+  const [itemList, setItemList] = useState<ClubItemResponseData[]>([]);
+  const [filteredItemList, setFilteredItemList] = useState<ClubItemResponseData[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { searchQuery } = useSearch();
   const navigate = useCustomNavigate();

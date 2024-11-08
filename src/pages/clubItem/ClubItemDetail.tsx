@@ -11,12 +11,12 @@ import { postClubItemBorrow } from '@libs/api/item';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
 import { useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { ClubItem } from 'types/item';
+import { ClubItemResponseData } from 'types/item';
 
 const ClubItemDetailPage = () => {
   const { state } = useLocation();
-  const initialItem: ClubItem = state.item;
-  const [item, setItem] = useState<ClubItem>(initialItem);
+  const initialItem: ClubItemResponseData = state.item;
+  const [item, setItem] = useState<ClubItemResponseData>(initialItem);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { setToastMessage } = useToast();
 
@@ -47,7 +47,7 @@ const ClubItemDetailPage = () => {
     }
   };
 
-  const getButtonText = (item: ClubItem) => {
+  const getButtonText = (item: ClubItemResponseData) => {
     if (!item.itemAvailable) {
       return '대여 불가';
     }
@@ -59,7 +59,7 @@ const ClubItemDetailPage = () => {
     return '대여하기';
   };
 
-  const getButtonBgColor = (item: ClubItem) => {
+  const getButtonBgColor = (item: ClubItemResponseData) => {
     if (!item.itemAvailable) {
       return 'var(--color-lightRed)';
     }
@@ -71,7 +71,7 @@ const ClubItemDetailPage = () => {
     return 'var(--color-primary)';
   };
 
-  const getTextColor = (item: ClubItem) => {
+  const getTextColor = (item: ClubItemResponseData) => {
     if (!item.itemAvailable) {
       return 'var(--color-red)';
     }

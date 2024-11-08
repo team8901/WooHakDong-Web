@@ -1,6 +1,6 @@
 import axiosInstance from '@libs/api/axiosInstance';
 import {
-  GroupInfoProps,
+  GroupInfoRequestData,
   GroupInfoResponseData,
   GroupJoinConfirmProps,
   GroupJoinConfirmRequestData,
@@ -9,7 +9,7 @@ import {
   GroupJoinResponseData,
 } from 'types/group';
 
-const getGroupInfo = async ({ clubId }: Readonly<GroupInfoProps>) => {
+const getGroupInfo = async ({ clubId }: Readonly<GroupInfoRequestData>) => {
   const res = await axiosInstance.get<GroupInfoResponseData>(`/v1/clubs/${clubId}/join`);
   return res.data;
 };

@@ -29,7 +29,7 @@ type ClubMemberResponseData = {
   clubMemberAssignedTerm: string;
 };
 
-type ClubMembersResponseData = {
+type ClubMemberResultResponseData = {
   result: ClubMemberResponseData[];
 };
 
@@ -41,6 +41,6 @@ export type {
   ClubMemberRole,
   ClubMemberRequestData,
   ClubMemberResponseData,
-  ClubMembersResponseData,
+  ClubMemberResultResponseData,
   ClubMemberListProps,
 };

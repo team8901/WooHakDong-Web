@@ -1,4 +1,4 @@
-import { ClubItem, ClubItemCategory } from 'types/item';
+import { ClubItemCategory, ClubItemResponseData } from 'types/item';
 
 const CLUB_ITEM_CATEGORY = {
   DIGITAL: '디지털',
@@ -13,7 +13,7 @@ const CLIB_ITEM_CATEGORY_MENU: { category: ClubItemCategory; label: string }[] =
   ([category, label]) => ({ category: category as ClubItemCategory, label }),
 );
 
-const CLUB_ITEM_DATA: ClubItem[] = [
+const CLUB_ITEM_DATA: ClubItemResponseData[] = [
   {
     itemId: 0,
     itemName: '27인치 모니터',

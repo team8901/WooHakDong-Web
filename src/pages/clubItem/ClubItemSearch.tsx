@@ -7,10 +7,10 @@ import { getClubItems } from '@libs/api/item';
 import SearchListItem from '@pages/clubItem/components/SearchListItem';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ClubItem } from 'types/item';
+import { ClubItemResponseData } from 'types/item';
 
 const ClubItemSearchPage = () => {
-  const [itemList, setItemList] = useState<ClubItem[]>([]);
+  const [itemList, setItemList] = useState<ClubItemResponseData[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { searchQuery, setSearchQuery } = useSearch();
   const navigate = useNavigate();
