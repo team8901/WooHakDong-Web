@@ -27,7 +27,7 @@ const ClubItemHomePage = () => {
   };
 
   useEffect(() => {
-    const getData = async () => {
+    (async () => {
       if (!clubEnglishName) return;
 
       const { clubId } = await getClubInfo({
@@ -37,9 +37,9 @@ const ClubItemHomePage = () => {
       const { result } = await getClubItems({ clubId });
       setItemList(result);
       setFilteredItemList(result);
-    };
+    })();
 
-    getData();
+    /* 더미데이터 테스트 */
     // setItemList(CLUB_ITEM_DATA);
     // setFilteredItemList(CLUB_ITEM_DATA);
   }, []);

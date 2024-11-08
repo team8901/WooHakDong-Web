@@ -30,9 +30,8 @@ const PaymentPage = () => {
     if (!clubEnglishName) return;
 
     merchantUid.current = `payment-${crypto.randomUUID()}`.slice(0, 40);
-    console.log('merchantUid.current', merchantUid.current);
 
-    const getData = async () => {
+    (async () => {
       const { memberEmail, memberName, memberPhoneNumber } = await getMemberInfo();
       const { clubName, clubId, clubDues } = await getClubInfo({
         clubEnglishName,
@@ -40,13 +39,11 @@ const PaymentPage = () => {
 
       setClubId(clubId);
       setClubName(clubName);
-      // setClubDues(20000);
       setClubDues(clubDues);
       setMemberEmail(memberEmail);
       setMemberName(memberName);
       setMemberPhoneNumber(memberPhoneNumber);
-    };
-    getData();
+    })();
   }, []);
 
   const handlePostPortOne = async (pg: string) => {

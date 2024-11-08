@@ -16,7 +16,7 @@ const ClubItemSearchPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getSearchData = async () => {
+    (async () => {
       if (!clubEnglishName) return;
 
       const { clubId } = await getClubInfo({
@@ -25,9 +25,7 @@ const ClubItemSearchPage = () => {
 
       const { result } = await getClubItems({ clubId, keyword: searchQuery });
       setItemList(result);
-    };
-
-    getSearchData();
+    })();
   }, [searchQuery]);
 
   const handleGoBack = () => {

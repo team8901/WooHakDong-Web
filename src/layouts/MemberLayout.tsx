@@ -9,7 +9,7 @@ const MemberLayout = () => {
   const [isMember, setIsMember] = useState(false);
 
   useEffect(() => {
-    const checkMemberInfo = async () => {
+    (async () => {
       const { memberPhoneNumber } = await getMemberInfo();
 
       if (!memberPhoneNumber) {
@@ -18,9 +18,7 @@ const MemberLayout = () => {
       }
 
       setIsMember(true);
-    };
-
-    checkMemberInfo();
+    })();
   }, []);
 
   return isMember && <Outlet />;
