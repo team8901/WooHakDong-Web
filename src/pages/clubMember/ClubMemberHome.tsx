@@ -4,6 +4,7 @@ import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import { getClubInfo } from '@libs/api/club';
 import { getClubMemberList } from '@libs/api/clubMember';
+import convertDate from '@libs/util/convertDate';
 // import { CLUB_MEMBER_DATA } from '@libs/constant/clubMember';
 import ListItem from '@pages/clubMember/components/ListItem';
 import { useEffect, useState } from 'react';
@@ -23,10 +24,7 @@ const ClubMemberHomePage = () => {
         clubEnglishName,
       });
 
-      const now = new Date();
-      const formattedDate = now.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-
-      const { result } = await getClubMemberList({ clubId, clubMemberAssignedTerm: formattedDate });
+      const { result } = await getClubMemberList({ clubId, clubMemberAssignedTerm: convertDate(new Date()) });
 
       const officeMember = result.filter((member) => member.clubMemberRole !== 'MEMBER');
       const member = result.filter((member) => member.clubMemberRole === 'MEMBER');

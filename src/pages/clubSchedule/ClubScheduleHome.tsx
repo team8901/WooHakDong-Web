@@ -5,6 +5,7 @@ import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import { getClubInfo } from '@libs/api/club';
 import { getClubSchedules } from '@libs/api/clubSchedule';
+import convertDate from '@libs/util/convertDate';
 // import { CLUB_SCHEDULE_DATA } from '@libs/constant/clubSchedule';
 import isSameDateBetweenDateString from '@libs/util/isSameDateBetweenDateString';
 import CustomCalendar from '@pages/clubSchedule/components/CustomCalendar';
@@ -32,6 +33,18 @@ const ClubScheduleHomePage = () => {
       });
 
       setClubId(clubId);
+
+      if (!selectedDate) return;
+
+      const { result } = await getClubSchedules({ clubId, date: convertDate(selectedDate as Date) });
+
+      setScheduleList(result);
+
+      const filteredSchedule = result.filter((schedule) =>
+        isSameDateBetweenDateString(selectedDate as Date, schedule.scheduleDateTime),
+      );
+
+      setFilteredScheduleList(filteredSchedule);
     })();
 
     /* 더미데이터 테스트 */
@@ -48,7 +61,7 @@ const ClubScheduleHomePage = () => {
     (async () => {
       if (!clubId || !selectedDate) return;
 
-      const { result } = await getClubSchedules({ clubId, date: (selectedDate as Date).toISOString().split('T')[0] });
+      const { result } = await getClubSchedules({ clubId, date: convertDate(selectedDate as Date) });
 
       setScheduleList(result);
 
