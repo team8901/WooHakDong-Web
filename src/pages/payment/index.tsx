@@ -12,6 +12,7 @@ import KakaoPayIcon from '@assets/images/payment/KakaoPayIcon';
 import TossPayIcon from '@assets/images/payment/TossPayIcon';
 import { useParams } from 'react-router-dom';
 import ScrollView from '@components/ScrollView';
+import { useToast } from '@contexts/ToastContext';
 
 const PaymentPage = () => {
   const navigate = useCustomNavigate();
@@ -25,6 +26,7 @@ const PaymentPage = () => {
   const [memberPhoneNumber, setMemberPhoneNumber] = useState('');
   const merchantUid = useRef('');
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
+  const { setToastMessage } = useToast();
 
   useEffect(() => {
     if (!clubEnglishName) return;
@@ -112,7 +114,13 @@ const PaymentPage = () => {
           {paymentMethods.map((method) => (
             <PaymentMethodButton
               key={method.id}
-              onClick={() => handlePaymentMethodButtonClick(method.id)}
+              onClick={() => {
+                if (method.id === 1) {
+                  setToastMessage('준비중인 결제 수단이에요');
+                  return;
+                }
+                handlePaymentMethodButtonClick(method.id);
+              }}
               icon={method.icon}
               className={`${paymentButtonIndex === method.id ? 'border-primary' : ''}`}
             />
