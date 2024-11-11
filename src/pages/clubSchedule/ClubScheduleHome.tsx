@@ -25,6 +25,14 @@ const ClubScheduleHomePage = () => {
   const [clubId, setClubId] = useState<number | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
 
+  const filterList = () => {
+    const filteredSchedule = scheduleList.filter((schedule) =>
+      isSameDateBetweenDateString(selectedDate as Date, schedule.scheduleDateTime),
+    );
+
+    setFilteredScheduleList(filteredSchedule);
+  };
+
   useEffect(() => {
     (async () => {
       if (!clubEnglishName) return;
@@ -41,11 +49,7 @@ const ClubScheduleHomePage = () => {
 
       setScheduleList(result);
 
-      const filteredSchedule = result.filter((schedule) =>
-        isSameDateBetweenDateString(selectedDate as Date, schedule.scheduleDateTime),
-      );
-
-      setFilteredScheduleList(filteredSchedule);
+      filterList();
     })();
 
     /* 더미데이터 테스트 */
@@ -65,14 +69,12 @@ const ClubScheduleHomePage = () => {
       const { result } = await getClubSchedules({ clubId, date: convertDate(selectedDate as Date) });
 
       setScheduleList(result);
-
-      const filteredSchedule = result.filter((schedule) =>
-        isSameDateBetweenDateString(selectedDate as Date, schedule.scheduleDateTime),
-      );
-
-      setFilteredScheduleList(filteredSchedule);
     })();
   }, [currentMonth]);
+
+  useEffect(() => {
+    filterList();
+  }, [selectedDate]);
 
   const formatDate = (date: Date) => {
     if (date === null) return '';
