@@ -23,6 +23,7 @@ const ClubScheduleHomePage = () => {
   const [filteredScheduleList, setFilteredScheduleList] = useState<ClubScheduleResponseData[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const [clubId, setClubId] = useState<number | null>(null);
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
 
   useEffect(() => {
     (async () => {
@@ -71,7 +72,7 @@ const ClubScheduleHomePage = () => {
 
       setFilteredScheduleList(filteredSchedule);
     })();
-  }, [selectedDate]);
+  }, [currentMonth]);
 
   const formatDate = (date: Date) => {
     if (date === null) return '';
@@ -97,7 +98,12 @@ const ClubScheduleHomePage = () => {
         <Body3 text="오늘" />
       </button>
       {scheduleList && (
-        <CustomCalendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} scheduleList={scheduleList} />
+        <CustomCalendar
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          scheduleList={scheduleList}
+          setCurrentMonth={setCurrentMonth}
+        />
       )}
 
       <Body1 text={formatDate(selectedDate as Date)} className="inline-block px-[20px] pt-[20px]" />
