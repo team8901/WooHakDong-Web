@@ -35,6 +35,11 @@ type ClubMemberResultResponseData = {
 
 type ClubMemberListProps = {
   member: ClubMemberResponseData;
+  canClick?: boolean;
+};
+
+type ClubMyInfoRequestData = {
+  clubId: number;
 };
 
 export type {
@@ -43,4 +48,5 @@ export type {
   ClubMemberResponseData,
   ClubMemberResultResponseData,
   ClubMemberListProps,
+  ClubMyInfoRequestData,
 };

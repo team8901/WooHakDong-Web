@@ -3,7 +3,7 @@ import Body4 from '@components/Body4';
 import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import { getClubInfo } from '@libs/api/club';
-import { getClubMemberList } from '@libs/api/clubMember';
+import { getClubMemberList, getClubMyInfo } from '@libs/api/clubMember';
 // import { CLUB_MEMBER_DATA } from '@libs/constant/clubMember';
 import ListItem from '@pages/clubMember/components/ListItem';
 import { useEffect, useState } from 'react';
@@ -14,6 +14,7 @@ const ClubMemberHomePage = () => {
   const [officeMemberList, setOfficeMemberList] = useState<ClubMemberResponseData[]>([]);
   const [memberList, setMemberList] = useState<ClubMemberResponseData[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
+  const [myInfo, setMyInfo] = useState<ClubMemberResponseData>({} as ClubMemberResponseData);
 
   useEffect(() => {
     (async () => {
@@ -44,6 +45,9 @@ const ClubMemberHomePage = () => {
 
       setOfficeMemberList(officeMember);
       setMemberList(member);
+
+      const myInfo = await getClubMyInfo({ clubId });
+      setMyInfo(myInfo);
     })();
   }, []);
 
@@ -66,7 +70,10 @@ const ClubMemberHomePage = () => {
               {officeMemberList.slice(1).map((member) => (
                 <div key={member.memberId} className="flex flex-col gap-[20px]">
                   <div className="h-[0.6px] bg-lightGray" />
-                  <ListItem member={member} />
+                  <ListItem
+                    member={member}
+                    canClick={member.clubMemberRole !== 'MEMBER' && myInfo.clubMemberRole !== 'MEMBER'}
+                  />
                 </div>
               ))}
             </div>

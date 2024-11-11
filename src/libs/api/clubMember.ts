@@ -1,5 +1,10 @@
 import axiosInstance from '@libs/api/axiosInstance';
-import { ClubMemberRequestData, ClubMemberResultResponseData } from 'types/clubMember';
+import {
+  ClubMemberRequestData,
+  ClubMemberResponseData,
+  ClubMemberResultResponseData,
+  ClubMyInfoRequestData,
+} from 'types/clubMember';
 
 const getClubMemberList = async ({ clubId, clubMemberAssignedTerm }: Readonly<ClubMemberRequestData>) => {
   const res = await axiosInstance.get<ClubMemberResultResponseData>(
@@ -9,4 +14,10 @@ const getClubMemberList = async ({ clubId, clubMemberAssignedTerm }: Readonly<Cl
   return res.data;
 };
 
-export { getClubMemberList };
+const getClubMyInfo = async ({ clubId }: Readonly<ClubMyInfoRequestData>) => {
+  const res = await axiosInstance.get<ClubMemberResponseData>(`/v1/clubs/${clubId}/members/me`);
+
+  return res.data;
+};
+
+export { getClubMemberList, getClubMyInfo };
