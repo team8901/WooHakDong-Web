@@ -22,7 +22,7 @@ interface ClubItemResponseData {
 
 type ClubItemListProps = {
   item: ClubItemResponseData;
-  borrowedReturnDate: string | null | undefined;
+  borrowedReturnDate?: string | null | undefined;
   myPage?: boolean;
 };
 
@@ -30,10 +30,10 @@ type ClubItemResultResponseData = {
   result: ClubItemResponseData[];
 };
 
-type ClubItemBorrowRequestData = {
+interface ClubItemBorrowRequestData {
   clubId: number;
   itemId: number;
-};
+}
 
 type ClubItemBorrowResponseData = {
   itemId: number;
@@ -54,6 +54,16 @@ type ClubItemsMyResultResponseData = {
   result: ClubItemsMyResponseData[];
 };
 
+interface ClubItemReturnRequestData extends ClubItemBorrowRequestData {
+  itemReturnImage: string;
+}
+
+type ClubItemReturnResponseData = {
+  itemId: number;
+  itemHistoryId: number;
+  itemReturnDate: string;
+};
+
 export type {
   ClubItemCategory,
   ClubItemResponseData,
@@ -65,4 +75,6 @@ export type {
   ClubItemsMyRequestData,
   ClubItemsMyResponseData,
   ClubItemsMyResultResponseData,
+  ClubItemReturnRequestData,
+  ClubItemReturnResponseData,
 };
