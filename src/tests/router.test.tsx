@@ -5,7 +5,6 @@ import ROUTE from '@libs/constant/path';
 import { getClubInfo, getClubsInfo } from '@libs/api/club';
 import { Router } from '@pages/Router';
 import { getMemberInfo } from '@libs/api/member';
-// import { renderHook } from "@testing-library/react-hooks";
 
 const mockNavigate = vi.fn();
 
@@ -41,8 +40,6 @@ const ROUTES_TO_TEST = [
   `${ROUTE.CLUB}/doit${ROUTE.DUES}`,
 ];
 
-// US30, 32
-// 동아리 회원은 우학동 서비스를 이용하기 위해 학교 이메일로 구글 로그인을 할 수 있다.
 describe('우학동 서비스에 가입되지 않았으면 loginRegister 페이지로 이동한다.', async () => {
   beforeEach(() => {
     localStorage.removeItem('accessToken');
@@ -66,6 +63,7 @@ describe('우학동 서비스에 가입되었지만 인적사항을 등록하지
     localStorage.setItem('accessToken', '123');
     (getMemberInfo as Mock).mockResolvedValue({ memberPhoneNumber: null });
     (getClubsInfo as Mock).mockResolvedValue({ result: [] });
+    (getClubInfo as Mock).mockResolvedValue({ clubName: '두잇' });
   });
 
   test.each(ROUTES_TO_TEST)('%s 로 접속했을 때 memberRegister 페이지로 이동', async (route) => {
