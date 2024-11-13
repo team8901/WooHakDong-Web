@@ -25,6 +25,7 @@ import ClubDuesHomePage from '@pages/clubDues/ClubDuesHome';
 import ClubMemberDetailPage from '@pages/clubMember/ClubMemberDetail';
 import ClubScheduleHomePage from '@pages/clubSchedule/ClubScheduleHome';
 import ClubScheduleDetailPage from '@pages/clubSchedule/ClubScheduleDetail';
+import ClubItemMyPage from '@pages/clubItem/ClubItemMy';
 
 export const Router = () => {
   return (
@@ -61,6 +62,7 @@ export const Router = () => {
               <Route path={`${ROUTE.MEMBER.slice(1)}/:memberId`} element={<ClubMemberDetailPage />} />
               <Route path={ROUTE.ITEM.slice(1)} element={<ClubItemHomePage />} />
               <Route path={ROUTE.ITEM_SEARCH.slice(1)} element={<ClubItemSearchPage />} />
+              <Route path={ROUTE.ITEM_MY.slice(1)} element={<ClubItemMyPage />} />
               <Route path={`${ROUTE.ITEM.slice(1)}/:itemId`} element={<ClubItemDetailPage />} />
               <Route path={ROUTE.DUES.slice(1)} element={<ClubDuesHomePage />} />
               <Route path={ROUTE.SCHEDULE.slice(1)} element={<ClubScheduleHomePage />} />

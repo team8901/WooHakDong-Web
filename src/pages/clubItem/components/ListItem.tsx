@@ -6,11 +6,11 @@ import ItemUnavailable from '@pages/clubItem/components/ItemUnavailable';
 import ItemUsing from '@pages/clubItem/components/ItemUsing';
 import { ClubItemListProps, ClubItemResponseData } from 'types/item';
 
-const ListItem = ({ item }: Readonly<ClubItemListProps>) => {
+const ListItem = ({ item, borrowedReturnDate, myPage = false }: Readonly<ClubItemListProps>) => {
   const navigate = useCustomNavigate();
 
   const handleItemClick = (item: ClubItemResponseData) => {
-    navigate(`${ROUTE.ITEM}/${item.itemId}`, { state: { item } });
+    navigate(`${ROUTE.ITEM}/${item.itemId}`, { state: { item, borrowedReturnDate, myPage } });
   };
 
   return (

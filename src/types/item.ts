@@ -6,7 +6,7 @@ type ClubItemRequestData = {
   category?: ClubItemCategory;
 };
 
-type ClubItemResponseData = {
+interface ClubItemResponseData {
   itemId: number;
   itemName: string;
   itemPhoto: string;
@@ -16,12 +16,14 @@ type ClubItemResponseData = {
   itemRentalMaxDay: number;
   itemAvailable: boolean;
   itemUsing: boolean;
-  itemRentalDate: string;
+  itemRentalDate: string | null;
   itemRentalTime: number;
-};
+}
 
 type ClubItemListProps = {
   item: ClubItemResponseData;
+  borrowedReturnDate: string | null | undefined;
+  myPage?: boolean;
 };
 
 type ClubItemResultResponseData = {
@@ -36,8 +38,20 @@ type ClubItemBorrowRequestData = {
 type ClubItemBorrowResponseData = {
   itemId: number;
   itemHistoryId: number;
-  itemRentalDate: string;
+  itemRentalDate: string | null;
   itemDueDate: string;
+};
+
+type ClubItemsMyRequestData = {
+  clubId: number;
+};
+
+interface ClubItemsMyResponseData extends ClubItemResponseData {
+  itemBorrowedReturnDate: string | null;
+}
+
+type ClubItemsMyResultResponseData = {
+  result: ClubItemsMyResponseData[];
 };
 
 export type {
@@ -48,4 +62,7 @@ export type {
   ClubItemBorrowRequestData,
   ClubItemListProps,
   ClubItemBorrowResponseData,
+  ClubItemsMyRequestData,
+  ClubItemsMyResponseData,
+  ClubItemsMyResultResponseData,
 };

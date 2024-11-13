@@ -16,12 +16,20 @@ import { ClubItemResponseData } from 'types/item';
 const ClubItemDetailPage = () => {
   const { state } = useLocation();
   const initialItem: ClubItemResponseData = state.item;
+  const borrowedReturnDate: string | null | undefined = state.borrowedReturnDate;
+  const shouldReturn = borrowedReturnDate === null;
+  const myPage: boolean = state.myPage;
   const [item, setItem] = useState<ClubItemResponseData>(initialItem);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { setToastMessage } = useToast();
 
   const handleBorrow = async () => {
-    if (!clubEnglishName) return;
+    if (!clubEnglishName || shouldReturn) return;
+
+    if (myPage) {
+      setToastMessage('대여 신청은 물품 목록에서 가능해요');
+      return;
+    }
 
     if (!item.itemAvailable || item.itemUsing) {
       setToastMessage('대여가능한 물품이 아니에요');
@@ -47,7 +55,17 @@ const ClubItemDetailPage = () => {
     }
   };
 
+  const handleReturn = () => {};
+
   const getButtonText = (item: ClubItemResponseData) => {
+    if (shouldReturn) {
+      return '반납하기';
+    }
+
+    if (myPage && borrowedReturnDate !== undefined) {
+      return '반납 완료';
+    }
+
     if (!item.itemAvailable) {
       return '대여 불가';
     }
@@ -60,6 +78,14 @@ const ClubItemDetailPage = () => {
   };
 
   const getButtonBgColor = (item: ClubItemResponseData) => {
+    if (shouldReturn) {
+      return 'var(--color-primary)';
+    }
+
+    if (myPage && borrowedReturnDate !== undefined) {
+      return 'var(--color-lightGray)';
+    }
+
     if (!item.itemAvailable) {
       return 'var(--color-lightRed)';
     }
@@ -72,6 +98,14 @@ const ClubItemDetailPage = () => {
   };
 
   const getTextColor = (item: ClubItemResponseData) => {
+    if (shouldReturn) {
+      return 'white';
+    }
+
+    if (myPage && borrowedReturnDate !== undefined) {
+      return 'var(--color-darkGray)';
+    }
+
     if (!item.itemAvailable) {
       return 'var(--color-red)';
     }
@@ -123,7 +157,7 @@ const ClubItemDetailPage = () => {
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button
           text={getButtonText(item)}
-          onClick={handleBorrow}
+          onClick={shouldReturn ? handleReturn : handleBorrow}
           // disabled={!item.itemAvailable || item.itemUsing}
           bgColor={getButtonBgColor(item)}
           textColor={getTextColor(item)}

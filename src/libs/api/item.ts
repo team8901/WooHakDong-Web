@@ -4,6 +4,8 @@ import {
   ClubItemBorrowResponseData,
   ClubItemRequestData,
   ClubItemResultResponseData,
+  ClubItemsMyRequestData,
+  ClubItemsMyResultResponseData,
 } from 'types/item';
 
 const getClubItems = async ({ clubId, keyword = '', category }: Readonly<ClubItemRequestData>) => {
@@ -18,4 +20,9 @@ const postClubItemBorrow = async ({ clubId, itemId }: Readonly<ClubItemBorrowReq
   return res.data;
 };
 
-export { getClubItems, postClubItemBorrow };
+const getClubItemsMy = async ({ clubId }: Readonly<ClubItemsMyRequestData>) => {
+  const res = await axiosInstance.get<ClubItemsMyResultResponseData>(`/v1/clubs/${clubId}/items/borrowed`);
+  return res.data;
+};
+
+export { getClubItems, postClubItemBorrow, getClubItemsMy };
