@@ -69,8 +69,13 @@ const PaymentPage = () => {
       clubEnglishName: clubEnglishName || '',
     };
 
-    await postPortOne(data);
-    navigate(ROUTE.ROOT);
+    try {
+      await postPortOne(data);
+      navigate(ROUTE.ROOT);
+    } catch (error) {
+      setToastMessage('결제 중 오류가 발생했어요');
+      console.error(error);
+    }
   };
 
   const handlePaymentKakao = async () => {
