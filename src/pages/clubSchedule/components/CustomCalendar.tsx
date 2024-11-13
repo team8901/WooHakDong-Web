@@ -28,8 +28,18 @@ const CustomCalendar = ({
       onActiveStartDateChange={({ activeStartDate }) => {
         if (!activeStartDate) return;
 
-        setSelectedDate(activeStartDate);
         setCurrentMonth(activeStartDate.getMonth() + 1);
+
+        const isCurrentMonth =
+          new Date().getFullYear() === activeStartDate.getFullYear() &&
+          new Date().getMonth() === activeStartDate.getMonth();
+
+        if (isCurrentMonth) {
+          setSelectedDate(new Date());
+          return;
+        }
+
+        setSelectedDate(activeStartDate);
       }} // 달력의 시작 날짜가 바뀌면 selectedDate를 업데이트
       formatDay={(_, date) => date.toLocaleString('en', { day: 'numeric' })} // 날짜 형식을 설정
       tileContent={({ date }) => (
