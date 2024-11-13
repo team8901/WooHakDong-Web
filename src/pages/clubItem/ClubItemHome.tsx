@@ -3,6 +3,7 @@ import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import { useSearch } from '@contexts/SearchContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
+import useTabNav from '@hooks/useTabNav';
 import { getClubInfo } from '@libs/api/club';
 import { getClubItems, getClubItemsMy } from '@libs/api/item';
 // import { CLUB_ITEM_MY_DATA, CLUB_ITEM_DATA } from '@libs/constant/item';
@@ -14,17 +15,13 @@ import { useParams } from 'react-router-dom';
 import { ClubItemResponseData, ClubItemsMyResponseData } from 'types/item';
 
 const ClubItemHomePage = () => {
-  const [activeTab, setActiveTab] = useState('ALL');
   const [itemList, setItemList] = useState<ClubItemResponseData[]>([]);
   const [filteredItemList, setFilteredItemList] = useState<ClubItemResponseData[]>([]);
   const [myBorrowedItemList, setMyBorrowedItemList] = useState<ClubItemsMyResponseData[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { searchQuery } = useSearch();
   const navigate = useCustomNavigate();
-
-  const handleTabChange = (categoryName: string) => {
-    setActiveTab(categoryName);
-  };
+  const { activeTab, handleTabChange } = useTabNav({ itemList, setFilteredItemList });
 
   const isMyBorrowedItem = (itemId: number) => {
     return myBorrowedItemList.findIndex((item) => item.itemId === itemId) !== -1;
@@ -63,15 +60,6 @@ const ClubItemHomePage = () => {
 
     navigate(ROUTE.ITEM_SEARCH);
   }, [searchQuery]);
-
-  useEffect(() => {
-    if (activeTab === 'ALL') {
-      setFilteredItemList(itemList);
-    } else {
-      const filteredItem = itemList.filter((item) => item.itemCategory === activeTab);
-      setFilteredItemList(filteredItem);
-    }
-  }, [activeTab]);
 
   return (
     <div className="relative h-full pb-[50px] pt-[56px]">

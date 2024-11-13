@@ -1,12 +1,10 @@
 import AppBar from '@components/AppBar';
 import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
-import { useSearch } from '@contexts/SearchContext';
-import useCustomNavigate from '@hooks/useCustomNavigate';
+import useTabNav from '@hooks/useTabNav';
 import { getClubInfo } from '@libs/api/club';
 import { getClubItemsMy } from '@libs/api/item';
 // import { CLUB_ITEM_MY_DATA } from '@libs/constant/item';
-import ROUTE from '@libs/constant/path';
 import ListItem from '@pages/clubItem/components/ListItem';
 import TabNav from '@pages/clubItem/components/TabNav';
 import { useEffect, useState } from 'react';
@@ -14,16 +12,10 @@ import { useParams } from 'react-router-dom';
 import { ClubItemsMyResponseData } from 'types/item';
 
 const ClubItemMyPage = () => {
-  const [activeTab, setActiveTab] = useState('ALL');
   const [itemList, setItemList] = useState<ClubItemsMyResponseData[]>([]);
   const [filteredItemList, setFilteredItemList] = useState<ClubItemsMyResponseData[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
-  const { searchQuery } = useSearch();
-  const navigate = useCustomNavigate();
-
-  const handleTabChange = (categoryName: string) => {
-    setActiveTab(categoryName);
-  };
+  const { activeTab, handleTabChange } = useTabNav({ itemList, setFilteredItemList });
 
   useEffect(() => {
     (async () => {
@@ -43,25 +35,10 @@ const ClubItemMyPage = () => {
     // setFilteredItemList(CLUB_ITEM_MY_DATA);
   }, []);
 
-  useEffect(() => {
-    if (!searchQuery) return;
-
-    navigate(ROUTE.ITEM_SEARCH);
-  }, [searchQuery]);
-
-  useEffect(() => {
-    if (activeTab === 'ALL') {
-      setFilteredItemList(itemList);
-    } else {
-      const filteredItem = itemList.filter((item) => item.itemCategory === activeTab);
-      setFilteredItemList(filteredItem);
-    }
-  }, [activeTab]);
-
   return (
     <div className="relative h-full pb-[50px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
-        <AppBar hasMenu hasSearch />
+        <AppBar hasMenu />
       </div>
 
       <TabNav activeTab={activeTab} handleTabChange={handleTabChange} />
