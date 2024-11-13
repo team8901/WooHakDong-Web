@@ -6,9 +6,12 @@ import Caption2 from '@components/Caption2';
 import ScrollView from '@components/ScrollView';
 import Title3 from '@components/Title3';
 import { useToast } from '@contexts/ToastContext';
+import useModal from '@hooks/useModal';
 import { getClubInfo } from '@libs/api/club';
 import { postClubItemBorrow } from '@libs/api/item';
+import { getS3ImageUrl, putImageToS3 } from '@libs/api/util';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
+import Modal from '@pages/clubItem/components/Modal';
 import { useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { ClubItemResponseData } from 'types/item';
@@ -22,6 +25,10 @@ const ClubItemDetailPage = () => {
   const [item, setItem] = useState<ClubItemResponseData>(initialItem);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { setToastMessage } = useToast();
+  const { isModalOpen, openModal, closeModal, modalRef } = useModal();
+  const [imagePreviewUrl, setImagePreviewUrl] = useState('');
+  const [image, setImage] = useState<File | null>(null);
+  const [fileBytes, setFileBytes] = useState<ArrayBuffer | null>(null);
 
   const handleBorrow = async () => {
     if (!clubEnglishName || shouldReturn) return;
@@ -55,7 +62,69 @@ const ClubItemDetailPage = () => {
     }
   };
 
-  const handleReturn = () => {};
+  const handleReturn = async () => {
+    if (!image || !fileBytes) return;
+
+    const imageCount = 1;
+
+    const { result } = await getS3ImageUrl({ imageCount });
+    const { imageUrl } = result[0];
+
+    await putImageToS3({ s3ImageUrl: imageUrl, fileBytes, contentType: image.type });
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const MAX_IMAGE_LENGTH = 1;
+    const files = e.target.files;
+
+    if (!files) return;
+
+    if (files.length > MAX_IMAGE_LENGTH) {
+      setToastMessage('이미지는 한 개만 등록 가능해요');
+      return;
+    }
+
+    const file = files[0];
+
+    if (!file) return;
+
+    // 파일 업로드 시 모든 파일 (*.*) 선택 방지 위해 이미지 type을 한 번 더 검증
+    if (file.type !== 'image/jpeg' && file.type !== 'image/jpg' && file.type !== 'image/png') {
+      setToastMessage('JPG 혹은 PNG 확장자의 이미지만 등록 가능해요');
+      return;
+    }
+
+    setImage(file);
+
+    readFileForPreview(file);
+    readFileForBytes(file);
+  };
+
+  // 파일을 Base64 인코딩하기
+  const readFileForPreview = (file: File) => {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      if (!reader.result) return;
+
+      setImagePreviewUrl(reader.result as string);
+    };
+  };
+
+  // 파일을 바이너리 데이터로 읽기
+  const readFileForBytes = (file: File) => {
+    const reader = new FileReader();
+
+    reader.readAsArrayBuffer(file);
+
+    reader.onload = () => {
+      if (!reader.result) return;
+
+      setFileBytes(reader.result as ArrayBuffer);
+    };
+  };
 
   const getButtonText = (item: ClubItemResponseData) => {
     if (shouldReturn) {
@@ -157,12 +226,21 @@ const ClubItemDetailPage = () => {
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button
           text={getButtonText(item)}
-          onClick={shouldReturn ? handleReturn : handleBorrow}
+          onClick={shouldReturn ? openModal : handleBorrow}
           // disabled={!item.itemAvailable || item.itemUsing}
           bgColor={getButtonBgColor(item)}
           textColor={getTextColor(item)}
         />
       </div>
+
+      <Modal
+        isModalOpen={isModalOpen}
+        closeModal={closeModal}
+        modalRef={modalRef}
+        handleImageChange={handleImageChange}
+        imagePreviewUrl={imagePreviewUrl}
+        handleReturn={handleReturn}
+      />
     </div>
   );
 };
