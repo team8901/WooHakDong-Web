@@ -1,15 +1,14 @@
 import AppBar from '@components/AppBar';
-import Body3 from '@components/Body3';
 import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import { useSearch } from '@contexts/SearchContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { getClubInfo } from '@libs/api/club';
 import { getClubItemsMy } from '@libs/api/item';
-import { CLIB_ITEM_CATEGORY_MENU } from '@libs/constant/item';
 // import { CLUB_ITEM_MY_DATA } from '@libs/constant/item';
 import ROUTE from '@libs/constant/path';
 import ListItem from '@pages/clubItem/components/ListItem';
+import TabNav from '@pages/clubItem/components/TabNav';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ClubItemsMyResponseData } from 'types/item';
@@ -65,25 +64,7 @@ const ClubItemMyPage = () => {
         <AppBar hasMenu hasSearch />
       </div>
 
-      <div className="flex overflow-x-auto scrollbar-hide">
-        <button
-          type="button"
-          onClick={() => handleTabChange('ALL')}
-          className={`flex h-[40px] flex-shrink-0 items-center justify-center border-b-2 px-[16px] ${activeTab === 'ALL' ? 'border-b-black' : 'border-b-white'}`}
-        >
-          <Body3 text={'전체'} />
-        </button>
-        {CLIB_ITEM_CATEGORY_MENU.map((menu) => (
-          <button
-            key={menu.category}
-            type="button"
-            onClick={() => handleTabChange(menu.category)}
-            className={`flex h-[40px] flex-shrink-0 items-center justify-center border-b-2 px-[16px] ${menu.category === activeTab ? 'border-b-black' : 'border-b-white'}`}
-          >
-            <Body3 text={menu.label} />
-          </button>
-        ))}
-      </div>
+      <TabNav activeTab={activeTab} handleTabChange={handleTabChange} />
 
       <ScrollView fadeTop className="flex h-full flex-col gap-[20px] px-[20px]">
         {filteredItemList.length === 0 ? (
