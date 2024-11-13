@@ -73,7 +73,7 @@ const PaymentPage = () => {
       await postPortOne(data);
       navigate(ROUTE.ROOT);
     } catch (error) {
-      setToastMessage('결제 중 오류가 발생했어요');
+      setToastMessage(`결제 중 오류가 발생했어요\n${error}`);
       console.error(error);
     }
   };
