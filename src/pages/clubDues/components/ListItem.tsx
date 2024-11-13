@@ -1,7 +1,7 @@
 import Body1 from '@components/Body1';
 import Body2 from '@components/Body2';
 import Body4 from '@components/Body4';
-import formatDate from '@libs/util/formatDate';
+import { formatDate } from '@libs/util/formatDate';
 import { ClubDuesResponseData } from 'types/dues';
 
 const ListItem = ({ dues }: { dues: ClubDuesResponseData }) => {

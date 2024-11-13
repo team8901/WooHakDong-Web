@@ -9,7 +9,7 @@ import useBottomSheet from '@hooks/useBottomSheet';
 import { getClubInfo } from '@libs/api/club';
 import { getClubAccount, getClubDues } from '@libs/api/dues';
 import { CLUB_DUES_SORT_OPTIONS } from '@libs/constant/dues';
-import formatDate from '@libs/util/formatDate';
+import { formatDate } from '@libs/util/formatDate';
 import formatMoney from '@libs/util/formatMoney';
 import BottomSheet from '@pages/clubDues/components/BottomSheet';
 // import { CLUB_DUES_DATA } from '@libs/constant/dues';
@@ -65,6 +65,7 @@ const ClubDuesHomePage = () => {
       setAccountInfo({ clubAccountBankName, clubAccountNumber, clubAccountLastUpdateDate, clubAccountBalance });
     })();
     // setDuesList(CLUB_DUES_DATA);
+    // setFilteredDuesList(CLUB_DUES_DATA);
   }, []);
 
   return (

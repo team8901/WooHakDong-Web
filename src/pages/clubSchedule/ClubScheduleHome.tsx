@@ -6,6 +6,7 @@ import ScrollView from '@components/ScrollView';
 import { getClubInfo } from '@libs/api/club';
 import { getClubSchedules } from '@libs/api/clubSchedule';
 import convertDate from '@libs/util/convertDate';
+import { formatDateWithWeekday } from '@libs/util/formatDate';
 // import { CLUB_SCHEDULE_DATA } from '@libs/constant/clubSchedule';
 import isSameDateBetweenDateString from '@libs/util/isSameDateBetweenDateString';
 import CustomCalendar from '@pages/clubSchedule/components/CustomCalendar';
@@ -76,16 +77,6 @@ const ClubScheduleHomePage = () => {
     filterList();
   }, [selectedDate]);
 
-  const formatDate = (date: Date) => {
-    if (date === null) return '';
-
-    const dayFormatter = new Intl.DateTimeFormat('ko-KR', { weekday: 'long' });
-    const day = dayFormatter.format(date);
-    const dayOfMonth = date.getDate();
-
-    return `${dayOfMonth}일 ${day}`;
-  };
-
   return (
     <div className="relative h-full pb-[100px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
@@ -108,7 +99,7 @@ const ClubScheduleHomePage = () => {
         />
       )}
 
-      <Body1 text={formatDate(selectedDate as Date)} className="inline-block px-[20px] pt-[20px]" />
+      <Body1 text={formatDateWithWeekday(selectedDate as Date)} className="inline-block px-[20px] pt-[20px]" />
 
       <ScrollView
         fadeTop
