@@ -1,33 +1,40 @@
 import AppBar from '@components/AppBar';
-import Body3 from '@components/Body3';
 import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import { useSearch } from '@contexts/SearchContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
+import useTabNav from '@hooks/useTabNav';
 import { getClubInfo } from '@libs/api/club';
-import { getClubItems } from '@libs/api/item';
-import { CLIB_ITEM_CATEGORY_MENU } from '@libs/constant/item';
-// import { CLUB_ITEM_DATA } from '@libs/constant/item';
+import { getClubItems, getClubItemsMy } from '@libs/api/item';
+// import { CLUB_ITEM_MY_DATA, CLUB_ITEM_DATA } from '@libs/constant/item';
 import ROUTE from '@libs/constant/path';
 import ListItem from '@pages/clubItem/components/ListItem';
+import TabNav from '@pages/clubItem/components/TabNav';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ClubItem } from 'types/item';
+import { ClubItemResponseData, ClubItemsMyResponseData } from 'types/item';
 
 const ClubItemHomePage = () => {
-  const [activeTab, setActiveTab] = useState('ALL');
-  const [itemList, setItemList] = useState<ClubItem[]>([]);
-  const [filteredItemList, setFilteredItemList] = useState<ClubItem[]>([]);
+  const [itemList, setItemList] = useState<ClubItemResponseData[]>([]);
+  const [filteredItemList, setFilteredItemList] = useState<ClubItemResponseData[]>([]);
+  const [myBorrowedItemList, setMyBorrowedItemList] = useState<ClubItemsMyResponseData[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { searchQuery } = useSearch();
   const navigate = useCustomNavigate();
+  const { activeTab, handleTabChange } = useTabNav({ itemList, setFilteredItemList });
 
-  const handleTabChange = (categoryName: string) => {
-    setActiveTab(categoryName);
+  const isMyBorrowedItem = (itemId: number) => {
+    return myBorrowedItemList.findIndex((item) => item.itemId === itemId) !== -1;
+  };
+
+  const getBorrowedReturnDate = (itemId: number) => {
+    const item = myBorrowedItemList.find((item) => item.itemId === itemId);
+
+    return item?.itemBorrowedReturnDate;
   };
 
   useEffect(() => {
-    const getData = async () => {
+    (async () => {
       if (!clubEnglishName) return;
 
       const { clubId } = await getClubInfo({
@@ -37,11 +44,15 @@ const ClubItemHomePage = () => {
       const { result } = await getClubItems({ clubId });
       setItemList(result);
       setFilteredItemList(result);
-    };
 
-    getData();
+      const res = await getClubItemsMy({ clubId });
+      setMyBorrowedItemList(res.result);
+    })();
+
+    /* 더미데이터 테스트 */
     // setItemList(CLUB_ITEM_DATA);
     // setFilteredItemList(CLUB_ITEM_DATA);
+    // setMyBorrowedItemList(CLUB_ITEM_MY_DATA);
   }, []);
 
   useEffect(() => {
@@ -50,40 +61,13 @@ const ClubItemHomePage = () => {
     navigate(ROUTE.ITEM_SEARCH);
   }, [searchQuery]);
 
-  useEffect(() => {
-    if (activeTab === 'ALL') {
-      setFilteredItemList(itemList);
-    } else {
-      const filteredItem = itemList.filter((item) => item.itemCategory === activeTab);
-      setFilteredItemList(filteredItem);
-    }
-  }, [activeTab]);
-
   return (
     <div className="relative h-full pb-[50px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
         <AppBar hasMenu hasSearch />
       </div>
 
-      <div className="flex overflow-x-auto scrollbar-hide">
-        <button
-          type="button"
-          onClick={() => handleTabChange('ALL')}
-          className={`flex h-[40px] flex-shrink-0 items-center justify-center border-b-2 px-[16px] ${activeTab === 'ALL' ? 'border-b-black' : 'border-b-white'}`}
-        >
-          <Body3 text={'전체'} />
-        </button>
-        {CLIB_ITEM_CATEGORY_MENU.map((menu) => (
-          <button
-            key={menu.category}
-            type="button"
-            onClick={() => handleTabChange(menu.category)}
-            className={`flex h-[40px] flex-shrink-0 items-center justify-center border-b-2 px-[16px] ${menu.category === activeTab ? 'border-b-black' : 'border-b-white'}`}
-          >
-            <Body3 text={menu.label} />
-          </button>
-        ))}
-      </div>
+      <TabNav activeTab={activeTab} handleTabChange={handleTabChange} />
 
       <ScrollView fadeTop className="flex h-full flex-col gap-[20px] px-[20px]">
         {filteredItemList.length === 0 ? (
@@ -92,11 +76,21 @@ const ClubItemHomePage = () => {
           </div>
         ) : (
           <div className="flex flex-col gap-[20px]">
-            <ListItem item={filteredItemList[0]} />
+            <ListItem
+              item={filteredItemList[0]}
+              borrowedReturnDate={
+                isMyBorrowedItem(filteredItemList[0].itemId)
+                  ? getBorrowedReturnDate(filteredItemList[0].itemId)
+                  : undefined
+              }
+            />
             {filteredItemList.slice(1).map((item) => (
               <div key={item.itemId} className="flex flex-col gap-[20px]">
                 <div className="h-[0.6px] bg-lightGray" />
-                <ListItem item={item} />
+                <ListItem
+                  item={item}
+                  borrowedReturnDate={isMyBorrowedItem(item.itemId) ? getBorrowedReturnDate(item.itemId) : undefined}
+                />
               </div>
             ))}
           </div>

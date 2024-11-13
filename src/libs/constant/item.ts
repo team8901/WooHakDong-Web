@@ -1,4 +1,4 @@
-import { ClubItem, ClubItemCategory } from 'types/item';
+import { ClubItemCategory, ClubItemResponseData, ClubItemsMyResponseData } from 'types/item';
 
 const CLUB_ITEM_CATEGORY = {
   DIGITAL: '디지털',
@@ -13,7 +13,7 @@ const CLIB_ITEM_CATEGORY_MENU: { category: ClubItemCategory; label: string }[] =
   ([category, label]) => ({ category: category as ClubItemCategory, label }),
 );
 
-const CLUB_ITEM_DATA: ClubItem[] = [
+const CLUB_ITEM_DATA: ClubItemResponseData[] = [
   {
     itemId: 0,
     itemName: '27인치 모니터',
@@ -92,6 +92,78 @@ const CLUB_ITEM_DATA: ClubItem[] = [
     itemRentalDate: '2024-10-29T05:56:14.799Z',
     itemRentalTime: 2,
   },
+  {
+    itemId: 6,
+    itemName: '삼겹살',
+    itemPhoto: 'https://woohakdong.image.s3.ap-northeast-2.amazonaws.com/temp79826d12-4adf-40bb-bd16-3133da484dd8',
+    itemDescription: '삼겹살이라고 했지맘 오겹살이다',
+    itemLocation: '경주',
+    itemCategory: 'ETC',
+    itemRentalMaxDay: 2,
+    itemAvailable: true,
+    itemUsing: true,
+    itemRentalDate: '2024-10-29T05:56:14.799Z',
+    itemRentalTime: 1,
+  },
 ];
 
-export { CLUB_ITEM_CATEGORY, CLIB_ITEM_CATEGORY_MENU, CLUB_ITEM_DATA };
+const CLUB_ITEM_MY_DATA: ClubItemsMyResponseData[] = [
+  {
+    itemId: 1,
+    itemName: '농구공',
+    itemPhoto: '/logo.svg',
+    itemDescription: '따끈따끈한 농구공이다.',
+    itemLocation: '동아리 방',
+    itemCategory: 'SPORT',
+    itemRentalMaxDay: 0,
+    itemAvailable: true,
+    itemUsing: true,
+    itemRentalDate: '2024-10-29T05:56:14.799Z',
+    itemRentalTime: 4,
+    itemBorrowedReturnDate: null,
+  },
+  {
+    itemId: 2,
+    itemName: '스테이플러',
+    itemPhoto: '/logo.svg',
+    itemDescription: '따끈따끈한 농구공이다.',
+    itemLocation: '동아리 방',
+    itemCategory: 'ETC',
+    itemRentalMaxDay: 0,
+    itemAvailable: true,
+    itemUsing: false,
+    itemRentalDate: '2024-10-29T05:56:14.799Z',
+    itemRentalTime: 1,
+    itemBorrowedReturnDate: '2024-11-13T01:00:49.889Z',
+  },
+  {
+    itemId: 5,
+    itemName: '스피커',
+    itemPhoto: '/logo.svg',
+    itemDescription: '하둡 프로그래밍에 대해서 알려주는 책이다. 하둡 프로그래밍이 뭔지 알 수 있다.',
+    itemLocation: '동아리 방',
+    itemCategory: 'DIGITAL',
+    itemRentalMaxDay: 0,
+    itemAvailable: true,
+    itemUsing: true,
+    itemRentalDate: '2024-10-29T05:56:14.799Z',
+    itemRentalTime: 2,
+    itemBorrowedReturnDate: null,
+  },
+  {
+    itemId: 6,
+    itemName: '삼겹살',
+    itemPhoto: 'https://woohakdong.image.s3.ap-northeast-2.amazonaws.com/temp79826d12-4adf-40bb-bd16-3133da484dd8',
+    itemDescription: '삼겹살이라고 했지맘 오겹살이다',
+    itemLocation: '경주',
+    itemCategory: 'ETC',
+    itemRentalMaxDay: 2,
+    itemAvailable: true,
+    itemUsing: true,
+    itemRentalDate: '2024-10-29T05:56:14.799Z',
+    itemRentalTime: 1,
+    itemBorrowedReturnDate: null,
+  },
+];
+
+export { CLUB_ITEM_CATEGORY, CLIB_ITEM_CATEGORY_MENU, CLUB_ITEM_DATA, CLUB_ITEM_MY_DATA };

@@ -12,6 +12,7 @@ import KakaoPayIcon from '@assets/images/payment/KakaoPayIcon';
 import TossPayIcon from '@assets/images/payment/TossPayIcon';
 import { useParams } from 'react-router-dom';
 import ScrollView from '@components/ScrollView';
+import { useToast } from '@contexts/ToastContext';
 
 const PaymentPage = () => {
   const navigate = useCustomNavigate();
@@ -25,14 +26,14 @@ const PaymentPage = () => {
   const [memberPhoneNumber, setMemberPhoneNumber] = useState('');
   const merchantUid = useRef('');
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
+  const { setToastMessage } = useToast();
 
   useEffect(() => {
     if (!clubEnglishName) return;
 
     merchantUid.current = `payment-${crypto.randomUUID()}`.slice(0, 40);
-    console.log('merchantUid.current', merchantUid.current);
 
-    const getData = async () => {
+    (async () => {
       const { memberEmail, memberName, memberPhoneNumber } = await getMemberInfo();
       const { clubName, clubId, clubDues } = await getClubInfo({
         clubEnglishName,
@@ -40,13 +41,11 @@ const PaymentPage = () => {
 
       setClubId(clubId);
       setClubName(clubName);
-      // setClubDues(20000);
       setClubDues(clubDues);
       setMemberEmail(memberEmail);
       setMemberName(memberName);
       setMemberPhoneNumber(memberPhoneNumber);
-    };
-    getData();
+    })();
   }, []);
 
   const handlePostPortOne = async (pg: string) => {
@@ -70,8 +69,13 @@ const PaymentPage = () => {
       clubEnglishName: clubEnglishName || '',
     };
 
-    await postPortOne(data);
-    navigate(ROUTE.ROOT);
+    try {
+      await postPortOne(data);
+      navigate(ROUTE.ROOT);
+    } catch (error) {
+      setToastMessage(`결제 중 오류가 발생했어요\n${error}`);
+      console.error(error);
+    }
   };
 
   const handlePaymentKakao = async () => {
@@ -115,7 +119,13 @@ const PaymentPage = () => {
           {paymentMethods.map((method) => (
             <PaymentMethodButton
               key={method.id}
-              onClick={() => handlePaymentMethodButtonClick(method.id)}
+              onClick={() => {
+                if (method.id === 1) {
+                  setToastMessage('준비중인 결제 수단이에요');
+                  return;
+                }
+                handlePaymentMethodButtonClick(method.id);
+              }}
               icon={method.icon}
               className={`${paymentButtonIndex === method.id ? 'border-primary' : ''}`}
             />

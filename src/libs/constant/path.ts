@@ -12,6 +12,7 @@ const ROUTE = {
   PAYMENT_REDIRECT: '/payment/redirect',
   ITEM: '/items',
   ITEM_SEARCH: '/items/search',
+  ITEM_MY: '/items/my',
   DUES: '/dues',
   MEMBER: '/members',
   SCHEDULE: '/schedules',

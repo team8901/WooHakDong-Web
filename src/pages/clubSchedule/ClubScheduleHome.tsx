@@ -3,11 +3,16 @@ import Body1 from '@components/Body1';
 import Body3 from '@components/Body3';
 import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
-import { CLUB_SCHEDULE_DATA } from '@libs/constant/clubSchedule';
+import { getClubInfo } from '@libs/api/club';
+import { getClubSchedules } from '@libs/api/clubSchedule';
+import convertDate from '@libs/util/convertDate';
+import { formatDateWithWeekday } from '@libs/util/formatDate';
+// import { CLUB_SCHEDULE_DATA } from '@libs/constant/clubSchedule';
 import isSameDateBetweenDateString from '@libs/util/isSameDateBetweenDateString';
 import CustomCalendar from '@pages/clubSchedule/components/CustomCalendar';
 import ListItem from '@pages/clubSchedule/components/ListItem';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { ClubScheduleResponseData } from 'types/clubSchedule';
 
 export type DatePiece = Date | null;
@@ -17,26 +22,60 @@ const ClubScheduleHomePage = () => {
   const [selectedDate, setSelectedDate] = useState<SelectedDate>(new Date());
   const [scheduleList, setScheduleList] = useState<ClubScheduleResponseData[]>([]);
   const [filteredScheduleList, setFilteredScheduleList] = useState<ClubScheduleResponseData[]>([]);
+  const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
+  const [clubId, setClubId] = useState<number | null>(null);
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
 
-  useEffect(() => {
-    setScheduleList(CLUB_SCHEDULE_DATA);
-
-    const filteredSchedule = CLUB_SCHEDULE_DATA.filter((schedule) =>
+  const filterList = () => {
+    const filteredSchedule = scheduleList.filter((schedule) =>
       isSameDateBetweenDateString(selectedDate as Date, schedule.scheduleDateTime),
     );
 
     setFilteredScheduleList(filteredSchedule);
-  }, [selectedDate]);
-
-  const formatDate = (date: Date) => {
-    if (date === null) return '';
-
-    const dayFormatter = new Intl.DateTimeFormat('ko-KR', { weekday: 'long' });
-    const day = dayFormatter.format(date);
-    const dayOfMonth = date.getDate();
-
-    return `${dayOfMonth}일 ${day}`;
   };
+
+  useEffect(() => {
+    (async () => {
+      if (!clubEnglishName) return;
+
+      const { clubId } = await getClubInfo({
+        clubEnglishName,
+      });
+
+      setClubId(clubId);
+
+      if (!selectedDate) return;
+
+      const { result } = await getClubSchedules({ clubId, date: convertDate(selectedDate as Date) });
+
+      setScheduleList(result);
+
+      filterList();
+    })();
+
+    /* 더미데이터 테스트 */
+    // setScheduleList(CLUB_SCHEDULE_DATA);
+
+    // const filteredSchedule = CLUB_SCHEDULE_DATA.filter((schedule) =>
+    //   isSameDateBetweenDateString(selectedDate as Date, schedule.scheduleDateTime),
+    // );
+
+    // setFilteredScheduleList(filteredSchedule);
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (!clubId || !selectedDate) return;
+
+      const { result } = await getClubSchedules({ clubId, date: convertDate(selectedDate as Date) });
+
+      setScheduleList(result);
+    })();
+  }, [currentMonth]);
+
+  useEffect(() => {
+    filterList();
+  }, [selectedDate]);
 
   return (
     <div className="relative h-full pb-[100px] pt-[56px]">
@@ -52,10 +91,15 @@ const ClubScheduleHomePage = () => {
         <Body3 text="오늘" />
       </button>
       {scheduleList && (
-        <CustomCalendar selectedDate={selectedDate} setSelectedDate={setSelectedDate} scheduleList={scheduleList} />
+        <CustomCalendar
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          scheduleList={scheduleList}
+          setCurrentMonth={setCurrentMonth}
+        />
       )}
 
-      <Body1 text={formatDate(selectedDate as Date)} className="inline-block px-[20px] pt-[20px]" />
+      <Body1 text={formatDateWithWeekday(selectedDate as Date)} className="inline-block px-[20px] pt-[20px]" />
 
       <ScrollView
         fadeTop

@@ -4,13 +4,13 @@ import ItemRentalTime from '@pages/clubItem/components/ItemRentalTime';
 import ItemTitle from '@pages/clubItem/components/ItemTitle';
 import ItemUnavailable from '@pages/clubItem/components/ItemUnavailable';
 import ItemUsing from '@pages/clubItem/components/ItemUsing';
-import { ClubItem, ClubItemListProps } from 'types/item';
+import { ClubItemListProps, ClubItemResponseData } from 'types/item';
 
-const ListItem = ({ item }: Readonly<ClubItemListProps>) => {
+const ListItem = ({ item, borrowedReturnDate, myPage = false }: Readonly<ClubItemListProps>) => {
   const navigate = useCustomNavigate();
 
-  const handleItemClick = (item: ClubItem) => {
-    navigate(`${ROUTE.ITEM}/${item.itemId}`, { state: { item } });
+  const handleItemClick = (item: ClubItemResponseData) => {
+    navigate(`${ROUTE.ITEM}/${item.itemId}`, { state: { item, borrowedReturnDate, myPage } });
   };
 
   return (

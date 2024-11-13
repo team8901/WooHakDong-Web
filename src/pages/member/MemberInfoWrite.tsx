@@ -21,12 +21,11 @@ const MemberInfoWritePage = () => {
   } as MemberInfoResponseData);
 
   useEffect(() => {
-    const checkMemberInfo = async () => {
+    (async () => {
       const { memberName, memberEmail, memberSchool } = await getMemberInfo();
-      setMemberInfo((prev) => ({ ...prev, memberName, memberEmail, memberSchool }));
-    };
 
-    checkMemberInfo();
+      setMemberInfo((prev) => ({ ...prev, memberName, memberEmail, memberSchool }));
+    })();
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

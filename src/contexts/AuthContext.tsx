@@ -1,4 +1,4 @@
-import { LoginData } from 'types/auth';
+import { LoginResponseData } from 'types/auth';
 import { createContext, useContext, ReactNode, useReducer, useMemo } from 'react';
 
 type UserState = {
@@ -8,7 +8,7 @@ type UserState = {
 
 interface AuthContextProps {
   user: UserState | null;
-  login: (loginData: LoginData) => void;
+  login: (loginData: LoginResponseData) => void;
   logout: () => void;
 }
 
@@ -36,7 +36,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, dispatch] = useReducer(userReducer, initialUserState);
 
-  const login = (loginData: LoginData) => {
+  const login = (loginData: LoginResponseData) => {
     const { accessToken, refreshToken } = loginData;
     // const newUser = { memberEmail, memberName };
     localStorage.setItem('accessToken', accessToken);

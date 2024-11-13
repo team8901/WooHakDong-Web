@@ -1,10 +1,10 @@
-type ClubDuesProps = {
+type ClubAccountHistoryInOutType = 'DEPOSIT' | 'WITHDRAW';
+
+type ClubDuesRequestData = {
   clubId: number;
   year: number;
   month: number;
 };
-
-type ClubAccountHistoryInOutType = 'DEPOSIT' | 'WITHDRAW';
 
 type ClubDuesResponseData = {
   clubAccountHistoryId: number;
@@ -15,7 +15,7 @@ type ClubDuesResponseData = {
   clubAccountHistoryContent: string;
 };
 
-type ClubsDuesResponseData = {
+type ClubDuesResultResponseData = {
   result: ClubDuesResponseData[];
 };
 
@@ -34,9 +34,9 @@ type ClubAccountResponseData = {
 };
 
 export type {
-  ClubDuesProps,
+  ClubDuesRequestData,
   ClubDuesResponseData,
-  ClubsDuesResponseData,
+  ClubDuesResultResponseData,
   ClubAccountRequestData,
   ClubAccountResponseData,
 };

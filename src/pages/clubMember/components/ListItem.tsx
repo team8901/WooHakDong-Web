@@ -6,10 +6,8 @@ import { CLUB_MEMBER_ROLE } from '@libs/constant/clubMember';
 import ROUTE from '@libs/constant/path';
 import { ClubMemberListProps } from 'types/clubMember';
 
-const ListItem = ({ member }: Readonly<ClubMemberListProps>) => {
+const ListItem = ({ member, canClick = false }: Readonly<ClubMemberListProps>) => {
   const navigate = useCustomNavigate();
-
-  const isOffice = member.clubMemberRole !== 'MEMBER';
 
   const handleMemberClick = () => {
     navigate(`${ROUTE.MEMBER}/${member.memberId}`, { state: { member } });
@@ -17,8 +15,8 @@ const ListItem = ({ member }: Readonly<ClubMemberListProps>) => {
 
   return (
     <button
-      className={`flex items-center justify-between ${isOffice ? '' : 'cursor-default'}`}
-      onClick={() => (isOffice ? handleMemberClick() : null)}
+      className={`flex items-center justify-between ${canClick ? '' : 'cursor-default'}`}
+      onClick={() => (canClick ? handleMemberClick() : null)}
     >
       <div className="flex flex-col items-start gap-[2px]">
         <div className="flex items-center gap-[4px]">
@@ -36,7 +34,7 @@ const ListItem = ({ member }: Readonly<ClubMemberListProps>) => {
         </div>
         <Body2 text={member.memberMajor} className="text-darkGray" />
       </div>
-      {isOffice && <ChevronRightGrayIcon />}
+      {canClick && <ChevronRightGrayIcon />}
     </button>
   );
 };

@@ -1,8 +1,8 @@
 import LockIcon from '@assets/images/item/LockIcon';
 import LockOpenIcon from '@assets/images/item/LockOpenIcon';
-import { ClubItem } from 'types/item';
+import { ClubItemResponseData } from 'types/item';
 
-const ItemUsing = ({ item }: { item: ClubItem }) => {
+const ItemUsing = ({ item }: { item: ClubItemResponseData }) => {
   return (
     <div className="flex items-center gap-[2px]">
       {item.itemUsing ? <LockIcon /> : <LockOpenIcon />}

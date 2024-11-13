@@ -25,11 +25,10 @@ const PaymentRedirectPage = () => {
       return;
     }
 
-    const getData = async () => {
+    (async () => {
       const { groupId } = await getGroupInfo({ clubId: +clubId });
-      console.log('groupId', groupId);
       const orderId = await postGroupJoin({ merchantUid, groupId });
-      // console.log(merchantUid, orderId);
+
       if (orderId) {
         await postGroupJoinConfirm({ merchantUid, groupId, impUid, orderId });
         setToastMessage('동아리 가입이 완료되었어요');
@@ -38,9 +37,7 @@ const PaymentRedirectPage = () => {
       }
 
       navigate(ROUTE.ROOT);
-    };
-
-    getData();
+    })();
   }, []);
 
   return (

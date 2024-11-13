@@ -1,4 +1,4 @@
-type GroupInfoProps = {
+type GroupInfoRequestData = {
   clubId: number;
 };
 
@@ -37,7 +37,7 @@ type GroupJoinConfirmRequestData = {
 };
 
 export type {
-  GroupInfoProps,
+  GroupInfoRequestData,
   GroupInfoResponseData,
   GroupJoinProps,
   GroupJoinRequestData,
