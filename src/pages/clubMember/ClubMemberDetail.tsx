@@ -21,7 +21,12 @@ const ClubMemberDetailPage = () => {
         <AppBar />
       </div>
 
-      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[20px] px-[20px] pt-[40px]">
+      <ScrollView
+        fadeTop
+        fadeBottom
+        className="flex h-full flex-col gap-[20px] px-[20px]"
+        style={{ paddingTop: '40px' }}
+      >
         <div className="flex flex-col items-center gap-[8px]">
           <Title1 text={member.memberName} className="text-center" />
           <div className="flex h-[30px] items-center justify-center rounded-[7px] bg-lightPrimary px-[6px] text-primary">

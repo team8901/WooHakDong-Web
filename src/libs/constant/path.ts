@@ -14,6 +14,7 @@ const ROUTE = {
   ITEM_SEARCH: '/items/search',
   DUES: '/dues',
   MEMBER: '/members',
+  SCHEDULE: '/schedules',
 };
 
 export default ROUTE;

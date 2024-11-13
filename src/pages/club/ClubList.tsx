@@ -18,7 +18,7 @@ const ClubListPage = () => {
         <Title2 text="아주대학교 동아리 목록이에요" />
       </div>
 
-      <ScrollView fadeTop className="grid grid-cols-2 gap-[12px] py-[20px]">
+      <ScrollView fadeTop className="grid grid-cols-2 gap-[12px]">
         {CLUB_LIST_DATA.map((club) => (
           <ClubCard key={club.clubId} club={club} onClick={() => navigate(`${ROUTE.CLUB}/${club.clubEnglishName}`)} />
         ))}

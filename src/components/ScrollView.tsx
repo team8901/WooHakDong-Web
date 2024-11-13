@@ -3,9 +3,16 @@ type FadingScrollViewProps = {
   fadeTop?: boolean;
   fadeBottom?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 };
 
-const ScrollView = ({ children, fadeTop = false, fadeBottom = false, className }: Readonly<FadingScrollViewProps>) => {
+const ScrollView = ({
+  children,
+  fadeTop = false,
+  fadeBottom = false,
+  className,
+  style,
+}: Readonly<FadingScrollViewProps>) => {
   const maskImageContentTop = `linear-gradient(to bottom, transparent, white var(--mask-height), white 100%)`;
   const maskImageContentBottom = `linear-gradient(white 0, white calc(100% - var(--mask-height)), transparent)`;
   const maskImageContentAll = `linear-gradient(to bottom, transparent, white var(--mask-height), white calc(100% - var(--mask-height)), transparent)`;
@@ -25,6 +32,7 @@ const ScrollView = ({ children, fadeTop = false, fadeBottom = false, className }
       className={`masked-overflow scrollbar-hide ${className}`}
       style={
         {
+          ...style,
           '--mask-image-content': maskImageContent,
         } as React.CSSProperties
       }

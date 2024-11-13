@@ -52,7 +52,7 @@ const MemberInfoWritePage = () => {
         <AppBar />
       </div>
 
-      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px] pt-[20px]">
+      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">
         <Title2 text="회원님의 정보를 알려주세요" />
 
         <div className="flex flex-col gap-[20px]">

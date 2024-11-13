@@ -47,7 +47,7 @@ const MemberInfoConfirmPage = () => {
         <AppBar />
       </div>
 
-      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px] pt-[20px]">
+      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">
         <Title2 text="회원님의 정보가 맞으신가요?" />
 
         <div className="flex flex-col gap-[20px]">

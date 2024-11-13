@@ -75,7 +75,7 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
 
           <div className="h-[1px] bg-lightGray" />
 
-          <button className="flex items-center justify-between">
+          <button className="flex items-center justify-between" onClick={() => handleNavigate(ROUTE.SCHEDULE)}>
             <Body1 text="일정" />
             <ChevronRightGrayIcon />
           </button>

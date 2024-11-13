@@ -109,7 +109,7 @@ const PaymentPage = () => {
 
   return (
     <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
-      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px] pt-[20px]">
+      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">
         <Title2 text="결제 방법을 선택해주세요" />
         <div className="grid grid-cols-2 flex-wrap justify-center gap-[20px]">
           {paymentMethods.map((method) => (
