@@ -9,6 +9,7 @@ type ButtonProps = {
   onClick?: () => void;
   disabled?: boolean;
   loading?: boolean;
+  className?: string;
 };
 
 const Button = ({
@@ -20,10 +21,11 @@ const Button = ({
   onClick,
   disabled = false,
   loading = false,
+  className,
 }: Readonly<ButtonProps>) => {
   return (
     <button
-      className="round-[20px] flex h-[52px] w-full items-center justify-center rounded-[14px] font-semiBold"
+      className={`round-[20px] flex h-[52px] w-full items-center justify-center rounded-[14px] font-semiBold ${className}`}
       style={{
         fontSize,
         color: textColor,
