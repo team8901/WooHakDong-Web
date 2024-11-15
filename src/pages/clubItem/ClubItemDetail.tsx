@@ -24,7 +24,6 @@ const ClubItemDetailPage = () => {
   const { setToastMessage } = useToast();
   const { isModalOpen, openModal, closeModal, modalRef } = useModal();
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
-  const [image, setImage] = useState<File | null>(null);
   const [fileBytes, setFileBytes] = useState<ArrayBuffer | null>(null);
   const [isReturned, setIsReturned] = useState(false);
   const [isBorrowed, setIsBorrowed] = useState(false);
@@ -76,7 +75,7 @@ const ClubItemDetailPage = () => {
       return;
     }
 
-    if (!image || !fileBytes) return;
+    if (!fileBytes) return;
 
     const imageCount = 1;
 
@@ -84,7 +83,7 @@ const ClubItemDetailPage = () => {
     const { imageUrl } = result[0];
 
     try {
-      await putImageToS3({ s3ImageUrl: imageUrl, fileBytes, contentType: image.type });
+      await putImageToS3({ s3ImageUrl: imageUrl, fileBytes });
       await postClubItemReturn({ clubId, itemId: item.itemId, itemReturnImage: imageUrl.split('?')[0] });
 
       closeModal();
@@ -116,8 +115,6 @@ const ClubItemDetailPage = () => {
       setToastMessage('JPG 혹은 PNG 확장자의 이미지만 등록 가능해요');
       return;
     }
-
-    setImage(file);
 
     readFileForPreview(file);
     readFileForBytes(file);

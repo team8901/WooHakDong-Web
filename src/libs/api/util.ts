@@ -8,10 +8,10 @@ const getS3ImageUrl = async ({ imageCount }: Readonly<S3ImageUrlRequestData>) =>
   return res.data;
 };
 
-const putImageToS3 = async ({ s3ImageUrl, fileBytes, contentType }: Readonly<PutS3ImageUrlRequestData>) => {
+const putImageToS3 = async ({ s3ImageUrl, fileBytes }: Readonly<PutS3ImageUrlRequestData>) => {
   await axios.put(`${s3ImageUrl}`, fileBytes, {
     headers: {
-      'Content-Type': contentType,
+      'Content-Type': 'multipart/form-data',
     },
   });
 };
