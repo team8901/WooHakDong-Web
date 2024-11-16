@@ -17,6 +17,7 @@ import BottomSheet from '@pages/clubDues/components/BottomSheet';
 // import { CLUB_DUES_DATA } from '@libs/constant/dues';
 import ListItem from '@pages/clubDues/components/ListItem';
 import { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 import { ClubDuesResponseData } from 'types/dues';
 
@@ -103,7 +104,16 @@ const ClubDuesHomePage = () => {
       </div>
 
       {isLoading ? (
-        <div>로딩 중...</div>
+        <div className="flex flex-col gap-[20px] p-[20px]">
+          {Array.from({ length: 4 }, () => (
+            <div>
+              <Skeleton width={200} height={20} count={2} borderRadius={14} className="mt-[4px]" />
+              <div className="flex flex-col items-end">
+                <Skeleton width={100} height={20} count={2} borderRadius={14} className="mt-[4px]" />
+              </div>
+            </div>
+          ))}
+        </div>
       ) : (
         <ScrollView fadeTop className="h-full flex-col gap-[20px] px-[20px]" style={{ paddingBottom: '70px' }}>
           {filteredDuesList.length === 0 ? (

@@ -14,6 +14,7 @@ import isSameDateBetweenDateString from '@libs/util/isSameDateBetweenDateString'
 import CustomCalendar from '@pages/clubSchedule/components/CustomCalendar';
 import ListItem from '@pages/clubSchedule/components/ListItem';
 import { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 import { ClubScheduleResponseData } from 'types/clubSchedule';
 
@@ -122,7 +123,9 @@ const ClubScheduleHomePage = () => {
       <Body1 text={formatDateWithWeekday(selectedDate as Date)} className="inline-block px-[20px] pt-[20px]" />
 
       {isLoading ? (
-        <div>로딩 중...</div>
+        <div className="px-[20px]">
+          <Skeleton height={46} count={3} borderRadius={14} className="mt-[20px]" />
+        </div>
       ) : (
         <ScrollView
           fadeTop

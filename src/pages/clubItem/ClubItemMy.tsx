@@ -10,6 +10,7 @@ import { getClubItemsMy } from '@libs/api/item';
 import ListItem from '@pages/clubItem/components/ListItem';
 import TabNav from '@pages/clubItem/components/TabNav';
 import { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 import { ClubItemsMyResponseData } from 'types/item';
 
@@ -47,7 +48,6 @@ const ClubItemMyPage = () => {
     // setFilteredItemList(CLUB_ITEM_MY_DATA);
   }, []);
 
-  if (isLoading) return <div>로딩 중...</div>;
   return (
     <div className="relative h-full pb-[50px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
@@ -56,27 +56,33 @@ const ClubItemMyPage = () => {
 
       <TabNav activeTab={activeTab} handleTabChange={handleTabChange} />
 
-      <ScrollView fadeTop className="flex h-full flex-col gap-[20px] px-[20px]">
-        {filteredItemList.length === 0 ? (
-          <div className="flex h-full items-center justify-center">
-            <EmptyText text="아직 대여한 물품이 없어요" />
-          </div>
-        ) : (
-          <div className="flex flex-col gap-[20px]">
-            <ListItem
-              item={filteredItemList[0]}
-              borrowedReturnDate={filteredItemList[0].itemBorrowedReturnDate}
-              myPage
-            />
-            {filteredItemList.slice(1).map((item) => (
-              <div key={item.itemId} className="flex flex-col gap-[20px]">
-                <div className="h-[0.6px] bg-lightGray" />
-                <ListItem item={item} borrowedReturnDate={item.itemBorrowedReturnDate} myPage />
-              </div>
-            ))}
-          </div>
-        )}
-      </ScrollView>
+      {isLoading ? (
+        <div className="flex flex-col gap-[20px] px-[20px]">
+          <Skeleton height={72} count={5} borderRadius={14} className="mt-[20px]" />
+        </div>
+      ) : (
+        <ScrollView fadeTop className="flex h-full flex-col gap-[20px] px-[20px]">
+          {filteredItemList.length === 0 ? (
+            <div className="flex h-full items-center justify-center">
+              <EmptyText text="아직 대여한 물품이 없어요" />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-[20px]">
+              <ListItem
+                item={filteredItemList[0]}
+                borrowedReturnDate={filteredItemList[0].itemBorrowedReturnDate}
+                myPage
+              />
+              {filteredItemList.slice(1).map((item) => (
+                <div key={item.itemId} className="flex flex-col gap-[20px]">
+                  <div className="h-[0.6px] bg-lightGray" />
+                  <ListItem item={item} borrowedReturnDate={item.itemBorrowedReturnDate} myPage />
+                </div>
+              ))}
+            </div>
+          )}
+        </ScrollView>
+      )}
     </div>
   );
 };

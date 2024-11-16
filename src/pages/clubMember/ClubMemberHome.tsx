@@ -9,6 +9,7 @@ import { getClubMemberList, getClubMyInfo } from '@libs/api/clubMember';
 // import { CLUB_MEMBER_DATA } from '@libs/constant/clubMember';
 import ListItem from '@pages/clubMember/components/ListItem';
 import { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 import { ClubMemberResponseData } from 'types/clubMember';
 
@@ -67,54 +68,62 @@ const ClubMemberHomePage = () => {
     return member.clubMemberRole !== 'MEMBER' || myInfo.clubMemberRole !== 'MEMBER';
   };
 
-  if (isLoading) return <div>로딩 중...</div>;
   return (
     <div className="relative h-full pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
         <AppBar hasMenu />
       </div>
 
-      <ScrollView fadeTop className="flex h-full flex-col gap-[20px]">
-        <div className="flex flex-col gap-[20px] px-[20px] pt-[20px]">
-          <Body4 text="임원진" className="text-darkGray" />
-          {officeMemberList.length === 0 ? (
-            <div className="flex h-full items-center justify-center">
-              <EmptyText text="아직 가입한 회원이 없어요" />
-            </div>
-          ) : (
-            <div className="flex flex-col gap-[20px]">
-              <ListItem member={officeMemberList[0]} canClick={processCanClick(officeMemberList[0])} />
-              {officeMemberList.slice(1).map((member) => (
-                <div key={member.memberId} className="flex flex-col gap-[20px]">
-                  <div className="h-[0.6px] bg-lightGray" />
-                  <ListItem member={member} canClick={processCanClick(member)} />
-                </div>
-              ))}
-            </div>
-          )}
+      {isLoading ? (
+        <div className="flex flex-col gap-[20px] px-[20px] pt-[40px]">
+          <Skeleton width={100} height={20} count={1} borderRadius={14} />
+          <Skeleton height={47} count={2} borderRadius={14} className="mt-[10px]" />
+          <Skeleton width={100} height={20} count={1} borderRadius={14} className="mt-[20px]" />
+          <Skeleton height={47} count={3} borderRadius={14} className="mt-[10px]" />
         </div>
+      ) : (
+        <ScrollView fadeTop className="flex h-full flex-col gap-[20px]">
+          <div className="flex flex-col gap-[20px] px-[20px] pt-[20px]">
+            <Body4 text="임원진" className="text-darkGray" />
+            {officeMemberList.length === 0 ? (
+              <div className="flex h-full items-center justify-center">
+                <EmptyText text="아직 가입한 회원이 없어요" />
+              </div>
+            ) : (
+              <div className="flex flex-col gap-[20px]">
+                <ListItem member={officeMemberList[0]} canClick={processCanClick(officeMemberList[0])} />
+                {officeMemberList.slice(1).map((member) => (
+                  <div key={member.memberId} className="flex flex-col gap-[20px]">
+                    <div className="h-[0.6px] bg-lightGray" />
+                    <ListItem member={member} canClick={processCanClick(member)} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
-        <div className="h-[3px] flex-shrink-0 bg-lightGray" />
+          <div className="h-[3px] flex-shrink-0 bg-lightGray" />
 
-        <div className="flex flex-col gap-[20px] px-[20px]">
-          <Body4 text="일반 회원" className="text-darkGray" />
-          {memberList.length === 0 ? (
-            <div className="flex h-full items-center justify-center">
-              <EmptyText text="아직 가입한 회원이 없어요" />
-            </div>
-          ) : (
-            <div className="flex flex-col gap-[20px]">
-              <ListItem member={memberList[0]} />
-              {memberList.slice(1).map((member) => (
-                <div key={member.memberId} className="flex flex-col gap-[20px]">
-                  <div className="h-[0.6px] bg-lightGray" />
-                  <ListItem member={member} />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </ScrollView>
+          <div className="flex flex-col gap-[20px] px-[20px]">
+            <Body4 text="일반 회원" className="text-darkGray" />
+            {memberList.length === 0 ? (
+              <div className="flex h-full items-center justify-center">
+                <EmptyText text="아직 가입한 회원이 없어요" />
+              </div>
+            ) : (
+              <div className="flex flex-col gap-[20px]">
+                <ListItem member={memberList[0]} />
+                {memberList.slice(1).map((member) => (
+                  <div key={member.memberId} className="flex flex-col gap-[20px]">
+                    <div className="h-[0.6px] bg-lightGray" />
+                    <ListItem member={member} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </ScrollView>
+      )}
     </div>
   );
 };

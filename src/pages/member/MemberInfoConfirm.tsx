@@ -12,6 +12,7 @@ import { GENDER_TYPE } from '@libs/constant/member';
 import ROUTE from '@libs/constant/path';
 import formatPhoneNumber from '@libs/util/formatPhoneNumber';
 import { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { useLocation } from 'react-router-dom';
 import { MemberInfoRequestData, MemberInfoResponseData } from 'types/member';
 
@@ -62,26 +63,35 @@ const MemberInfoConfirmPage = () => {
       <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">
         <Title2 text="회원님의 정보가 맞으신가요?" />
 
-        <div className="flex flex-col gap-[20px]">
-          <div className="flex flex-col gap-[12px]">
-            <Caption2 text="기본 정보" />
-            <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray px-[16px] py-[12px]">
-              <Body1 text={memberInfo.memberName} />
-              <Body1 text={GENDER_TYPE[memberInfo.memberGender]} />
-              <Body1 text={formatPhoneNumber(memberInfo.memberPhoneNumber)} />
-              <Body1 text={memberInfo.memberEmail} />
-            </div>
+        {isLoading ? (
+          <div>
+            <Skeleton width={100} height={16} count={1} borderRadius={14} />
+            <Skeleton height={150} borderRadius={14} className="mt-[10px]" />
+            <Skeleton width={100} height={16} count={1} borderRadius={14} className="mt-[20px]" />
+            <Skeleton height={150} borderRadius={14} className="mt-[10px]" />
           </div>
+        ) : (
+          <div className="flex flex-col gap-[20px]">
+            <div className="flex flex-col gap-[12px]">
+              <Caption2 text="기본 정보" />
+              <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray px-[16px] py-[12px]">
+                <Body1 text={memberInfo.memberName} />
+                <Body1 text={GENDER_TYPE[memberInfo.memberGender]} />
+                <Body1 text={formatPhoneNumber(memberInfo.memberPhoneNumber)} />
+                <Body1 text={memberInfo.memberEmail} />
+              </div>
+            </div>
 
-          <div className="flex flex-col gap-[12px]">
-            <Caption2 text="학교 정보" />
-            <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray px-[16px] py-[12px]">
-              <Body1 text={memberInfo.memberSchool} />
-              <Body1 text={memberInfo.memberMajor} />
-              <Body1 text={memberInfo.memberStudentNumber} />
+            <div className="flex flex-col gap-[12px]">
+              <Caption2 text="학교 정보" />
+              <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray px-[16px] py-[12px]">
+                <Body1 text={memberInfo.memberSchool} />
+                <Body1 text={memberInfo.memberMajor} />
+                <Body1 text={memberInfo.memberStudentNumber} />
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </ScrollView>
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">

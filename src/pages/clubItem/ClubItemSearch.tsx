@@ -8,6 +8,7 @@ import { getClubInfo } from '@libs/api/club';
 import { getClubItems } from '@libs/api/item';
 import SearchListItem from '@pages/clubItem/components/SearchListItem';
 import { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ClubItemResponseData } from 'types/item';
 
@@ -45,30 +46,35 @@ const ClubItemSearchPage = () => {
     navigate(-1);
   };
 
-  if (isLoading) return <div>로딩 중...</div>;
   return (
     <div className="relative h-full pb-[50px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
         <AppBar goBackCallback={handleGoBack} hasSearch showSearchInput />
       </div>
 
-      <ScrollView fadeTop className="flex h-full flex-col gap-[20px] px-[20px]">
-        {itemList.length === 0 ? (
-          <div className="flex h-full items-center justify-center">
-            <EmptyText text="아직 등록된 물품이 없어요" />
-          </div>
-        ) : (
-          <div className="flex flex-col gap-[20px]">
-            <SearchListItem item={itemList[0]} />
-            {itemList.slice(1).map((item) => (
-              <div key={item.itemId} className="flex flex-col gap-[20px]">
-                <div className="h-[0.6px] bg-lightGray" />
-                <SearchListItem item={item} />
-              </div>
-            ))}
-          </div>
-        )}
-      </ScrollView>
+      {isLoading ? (
+        <div className="flex flex-col gap-[20px] px-[20px]">
+          <Skeleton height={44} count={5} borderRadius={14} className="mt-[20px]" />
+        </div>
+      ) : (
+        <ScrollView fadeTop className="flex h-full flex-col gap-[20px] px-[20px]">
+          {itemList.length === 0 ? (
+            <div className="flex h-full items-center justify-center">
+              <EmptyText text="아직 등록된 물품이 없어요" />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-[20px]">
+              <SearchListItem item={itemList[0]} />
+              {itemList.slice(1).map((item) => (
+                <div key={item.itemId} className="flex flex-col gap-[20px]">
+                  <div className="h-[0.6px] bg-lightGray" />
+                  <SearchListItem item={item} />
+                </div>
+              ))}
+            </div>
+          )}
+        </ScrollView>
+      )}
     </div>
   );
 };

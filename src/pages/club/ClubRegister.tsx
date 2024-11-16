@@ -11,6 +11,7 @@ import ScrollView from '@components/ScrollView';
 import { useToast } from '@contexts/ToastContext';
 import useLoading from '@hooks/useLoading';
 import { josa } from 'es-hangul';
+import Skeleton from 'react-loading-skeleton';
 
 const ClubRegisterPage = () => {
   const navigate = useCustomNavigate();
@@ -50,32 +51,42 @@ const ClubRegisterPage = () => {
     })();
   }, []);
 
-  if (isLoading) return <div>로딩 중...</div>;
   return (
     <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
       <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">
         <Title1 text={`${josa(clubName, '와/과')} 함께해요! 🥳`} className="text-primary" />
 
-        <div className="flex flex-col gap-[20px]">
-          <div className="flex flex-col gap-[8px]">
-            <Caption2 text="동아리 회비" />
-            <InputBox text={`${clubDues.toLocaleString()} 원`} />
+        {isLoading ? (
+          <div>
+            <Skeleton width={100} height={16} count={1} borderRadius={14} />
+            <Skeleton height={47} borderRadius={14} className="mt-[8px]" />
+            <Skeleton width={100} height={16} count={1} borderRadius={14} className="mt-[20px]" />
+            <Skeleton height={47} borderRadius={14} className="mt-[8px]" />
+            <Skeleton width={100} height={16} count={1} borderRadius={14} className="mt-[20px]" />
+            <Skeleton height={47} borderRadius={14} className="mt-[8px]" />
           </div>
-          <div className="flex flex-col gap-[8px]">
-            <Caption2 text="동아리 설명" />
-            <InputBox
-              text={clubDescription || '등록된 정보가 없어요'}
-              className={`${clubDescription === '' ? 'text-[1.4rem] text-darkGray' : ''}`}
-            />
+        ) : (
+          <div className="flex flex-col gap-[20px]">
+            <div className="flex flex-col gap-[8px]">
+              <Caption2 text="동아리 회비" />
+              <InputBox text={`${clubDues.toLocaleString()} 원`} />
+            </div>
+            <div className="flex flex-col gap-[8px]">
+              <Caption2 text="동아리 설명" />
+              <InputBox
+                text={clubDescription || '등록된 정보가 없어요'}
+                className={`${clubDescription === '' ? 'text-[1.4rem] text-darkGray' : ''}`}
+              />
+            </div>
+            <div className="flex flex-col gap-[8px]">
+              <Caption2 text="동아리 방" />
+              <InputBox
+                text={clubRoom || '등록된 정보가 없어요'}
+                className={`${clubRoom === '' ? 'text-[1.4rem] text-darkGray' : ''}`}
+              />
+            </div>
           </div>
-          <div className="flex flex-col gap-[8px]">
-            <Caption2 text="동아리 방" />
-            <InputBox
-              text={clubRoom || '등록된 정보가 없어요'}
-              className={`${clubRoom === '' ? 'text-[1.4rem] text-darkGray' : ''}`}
-            />
-          </div>
-        </div>
+        )}
       </ScrollView>
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">

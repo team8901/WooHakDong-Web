@@ -14,6 +14,7 @@ import formatPhoneNumber from '@libs/util/formatPhoneNumber';
 import ScrollView from '@components/ScrollView';
 import useLoading from '@hooks/useLoading';
 import { useToast } from '@contexts/ToastContext';
+import Skeleton from 'react-loading-skeleton';
 
 const MemberInfoWritePage = () => {
   const navigate = useCustomNavigate();
@@ -69,7 +70,6 @@ const MemberInfoWritePage = () => {
   const disabled =
     !memberInfo.memberMajor?.trim() || !memberInfo.memberStudentNumber?.trim() || !memberInfo.memberPhoneNumber?.trim();
 
-  if (isLoading) return <div>로딩 중...</div>;
   return (
     <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
       <div className="absolute left-0 top-0">
@@ -80,43 +80,52 @@ const MemberInfoWritePage = () => {
         <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">
           <Title2 text="회원님의 정보를 알려주세요" />
 
-          <div className="flex flex-col gap-[20px]">
-            <div className="flex flex-col gap-[12px]">
-              <Caption2 text="기본 정보" />
-              <InputBox text={memberInfo.memberName} />
-              <GenderSelection gender={memberInfo.memberGender} setGender={handleGenderChange} />
-              <Input
-                inputMode="numeric"
-                label="휴대폰 번호"
-                name="memberPhoneNumber"
-                placeholder="휴대폰 번호를 '-' 없이 입력해 주세요"
-                value={formatPhoneNumber(memberInfo.memberPhoneNumber)}
-                onChange={handlePhoneNumberChange}
-              />
-              <InputBox text={memberInfo.memberEmail} />
+          {isLoading ? (
+            <div>
+              <Skeleton width={100} height={16} count={1} borderRadius={14} />
+              <Skeleton height={47} count={3} borderRadius={14} className="mt-[10px]" />
+              <Skeleton width={100} height={16} count={1} borderRadius={14} className="mt-[40px]" />
+              <Skeleton height={47} count={3} borderRadius={14} className="mt-[10px]" />
             </div>
+          ) : (
+            <div className="flex flex-col gap-[20px]">
+              <div className="flex flex-col gap-[12px]">
+                <Caption2 text="기본 정보" />
+                <InputBox text={memberInfo.memberName} />
+                <GenderSelection gender={memberInfo.memberGender} setGender={handleGenderChange} />
+                <Input
+                  inputMode="numeric"
+                  label="휴대폰 번호"
+                  name="memberPhoneNumber"
+                  placeholder="휴대폰 번호를 '-' 없이 입력해 주세요"
+                  value={formatPhoneNumber(memberInfo.memberPhoneNumber)}
+                  onChange={handlePhoneNumberChange}
+                />
+                <InputBox text={memberInfo.memberEmail} />
+              </div>
 
-            <div className="flex flex-col gap-[12px]">
-              <Caption2 text="학교 정보" />
-              <InputBox text={memberInfo.memberSchool} />
-              <Input
-                label="학과"
-                name="memberMajor"
-                placeholder="학과를 입력해 주세요"
-                value={memberInfo.memberMajor}
-                onChange={handleInputChange}
-              />
-              <Input
-                type="number"
-                inputMode="numeric"
-                label="학번"
-                name="memberStudentNumber"
-                placeholder="학번을 입력해 주세요"
-                value={memberInfo.memberStudentNumber}
-                onChange={handleStudentNumberChange}
-              />
+              <div className="flex flex-col gap-[12px]">
+                <Caption2 text="학교 정보" />
+                <InputBox text={memberInfo.memberSchool} />
+                <Input
+                  label="학과"
+                  name="memberMajor"
+                  placeholder="학과를 입력해 주세요"
+                  value={memberInfo.memberMajor}
+                  onChange={handleInputChange}
+                />
+                <Input
+                  type="number"
+                  inputMode="numeric"
+                  label="학번"
+                  name="memberStudentNumber"
+                  placeholder="학번을 입력해 주세요"
+                  value={memberInfo.memberStudentNumber}
+                  onChange={handleStudentNumberChange}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </ScrollView>
 
         <div className="absolute bottom-[20px] left-0 w-full px-[20px]">

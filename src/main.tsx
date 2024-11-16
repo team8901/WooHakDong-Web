@@ -4,6 +4,7 @@ import App from 'App';
 import { AuthProvider } from '@contexts/AuthContext';
 import { createRoot } from 'react-dom/client';
 import { ToastProvider } from '@contexts/ToastContext';
+import 'react-loading-skeleton/dist/skeleton.css';
 // import * as Sentry from '@sentry/react';
 
 // Sentry.init({

@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import ScrollView from '@components/ScrollView';
 import { useToast } from '@contexts/ToastContext';
 import useLoading from '@hooks/useLoading';
+import Skeleton from 'react-loading-skeleton';
 
 const PaymentPage = () => {
   const navigate = useCustomNavigate();
@@ -133,27 +134,34 @@ const PaymentPage = () => {
     },
   ];
 
-  if (isClubInfoLoading) return <div>로딩 중...</div>;
   return (
     <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
       <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">
         <Title2 text="결제 방법을 선택해주세요" />
-        <div className="grid grid-cols-2 flex-wrap justify-center gap-[20px]">
-          {paymentMethods.map((method) => (
-            <PaymentMethodButton
-              key={method.id}
-              onClick={() => {
-                if (method.id === 1) {
-                  setToastMessage('준비중인 결제 수단이에요');
-                  return;
-                }
-                handlePaymentMethodButtonClick(method.id);
-              }}
-              icon={method.icon}
-              className={`${paymentButtonIndex === method.id ? 'border-primary' : ''}`}
-            />
-          ))}
-        </div>
+
+        {isClubInfoLoading ? (
+          <div className="grid grid-cols-2 gap-[20px]">
+            <Skeleton width="100%" height={56} borderRadius={14} />
+            <Skeleton width="100%" height={56} borderRadius={14} />
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 flex-wrap justify-center gap-[20px]">
+            {paymentMethods.map((method) => (
+              <PaymentMethodButton
+                key={method.id}
+                onClick={() => {
+                  if (method.id === 1) {
+                    setToastMessage('준비중인 결제 수단이에요');
+                    return;
+                  }
+                  handlePaymentMethodButtonClick(method.id);
+                }}
+                icon={method.icon}
+                className={`${paymentButtonIndex === method.id ? 'border-primary' : ''}`}
+              />
+            ))}
+          </div>
+        )}
       </ScrollView>
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
