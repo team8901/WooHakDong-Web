@@ -8,7 +8,7 @@ const NotAuthLayout = () => {
   const isAuth = !!localStorage.getItem('accessToken');
 
   useEffect(() => {
-    if (isAuth) navigate(ROUTE.ROOT);
+    if (isAuth) navigate(ROUTE.CLUB_LIST);
   }, [isAuth]);
 
   return !isAuth && <Outlet />;

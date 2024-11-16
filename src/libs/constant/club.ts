@@ -1,15 +1,15 @@
 const CLUB_LIST_DATA = [
-  {
-    clubId: 1,
-    clubName: 'Doit',
-    clubEnglishName: 'doit',
-    clubImage: '/logo.svg',
-    clubDescription:
-      "아주대학교 프로그래밍 동아리 DoiT!의 이름은 Dream of interworking Team!의 약자입니다. 여기서 'interworking'이라는 단어는 '정보 연결이 가능하다', '두 시스템이 대화하기 위하여 필요한 프로세스' 등의 뜻을 가지고 있습니다.",
-    clubRoom: '구학생회관 234호',
-    clubGeneration: '23기',
-    clubDues: 20000,
-  },
+  // {
+  //   clubId: 1,
+  //   clubName: 'Doit',
+  //   clubEnglishName: 'doit',
+  //   clubImage: '/logo.svg',
+  //   clubDescription:
+  //     "아주대학교 프로그래밍 동아리 DoiT!의 이름은 Dream of interworking Team!의 약자입니다. 여기서 'interworking'이라는 단어는 '정보 연결이 가능하다', '두 시스템이 대화하기 위하여 필요한 프로세스' 등의 뜻을 가지고 있습니다.",
+  //   clubRoom: '구학생회관 234호',
+  //   clubGeneration: '23기',
+  //   clubDues: 20000,
+  // },
   // {
   //   clubId: 2,
   //   clubName: 'SWeat',
@@ -50,6 +50,16 @@ const CLUB_LIST_DATA = [
   //   clubGeneration: '23기',
   //   clubDues: 15000,
   // },
+  {
+    clubId: 2,
+    clubName: '캡디',
+    clubEnglishName: 'capdiy',
+    clubImage: '/logo.svg',
+    clubDescription: '캡디입니다.',
+    clubRoom: '팔달관 309호',
+    clubGeneration: '23기',
+    clubDues: 10000,
+  },
 ];
 
 export { CLUB_LIST_DATA };

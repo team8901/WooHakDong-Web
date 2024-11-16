@@ -22,7 +22,7 @@ const ClubCard = ({ club, onClick }: Readonly<ClubCardProps>) => {
         <div className="flex flex-col gap-[2px]">
           <div className="flex items-center gap-[4px]">
             <PresidentIcon />
-            <Body2 text="이재용" className="line-clamp-1" />
+            <Body2 text="강동우" className="line-clamp-1" />
           </div>
           <div className="flex items-center gap-[4px]">
             <LocationIcon />
