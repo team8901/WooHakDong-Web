@@ -8,6 +8,7 @@ import useLoading from '@hooks/useLoading';
 import useTabNav from '@hooks/useTabNav';
 import { getClubInfo } from '@libs/api/club';
 import { getClubItems, getClubItemsMy } from '@libs/api/item';
+import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
 // import { CLUB_ITEM_MY_DATA, CLUB_ITEM_DATA } from '@libs/constant/item';
 import ROUTE from '@libs/constant/path';
 import ListItem from '@pages/clubItem/components/ListItem';
@@ -85,7 +86,9 @@ const ClubItemHomePage = () => {
       <ScrollView fadeTop className="flex h-full flex-col gap-[20px] px-[20px]">
         {filteredItemList.length === 0 ? (
           <div className="flex h-full items-center justify-center">
-            <EmptyText text="아직 등록된 물품이 없어요" />
+            <EmptyText
+              text={`${activeTab === 'ALL' ? '아직' : `${CLUB_ITEM_CATEGORY[activeTab]} 카테고리에`} 등록된 물품이 없어요`}
+            />
           </div>
         ) : (
           <div className="flex flex-col gap-[20px]">

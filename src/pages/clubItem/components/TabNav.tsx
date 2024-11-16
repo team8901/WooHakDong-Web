@@ -1,9 +1,10 @@
 import Body3 from '@components/Body3';
 import { CLIB_ITEM_CATEGORY_MENU } from '@libs/constant/item';
+import { ClubItemCategory } from 'types/item';
 
 type TabNavProps = {
-  activeTab: string;
-  handleTabChange: (categoryName: string) => void;
+  activeTab: ClubItemCategory | 'ALL';
+  handleTabChange: (categoryName: ClubItemCategory | 'ALL') => void;
 };
 
 const TabNav = ({ activeTab, handleTabChange }: Readonly<TabNavProps>) => {

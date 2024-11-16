@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { ClubItemCategory } from 'types/item';
 
 type TabNavProps<T extends { itemCategory: string }> = {
   itemList: T[];
@@ -6,9 +7,9 @@ type TabNavProps<T extends { itemCategory: string }> = {
 };
 
 const useTabNav = <T extends { itemCategory: string }>({ itemList, setFilteredItemList }: Readonly<TabNavProps<T>>) => {
-  const [activeTab, setActiveTab] = useState('ALL');
+  const [activeTab, setActiveTab] = useState<ClubItemCategory | 'ALL'>('ALL');
 
-  const handleTabChange = (categoryName: string) => {
+  const handleTabChange = (categoryName: ClubItemCategory | 'ALL') => {
     setActiveTab(categoryName);
   };
 
