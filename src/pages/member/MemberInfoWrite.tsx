@@ -6,7 +6,7 @@ import Title2 from '@components/Title2';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { getMemberInfo } from '@libs/api/member';
 import ROUTE from '@libs/constant/path';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import InputBox from '@components/InputBox';
 import GenderSelection from '@pages/member/components/GenderSelection';
 import { Gender, MemberInfoResponseData } from 'types/member';
@@ -79,6 +79,16 @@ const MemberInfoWritePage = () => {
     }
   };
 
+  const handleNextInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+
+      studentNumberRef.current?.focus();
+    }
+  };
+
+  const studentNumberRef = useRef<HTMLInputElement>(null);
+
   const disabled =
     !memberInfo.memberMajor?.trim() || !memberInfo.memberStudentNumber?.trim() || !memberInfo.memberPhoneNumber?.trim();
 
@@ -125,6 +135,7 @@ const MemberInfoWritePage = () => {
                   placeholder="학과를 입력해 주세요"
                   value={memberInfo.memberMajor}
                   onChange={handleInputChange}
+                  onKeyDown={handleNextInput}
                 />
                 <Input
                   inputMode="numeric"
@@ -134,6 +145,7 @@ const MemberInfoWritePage = () => {
                   value={memberInfo.memberStudentNumber}
                   onChange={handleStudentNumberChange}
                   onKeyDown={handleEnterPress}
+                  ref={studentNumberRef}
                 />
               </div>
             </div>
