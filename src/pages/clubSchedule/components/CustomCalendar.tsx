@@ -42,19 +42,21 @@ const CustomCalendar = ({
         setSelectedDate(activeStartDate);
       }} // 달력의 시작 날짜가 바뀌면 selectedDate를 업데이트
       formatDay={(_, date) => date.toLocaleString('en', { day: 'numeric' })} // 날짜 형식을 설정
-      tileContent={({ date }) => (
-        <div className="flex items-center gap-[2px]">
-          {!scheduleList
-            ? null
-            : scheduleList
-                .filter((schedule) => isSameDateBetweenDateString(date, schedule.scheduleDateTime))
-                .map((schedule) => (
-                  <div key={schedule.scheduleId} className="flex items-center justify-center">
-                    <Dot color={schedule.scheduleColor} />
-                  </div>
-                ))}
-        </div>
-      )}
+      tileContent={({ date }) => {
+        const filteredList = scheduleList.filter((schedule) =>
+          isSameDateBetweenDateString(date, schedule.scheduleDateTime),
+        );
+
+        return (
+          <div className="flex items-center gap-[2px]">
+            {filteredList.length === 0 ? (
+              <Dot />
+            ) : (
+              filteredList.map((schedule) => <Dot key={schedule.scheduleId} color={schedule.scheduleColor} />)
+            )}
+          </div>
+        );
+      }}
     />
   );
 };
