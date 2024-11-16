@@ -3,6 +3,8 @@ import Body1 from '@components/Body1';
 import Body3 from '@components/Body3';
 import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
+import { useToast } from '@contexts/ToastContext';
+import useLoading from '@hooks/useLoading';
 import { getClubInfo } from '@libs/api/club';
 import { getClubSchedules } from '@libs/api/clubSchedule';
 import convertDate from '@libs/util/convertDate';
@@ -25,6 +27,8 @@ const ClubScheduleHomePage = () => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const [clubId, setClubId] = useState<number | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
+  const { isLoading, setIsLoading } = useLoading();
+  const { setToastMessage } = useToast();
 
   const filterList = (list: ClubScheduleResponseData[], date: Date) => {
     const filteredSchedule = list.filter((schedule) => isSameDateBetweenDateString(date, schedule.scheduleDateTime));
@@ -36,18 +40,26 @@ const ClubScheduleHomePage = () => {
     (async () => {
       if (!clubEnglishName) return;
 
-      const { clubId } = await getClubInfo({
-        clubEnglishName,
-      });
+      setIsLoading(true);
+      try {
+        const { clubId } = await getClubInfo({
+          clubEnglishName,
+        });
 
-      setClubId(clubId);
+        setClubId(clubId);
 
-      if (!selectedDate) return;
+        if (!selectedDate) return;
 
-      const { result } = await getClubSchedules({ clubId, date: convertDate(selectedDate as Date) });
+        const { result } = await getClubSchedules({ clubId, date: convertDate(selectedDate as Date) });
 
-      setScheduleList(result);
-      filterList(result, selectedDate as Date);
+        setScheduleList(result);
+        filterList(result, selectedDate as Date);
+      } catch (error) {
+        console.error(error);
+        setToastMessage(`일정을 불러오는 중 오류가 발생했어요\n${error}`);
+      } finally {
+        setIsLoading(false);
+      }
     })();
 
     /* 더미데이터 테스트 */
@@ -64,10 +76,18 @@ const ClubScheduleHomePage = () => {
     (async () => {
       if (!clubId || !selectedDate) return;
 
-      const { result } = await getClubSchedules({ clubId, date: convertDate(selectedDate as Date) });
+      setIsLoading(true);
+      try {
+        const { result } = await getClubSchedules({ clubId, date: convertDate(selectedDate as Date) });
 
-      setScheduleList(result);
-      filterList(result, selectedDate as Date);
+        setScheduleList(result);
+        filterList(result, selectedDate as Date);
+      } catch (error) {
+        console.error(error);
+        setToastMessage(`일정을 불러오는 중 오류가 발생했어요\n${error}`);
+      } finally {
+        setIsLoading(false);
+      }
     })();
   }, [currentMonth]);
 
@@ -101,27 +121,31 @@ const ClubScheduleHomePage = () => {
 
       <Body1 text={formatDateWithWeekday(selectedDate as Date)} className="inline-block px-[20px] pt-[20px]" />
 
-      <ScrollView
-        fadeTop
-        className="h-full flex-col gap-[20px] px-[20px] pb-[350px]"
-        style={{ paddingBottom: '350px' }}
-      >
-        {filteredScheduleList.length === 0 ? (
-          <div className="flex h-full items-center justify-center">
-            <EmptyText text="아직 등록된 일정이 없어요" />
-          </div>
-        ) : (
-          <div className="flex flex-col gap-[20px]">
-            <ListItem schedule={filteredScheduleList[0]} />
-            {filteredScheduleList.slice(1).map((schedule) => (
-              <div key={schedule.scheduleId} className="flex flex-col gap-[20px]">
-                <div className="h-[0.6px] bg-lightGray" />
-                <ListItem key={schedule.scheduleId} schedule={schedule} />
-              </div>
-            ))}
-          </div>
-        )}
-      </ScrollView>
+      {isLoading ? (
+        <div>로딩 중...</div>
+      ) : (
+        <ScrollView
+          fadeTop
+          className="h-full flex-col gap-[20px] px-[20px] pb-[350px]"
+          style={{ paddingBottom: '350px' }}
+        >
+          {filteredScheduleList.length === 0 ? (
+            <div className="flex h-full items-center justify-center">
+              <EmptyText text="아직 등록된 일정이 없어요" />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-[20px]">
+              <ListItem schedule={filteredScheduleList[0]} />
+              {filteredScheduleList.slice(1).map((schedule) => (
+                <div key={schedule.scheduleId} className="flex flex-col gap-[20px]">
+                  <div className="h-[0.6px] bg-lightGray" />
+                  <ListItem key={schedule.scheduleId} schedule={schedule} />
+                </div>
+              ))}
+            </div>
+          )}
+        </ScrollView>
+      )}
     </div>
   );
 };

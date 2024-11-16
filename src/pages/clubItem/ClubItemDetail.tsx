@@ -6,6 +6,7 @@ import Caption2 from '@components/Caption2';
 import ScrollView from '@components/ScrollView';
 import Title3 from '@components/Title3';
 import { useToast } from '@contexts/ToastContext';
+import useLoading from '@hooks/useLoading';
 import useModal from '@hooks/useModal';
 import { getClubInfo } from '@libs/api/club';
 import { postClubItemBorrow, postClubItemReturn } from '@libs/api/item';
@@ -21,23 +22,34 @@ const ClubItemDetailPage = () => {
   const item: ClubItemResponseData = state.item;
   const borrowedReturnDate: string | undefined = state.borrowedReturnDate;
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
-  const { setToastMessage } = useToast();
   const { isModalOpen, openModal, closeModal, modalRef } = useModal();
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
   const [fileBytes, setFileBytes] = useState<ArrayBuffer | null>(null);
   const [isReturned, setIsReturned] = useState(false);
   const [isBorrowed, setIsBorrowed] = useState(false);
   const [clubId, setClubId] = useState<number | null>(null);
+  const { isLoading: isItemInfoLoading, setIsLoading: setIsItemInfoLoading } = useLoading();
+  const { isLoading: isBorrowLoading, setIsLoading: setIsBorrowLoading } = useLoading();
+  const { isLoading: isReturnLoading, setIsLoading: setIsReturnLoading } = useLoading();
+  const { setToastMessage } = useToast();
 
   useEffect(() => {
     if (!clubEnglishName) return;
 
     (async () => {
-      const { clubId } = await getClubInfo({
-        clubEnglishName,
-      });
+      setIsItemInfoLoading(true);
+      try {
+        const { clubId } = await getClubInfo({
+          clubEnglishName,
+        });
 
-      setClubId(clubId);
+        setClubId(clubId);
+      } catch (error) {
+        console.error(error);
+        setToastMessage(`물품 상세 정보를 불러오는 중 오류가 발생했어요\n${error}`);
+      } finally {
+        setIsItemInfoLoading(false);
+      }
     })();
   }, []);
 
@@ -56,6 +68,7 @@ const ClubItemDetailPage = () => {
       return;
     }
 
+    setIsBorrowLoading(true);
     try {
       await postClubItemBorrow({ clubId, itemId: item.itemId });
 
@@ -63,7 +76,9 @@ const ClubItemDetailPage = () => {
       setIsBorrowed(true);
     } catch (error) {
       console.error(error);
-      setToastMessage('대여 신청 중 오류가 발생했어요');
+      setToastMessage(`대여 신청 중 오류가 발생했어요\n${error}`);
+    } finally {
+      setIsBorrowLoading(false);
     }
   };
 
@@ -82,6 +97,7 @@ const ClubItemDetailPage = () => {
     const { result } = await getS3ImageUrl({ imageCount });
     const { imageUrl } = result[0];
 
+    setIsReturnLoading(true);
     try {
       await putImageToS3({ s3ImageUrl: imageUrl, fileBytes });
       await postClubItemReturn({ clubId, itemId: item.itemId, itemReturnImage: imageUrl.split('?')[0] });
@@ -92,6 +108,8 @@ const ClubItemDetailPage = () => {
     } catch (error) {
       console.error(error);
       setToastMessage(`반납 중 오류가 발생했어요\n${error}`);
+    } finally {
+      setIsReturnLoading(false);
     }
   };
 
@@ -206,6 +224,7 @@ const ClubItemDetailPage = () => {
     return 'white';
   };
 
+  if (isItemInfoLoading) return <div>로딩 중...</div>;
   return (
     <div className="relative h-full pb-[70px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
@@ -250,6 +269,7 @@ const ClubItemDetailPage = () => {
           // disabled={!item.itemAvailable || item.itemUsing}
           bgColor={getButtonBgColor(item)}
           textColor={getTextColor(item)}
+          isLoading={isBorrowLoading}
         />
       </div>
 
@@ -260,6 +280,7 @@ const ClubItemDetailPage = () => {
         handleImageChange={handleImageChange}
         imagePreviewUrl={imagePreviewUrl}
         handleReturn={handleReturn}
+        isLoading={isReturnLoading}
       />
     </div>
   );

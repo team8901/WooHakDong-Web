@@ -9,6 +9,7 @@ import Caption2 from '@components/Caption2';
 import InputBox from '@components/InputBox';
 import ScrollView from '@components/ScrollView';
 import { useToast } from '@contexts/ToastContext';
+import useLoading from '@hooks/useLoading';
 
 const ClubRegisterPage = () => {
   const navigate = useCustomNavigate();
@@ -17,6 +18,7 @@ const ClubRegisterPage = () => {
   const [clubDescription, setClubDescription] = useState('');
   const [clubRoom, setClubRoom] = useState('');
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
+  const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
 
   const handleButtonClick = () => {
@@ -27,6 +29,7 @@ const ClubRegisterPage = () => {
     if (!clubEnglishName) return;
 
     (async () => {
+      setIsLoading(true);
       try {
         const { clubName, clubDues, clubDescription, clubRoom } = await getClubInfo({
           clubEnglishName,
@@ -37,13 +40,16 @@ const ClubRegisterPage = () => {
         setClubDescription(clubDescription);
         setClubRoom(clubRoom);
       } catch (error) {
-        setToastMessage('동아리 정보를 불러오는 중 오류가 발생했어요');
         console.error(error);
+        setToastMessage('동아리 정보를 불러오는 중 오류가 발생했어요');
         location.replace(ROUTE.CLUB_LIST);
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, []);
 
+  if (isLoading) return <div>로딩 중...</div>;
   return (
     <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
       <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">

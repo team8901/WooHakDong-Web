@@ -13,6 +13,7 @@ import TossPayIcon from '@assets/images/payment/TossPayIcon';
 import { useParams } from 'react-router-dom';
 import ScrollView from '@components/ScrollView';
 import { useToast } from '@contexts/ToastContext';
+import useLoading from '@hooks/useLoading';
 
 const PaymentPage = () => {
   const navigate = useCustomNavigate();
@@ -26,6 +27,8 @@ const PaymentPage = () => {
   const [memberPhoneNumber, setMemberPhoneNumber] = useState('');
   const merchantUid = useRef('');
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
+  const { isLoading: isClubInfoLoading, setIsLoading: setIsClubInfoLoading } = useLoading();
+  const { isLoading: isPaymentLoading, setIsLoading: setIsPaymentLoading } = useLoading();
   const { setToastMessage } = useToast();
 
   useEffect(() => {
@@ -34,17 +37,25 @@ const PaymentPage = () => {
     merchantUid.current = `payment-${crypto.randomUUID()}`.slice(0, 40);
 
     (async () => {
-      const { memberEmail, memberName, memberPhoneNumber } = await getMemberInfo();
-      const { clubName, clubId, clubDues } = await getClubInfo({
-        clubEnglishName,
-      });
+      setIsClubInfoLoading(true);
+      try {
+        const { memberEmail, memberName, memberPhoneNumber } = await getMemberInfo();
+        const { clubName, clubId, clubDues } = await getClubInfo({
+          clubEnglishName,
+        });
 
-      setClubId(clubId);
-      setClubName(clubName);
-      setClubDues(clubDues);
-      setMemberEmail(memberEmail);
-      setMemberName(memberName);
-      setMemberPhoneNumber(memberPhoneNumber);
+        setClubId(clubId);
+        setClubName(clubName);
+        setClubDues(clubDues);
+        setMemberEmail(memberEmail);
+        setMemberName(memberName);
+        setMemberPhoneNumber(memberPhoneNumber);
+      } catch (error) {
+        console.error(error);
+        setToastMessage('동아리 정보를 불러오는 중 오류가 발생했어요');
+      } finally {
+        setIsClubInfoLoading(false);
+      }
     })();
   }, []);
 
@@ -69,12 +80,23 @@ const PaymentPage = () => {
       clubEnglishName: clubEnglishName || '',
     };
 
+    setIsPaymentLoading(true);
     try {
-      await postPortOne(data);
+      const res = await postPortOne(data);
+
+      if (res === 'cancel') {
+        setIsPaymentLoading(false);
+        return;
+      }
+
+      setToastMessage(`${clubName}에 가입되었어요`);
+
       navigate(ROUTE.ROOT);
     } catch (error) {
-      setToastMessage(`결제 중 오류가 발생했어요\n${error}`);
       console.error(error);
+      setToastMessage(`결제 중 오류가 발생했어요\n${error}`);
+    } finally {
+      setIsPaymentLoading(false);
     }
   };
 
@@ -111,6 +133,7 @@ const PaymentPage = () => {
     },
   ];
 
+  if (isClubInfoLoading) return <div>로딩 중...</div>;
   return (
     <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
       <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">
@@ -134,7 +157,7 @@ const PaymentPage = () => {
       </ScrollView>
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
-        <Button text="결제하기" onClick={handleButtonClick} />
+        <Button text="결제하기" onClick={handleButtonClick} isLoading={isPaymentLoading} />
       </div>
     </div>
   );

@@ -5,7 +5,9 @@ import Caption2 from '@components/Caption2';
 import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import Title1 from '@components/Title1';
+import { useToast } from '@contexts/ToastContext';
 import useBottomSheet from '@hooks/useBottomSheet';
+import useLoading from '@hooks/useLoading';
 import { getClubInfo } from '@libs/api/club';
 import { getClubAccount, getClubDues } from '@libs/api/dues';
 import { CLUB_DUES_SORT_OPTIONS } from '@libs/constant/dues';
@@ -28,6 +30,8 @@ const ClubDuesHomePage = () => {
     clubAccountLastUpdateDate: '',
     clubAccountBalance: 0,
   });
+  const { isLoading, setIsLoading } = useLoading();
+  const { setToastMessage } = useToast();
 
   const filterData = () => {
     if (CLUB_DUES_SORT_OPTIONS[selectedOption].value === 'ALL') {
@@ -48,21 +52,29 @@ const ClubDuesHomePage = () => {
     (async () => {
       if (!clubEnglishName) return;
 
-      const { clubId } = await getClubInfo({
-        clubEnglishName,
-      });
+      setIsLoading(true);
+      try {
+        const { clubId } = await getClubInfo({
+          clubEnglishName,
+        });
 
-      const year = new Date().getFullYear();
-      const month = new Date().getMonth() + 1;
+        const year = new Date().getFullYear();
+        const month = new Date().getMonth() + 1;
 
-      const { result } = await getClubDues({ clubId, year, month });
+        const { result } = await getClubDues({ clubId, year, month });
 
-      setDuesList(result);
-      setFilteredDuesList(result);
+        setDuesList(result);
+        setFilteredDuesList(result);
 
-      const { clubAccountBankName, clubAccountNumber, clubAccountLastUpdateDate, clubAccountBalance } =
-        await getClubAccount({ clubId });
-      setAccountInfo({ clubAccountBankName, clubAccountNumber, clubAccountLastUpdateDate, clubAccountBalance });
+        const { clubAccountBankName, clubAccountNumber, clubAccountLastUpdateDate, clubAccountBalance } =
+          await getClubAccount({ clubId });
+        setAccountInfo({ clubAccountBankName, clubAccountNumber, clubAccountLastUpdateDate, clubAccountBalance });
+      } catch (error) {
+        console.error(error);
+        setToastMessage(`회비 정보를 불러오는 중 오류가 발생했어요\n${error}`);
+      } finally {
+        setIsLoading(false);
+      }
     })();
     // setDuesList(CLUB_DUES_DATA);
     // setFilteredDuesList(CLUB_DUES_DATA);
@@ -90,23 +102,27 @@ const ClubDuesHomePage = () => {
         />
       </div>
 
-      <ScrollView fadeTop className="h-full flex-col gap-[20px] px-[20px]" style={{ paddingBottom: '70px' }}>
-        {filteredDuesList.length === 0 ? (
-          <div className="flex h-full items-center justify-center">
-            <EmptyText text="아직 사용한 회비가 없어요" />
-          </div>
-        ) : (
-          <div className="flex flex-col gap-[20px]">
-            <ListItem dues={filteredDuesList[0]} />
-            {filteredDuesList.slice(1).map((dues) => (
-              <div key={dues.clubAccountHistoryTranDate} className="flex flex-col gap-[20px]">
-                <div className="h-[0.6px] bg-lightGray" />
-                <ListItem key={dues.clubAccountHistoryId} dues={dues} />
-              </div>
-            ))}
-          </div>
-        )}
-      </ScrollView>
+      {isLoading ? (
+        <div>로딩 중...</div>
+      ) : (
+        <ScrollView fadeTop className="h-full flex-col gap-[20px] px-[20px]" style={{ paddingBottom: '70px' }}>
+          {filteredDuesList.length === 0 ? (
+            <div className="flex h-full items-center justify-center">
+              <EmptyText text="아직 사용한 회비가 없어요" />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-[20px]">
+              <ListItem dues={filteredDuesList[0]} />
+              {filteredDuesList.slice(1).map((dues) => (
+                <div key={dues.clubAccountHistoryTranDate} className="flex flex-col gap-[20px]">
+                  <div className="h-[0.6px] bg-lightGray" />
+                  <ListItem key={dues.clubAccountHistoryId} dues={dues} />
+                </div>
+              ))}
+            </div>
+          )}
+        </ScrollView>
+      )}
 
       <BottomSheet
         isOpen={isOpen}

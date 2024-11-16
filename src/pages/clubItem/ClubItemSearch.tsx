@@ -2,6 +2,8 @@ import AppBar from '@components/AppBar';
 import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import { useSearch } from '@contexts/SearchContext';
+import { useToast } from '@contexts/ToastContext';
+import useLoading from '@hooks/useLoading';
 import { getClubInfo } from '@libs/api/club';
 import { getClubItems } from '@libs/api/item';
 import SearchListItem from '@pages/clubItem/components/SearchListItem';
@@ -14,17 +16,27 @@ const ClubItemSearchPage = () => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { searchQuery, setSearchQuery } = useSearch();
   const navigate = useNavigate();
+  const { isLoading, setIsLoading } = useLoading();
+  const { setToastMessage } = useToast();
 
   useEffect(() => {
     (async () => {
       if (!clubEnglishName) return;
 
-      const { clubId } = await getClubInfo({
-        clubEnglishName,
-      });
+      setIsLoading(true);
+      try {
+        const { clubId } = await getClubInfo({
+          clubEnglishName,
+        });
 
-      const { result } = await getClubItems({ clubId, keyword: searchQuery });
-      setItemList(result);
+        const { result } = await getClubItems({ clubId, keyword: searchQuery });
+        setItemList(result);
+      } catch (error) {
+        console.error(error);
+        setToastMessage(`물품을 검색하는 중 오류가 발생했어요\n${error}`);
+      } finally {
+        setIsLoading(false);
+      }
     })();
   }, [searchQuery]);
 
@@ -33,6 +45,7 @@ const ClubItemSearchPage = () => {
     navigate(-1);
   };
 
+  if (isLoading) return <div>로딩 중...</div>;
   return (
     <div className="relative h-full pb-[50px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">

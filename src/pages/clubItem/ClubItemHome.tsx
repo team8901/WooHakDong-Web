@@ -2,7 +2,9 @@ import AppBar from '@components/AppBar';
 import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import { useSearch } from '@contexts/SearchContext';
+import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
+import useLoading from '@hooks/useLoading';
 import useTabNav from '@hooks/useTabNav';
 import { getClubInfo } from '@libs/api/club';
 import { getClubItems, getClubItemsMy } from '@libs/api/item';
@@ -22,6 +24,8 @@ const ClubItemHomePage = () => {
   const { searchQuery } = useSearch();
   const navigate = useCustomNavigate();
   const { activeTab, handleTabChange } = useTabNav({ itemList, setFilteredItemList });
+  const { isLoading, setIsLoading } = useLoading();
+  const { setToastMessage } = useToast();
 
   const isMyBorrowedItem = (itemId: number) => {
     return myBorrowedItemList.findIndex((item) => item.itemId === itemId) !== -1;
@@ -37,16 +41,24 @@ const ClubItemHomePage = () => {
     (async () => {
       if (!clubEnglishName) return;
 
-      const { clubId } = await getClubInfo({
-        clubEnglishName,
-      });
+      setIsLoading(true);
+      try {
+        const { clubId } = await getClubInfo({
+          clubEnglishName,
+        });
 
-      const { result } = await getClubItems({ clubId });
-      setItemList(result);
-      setFilteredItemList(result);
+        const { result } = await getClubItems({ clubId });
+        setItemList(result);
+        setFilteredItemList(result);
 
-      const res = await getClubItemsMy({ clubId });
-      setMyBorrowedItemList(res.result);
+        const res = await getClubItemsMy({ clubId });
+        setMyBorrowedItemList(res.result);
+      } catch (error) {
+        console.error(error);
+        setToastMessage(`물품 정보를 불러오는 중 오류가 발생했어요\n${error}`);
+      } finally {
+        setIsLoading(false);
+      }
     })();
 
     /* 더미데이터 테스트 */
@@ -61,6 +73,7 @@ const ClubItemHomePage = () => {
     navigate(ROUTE.ITEM_SEARCH);
   }, [searchQuery]);
 
+  if (isLoading) return <div>로딩 중...</div>;
   return (
     <div className="relative h-full pb-[50px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">

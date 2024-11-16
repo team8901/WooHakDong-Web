@@ -9,6 +9,7 @@ type ModalProps = {
   handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   imagePreviewUrl: string;
   handleReturn: () => void;
+  isLoading: boolean;
 };
 
 const Modal = ({
@@ -18,6 +19,7 @@ const Modal = ({
   handleImageChange,
   imagePreviewUrl,
   handleReturn,
+  isLoading,
 }: Readonly<ModalProps>) => {
   return (
     <div
@@ -48,14 +50,20 @@ const Modal = ({
               )}
             </div>
           </label>
-          <div className="flex items-center gap-[20px] self-end">
-            <button type="button" onClick={closeModal}>
-              <Body1 text="취소" />
-            </button>
-            <button type="button" onClick={handleReturn}>
-              <Body1 text="반납" className="text-primary" />
-            </button>
-          </div>
+          {isLoading ? (
+            <div className="self-end">
+              <Body1 text="반납 중..." className="text-primary" />
+            </div>
+          ) : (
+            <div className="flex items-center gap-[20px] self-end">
+              <button type="button" onClick={closeModal}>
+                <Body1 text="취소" />
+              </button>
+              <button type="button" onClick={handleReturn}>
+                <Body1 text="반납" className="text-primary" />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

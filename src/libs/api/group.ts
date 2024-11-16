@@ -11,6 +11,7 @@ import {
 
 const getGroupInfo = async ({ clubId }: Readonly<GroupInfoRequestData>) => {
   const res = await axiosInstance.get<GroupInfoResponseData>(`/v1/clubs/${clubId}/join`);
+
   return res.data;
 };
 
@@ -22,6 +23,7 @@ const postGroupJoin = async ({ merchantUid, groupId }: Readonly<GroupJoinProps>)
     data,
   );
   const { orderId } = res.data;
+
   return orderId;
 };
 

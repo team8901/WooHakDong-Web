@@ -12,9 +12,13 @@ import GenderSelection from '@pages/member/components/GenderSelection';
 import { Gender, MemberInfoResponseData } from 'types/member';
 import formatPhoneNumber from '@libs/util/formatPhoneNumber';
 import ScrollView from '@components/ScrollView';
+import useLoading from '@hooks/useLoading';
+import { useToast } from '@contexts/ToastContext';
 
 const MemberInfoWritePage = () => {
   const navigate = useCustomNavigate();
+  const { isLoading, setIsLoading } = useLoading();
+  const { setToastMessage } = useToast();
 
   const [memberInfo, setMemberInfo] = useState<MemberInfoResponseData>({
     memberGender: 'MAN',
@@ -22,9 +26,17 @@ const MemberInfoWritePage = () => {
 
   useEffect(() => {
     (async () => {
-      const { memberName, memberEmail, memberSchool } = await getMemberInfo();
+      setIsLoading(true);
+      try {
+        const { memberName, memberEmail, memberSchool } = await getMemberInfo();
 
-      setMemberInfo((prev) => ({ ...prev, memberName, memberEmail, memberSchool }));
+        setMemberInfo((prev) => ({ ...prev, memberName, memberEmail, memberSchool }));
+      } catch (error) {
+        console.error(error);
+        setToastMessage('회원 정보를 불러오는 데 실패했어요');
+      } finally {
+        setIsLoading(false);
+      }
     })();
   }, []);
 
@@ -45,6 +57,7 @@ const MemberInfoWritePage = () => {
     setMemberInfo((prev) => ({ ...prev, memberGender: gender }));
   };
 
+  if (isLoading) return <div>로딩 중...</div>;
   return (
     <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
       <div className="absolute left-0 top-0">

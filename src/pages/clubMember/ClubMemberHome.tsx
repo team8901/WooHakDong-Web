@@ -2,6 +2,8 @@ import AppBar from '@components/AppBar';
 import Body4 from '@components/Body4';
 import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
+import { useToast } from '@contexts/ToastContext';
+import useLoading from '@hooks/useLoading';
 import { getClubInfo } from '@libs/api/club';
 import { getClubMemberList, getClubMyInfo } from '@libs/api/clubMember';
 // import { CLUB_MEMBER_DATA } from '@libs/constant/clubMember';
@@ -15,42 +17,57 @@ const ClubMemberHomePage = () => {
   const [memberList, setMemberList] = useState<ClubMemberResponseData[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const [myInfo, setMyInfo] = useState<ClubMemberResponseData>({} as ClubMemberResponseData);
+  const { isLoading, setIsLoading } = useLoading();
+  const { setToastMessage } = useToast();
+
+  const calculateClubAssignedTerm = () => {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+
+    if (month >= 7) {
+      return `${year}-07-01`;
+    } else {
+      return `${year}-03-01`;
+    }
+  };
 
   useEffect(() => {
     (async () => {
       if (!clubEnglishName) return;
 
-      const { clubId } = await getClubInfo({
-        clubEnglishName,
-      });
+      setIsLoading(true);
+      try {
+        const { clubId } = await getClubInfo({
+          clubEnglishName,
+        });
 
-      const calculateClubAssignedTerm = () => {
-        const today = new Date();
-        const month = today.getMonth() + 1;
-        const year = today.getFullYear();
+        const { result } = await getClubMemberList({ clubId, clubMemberAssignedTerm: calculateClubAssignedTerm() });
 
-        if (month >= 7) {
-          return `${year}-07-01`;
-        } else {
-          return `${year}-03-01`;
-        }
-      };
+        const officeMember = result.filter((member) => member.clubMemberRole !== 'MEMBER');
+        const member = result.filter((member) => member.clubMemberRole === 'MEMBER');
+        // const officeMember = CLUB_MEMBER_DATA.filter((member) => member.clubMemberRole !== 'MEMBER');
+        // const member = CLUB_MEMBER_DATA.filter((member) => member.clubMemberRole === 'MEMBER');
 
-      const { result } = await getClubMemberList({ clubId, clubMemberAssignedTerm: calculateClubAssignedTerm() });
+        setOfficeMemberList(officeMember);
+        setMemberList(member);
 
-      const officeMember = result.filter((member) => member.clubMemberRole !== 'MEMBER');
-      const member = result.filter((member) => member.clubMemberRole === 'MEMBER');
-      // const officeMember = CLUB_MEMBER_DATA.filter((member) => member.clubMemberRole !== 'MEMBER');
-      // const member = CLUB_MEMBER_DATA.filter((member) => member.clubMemberRole === 'MEMBER');
-
-      setOfficeMemberList(officeMember);
-      setMemberList(member);
-
-      const myInfo = await getClubMyInfo({ clubId });
-      setMyInfo(myInfo);
+        const myInfo = await getClubMyInfo({ clubId });
+        setMyInfo(myInfo);
+      } catch (error) {
+        console.error(error);
+        setToastMessage(`회원 정보를 불러오는 중 오류가 발생했어요\n${error}`);
+      } finally {
+        setIsLoading(false);
+      }
     })();
   }, []);
 
+  const processCanClick = (member: ClubMemberResponseData) => {
+    return member.clubMemberRole !== 'MEMBER' || myInfo.clubMemberRole !== 'MEMBER';
+  };
+
+  if (isLoading) return <div>로딩 중...</div>;
   return (
     <div className="relative h-full pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
@@ -66,14 +83,11 @@ const ClubMemberHomePage = () => {
             </div>
           ) : (
             <div className="flex flex-col gap-[20px]">
-              <ListItem member={officeMemberList[0]} />
+              <ListItem member={officeMemberList[0]} canClick={processCanClick(officeMemberList[0])} />
               {officeMemberList.slice(1).map((member) => (
                 <div key={member.memberId} className="flex flex-col gap-[20px]">
                   <div className="h-[0.6px] bg-lightGray" />
-                  <ListItem
-                    member={member}
-                    canClick={member.clubMemberRole !== 'MEMBER' && myInfo.clubMemberRole !== 'MEMBER'}
-                  />
+                  <ListItem member={member} canClick={processCanClick(member)} />
                 </div>
               ))}
             </div>

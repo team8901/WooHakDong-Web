@@ -4,7 +4,9 @@ import Button from '@components/Button';
 import Caption2 from '@components/Caption2';
 import ScrollView from '@components/ScrollView';
 import Title2 from '@components/Title2';
+import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
+import useLoading from '@hooks/useLoading';
 import { postMemberInfo } from '@libs/api/member';
 import { GENDER_TYPE } from '@libs/constant/member';
 import ROUTE from '@libs/constant/path';
@@ -17,6 +19,8 @@ const MemberInfoConfirmPage = () => {
   const navigate = useCustomNavigate();
   const location = useLocation();
   const [memberInfo, setMemberInfo] = useState<MemberInfoResponseData | null>(null);
+  const { isLoading, setIsLoading } = useLoading();
+  const { setToastMessage } = useToast();
 
   useEffect(() => {
     if (location.state === null) {
@@ -35,9 +39,17 @@ const MemberInfoConfirmPage = () => {
       memberStudentNumber: memberInfo.memberStudentNumber,
       memberGender: memberInfo.memberGender,
     };
-    await postMemberInfo(postData);
 
-    navigate(ROUTE.CLUB_REGISTER);
+    setIsLoading(true);
+    try {
+      await postMemberInfo(postData);
+
+      navigate(ROUTE.CLUB_REGISTER);
+    } catch (error) {
+      setToastMessage(`회원 정보를 저장하는 데 실패했어요\n${error}`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (memberInfo === null) return null;
@@ -73,7 +85,7 @@ const MemberInfoConfirmPage = () => {
       </ScrollView>
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
-        <Button text="맞아요" onClick={handleButtonClick} />
+        <Button text="맞아요" onClick={handleButtonClick} isLoading={isLoading} />
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ type ButtonProps = {
   icon?: JSX.Element;
   onClick?: () => void;
   disabled?: boolean;
-  loading?: boolean;
+  isLoading?: boolean;
   className?: string;
 };
 
@@ -20,7 +20,7 @@ const Button = ({
   icon,
   onClick,
   disabled = false,
-  loading = false,
+  isLoading = false,
   className,
 }: Readonly<ButtonProps>) => {
   return (
@@ -29,12 +29,12 @@ const Button = ({
       style={{
         fontSize,
         color: textColor,
-        backgroundColor: disabled ? 'var(--color-lightGray)' : bgColor,
+        backgroundColor: disabled || isLoading ? 'var(--color-lightGray)' : bgColor,
       }}
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || isLoading}
     >
-      {loading ? (
+      {isLoading ? (
         <LoadingSpinner />
       ) : (
         <div className="flex items-center gap-[11px]">
