@@ -18,7 +18,8 @@ import Skeleton from 'react-loading-skeleton';
 
 const MemberInfoWritePage = () => {
   const navigate = useCustomNavigate();
-  const { isLoading, setIsLoading } = useLoading();
+  const { isLoading: isMemberInfoLoading, setIsLoading: setIsMemberInfoLoading } = useLoading();
+  const { isLoading: isButtonLoading, setIsLoading: setIsButtonLoading } = useLoading();
   const { setToastMessage } = useToast();
 
   const [memberInfo, setMemberInfo] = useState<MemberInfoResponseData>({
@@ -27,7 +28,7 @@ const MemberInfoWritePage = () => {
 
   useEffect(() => {
     (async () => {
-      setIsLoading(true);
+      setIsMemberInfoLoading(true);
       try {
         const { memberName, memberEmail, memberSchool } = await getMemberInfo();
 
@@ -36,7 +37,7 @@ const MemberInfoWritePage = () => {
         console.error(error);
         setToastMessage('회원 정보를 불러오는 데 실패했어요');
       } finally {
-        setIsLoading(false);
+        setIsMemberInfoLoading(false);
       }
     })();
   }, []);
@@ -58,7 +59,11 @@ const MemberInfoWritePage = () => {
   const handleGoNext = () => {
     if (disabled) return;
 
-    navigate(ROUTE.MEMBER_INFO_CONFIRM, { state: memberInfo });
+    setIsButtonLoading(true);
+    setTimeout(() => {
+      setIsButtonLoading(false);
+      navigate(ROUTE.MEMBER_INFO_CONFIRM, { state: memberInfo });
+    }, 500);
   };
 
   const handleButtonClick = (e: React.FormEvent<HTMLFormElement>) => {
@@ -102,7 +107,7 @@ const MemberInfoWritePage = () => {
         <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">
           <Title2 text="회원님의 정보를 알려주세요" />
 
-          {isLoading ? (
+          {isMemberInfoLoading ? (
             <div>
               <Skeleton width={100} height={16} count={1} borderRadius={14} />
               <Skeleton height={47} count={3} borderRadius={14} className="mt-[10px]" />
@@ -153,7 +158,7 @@ const MemberInfoWritePage = () => {
         </ScrollView>
 
         <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
-          <Button text="다음" disabled={disabled} />
+          <Button text="다음" disabled={disabled} isLoading={isButtonLoading} />
         </div>
       </form>
     </div>
