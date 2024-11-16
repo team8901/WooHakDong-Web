@@ -19,7 +19,7 @@ const ListItem = ({ item, borrowedReturnDate, myPage = false }: Readonly<ClubIte
         alt="물품"
         src={item.itemPhoto || '/logo.svg'}
         // src={'/logo.svg'}
-        className="h-[72px] w-[72px] flex-shrink-0 rounded-[14px] border border-lightGray"
+        className="h-[72px] w-[72px] flex-shrink-0 rounded-[14px] border border-lightGray object-cover"
       />
       <div className="flex w-full flex-col items-start gap-[4px]">
         <ItemTitle item={item} />
