@@ -94,7 +94,7 @@ const ClubMemberHomePage = () => {
           )}
         </div>
 
-        <div className="h-[10px] flex-shrink-0 bg-lightGray" />
+        <div className="h-[3px] flex-shrink-0 bg-lightGray" />
 
         <div className="flex flex-col gap-[20px] px-[20px]">
           <Body4 text="일반 회원" className="text-darkGray" />
