@@ -10,6 +10,7 @@ import InputBox from '@components/InputBox';
 import ScrollView from '@components/ScrollView';
 import { useToast } from '@contexts/ToastContext';
 import useLoading from '@hooks/useLoading';
+import { josa } from 'es-hangul';
 
 const ClubRegisterPage = () => {
   const navigate = useCustomNavigate();
@@ -53,7 +54,7 @@ const ClubRegisterPage = () => {
   return (
     <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
       <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">
-        <Title1 text={`${clubName}과 함께해요! 🥳`} className="text-primary" />
+        <Title1 text={`${josa(clubName, '와/과')} 함께해요! 🥳`} className="text-primary" />
 
         <div className="flex flex-col gap-[20px]">
           <div className="flex flex-col gap-[8px]">
