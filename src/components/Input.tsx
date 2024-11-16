@@ -7,6 +7,7 @@ type InputProps = {
   className?: string;
   type?: 'text' | 'number' | 'password';
   inputMode?: 'text' | 'numeric';
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 const Input = ({
@@ -18,6 +19,7 @@ const Input = ({
   onChange,
   className,
   inputMode = 'text',
+  onKeyDown,
 }: Readonly<InputProps>) => {
   return (
     <div className="relative">
@@ -33,6 +35,7 @@ const Input = ({
         value={value}
         name={name}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         aria-label={label}
         className={`w-full rounded-[14px] border border-lightGray px-[16px] py-[12px] font-semiBold leading-[2.2rem] placeholder:font-semiBold placeholder:text-gray ${className}`}
       />

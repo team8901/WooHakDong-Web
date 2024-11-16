@@ -11,6 +11,7 @@ const GenderSelection = ({ gender, setGender }: Readonly<GenderSelectionProps>) 
     <div className="flex items-center gap-[8px]">
       {Object.entries(GENDER_TYPE).map(([type, label]) => (
         <button
+          type="button"
           key={type}
           className={`rounded-[12px] border ${
             gender === type ? 'border-primary bg-lightPrimary text-primary' : 'border-lightGray text-gray'

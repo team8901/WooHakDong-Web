@@ -55,16 +55,28 @@ const MemberInfoWritePage = () => {
     setMemberInfo((prev) => ({ ...prev, memberStudentNumber: input }));
   };
 
-  const handleButtonClick = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const handleGoNext = () => {
     if (disabled) return;
 
     navigate(ROUTE.MEMBER_INFO_CONFIRM, { state: memberInfo });
   };
 
+  const handleButtonClick = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    handleGoNext();
+  };
+
   const handleGenderChange = (gender: Gender) => {
     setMemberInfo((prev) => ({ ...prev, memberGender: gender }));
+  };
+
+  const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+
+      handleGoNext();
+    }
   };
 
   const disabled =
@@ -115,13 +127,13 @@ const MemberInfoWritePage = () => {
                   onChange={handleInputChange}
                 />
                 <Input
-                  type="number"
                   inputMode="numeric"
                   label="학번"
                   name="memberStudentNumber"
                   placeholder="학번을 입력해 주세요"
                   value={memberInfo.memberStudentNumber}
                   onChange={handleStudentNumberChange}
+                  onKeyDown={handleEnterPress}
                 />
               </div>
             </div>
