@@ -2,10 +2,9 @@ import AppBar from '@components/AppBar';
 import EmptyText from '@components/EmptyText';
 import CustomPullToRefresh from '@components/PullToRefresh';
 import { useToast } from '@contexts/ToastContext';
-import useLoading from '@hooks/useLoading';
-import { getClubInfo } from '@libs/api/club';
-import { getClubItemsMy, getClubItemsMyHistory } from '@libs/api/item';
-// import { CLUB_ITEM_MY_DATA } from '@libs/constant/item';
+import useGetClubId from '@hooks/club/useGetClubId';
+import useGetClubItemsMy from '@hooks/item/useGetClubItemsMy';
+import useGetClubItemsMyHistory from '@hooks/item/useGetClubItemsMyHistory';
 import ListItem from '@pages/clubItem/components/ListItem';
 import ListItemHistory from '@pages/clubItem/components/ListItemHistory';
 import MyTabNav from '@pages/clubItem/components/TabNavMy';
@@ -19,48 +18,58 @@ const ClubItemMyPage = () => {
   const [historyItemList, setHistoryItemList] = useState<ClubItemsMyHistoryResponseData[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const [activeTab, setActiveTab] = useState<'CURRENT' | 'ALL'>('CURRENT');
-  const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
-  const [clubId, setClubId] = useState(0);
+  const {
+    data: clubId,
+    isError: isClubIdError,
+    isLoading: isClubIdLoading,
+  } = useGetClubId({ clubEnglishName: clubEnglishName ?? '' });
+  const {
+    data: clubItemsMyData,
+    isError: isClubItemsMyError,
+    isLoading: isClubItemsMyLoading,
+    refetch: refetchClubItemsMy,
+  } = useGetClubItemsMy({ clubId: clubId ?? 0 });
+  const {
+    data: clubItemsMyHistoryData,
+    isError: isClubItemsMyHistoryError,
+    isLoading: isClubItemsMyHistoryLoading,
+    refetch: refetchClubItemsMyHistory,
+  } = useGetClubItemsMyHistory({ clubId: clubId ?? 0 });
 
   const handleRefresh = async () => {
-    const { result } = await getClubItemsMy({ clubId });
-    setItemList(result);
+    const { data: clubItemsMyData } = await refetchClubItemsMy();
+    if (!clubItemsMyData) return;
+    setItemList(clubItemsMyData.result);
 
-    const res = await getClubItemsMyHistory({ clubId });
-    setHistoryItemList(res.result.filter((item) => item.itemReturnDate !== null));
+    const { data: clubItemsMyHistoryData } = await refetchClubItemsMyHistory();
+    if (!clubItemsMyHistoryData) return;
+    setHistoryItemList(clubItemsMyHistoryData.result.filter((item) => item.itemReturnDate !== null));
 
     setToastMessage('물품 정보를 갱신했어요');
   };
 
   useEffect(() => {
-    (async () => {
-      if (!clubEnglishName) return;
+    if (!clubItemsMyData) return;
 
-      setIsLoading(true);
-      try {
-        const { clubId } = await getClubInfo({
-          clubEnglishName,
-        });
-        setClubId(clubId);
+    const { result } = clubItemsMyData;
+    setItemList(result);
+  }, [clubItemsMyData]);
 
-        const { result } = await getClubItemsMy({ clubId });
-        setItemList(result);
+  useEffect(() => {
+    if (!clubItemsMyHistoryData) return;
 
-        const res = await getClubItemsMyHistory({ clubId });
-        setHistoryItemList(res.result.filter((item) => item.itemReturnDate !== null));
-      } catch (error) {
-        console.error(error);
-        setToastMessage(`물품 정보를 불러오는 중 오류가 발생했어요\n${error}`);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
+    const { result } = clubItemsMyHistoryData;
+    setHistoryItemList(result.filter((item) => item.itemReturnDate !== null));
+  }, [clubItemsMyHistoryData]);
 
-    /* 더미데이터 테스트 */
-    // setItemList(CLUB_ITEM_MY_DATA);
-    // setHistoryItemList(CLUB_ITEM_MY_DATA);
-  }, []);
+  useEffect(() => {
+    if (isClubIdError || isClubItemsMyError || isClubItemsMyHistoryError) {
+      setToastMessage(`물품 정보를 불러오는 중 오류가 발생했어요`);
+    }
+  }, [isClubIdError, isClubItemsMyError, isClubItemsMyHistoryError]);
+
+  const isLoading = isClubIdLoading || isClubItemsMyLoading || isClubItemsMyHistoryLoading;
 
   return (
     <div className="relative h-full pb-[50px] pt-[56px]">
