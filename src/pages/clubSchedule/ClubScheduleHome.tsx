@@ -4,12 +4,10 @@ import Body3 from '@components/Body3';
 import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import { useToast } from '@contexts/ToastContext';
-import useLoading from '@hooks/useLoading';
-import { getClubInfo } from '@libs/api/club';
-import { getClubSchedules } from '@libs/api/clubSchedule';
+import useGetClubId from '@hooks/club/useGetClubId';
+import useGetClubSchedules from '@hooks/schedule/useGetClubSchedules';
 import convertDate from '@libs/util/convertDate';
 import { formatDateWithWeekday } from '@libs/util/formatDate';
-// import { CLUB_SCHEDULE_DATA } from '@libs/constant/clubSchedule';
 import isSameDateBetweenDateString from '@libs/util/isSameDateBetweenDateString';
 import CustomCalendar from '@pages/clubSchedule/components/CustomCalendar';
 import ListItem from '@pages/clubSchedule/components/ListItem';
@@ -26,77 +24,45 @@ const ClubScheduleHomePage = () => {
   const [scheduleList, setScheduleList] = useState<ClubScheduleResponseData[]>([]);
   const [filteredScheduleList, setFilteredScheduleList] = useState<ClubScheduleResponseData[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
-  const [clubId, setClubId] = useState<number | null>(null);
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
-  const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
+  const {
+    data: clubId,
+    isError: isClubIdError,
+    isLoading: isClubIdLoading,
+  } = useGetClubId({ clubEnglishName: clubEnglishName ?? '' });
+  const {
+    data: clubSchedulesData,
+    isError: isClubSchedulesError,
+    isLoading: isClubSchedulesLoading,
+  } = useGetClubSchedules({ clubId: clubId || 0, date: convertDate(selectedDate as Date), currentMonth });
 
   const filterList = (list: ClubScheduleResponseData[], date: Date) => {
     const filteredSchedule = list.filter((schedule) => isSameDateBetweenDateString(date, schedule.scheduleDateTime));
-
     setFilteredScheduleList(filteredSchedule);
   };
-
-  useEffect(() => {
-    (async () => {
-      if (!clubEnglishName) return;
-
-      setIsLoading(true);
-      try {
-        const { clubId } = await getClubInfo({
-          clubEnglishName,
-        });
-
-        setClubId(clubId);
-
-        if (!selectedDate) return;
-
-        const { result } = await getClubSchedules({ clubId, date: convertDate(selectedDate as Date) });
-
-        setScheduleList(result);
-        filterList(result, selectedDate as Date);
-      } catch (error) {
-        console.error(error);
-        setToastMessage(`일정을 불러오는 중 오류가 발생했어요\n${error}`);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-
-    /* 더미데이터 테스트 */
-    // setScheduleList(CLUB_SCHEDULE_DATA);
-
-    // const filteredSchedule = CLUB_SCHEDULE_DATA.filter((schedule) =>
-    //   isSameDateBetweenDateString(selectedDate as Date, schedule.scheduleDateTime),
-    // );
-
-    // setFilteredScheduleList(filteredSchedule);
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      if (!clubId || !selectedDate) return;
-
-      setIsLoading(true);
-      try {
-        const { result } = await getClubSchedules({ clubId, date: convertDate(selectedDate as Date) });
-
-        setScheduleList(result);
-        filterList(result, selectedDate as Date);
-      } catch (error) {
-        console.error(error);
-        setToastMessage(`일정을 불러오는 중 오류가 발생했어요\n${error}`);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, [currentMonth]);
 
   useEffect(() => {
     if (!selectedDate || scheduleList.length === 0) return;
 
     filterList(scheduleList, selectedDate as Date);
   }, [selectedDate]);
+
+  useEffect(() => {
+    if (!clubSchedulesData) return;
+
+    const { result } = clubSchedulesData;
+    setScheduleList(result);
+    filterList(result, selectedDate as Date);
+  }, [clubSchedulesData, currentMonth]);
+
+  useEffect(() => {
+    if (isClubIdError || isClubSchedulesError) {
+      setToastMessage(`일정을 불러오는 중 오류가 발생했어요`);
+    }
+  }, [isClubIdError, isClubSchedulesError]);
+
+  const isLoading = isClubIdLoading || isClubSchedulesLoading;
 
   return (
     <div className="relative h-full pb-[100px] pt-[56px]">
