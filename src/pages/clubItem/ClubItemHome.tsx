@@ -3,14 +3,12 @@ import EmptyText from '@components/EmptyText';
 import CustomPullToRefresh from '@components/PullToRefresh';
 import { useSearch } from '@contexts/SearchContext';
 import { useToast } from '@contexts/ToastContext';
+import useGetClubInfo from '@hooks/club/useGetClubInfo';
 import useGetClubItems from '@hooks/item/useGetClubItems';
+import useGetClubItemsMy from '@hooks/item/useGetClubItemsMy';
 import useCustomNavigate from '@hooks/useCustomNavigate';
-import useLoading from '@hooks/useLoading';
 import useTabNav from '@hooks/useTabNav';
-import { getClubInfo } from '@libs/api/club';
-import { getClubItemsMy } from '@libs/api/item';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
-// import { CLUB_ITEM_MY_DATA, CLUB_ITEM_DATA } from '@libs/constant/item';
 import ROUTE from '@libs/constant/path';
 import ListItem from '@pages/clubItem/components/ListItem';
 import TabNav from '@pages/clubItem/components/TabNav';
@@ -27,10 +25,24 @@ const ClubItemHomePage = () => {
   const { searchQuery } = useSearch();
   const navigate = useCustomNavigate();
   const { activeTab, handleTabChange } = useTabNav({ itemList, setFilteredItemList });
-  const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
   const [clubId, setClubId] = useState(0);
-  const { data: itemData, refetch } = useGetClubItems({ clubId });
+  const {
+    data: clubInfoData,
+    isError: isClubInfoError,
+    isLoading: isClubInfoLoading,
+  } = useGetClubInfo({ clubEnglishName: clubEnglishName || '' });
+  const {
+    data: clubItemsData,
+    refetch: clubItemsRefetch,
+    isError: isClubItemsError,
+    isLoading: isClubItemsLoading,
+  } = useGetClubItems({ clubId });
+  const {
+    data: clubItemsMyData,
+    isError: isClubItemsMyError,
+    isLoading: isClubItemsMyLoading,
+  } = useGetClubItemsMy({ clubId });
 
   const isMyBorrowedItem = (itemId: number) => myBorrowedItemList.some((item) => item.itemId === itemId);
 
@@ -41,7 +53,7 @@ const ClubItemHomePage = () => {
   };
 
   const handleRefresh = async () => {
-    const { data } = await refetch();
+    const { data } = await clubItemsRefetch();
 
     if (!data) return;
 
@@ -61,46 +73,41 @@ const ClubItemHomePage = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      if (!clubEnglishName) return;
+    if (!clubItemsData) return;
 
-      setIsLoading(true);
-      try {
-        const { clubId } = await getClubInfo({
-          clubEnglishName,
-        });
-        setClubId(clubId);
-
-        const res = await getClubItemsMy({ clubId });
-        setMyBorrowedItemList(res.result);
-      } catch (error) {
-        console.error(error);
-        setToastMessage(`물품 정보를 불러오는 중 오류가 발생했어요\n${error}`);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-
-    /* 더미데이터 테스트 */
-    // setItemList(CLUB_ITEM_DATA);
-    // setFilteredItemList(CLUB_ITEM_DATA);
-    // setMyBorrowedItemList(CLUB_ITEM_MY_DATA);
-  }, []);
-
-  useEffect(() => {
-    if (!itemData) return;
-
-    const { result } = itemData;
+    const { result } = clubItemsData;
 
     setItemList(result);
     setFilteredItemList(result);
-  }, [itemData]);
+  }, [clubItemsData]);
+
+  useEffect(() => {
+    if (!clubInfoData) return;
+
+    const { clubId } = clubInfoData;
+
+    setClubId(clubId);
+  }, [clubInfoData]);
+
+  useEffect(() => {
+    if (!clubItemsMyData) return;
+
+    const { result } = clubItemsMyData;
+
+    setMyBorrowedItemList(result);
+  }, [clubItemsMyData]);
 
   useEffect(() => {
     if (!searchQuery) return;
 
     navigate(ROUTE.ITEM_SEARCH);
   }, [searchQuery]);
+
+  useEffect(() => {
+    if (isClubInfoError || isClubItemsError || isClubItemsMyError) {
+      setToastMessage('물품 정보를 불러오는 중 오류가 발생했어요');
+    }
+  }, [isClubInfoError, isClubItemsError, isClubItemsMyError]);
 
   return (
     <div className="relative h-full pb-[50px] pt-[56px]">
@@ -110,7 +117,7 @@ const ClubItemHomePage = () => {
 
       <TabNav activeTab={activeTab} handleTabChange={handleTabChange} />
 
-      {isLoading ? (
+      {isClubInfoLoading || isClubItemsLoading || isClubItemsMyLoading ? (
         <div className="flex flex-col gap-[20px] px-[20px]">
           <Skeleton height={72} count={5} borderRadius={14} className="mt-[20px]" />
         </div>
