@@ -3,8 +3,10 @@ import Title1 from '@components/Title1';
 import Title3 from '@components/Title3';
 import Title4 from '@components/Title4';
 import { useToast } from '@contexts/ToastContext';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import useLoading from '@hooks/useLoading';
 import { getClubCount, getClubs, getMemberCount, getSchoolCount, getSchools } from '@libs/api/admin';
+import ROUTE from '@libs/constant/path';
 import ClubCard from '@pages/club/components/ClubCard';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -18,6 +20,7 @@ const StatsHomePage = () => {
   const [clubs, setClubs] = useState<AdminClubsResponseData[]>([]);
   const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
+  const navigate = useCustomNavigate();
 
   useEffect(() => {
     document.body.style.minWidth = '100%';
@@ -46,14 +49,20 @@ const StatsHomePage = () => {
     })();
   }, []);
 
-  const handleCardClick = () => {};
+  const handleSchoolClick = (school: SchoolsResponseData) => {
+    navigate(`${ROUTE.ADMIN_STATS_SCHOOL}/${school.schoolId}`, { state: { school } });
+  };
+
+  const handleCardClick = () => {
+    setToastMessage('서비스 준비 중이에요');
+  };
 
   if (isLoading)
     return (
       <div className="px-[40px] py-[40px] md:px-[80px] lg:px-[200px]">
         <div className="flex w-full flex-wrap items-center justify-center gap-[24px] sm:grid sm:grid-cols-3">
           {Array.from({ length: 3 }, (_, index) => (
-            <Skeleton key={`${index}-top`} height={100} borderRadius={14} />
+            <Skeleton key={`${index}-schools`} height={100} borderRadius={14} />
           ))}
         </div>
         <Skeleton height={22} borderRadius={14} className="mt-[30px]" />
@@ -61,7 +70,7 @@ const StatsHomePage = () => {
         <Skeleton height={22} borderRadius={14} className="mt-[30px]" />
         <div className="mt-[12px] grid grid-cols-2 gap-[12px] sm:grid-cols-3 md:grid-cols-4">
           {Array.from({ length: 8 }).map((_, index) => (
-            <Skeleton key={index} height={290} borderRadius={14} />
+            <Skeleton key={`${index}-clubs`} height={290} borderRadius={14} />
           ))}
         </div>
       </div>
@@ -72,6 +81,7 @@ const StatsHomePage = () => {
         <button
           type="button"
           className="flex w-full flex-col justify-center gap-[4px] rounded-[14px] border border-lightGray p-[20px]"
+          onClick={handleCardClick}
         >
           <Body1 text="총 등록된 동아리 수" className="text-[1.8rem] text-darkGray" />
           <Title1 text={`${clubCount}개`} />
@@ -79,6 +89,7 @@ const StatsHomePage = () => {
         <button
           type="button"
           className="flex w-full flex-col justify-center gap-[4px] rounded-[14px] border border-lightGray p-[20px]"
+          onClick={handleCardClick}
         >
           <Body1 text="총 등록된 학교 수" className="text-[1.8rem] text-darkGray" />
           <Title1 text={`${schoolCount}개`} />
@@ -86,6 +97,7 @@ const StatsHomePage = () => {
         <button
           type="button"
           className="flex w-full flex-col justify-center gap-[4px] rounded-[14px] border border-lightGray p-[20px]"
+          onClick={handleCardClick}
         >
           <Body1 text="총 가입한 회원 수" className="text-[1.8rem] text-darkGray" />
           <Title1 text={`${memberCount}명`} />
@@ -96,8 +108,10 @@ const StatsHomePage = () => {
         <Title3 text="학교별 동아리" />
         {schools.map((school, index) => (
           <button
+            key={`${school.schoolId}-${index}`}
             type="button"
             className="flex items-center justify-between rounded-[14px] border border-lightGray px-[32px] py-[20px]"
+            onClick={() => handleSchoolClick(school)}
           >
             <div className="flex items-center gap-[50px]">
               <Title4 text={String(index + 1)} />

@@ -29,6 +29,7 @@ import ClubItemMyPage from '@pages/clubItem/ClubItemMy';
 import AdminLoginPage from '@pages/admin/AdminLogin';
 import StatsHomePage from '@pages/admin/StatsHome';
 import AdminLayout from '@layouts/AdminLayout';
+import StatsSchoolPage from '@pages/admin/StatsSchool';
 
 export const Router = () => {
   return (
@@ -39,6 +40,7 @@ export const Router = () => {
       {/* 관리자가 아닌 사용자가 접근할 수 없는 페이지 */}
       <Route element={<AdminLayout />}>
         <Route path={ROUTE.ADMIN_STATS} element={<StatsHomePage />} />
+        <Route path={`${ROUTE.ADMIN_STATS_SCHOOL}/:schoolId`} element={<StatsSchoolPage />} />
       </Route>
       {/* 인증된 사용자가 접근할 수 없는 페이지 */}
       <Route element={<NotAuthLayout />}>

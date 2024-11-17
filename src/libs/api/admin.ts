@@ -3,6 +3,7 @@ import axios from 'axios';
 import {
   AdminClubsResultResponseData,
   AdminLoginRequestData,
+  AdminSchoolStatsRequestData,
   CountResponseData,
   SchoolsResultResponseData,
 } from 'types/admin';
@@ -47,4 +48,40 @@ const getClubs = async () => {
   return res.data;
 };
 
-export { fetchLoginData, getClubCount, getSchoolCount, getMemberCount, getSchools, getClubs };
+// admin-school-controller
+const getSchoolClubCount = async ({ schoolId }: Readonly<AdminSchoolStatsRequestData>) => {
+  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/schools/${schoolId}/clubs/count`);
+
+  return res.data;
+};
+
+const getSchoolMemberCount = async ({ schoolId }: Readonly<AdminSchoolStatsRequestData>) => {
+  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/schools/${schoolId}/members/count`);
+
+  return res.data;
+};
+
+const getSchoolItemCount = async ({ schoolId }: Readonly<AdminSchoolStatsRequestData>) => {
+  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/schools/${schoolId}/items/count`);
+
+  return res.data;
+};
+
+const getSchoolClubs = async ({ schoolId }: Readonly<AdminSchoolStatsRequestData>) => {
+  const res = await axiosInstance.get<AdminClubsResultResponseData>(`/v1/admin/schools/${schoolId}/clubs`);
+
+  return res.data;
+};
+
+export {
+  fetchLoginData,
+  getClubCount,
+  getSchoolCount,
+  getMemberCount,
+  getSchools,
+  getClubs,
+  getSchoolClubCount,
+  getSchoolMemberCount,
+  getSchoolItemCount,
+  getSchoolClubs,
+};

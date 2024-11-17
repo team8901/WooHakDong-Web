@@ -35,6 +35,10 @@ type AdminClubsResultResponseData = {
   result: AdminClubsResponseData[];
 };
 
+type AdminSchoolStatsRequestData = {
+  schoolId: number;
+};
+
 export type {
   AdminLoginRequestData,
   SchoolsResponseData,
@@ -42,4 +46,5 @@ export type {
   CountResponseData,
   AdminClubsResponseData,
   AdminClubsResultResponseData,
+  AdminSchoolStatsRequestData,
 };
