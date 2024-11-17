@@ -3,22 +3,22 @@ import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import { useToast } from '@contexts/ToastContext';
 import useLoading from '@hooks/useLoading';
-import useTabNav from '@hooks/useTabNav';
 import { getClubInfo } from '@libs/api/club';
-import { getClubItemsMy } from '@libs/api/item';
+import { getClubItemsMy, getClubItemsMyHistory } from '@libs/api/item';
 // import { CLUB_ITEM_MY_DATA } from '@libs/constant/item';
 import ListItem from '@pages/clubItem/components/ListItem';
-import TabNav from '@pages/clubItem/components/TabNav';
+import ListItemHistory from '@pages/clubItem/components/ListItemHistory';
+import MyTabNav from '@pages/clubItem/components/TabNavMy';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
-import { ClubItemsMyResponseData } from 'types/item';
+import { ClubItemsMyHistoryResponseData, ClubItemsMyResponseData } from 'types/item';
 
 const ClubItemMyPage = () => {
   const [itemList, setItemList] = useState<ClubItemsMyResponseData[]>([]);
-  const [filteredItemList, setFilteredItemList] = useState<ClubItemsMyResponseData[]>([]);
+  const [historyItemList, setHistoryItemList] = useState<ClubItemsMyHistoryResponseData[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
-  const { activeTab, handleTabChange } = useTabNav({ itemList, setFilteredItemList });
+  const [activeTab, setActiveTab] = useState<'CURRENT' | 'ALL'>('CURRENT');
   const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
 
@@ -34,7 +34,9 @@ const ClubItemMyPage = () => {
 
         const { result } = await getClubItemsMy({ clubId });
         setItemList(result);
-        setFilteredItemList(result);
+
+        const res = await getClubItemsMyHistory({ clubId });
+        setHistoryItemList(res.result.filter((item) => item.itemReturnDate !== null));
       } catch (error) {
         console.error(error);
         setToastMessage(`물품 정보를 불러오는 중 오류가 발생했어요\n${error}`);
@@ -45,7 +47,7 @@ const ClubItemMyPage = () => {
 
     /* 더미데이터 테스트 */
     // setItemList(CLUB_ITEM_MY_DATA);
-    // setFilteredItemList(CLUB_ITEM_MY_DATA);
+    // setHistoryItemList(CLUB_ITEM_MY_DATA);
   }, []);
 
   return (
@@ -54,7 +56,7 @@ const ClubItemMyPage = () => {
         <AppBar hasMenu />
       </div>
 
-      <TabNav activeTab={activeTab} handleTabChange={handleTabChange} />
+      <MyTabNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {isLoading ? (
         <div className="flex flex-col gap-[20px] px-[20px]">
@@ -62,24 +64,42 @@ const ClubItemMyPage = () => {
         </div>
       ) : (
         <ScrollView fadeTop className="flex h-full flex-col gap-[20px] px-[20px]">
-          {filteredItemList.length === 0 ? (
-            <div className="flex h-full items-center justify-center">
-              <EmptyText text="아직 대여한 물품이 없어요" />
-            </div>
-          ) : (
-            <div className="flex flex-col gap-[20px]">
-              <ListItem
-                item={filteredItemList[0]}
-                borrowedReturnDate={filteredItemList[0].itemBorrowedReturnDate}
-                myPage
-              />
-              {filteredItemList.slice(1).map((item) => (
-                <div key={item.itemId} className="flex flex-col gap-[20px]">
-                  <div className="h-[0.6px] bg-lightGray" />
-                  <ListItem item={item} borrowedReturnDate={item.itemBorrowedReturnDate} myPage />
+          {activeTab === 'CURRENT' ? (
+            <>
+              {itemList.length === 0 ? (
+                <div className="flex h-full items-center justify-center">
+                  <EmptyText text="아직 대여한 물품이 없어요" />
                 </div>
-              ))}
-            </div>
+              ) : (
+                <div className="flex flex-col gap-[20px]">
+                  <ListItem item={itemList[0]} borrowedReturnDate={itemList[0].itemBorrowedReturnDate} myPage />
+                  {itemList.slice(1).map((item) => (
+                    <div key={item.itemId} className="flex flex-col gap-[20px]">
+                      <div className="h-[0.6px] bg-lightGray" />
+                      <ListItem item={item} borrowedReturnDate={item.itemBorrowedReturnDate} myPage />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              {historyItemList.length === 0 ? (
+                <div className="flex h-full items-center justify-center">
+                  <EmptyText text="아직 대여한 물품이 없어요" />
+                </div>
+              ) : (
+                <div className="flex flex-col gap-[20px]">
+                  <ListItemHistory item={historyItemList[0]} />
+                  {historyItemList.slice(1).map((item) => (
+                    <div key={`${item.itemId}-${item.itemRentalDate}-history`} className="flex flex-col gap-[20px]">
+                      <div className="h-[0.6px] bg-lightGray" />
+                      <ListItemHistory item={item} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </ScrollView>
       )}

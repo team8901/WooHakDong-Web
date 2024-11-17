@@ -4,7 +4,13 @@ import ItemRentalTime from '@pages/clubItem/components/ItemRentalTime';
 import ItemTitle from '@pages/clubItem/components/ItemTitle';
 import ItemUnavailable from '@pages/clubItem/components/ItemUnavailable';
 import ItemUsing from '@pages/clubItem/components/ItemUsing';
-import { ClubItemListProps, ClubItemResponseData } from 'types/item';
+import { ClubItemResponseData } from 'types/item';
+
+type ClubItemListProps = {
+  item: ClubItemResponseData;
+  borrowedReturnDate?: string | null | undefined;
+  myPage?: boolean;
+};
 
 const ListItem = ({ item, borrowedReturnDate, myPage = false }: Readonly<ClubItemListProps>) => {
   const navigate = useCustomNavigate();
