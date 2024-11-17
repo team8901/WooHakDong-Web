@@ -33,7 +33,7 @@ const ClubItemHomePage = () => {
   } = useGetClubId({ clubEnglishName: clubEnglishName || '' });
   const {
     data: clubItemsData,
-    refetch: clubItemsRefetch,
+    refetch: refetchClubItems,
     isError: isClubItemsError,
     isLoading: isClubItemsLoading,
   } = useGetClubItems({ clubId: clubId || 0 });
@@ -51,7 +51,7 @@ const ClubItemHomePage = () => {
   };
 
   const handleRefresh = async () => {
-    const { data } = await clubItemsRefetch();
+    const { data } = await refetchClubItems();
     if (!data) return;
 
     const { result } = data;

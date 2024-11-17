@@ -6,7 +6,7 @@ import {
   ClubMyInfoRequestData,
 } from 'types/clubMember';
 
-const getClubMemberList = async ({ clubId, clubMemberAssignedTerm }: Readonly<ClubMemberRequestData>) => {
+const getClubMembers = async ({ clubId, clubMemberAssignedTerm }: Readonly<ClubMemberRequestData>) => {
   const res = await axiosInstance.get<ClubMemberResultResponseData>(
     `/v1/clubs/${clubId}/members?clubMemberAssignedTerm=${clubMemberAssignedTerm}`,
   );
@@ -14,10 +14,10 @@ const getClubMemberList = async ({ clubId, clubMemberAssignedTerm }: Readonly<Cl
   return res.data;
 };
 
-const getClubMyInfo = async ({ clubId }: Readonly<ClubMyInfoRequestData>) => {
+const getClubMembersMy = async ({ clubId }: Readonly<ClubMyInfoRequestData>) => {
   const res = await axiosInstance.get<ClubMemberResponseData>(`/v1/clubs/${clubId}/members/me`);
 
   return res.data;
 };
 
-export { getClubMemberList, getClubMyInfo };
+export { getClubMembers, getClubMembersMy };

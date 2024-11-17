@@ -3,10 +3,10 @@ import Body4 from '@components/Body4';
 import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import { useToast } from '@contexts/ToastContext';
-import useLoading from '@hooks/useLoading';
-import { getClubInfo } from '@libs/api/club';
-import { getClubMemberList, getClubMyInfo } from '@libs/api/clubMember';
-// import { CLUB_MEMBER_DATA } from '@libs/constant/clubMember';
+import useGetClubId from '@hooks/club/useGetClubId';
+import useGetClubMembers from '@hooks/clubMember/useGetClubMembers';
+import useGetClubMembersMy from '@hooks/clubMember/useGetClubMembersMy';
+import calculateClubAssignedTerm from '@libs/util/calculateClubAssignedTerm';
 import ListItem from '@pages/clubMember/components/ListItem';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -18,55 +18,54 @@ const ClubMemberHomePage = () => {
   const [memberList, setMemberList] = useState<ClubMemberResponseData[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const [myInfo, setMyInfo] = useState<ClubMemberResponseData>({} as ClubMemberResponseData);
-  const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
-
-  const calculateClubAssignedTerm = () => {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const year = today.getFullYear();
-
-    if (month >= 7) {
-      return `${year}-07-01`;
-    } else {
-      return `${year}-03-01`;
-    }
-  };
-
-  useEffect(() => {
-    (async () => {
-      if (!clubEnglishName) return;
-
-      setIsLoading(true);
-      try {
-        const { clubId } = await getClubInfo({
-          clubEnglishName,
-        });
-
-        const { result } = await getClubMemberList({ clubId, clubMemberAssignedTerm: calculateClubAssignedTerm() });
-
-        const officeMember = result.filter((member) => member.clubMemberRole !== 'MEMBER');
-        const member = result.filter((member) => member.clubMemberRole === 'MEMBER');
-        // const officeMember = CLUB_MEMBER_DATA.filter((member) => member.clubMemberRole !== 'MEMBER');
-        // const member = CLUB_MEMBER_DATA.filter((member) => member.clubMemberRole === 'MEMBER');
-
-        setOfficeMemberList(officeMember);
-        setMemberList(member);
-
-        const myInfo = await getClubMyInfo({ clubId });
-        setMyInfo(myInfo);
-      } catch (error) {
-        console.error(error);
-        setToastMessage(`회원 정보를 불러오는 중 오류가 발생했어요\n${error}`);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, []);
+  const {
+    data: clubId,
+    isError: isClubIdError,
+    isLoading: isClubIdLoading,
+  } = useGetClubId({ clubEnglishName: clubEnglishName ?? '' });
+  const {
+    data: clubMembers,
+    isError: isClubMembersError,
+    isLoading: isClubMembersLoading,
+  } = useGetClubMembers({
+    clubId: clubId ?? 0,
+    clubMemberAssignedTerm: calculateClubAssignedTerm(),
+  });
+  const {
+    data: clubMembersMy,
+    isError: isClubMembersMyError,
+    isLoading: isClubMembersMyLoading,
+  } = useGetClubMembersMy({ clubId: clubId ?? 0 });
 
   const processCanClick = (member: ClubMemberResponseData) => {
     return member.clubMemberRole !== 'MEMBER' || myInfo.clubMemberRole !== 'MEMBER';
   };
+
+  useEffect(() => {
+    if (!clubMembers) return;
+
+    const { result } = clubMembers;
+    const officeMember = result.filter((member) => member.clubMemberRole !== 'MEMBER');
+    const member = result.filter((member) => member.clubMemberRole === 'MEMBER');
+
+    setOfficeMemberList(officeMember);
+    setMemberList(member);
+  }, [clubMembers]);
+
+  useEffect(() => {
+    if (!clubMembersMy) return;
+
+    setMyInfo(clubMembersMy);
+  }, [clubMembersMy]);
+
+  useEffect(() => {
+    if (isClubIdError || isClubMembersError || isClubMembersMyError) {
+      setToastMessage(`회원 정보를 불러오는 중 오류가 발생했어요`);
+    }
+  }, [isClubIdError, isClubMembersError, isClubMembersMyError]);
+
+  const isLoading = isClubIdLoading || isClubMembersLoading || isClubMembersMyLoading;
 
   return (
     <div className="relative h-full pt-[56px]">
