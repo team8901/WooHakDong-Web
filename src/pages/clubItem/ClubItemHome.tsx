@@ -26,7 +26,6 @@ const ClubItemHomePage = () => {
   const navigate = useCustomNavigate();
   const { activeTab, handleTabChange } = useTabNav({ itemList, setFilteredItemList });
   const { setToastMessage } = useToast();
-  const [clubId, setClubId] = useState(0);
   const {
     data: clubInfoData,
     isError: isClubInfoError,
@@ -37,28 +36,25 @@ const ClubItemHomePage = () => {
     refetch: clubItemsRefetch,
     isError: isClubItemsError,
     isLoading: isClubItemsLoading,
-  } = useGetClubItems({ clubId });
+  } = useGetClubItems({ clubId: clubInfoData?.clubId || 0 });
   const {
     data: clubItemsMyData,
     isError: isClubItemsMyError,
     isLoading: isClubItemsMyLoading,
-  } = useGetClubItemsMy({ clubId });
+  } = useGetClubItemsMy({ clubId: clubInfoData?.clubId || 0 });
 
   const isMyBorrowedItem = (itemId: number) => myBorrowedItemList.some((item) => item.itemId === itemId);
 
   const getBorrowedReturnDate = (itemId: number) => {
     const item = myBorrowedItemList.find((item) => item.itemId === itemId);
-
     return item?.itemBorrowedReturnDate;
   };
 
   const handleRefresh = async () => {
     const { data } = await clubItemsRefetch();
-
     if (!data) return;
 
     const { result } = data;
-
     setItemList(result);
 
     if (activeTab === 'ALL') {
@@ -66,7 +62,6 @@ const ClubItemHomePage = () => {
       setToastMessage('물품 정보를 갱신했어요');
     } else {
       const filteredResult = result.filter((item) => item.itemCategory === activeTab);
-
       setFilteredItemList(filteredResult);
       setToastMessage(`${CLUB_ITEM_CATEGORY[activeTab]} 카테고리의 물품 정보를 갱신했어요`);
     }
@@ -80,14 +75,6 @@ const ClubItemHomePage = () => {
     setItemList(result);
     setFilteredItemList(result);
   }, [clubItemsData]);
-
-  useEffect(() => {
-    if (!clubInfoData) return;
-
-    const { clubId } = clubInfoData;
-
-    setClubId(clubId);
-  }, [clubInfoData]);
 
   useEffect(() => {
     if (!clubItemsMyData) return;
@@ -109,6 +96,8 @@ const ClubItemHomePage = () => {
     }
   }, [isClubInfoError, isClubItemsError, isClubItemsMyError]);
 
+  const isLoading = isClubInfoLoading || isClubItemsLoading || isClubItemsMyLoading;
+
   return (
     <div className="relative h-full pb-[50px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
@@ -117,7 +106,7 @@ const ClubItemHomePage = () => {
 
       <TabNav activeTab={activeTab} handleTabChange={handleTabChange} />
 
-      {isClubInfoLoading || isClubItemsLoading || isClubItemsMyLoading ? (
+      {isLoading ? (
         <div className="flex flex-col gap-[20px] px-[20px]">
           <Skeleton height={72} count={5} borderRadius={14} className="mt-[20px]" />
         </div>
