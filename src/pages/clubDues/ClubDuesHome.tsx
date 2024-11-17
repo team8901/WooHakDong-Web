@@ -1,4 +1,5 @@
 import ChevronBottomGrayIcon from '@assets/images/chevrons/ChevronBottomGrayIcon';
+import RefreshIcon from '@assets/images/dues/RefreshIcon';
 import AppBar from '@components/AppBar';
 import Body4 from '@components/Body4';
 import Caption2 from '@components/Caption2';
@@ -33,6 +34,7 @@ const ClubDuesHomePage = () => {
   });
   const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
+  const [clubId, setClubId] = useState(0);
 
   const filterData = () => {
     if (CLUB_DUES_SORT_OPTIONS[selectedOption].value === 'ALL') {
@@ -49,6 +51,22 @@ const ClubDuesHomePage = () => {
 
   const { isOpen, selectedOption, bottomSheetRef, setIsOpen, setSelectedOption } = useBottomSheet(filterData);
 
+  const getDuesList = async ({ clubId }: { clubId: number }) => {
+    if (!clubId) return;
+
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
+
+    const { result } = await getClubDues({ clubId, year, month });
+
+    setDuesList(result);
+    setFilteredDuesList(result);
+
+    const { clubAccountBankName, clubAccountNumber, clubAccountLastUpdateDate, clubAccountBalance } =
+      await getClubAccount({ clubId });
+    setAccountInfo({ clubAccountBankName, clubAccountNumber, clubAccountLastUpdateDate, clubAccountBalance });
+  };
+
   useEffect(() => {
     (async () => {
       if (!clubEnglishName) return;
@@ -58,18 +76,9 @@ const ClubDuesHomePage = () => {
         const { clubId } = await getClubInfo({
           clubEnglishName,
         });
+        setClubId(clubId);
 
-        const year = new Date().getFullYear();
-        const month = new Date().getMonth() + 1;
-
-        const { result } = await getClubDues({ clubId, year, month });
-
-        setDuesList(result);
-        setFilteredDuesList(result);
-
-        const { clubAccountBankName, clubAccountNumber, clubAccountLastUpdateDate, clubAccountBalance } =
-          await getClubAccount({ clubId });
-        setAccountInfo({ clubAccountBankName, clubAccountNumber, clubAccountLastUpdateDate, clubAccountBalance });
+        await getDuesList({ clubId });
       } catch (error) {
         console.error(error);
         setToastMessage(`회비 정보를 불러오는 중 오류가 발생했어요\n${error}`);
@@ -80,6 +89,10 @@ const ClubDuesHomePage = () => {
     // setDuesList(CLUB_DUES_DATA);
     // setFilteredDuesList(CLUB_DUES_DATA);
   }, []);
+
+  const handleRefresh = async () => {
+    await getDuesList({ clubId });
+  };
 
   return (
     <div className="relative h-full pb-[100px] pt-[56px]">
@@ -97,16 +110,21 @@ const ClubDuesHomePage = () => {
           <Body4 text={CLUB_DUES_SORT_OPTIONS[selectedOption].label} className="text-darkGray" />
           <ChevronBottomGrayIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
         </button>
-        <Body4
-          text={`${new Date(accountInfo.clubAccountLastUpdateDate).getFullYear()}년 ${formatDate(accountInfo.clubAccountLastUpdateDate)} 기준`}
-          className="text-darkGray"
-        />
+        <div className="flex items-center gap-[4px]">
+          <Body4
+            text={`${new Date(accountInfo.clubAccountLastUpdateDate).getFullYear()}년 ${formatDate(accountInfo.clubAccountLastUpdateDate)} 기준`}
+            className="text-darkGray"
+          />
+          <button type="button" onClick={handleRefresh}>
+            <RefreshIcon />
+          </button>
+        </div>
       </div>
 
       {isLoading ? (
         <div className="flex flex-col gap-[20px] p-[20px]">
-          {Array.from({ length: 4 }, () => (
-            <div>
+          {Array.from({ length: 4 }, (_, index) => (
+            <div key={index}>
               <Skeleton width={200} height={20} count={2} borderRadius={14} className="mt-[4px]" />
               <div className="flex flex-col items-end">
                 <Skeleton width={100} height={20} count={2} borderRadius={14} className="mt-[4px]" />
