@@ -1,6 +1,6 @@
 import AppBar from '@components/AppBar';
 import EmptyText from '@components/EmptyText';
-import ScrollView from '@components/ScrollView';
+import CustomPullToRefresh from '@components/PullToRefresh';
 import { useToast } from '@contexts/ToastContext';
 import useLoading from '@hooks/useLoading';
 import { getClubInfo } from '@libs/api/club';
@@ -21,6 +21,17 @@ const ClubItemMyPage = () => {
   const [activeTab, setActiveTab] = useState<'CURRENT' | 'ALL'>('CURRENT');
   const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
+  const [clubId, setClubId] = useState(0);
+
+  const handleRefresh = async () => {
+    const { result } = await getClubItemsMy({ clubId });
+    setItemList(result);
+
+    const res = await getClubItemsMyHistory({ clubId });
+    setHistoryItemList(res.result.filter((item) => item.itemReturnDate !== null));
+
+    setToastMessage('물품 정보를 갱신했어요');
+  };
 
   useEffect(() => {
     (async () => {
@@ -31,6 +42,7 @@ const ClubItemMyPage = () => {
         const { clubId } = await getClubInfo({
           clubEnglishName,
         });
+        setClubId(clubId);
 
         const { result } = await getClubItemsMy({ clubId });
         setItemList(result);
@@ -63,45 +75,47 @@ const ClubItemMyPage = () => {
           <Skeleton height={72} count={5} borderRadius={14} className="mt-[20px]" />
         </div>
       ) : (
-        <ScrollView fadeTop className="flex h-full flex-col gap-[20px] px-[20px]">
-          {activeTab === 'CURRENT' ? (
-            <>
-              {itemList.length === 0 ? (
-                <div className="flex h-full items-center justify-center">
-                  <EmptyText text="아직 대여한 물품이 없어요" />
-                </div>
-              ) : (
-                <div className="flex flex-col gap-[20px]">
-                  <ListItem item={itemList[0]} borrowedReturnDate={itemList[0].itemBorrowedReturnDate} myPage />
-                  {itemList.slice(1).map((item) => (
-                    <div key={item.itemId} className="flex flex-col gap-[20px]">
-                      <div className="h-[0.6px] bg-lightGray" />
-                      <ListItem item={item} borrowedReturnDate={item.itemBorrowedReturnDate} myPage />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </>
-          ) : (
-            <>
-              {historyItemList.length === 0 ? (
-                <div className="flex h-full items-center justify-center">
-                  <EmptyText text="아직 대여한 물품이 없어요" />
-                </div>
-              ) : (
-                <div className="flex flex-col gap-[20px]">
-                  <ListItemHistory item={historyItemList[0]} />
-                  {historyItemList.slice(1).map((item) => (
-                    <div key={`${item.itemId}-${item.itemRentalDate}-history`} className="flex flex-col gap-[20px]">
-                      <div className="h-[0.6px] bg-lightGray" />
-                      <ListItemHistory item={item} />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </>
-          )}
-        </ScrollView>
+        <div className="flex h-full flex-col gap-[20px] px-[20px] pt-[20px]">
+          <CustomPullToRefresh onRefresh={handleRefresh}>
+            {activeTab === 'CURRENT' ? (
+              <>
+                {itemList.length === 0 ? (
+                  <div className="flex h-full items-center justify-center">
+                    <EmptyText text="아직 대여한 물품이 없어요" />
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-[20px] pb-[50px]">
+                    <ListItem item={itemList[0]} borrowedReturnDate={itemList[0].itemBorrowedReturnDate} myPage />
+                    {itemList.slice(1).map((item) => (
+                      <div key={item.itemId} className="flex flex-col gap-[20px]">
+                        <div className="h-[0.6px] bg-lightGray" />
+                        <ListItem item={item} borrowedReturnDate={item.itemBorrowedReturnDate} myPage />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                {historyItemList.length === 0 ? (
+                  <div className="flex h-full items-center justify-center">
+                    <EmptyText text="아직 대여한 물품이 없어요" />
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-[20px] pb-[50px]">
+                    <ListItemHistory item={historyItemList[0]} />
+                    {historyItemList.slice(1).map((item) => (
+                      <div key={`${item.itemId}-${item.itemRentalDate}-history`} className="flex flex-col gap-[20px]">
+                        <div className="h-[0.6px] bg-lightGray" />
+                        <ListItemHistory item={item} />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </CustomPullToRefresh>
+        </div>
       )}
     </div>
   );
