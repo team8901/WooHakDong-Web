@@ -168,3 +168,9 @@ scroll gradient in the top right */
 .react-calendar .react-calendar__month-view__weekdays .react-calendar__month-view__weekdays__weekday--weekend abbr {
   color: var(--color-gray);
 }
+
+/* Pull to refresh */
+.ptr .ptr__children {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

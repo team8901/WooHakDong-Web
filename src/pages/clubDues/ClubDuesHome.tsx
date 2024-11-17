@@ -4,7 +4,6 @@ import AppBar from '@components/AppBar';
 import Body4 from '@components/Body4';
 import Caption2 from '@components/Caption2';
 import EmptyText from '@components/EmptyText';
-import PullToRefresh from '@components/PullToRefresh';
 import Title1 from '@components/Title1';
 import { useToast } from '@contexts/ToastContext';
 import useBottomSheet from '@hooks/useBottomSheet';
@@ -21,6 +20,8 @@ import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 import { ClubDuesResponseData } from 'types/dues';
+import PullToRefresh from 'react-simple-pull-to-refresh';
+import LoadingSpinner from '@components/LoadingSpinner';
 
 const ClubDuesHomePage = () => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
@@ -145,7 +146,19 @@ const ClubDuesHomePage = () => {
         </div>
       ) : (
         <div className="h-full flex-col gap-[20px] px-[20px] py-[20px]">
-          <PullToRefresh onRefresh={handleRefresh}>
+          <PullToRefresh
+            onRefresh={handleRefresh}
+            pullingContent={
+              <div className="flex justify-center">
+                <LoadingSpinner />
+              </div>
+            }
+            refreshingContent={
+              <div className="flex justify-center">
+                <LoadingSpinner />
+              </div>
+            }
+          >
             {filteredDuesList.length === 0 ? (
               <div className="flex h-full items-center justify-center">
                 <EmptyText text="아직 사용한 회비가 없어요" />
