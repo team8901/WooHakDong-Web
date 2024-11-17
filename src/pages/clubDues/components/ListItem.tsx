@@ -13,7 +13,7 @@ const ListItem = ({ dues }: { dues: ClubDuesResponseData }) => {
       </div>
       <div className="flex flex-col items-end gap-[2px] self-end">
         <Body1
-          text={`${dues.clubAccountHistoryInOutType === 'DEPOSIT' ? '' : '-'}${dues.clubAccountHistoryTranAmount.toLocaleString()}원`}
+          text={`${dues.clubAccountHistoryInOutType === 'DEPOSIT' ? '+' : '-'}${dues.clubAccountHistoryTranAmount.toLocaleString()}원`}
           className={`${dues.clubAccountHistoryInOutType === 'DEPOSIT' ? 'text-primary' : 'text-red'}`}
         />
         <Body4 text={`${dues.clubAccountHistoryBalanceAmount.toLocaleString()}원`} className="text-darkGray" />
