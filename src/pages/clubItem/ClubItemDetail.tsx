@@ -5,6 +5,7 @@ import Button from '@components/Button';
 import Caption2 from '@components/Caption2';
 import ScrollView from '@components/ScrollView';
 import Title3 from '@components/Title3';
+import Title4 from '@components/Title4';
 import { useToast } from '@contexts/ToastContext';
 import useLoading from '@hooks/useLoading';
 import useModal from '@hooks/useModal';
@@ -244,32 +245,40 @@ const ClubItemDetailPage = () => {
           <Skeleton height={58} borderRadius={14} className="mt-[8px]" />
         </div>
       ) : (
-        <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px] px-[20px]">
-          <div className="flex flex-col items-center gap-[20px]">
-            <img
-              alt="물품"
-              src={item.itemPhoto || '/logo.svg'}
-              // src={'/logo.svg'}
-              className="h-[192px] w-[192px] rounded-[14px] border border-lightGray object-cover"
-            />
-            <div className="flex flex-col items-center gap-[8px]">
-              <Body2 text={CLUB_ITEM_CATEGORY[item.itemCategory]} className="text-darkGray" />
-              <Title3 text={item.itemName} className="text-center" />
-            </div>
-          </div>
+        <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[20px]">
+          <img
+            alt="물품"
+            src={item.itemPhoto || '/logo.svg'}
+            // src={'/logo.svg'}
+            className="aspect-square w-full object-cover"
+          />
 
-          <div className="flex flex-col gap-[20px]">
+          <div className="flex flex-col gap-[40px] px-[20px]">
             <div className="flex flex-col gap-[8px]">
-              <Caption2 text="물품 설명" className="text-darkGray" />
-              <div className="rounded-[14px] border border-lightGray p-[16px]">
-                <Body1 text={item.itemDescription} className="text-justify" />
+              <Body2 text={CLUB_ITEM_CATEGORY[item.itemCategory]} className="text-darkGray" />
+              <div className="flex items-center justify-between gap-[20px]">
+                <Title3 text={item.itemName} className="line-clamp-1" />
+                {borrowedReturnDate && (
+                  <div className="flex h-[30px] flex-shrink-0 items-center justify-center rounded-[7px] bg-lightPrimary px-[6px] text-primary">
+                    <Title4 text={`${borrowedReturnDate || 4}일`} />
+                  </div>
+                )}
               </div>
             </div>
-            <div className="flex flex-col gap-[8px]">
-              <Caption2 text="물품 위치 및 대여 가능 일 수" className="text-darkGray" />
-              <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray p-[16px]">
-                <Body1 text={item.itemLocation} />
-                <Body1 text={`${item.itemRentalMaxDay}일`} />
+
+            <div className="flex flex-col gap-[20px]">
+              <div className="flex flex-col gap-[8px]">
+                <Caption2 text="물품 설명" className="text-darkGray" />
+                <div className="rounded-[14px] border border-lightGray p-[16px]">
+                  <Body1 text={item.itemDescription} className="text-justify" />
+                </div>
+              </div>
+              <div className="flex flex-col gap-[8px]">
+                <Caption2 text="물품 위치 및 대여 가능 일 수" className="text-darkGray" />
+                <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray p-[16px]">
+                  <Body1 text={item.itemLocation} />
+                  <Body1 text={`${item.itemRentalMaxDay}일`} />
+                </div>
               </div>
             </div>
           </div>
