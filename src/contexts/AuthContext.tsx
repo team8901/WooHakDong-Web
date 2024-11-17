@@ -47,6 +47,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+
+    if (localStorage.getItem('admin')) {
+      localStorage.removeItem('admin');
+    }
+
     dispatch({ type: 'LOGOUT' });
   };
 

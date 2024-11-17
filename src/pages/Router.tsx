@@ -28,15 +28,20 @@ import ClubScheduleDetailPage from '@pages/clubSchedule/ClubScheduleDetail';
 import ClubItemMyPage from '@pages/clubItem/ClubItemMy';
 import AdminLoginPage from '@pages/admin/AdminLogin';
 import StatsHomePage from '@pages/admin/StatsHome';
+import AdminLayout from '@layouts/AdminLayout';
 
 export const Router = () => {
   return (
     <Routes>
       {/* <Route path={ROUTE.ROOT} element={<LandingPage />} /> */}
+      <Route path={ROUTE.ADMIN} element={<AdminLoginPage />} />
+      <Route path={ROUTE.ADMIN_LOGIN} element={<AdminLoginPage />} />
+      {/* 관리자가 아닌 사용자가 접근할 수 없는 페이지 */}
+      <Route element={<AdminLayout />}>
+        <Route path={ROUTE.ADMIN_STATS} element={<StatsHomePage />} />
+      </Route>
       {/* 인증된 사용자가 접근할 수 없는 페이지 */}
       <Route element={<NotAuthLayout />}>
-        <Route path={ROUTE.ADMIN_LOGIN} element={<AdminLoginPage />} />
-        <Route path={ROUTE.ADMIN_STATS} element={<StatsHomePage />} />
         <Route path={ROUTE.ROOT} element={<LoginRegisterPage />} />
         <Route path={ROUTE.LOGIN_REGISTER} element={<LoginRegisterPage />} />
         <Route path={`${ROUTE.CLUB}/:clubEnglishName${ROUTE.LOGIN_REGISTER}`} element={<LoginRegisterPage />} />

@@ -1,32 +1,45 @@
 import Button from '@components/Button';
 import Input from '@components/Input';
 import Title2 from '@components/Title2';
+import { useAuth } from '@contexts/AuthContext';
 import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
+import useLoading from '@hooks/useLoading';
+import { fetchLoginData } from '@libs/api/admin';
 import ROUTE from '@libs/constant/path';
 import { useEffect, useState } from 'react';
 
 const AdminLoginPage = () => {
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
-  const { setToastMessage } = useToast();
   const navigate = useCustomNavigate();
+  const { isLoading, setIsLoading } = useLoading();
+  const { setToastMessage } = useToast();
+  const { login } = useAuth();
 
   useEffect(() => {
     document.body.style.minWidth = '100%';
     document.body.style.maxWidth = '100%';
   }, []);
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (loginId === '8901' && password === '1234') {
+    setIsLoading(true);
+    try {
+      const res = await fetchLoginData({ memberLoginId: loginId, memberPassword: password });
+
+      login(res);
+      localStorage.setItem('admin', loginId);
+
       setToastMessage('로그인에 성공했어요');
       navigate(ROUTE.ADMIN_STATS);
-      return;
+    } catch (error) {
+      console.error(error);
+      setToastMessage(`로그인에 실패했어요\n${error}`);
+    } finally {
+      setIsLoading(false);
     }
-
-    setToastMessage('로그인에 실패했어요');
   };
 
   return (
@@ -64,7 +77,7 @@ const AdminLoginPage = () => {
             className="w-[210px]"
           />
         </div>
-        <Button text="로그인" className="w-[100px]" />
+        <Button text="로그인" className="w-[100px]" isLoading={isLoading} />
       </form>
     </div>
   );

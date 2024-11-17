@@ -16,7 +16,13 @@ const ClubCard = ({ club, onClick }: Readonly<ClubCardProps>) => {
       className="flex h-[291.5px] flex-col gap-[12px] rounded-[14px] border border-lightGray p-[8px]"
       onClick={onClick}
     >
-      <img alt="" src="/logo.svg" width={145.5} height={137.5} className="self-center rounded-[6px]" />
+      <img
+        alt=""
+        src={club.clubImage ?? '/logo.svg'}
+        width={145.5}
+        height={137.5}
+        className="h-[137.5px] w-full self-center rounded-[6px] object-cover"
+      />
       <div className="flex flex-col items-start gap-[8px] px-[4px]">
         <Title3 text={club.clubName} className="line-clamp-1" />
         <div className="flex flex-col gap-[2px]">
