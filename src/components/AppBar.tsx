@@ -4,8 +4,8 @@ import ChevronLeftBlackIcon from '@assets/images/chevrons/ChevronLeftBlackIcon';
 import Title3 from '@components/Title3';
 import { useDrawer } from '@contexts/DrawerContext';
 import { useSearch } from '@contexts/SearchContext';
-import { getClubInfo } from '@libs/api/club';
-import { useEffect, useState } from 'react';
+import useGetClubName from '@hooks/club/useGetClubName';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 type AppBarProps = {
@@ -22,19 +22,7 @@ const AppBar = ({ hasMenu = false, hasSearch, showSearchInput = false, goBackCal
   const { setSearchQuery } = useSearch();
   const [isSearchVisible, setIsSearchVisible] = useState(showSearchInput);
   const [searchInput, setSearchInput] = useState('');
-  const [clubName, setClubName] = useState('');
-
-  useEffect(() => {
-    if (!clubEnglishName) return;
-
-    (async () => {
-      const { clubName } = await getClubInfo({
-        clubEnglishName,
-      });
-
-      setClubName(clubName);
-    })();
-  }, [clubEnglishName]);
+  const { data: clubName } = useGetClubName({ clubEnglishName: clubEnglishName ?? '' });
 
   const handleSearchSubmit = () => {
     if (!searchInput) {
@@ -58,7 +46,7 @@ const AppBar = ({ hasMenu = false, hasSearch, showSearchInput = false, goBackCal
           <button type="button" onClick={toggleDrawer}>
             <MenuIcon />
           </button>
-          <Title3 text={clubName} />
+          <Title3 text={clubName ?? ''} />
         </div>
       ) : (
         <button type="button" onClick={goBackCallback ? () => goBackCallback() : () => navigate(-1)}>
