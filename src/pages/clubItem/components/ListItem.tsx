@@ -6,7 +6,7 @@ import ItemUnavailable from '@pages/clubItem/components/ItemUnavailable';
 import ItemUsing from '@pages/clubItem/components/ItemUsing';
 import { ClubItemResponseData } from 'types/item';
 
-type ClubItemListProps = {
+export type ClubItemListProps = {
   item: ClubItemResponseData;
   borrowedReturnDate?: string | null | undefined;
   myPage?: boolean;
