@@ -5,7 +5,16 @@ import { AuthProvider } from '@contexts/AuthContext';
 import { createRoot } from 'react-dom/client';
 import { ToastProvider } from '@contexts/ToastContext';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import * as Sentry from '@sentry/react';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 30,
+    },
+  },
+});
 
 // Sentry.init({
 //   dsn: import.meta.env.VITE_SENTRY_DSN,
@@ -24,14 +33,16 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 const root = document.getElementById('root') as HTMLElement;
 const element = (
-  <BrowserRouter>
+  <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <ToastProvider>
         {/* <Sentry.ErrorBoundary fallback={<span>에러가 발생하였습니다. 잠시 후 다시 시도해주세요.</span>}> */}
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
         {/* </Sentry.ErrorBoundary> */}
       </ToastProvider>
     </AuthProvider>
-  </BrowserRouter>
+  </QueryClientProvider>
 );
 createRoot(root).render(element);

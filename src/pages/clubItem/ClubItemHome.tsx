@@ -3,11 +3,12 @@ import EmptyText from '@components/EmptyText';
 import CustomPullToRefresh from '@components/PullToRefresh';
 import { useSearch } from '@contexts/SearchContext';
 import { useToast } from '@contexts/ToastContext';
+import useGetClubItems from '@hooks/item/useGetClubItems';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useLoading from '@hooks/useLoading';
 import useTabNav from '@hooks/useTabNav';
 import { getClubInfo } from '@libs/api/club';
-import { getClubItems, getClubItemsMy } from '@libs/api/item';
+import { getClubItemsMy } from '@libs/api/item';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
 // import { CLUB_ITEM_MY_DATA, CLUB_ITEM_DATA } from '@libs/constant/item';
 import ROUTE from '@libs/constant/path';
@@ -29,10 +30,9 @@ const ClubItemHomePage = () => {
   const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
   const [clubId, setClubId] = useState(0);
+  const { data: itemData, refetch } = useGetClubItems({ clubId });
 
-  const isMyBorrowedItem = (itemId: number) => {
-    return myBorrowedItemList.findIndex((item) => item.itemId === itemId) !== -1;
-  };
+  const isMyBorrowedItem = (itemId: number) => myBorrowedItemList.some((item) => item.itemId === itemId);
 
   const getBorrowedReturnDate = (itemId: number) => {
     const item = myBorrowedItemList.find((item) => item.itemId === itemId);
@@ -41,19 +41,23 @@ const ClubItemHomePage = () => {
   };
 
   const handleRefresh = async () => {
-    const { result } = await getClubItems({ clubId });
+    const { data } = await refetch();
+
+    if (!data) return;
+
+    const { result } = data;
+
     setItemList(result);
 
     if (activeTab === 'ALL') {
       setFilteredItemList(result);
+      setToastMessage('물품 정보를 갱신했어요');
     } else {
       const filteredResult = result.filter((item) => item.itemCategory === activeTab);
-      setFilteredItemList(filteredResult);
-    }
 
-    setToastMessage(
-      `${activeTab === 'ALL' ? '' : `${CLUB_ITEM_CATEGORY[activeTab]} 카테고리의 `}물품 정보를 갱신했어요`,
-    );
+      setFilteredItemList(filteredResult);
+      setToastMessage(`${CLUB_ITEM_CATEGORY[activeTab]} 카테고리의 물품 정보를 갱신했어요`);
+    }
   };
 
   useEffect(() => {
@@ -66,10 +70,6 @@ const ClubItemHomePage = () => {
           clubEnglishName,
         });
         setClubId(clubId);
-
-        const { result } = await getClubItems({ clubId });
-        setItemList(result);
-        setFilteredItemList(result);
 
         const res = await getClubItemsMy({ clubId });
         setMyBorrowedItemList(res.result);
@@ -86,6 +86,15 @@ const ClubItemHomePage = () => {
     // setFilteredItemList(CLUB_ITEM_DATA);
     // setMyBorrowedItemList(CLUB_ITEM_MY_DATA);
   }, []);
+
+  useEffect(() => {
+    if (!itemData) return;
+
+    const { result } = itemData;
+
+    setItemList(result);
+    setFilteredItemList(result);
+  }, [itemData]);
 
   useEffect(() => {
     if (!searchQuery) return;
