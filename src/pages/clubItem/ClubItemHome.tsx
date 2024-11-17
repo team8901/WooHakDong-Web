@@ -3,7 +3,7 @@ import EmptyText from '@components/EmptyText';
 import CustomPullToRefresh from '@components/PullToRefresh';
 import { useSearch } from '@contexts/SearchContext';
 import { useToast } from '@contexts/ToastContext';
-import useGetClubInfo from '@hooks/club/useGetClubInfo';
+import useGetClubId from '@hooks/club/useGetClubId';
 import useGetClubItems from '@hooks/item/useGetClubItems';
 import useGetClubItemsMy from '@hooks/item/useGetClubItemsMy';
 import useCustomNavigate from '@hooks/useCustomNavigate';
@@ -27,21 +27,21 @@ const ClubItemHomePage = () => {
   const { activeTab, handleTabChange } = useTabNav({ itemList, setFilteredItemList });
   const { setToastMessage } = useToast();
   const {
-    data: clubInfoData,
+    data: clubId,
     isError: isClubInfoError,
     isLoading: isClubInfoLoading,
-  } = useGetClubInfo({ clubEnglishName: clubEnglishName || '' });
+  } = useGetClubId({ clubEnglishName: clubEnglishName || '' });
   const {
     data: clubItemsData,
     refetch: clubItemsRefetch,
     isError: isClubItemsError,
     isLoading: isClubItemsLoading,
-  } = useGetClubItems({ clubId: clubInfoData?.clubId || 0 });
+  } = useGetClubItems({ clubId: clubId || 0 });
   const {
     data: clubItemsMyData,
     isError: isClubItemsMyError,
     isLoading: isClubItemsMyLoading,
-  } = useGetClubItemsMy({ clubId: clubInfoData?.clubId || 0 });
+  } = useGetClubItemsMy({ clubId: clubId || 0 });
 
   const isMyBorrowedItem = (itemId: number) => myBorrowedItemList.some((item) => item.itemId === itemId);
 
