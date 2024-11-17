@@ -4,7 +4,7 @@ import AppBar from '@components/AppBar';
 import Body4 from '@components/Body4';
 import Caption2 from '@components/Caption2';
 import EmptyText from '@components/EmptyText';
-import ScrollView from '@components/ScrollView';
+import PullToRefresh from '@components/PullToRefresh';
 import Title1 from '@components/Title1';
 import { useToast } from '@contexts/ToastContext';
 import useBottomSheet from '@hooks/useBottomSheet';
@@ -60,7 +60,16 @@ const ClubDuesHomePage = () => {
     const { result } = await getClubDues({ clubId, year, month });
 
     setDuesList(result);
-    setFilteredDuesList(result);
+
+    if (CLUB_DUES_SORT_OPTIONS[selectedOption].value === 'ALL') {
+      setFilteredDuesList(result);
+    } else {
+      const filteredResult = duesList.filter(
+        (dues) => dues.clubAccountHistoryInOutType === CLUB_DUES_SORT_OPTIONS[selectedOption].value,
+      );
+
+      setFilteredDuesList(filteredResult);
+    }
 
     const { clubAccountBankName, clubAccountNumber, clubAccountLastUpdateDate, clubAccountBalance } =
       await getClubAccount({ clubId });
@@ -92,6 +101,8 @@ const ClubDuesHomePage = () => {
 
   const handleRefresh = async () => {
     await getDuesList({ clubId });
+
+    setToastMessage('회비 내역을 갱신했어요');
   };
 
   return (
@@ -133,23 +144,25 @@ const ClubDuesHomePage = () => {
           ))}
         </div>
       ) : (
-        <ScrollView fadeTop className="h-full flex-col gap-[20px] px-[20px]" style={{ paddingBottom: '70px' }}>
-          {filteredDuesList.length === 0 ? (
-            <div className="flex h-full items-center justify-center">
-              <EmptyText text="아직 사용한 회비가 없어요" />
-            </div>
-          ) : (
-            <div className="flex flex-col gap-[20px]">
-              <ListItem dues={filteredDuesList[0]} />
-              {filteredDuesList.slice(1).map((dues) => (
-                <div key={dues.clubAccountHistoryTranDate} className="flex flex-col gap-[20px]">
-                  <div className="h-[0.6px] bg-lightGray" />
-                  <ListItem key={dues.clubAccountHistoryId} dues={dues} />
-                </div>
-              ))}
-            </div>
-          )}
-        </ScrollView>
+        <div className="h-full flex-col gap-[20px] px-[20px] py-[20px]">
+          <PullToRefresh onRefresh={handleRefresh}>
+            {filteredDuesList.length === 0 ? (
+              <div className="flex h-full items-center justify-center">
+                <EmptyText text="아직 사용한 회비가 없어요" />
+              </div>
+            ) : (
+              <div className="flex flex-col gap-[20px] pb-[50px]">
+                <ListItem dues={filteredDuesList[0]} />
+                {filteredDuesList.slice(1).map((dues) => (
+                  <div key={dues.clubAccountHistoryTranDate} className="flex flex-col gap-[20px]">
+                    <div className="h-[0.6px] bg-lightGray" />
+                    <ListItem key={dues.clubAccountHistoryId} dues={dues} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </PullToRefresh>
+        </div>
       )}
 
       <BottomSheet
