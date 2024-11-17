@@ -46,6 +46,14 @@ axiosInstance.interceptors.response.use(
 
     if (error.response.data.message === 'member not found') {
       alert('로그인이 필요한 페이지입니다.');
+
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+
+      if (localStorage.getItem('admin')) {
+        localStorage.removeItem('admin');
+      }
+
       location.replace(ROUTE.ROOT);
       return;
     }
