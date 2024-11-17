@@ -132,17 +132,9 @@ const ClubItemHomePage = () => {
               </div>
             ) : (
               <div className="flex flex-col gap-[20px] pb-[50px]">
-                <ListItem
-                  item={filteredItemList[0]}
-                  borrowedReturnDate={
-                    isMyBorrowedItem(filteredItemList[0].itemId)
-                      ? getBorrowedReturnDate(filteredItemList[0].itemId)
-                      : undefined
-                  }
-                />
-                {filteredItemList.slice(1).map((item) => (
+                {filteredItemList.map((item, index) => (
                   <div key={item.itemId} className="flex flex-col gap-[20px]">
-                    <div className="h-[0.6px] bg-lightGray" />
+                    {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
                     <ListItem
                       item={item}
                       borrowedReturnDate={
