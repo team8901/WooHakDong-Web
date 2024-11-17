@@ -16,7 +16,7 @@ import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
 import Modal from '@pages/clubItem/components/Modal';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ClubItemResponseData } from 'types/item';
 
 const ClubItemDetailPage = () => {
@@ -27,13 +27,12 @@ const ClubItemDetailPage = () => {
   const { isModalOpen, openModal, closeModal, modalRef } = useModal();
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
   const [fileBytes, setFileBytes] = useState<ArrayBuffer | null>(null);
-  const [isReturned, setIsReturned] = useState(false);
-  const [isBorrowed, setIsBorrowed] = useState(false);
   const [clubId, setClubId] = useState<number | null>(null);
   const { isLoading: isItemInfoLoading, setIsLoading: setIsItemInfoLoading } = useLoading();
   const { isLoading: isBorrowLoading, setIsLoading: setIsBorrowLoading } = useLoading();
   const { isLoading: isReturnLoading, setIsLoading: setIsReturnLoading } = useLoading();
   const { setToastMessage } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!clubEnglishName) return;
@@ -56,14 +55,7 @@ const ClubItemDetailPage = () => {
   }, []);
 
   const handleBorrow = async () => {
-    if (!clubId) return;
-
-    if (isReturned) {
-      setToastMessage('이미 반납이 완료되었어요');
-      return;
-    }
-
-    if (borrowedReturnDate) return;
+    if (!clubId || borrowedReturnDate) return;
 
     if (!item.itemAvailable || item.itemUsing) {
       setToastMessage('대여가능한 물품이 아니에요');
@@ -75,7 +67,7 @@ const ClubItemDetailPage = () => {
       await postClubItemBorrow({ clubId, itemId: item.itemId });
 
       setToastMessage('대여 신청이 완료되었어요');
-      setIsBorrowed(true);
+      navigate(-1);
     } catch (error) {
       console.error(error);
       setToastMessage(`대여 신청 중 오류가 발생했어요\n${error}`);
@@ -85,14 +77,7 @@ const ClubItemDetailPage = () => {
   };
 
   const handleReturn = async () => {
-    if (!clubId) return;
-
-    if (isReturned) {
-      setToastMessage('이미 반납이 완료되었어요');
-      return;
-    }
-
-    if (!fileBytes) return;
+    if (!clubId || !fileBytes) return;
 
     const imageCount = 1;
 
@@ -106,7 +91,7 @@ const ClubItemDetailPage = () => {
 
       closeModal();
       setToastMessage('반납이 완료되었어요');
-      setIsReturned(true);
+      navigate(-1);
     } catch (error) {
       console.error(error);
       setToastMessage(`반납 중 오류가 발생했어요\n${error}`);
@@ -167,11 +152,7 @@ const ClubItemDetailPage = () => {
   };
 
   const getButtonText = (item: ClubItemResponseData) => {
-    if (isReturned) {
-      return '반납 완료';
-    }
-
-    if (isBorrowed || borrowedReturnDate) {
+    if (borrowedReturnDate) {
       return '반납하기';
     }
 
@@ -187,11 +168,7 @@ const ClubItemDetailPage = () => {
   };
 
   const getButtonBgColor = (item: ClubItemResponseData) => {
-    if (isReturned) {
-      return 'var(--color-lightGray)';
-    }
-
-    if (isBorrowed || borrowedReturnDate) {
+    if (borrowedReturnDate) {
       return 'var(--color-primary)';
     }
 
@@ -207,11 +184,7 @@ const ClubItemDetailPage = () => {
   };
 
   const getTextColor = (item: ClubItemResponseData) => {
-    if (isReturned) {
-      return 'var(--color-darkGray)';
-    }
-
-    if (isBorrowed || borrowedReturnDate) {
+    if (borrowedReturnDate) {
       return 'white';
     }
 
@@ -224,6 +197,16 @@ const ClubItemDetailPage = () => {
     }
 
     return 'white';
+  };
+
+  const getRemainingDays = (targetDate: string) => {
+    const current = new Date();
+    const target = new Date(targetDate);
+
+    const differenceInTime = target.getTime() - current.getTime();
+    const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+
+    return differenceInDays;
   };
 
   return (
@@ -260,7 +243,7 @@ const ClubItemDetailPage = () => {
                 <Title3 text={item.itemName} className="line-clamp-1" />
                 {borrowedReturnDate && (
                   <div className="flex h-[30px] flex-shrink-0 items-center justify-center rounded-[7px] bg-lightPrimary px-[6px] text-primary">
-                    <Title4 text={`${borrowedReturnDate || 4}일`} />
+                    <Title4 text={`${getRemainingDays(borrowedReturnDate)}일`} />
                   </div>
                 )}
               </div>
@@ -288,7 +271,7 @@ const ClubItemDetailPage = () => {
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button
           text={getButtonText(item)}
-          onClick={!isReturned && (isBorrowed || borrowedReturnDate) ? openModal : handleBorrow}
+          onClick={borrowedReturnDate ? openModal : handleBorrow}
           // disabled={!item.itemAvailable || item.itemUsing}
           bgColor={getButtonBgColor(item)}
           textColor={getTextColor(item)}
