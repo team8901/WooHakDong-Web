@@ -1,7 +1,7 @@
 import AppBar from '@components/AppBar';
 import Body4 from '@components/Body4';
 import EmptyText from '@components/EmptyText';
-import ScrollView from '@components/ScrollView';
+import CustomPullToRefresh from '@components/PullToRefresh';
 import { useToast } from '@contexts/ToastContext';
 import useGetClubId from '@hooks/club/useGetClubId';
 import useGetClubMembers from '@hooks/clubMember/useGetClubMembers';
@@ -28,6 +28,7 @@ const ClubMemberHomePage = () => {
     data: clubMembers,
     isError: isClubMembersError,
     isLoading: isClubMembersLoading,
+    refetch: refetchClubMembers,
   } = useGetClubMembers({
     clubId: clubId ?? 0,
     clubMemberAssignedTerm: calculateClubAssignedTerm(),
@@ -40,6 +41,20 @@ const ClubMemberHomePage = () => {
 
   const processCanClick = (member: ClubMemberResponseData) => {
     return member.clubMemberRole !== 'MEMBER' || myInfo.clubMemberRole !== 'MEMBER';
+  };
+
+  const handleRefresh = async () => {
+    const { data } = await refetchClubMembers();
+    if (!data) return;
+
+    const { result } = data;
+    const officeMember = result.filter((member) => member.clubMemberRole !== 'MEMBER');
+    const member = result.filter((member) => member.clubMemberRole === 'MEMBER');
+
+    setOfficeMemberList(officeMember);
+    setMemberList(member);
+
+    setToastMessage('회원 목록을 갱신했어요');
   };
 
   useEffect(() => {
@@ -81,47 +96,51 @@ const ClubMemberHomePage = () => {
           <Skeleton height={47} count={3} borderRadius={14} className="mt-[10px]" />
         </div>
       ) : (
-        <ScrollView fadeTop className="flex h-full flex-col gap-[20px]">
-          <div className="flex flex-col gap-[20px] px-[20px] pt-[20px]">
-            <Body4 text="임원진" className="text-darkGray" />
-            {officeMemberList.length === 0 ? (
-              <div className="flex h-full items-center justify-center">
-                <EmptyText text="아직 가입한 회원이 없어요" />
-              </div>
-            ) : (
-              <div className="flex flex-col gap-[20px]">
-                <ListItem member={officeMemberList[0]} canClick={processCanClick(officeMemberList[0])} />
-                {officeMemberList.slice(1).map((member) => (
-                  <div key={member.memberId} className="flex flex-col gap-[20px]">
-                    <div className="h-[0.6px] bg-lightGray" />
-                    <ListItem member={member} canClick={processCanClick(member)} />
+        <div className="flex h-full flex-col gap-[20px] pt-[20px]">
+          <CustomPullToRefresh onRefresh={handleRefresh}>
+            <div className="flex flex-col gap-[20px]">
+              <div className="flex flex-col gap-[20px] px-[20px] pt-[20px]">
+                <Body4 text="임원진" className="text-darkGray" />
+                {officeMemberList.length === 0 ? (
+                  <div className="flex h-full items-center justify-center">
+                    <EmptyText text="아직 가입한 회원이 없어요" />
                   </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="h-[3px] flex-shrink-0 bg-lightGray" />
-
-          <div className="flex flex-col gap-[20px] px-[20px]">
-            <Body4 text="일반 회원" className="text-darkGray" />
-            {memberList.length === 0 ? (
-              <div className="flex h-full items-center justify-center">
-                <EmptyText text="아직 가입한 회원이 없어요" />
-              </div>
-            ) : (
-              <div className="flex flex-col gap-[20px]">
-                <ListItem member={memberList[0]} />
-                {memberList.slice(1).map((member) => (
-                  <div key={member.memberId} className="flex flex-col gap-[20px]">
-                    <div className="h-[0.6px] bg-lightGray" />
-                    <ListItem member={member} />
+                ) : (
+                  <div className="flex flex-col gap-[20px]">
+                    <ListItem member={officeMemberList[0]} canClick={processCanClick(officeMemberList[0])} />
+                    {officeMemberList.slice(1).map((member) => (
+                      <div key={member.memberId} className="flex flex-col gap-[20px]">
+                        <div className="h-[0.6px] bg-lightGray" />
+                        <ListItem member={member} canClick={processCanClick(member)} />
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
-            )}
-          </div>
-        </ScrollView>
+
+              <div className="h-[3px] flex-shrink-0 bg-lightGray" />
+
+              <div className="flex flex-col gap-[20px] px-[20px]">
+                <Body4 text="일반 회원" className="text-darkGray" />
+                {memberList.length === 0 ? (
+                  <div className="flex h-full items-center justify-center">
+                    <EmptyText text="아직 가입한 회원이 없어요" />
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-[20px]">
+                    <ListItem member={memberList[0]} />
+                    {memberList.slice(1).map((member) => (
+                      <div key={member.memberId} className="flex flex-col gap-[20px]">
+                        <div className="h-[0.6px] bg-lightGray" />
+                        <ListItem member={member} />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </CustomPullToRefresh>
+        </div>
       )}
     </div>
   );
