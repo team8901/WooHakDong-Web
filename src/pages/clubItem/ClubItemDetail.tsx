@@ -7,12 +7,12 @@ import ScrollView from '@components/ScrollView';
 import Title3 from '@components/Title3';
 import Title4 from '@components/Title4';
 import { useToast } from '@contexts/ToastContext';
+import useGetClubId from '@hooks/club/useGetClubId';
 import useGetClubItems from '@hooks/item/useGetClubItems';
 import useGetClubItemsMy from '@hooks/item/useGetClubItemsMy';
 import useGetClubItemsMyHistory from '@hooks/item/useGetClubItemsMyHistory';
 import useLoading from '@hooks/useLoading';
 import useModal from '@hooks/useModal';
-import { getClubInfo } from '@libs/api/club';
 import { postClubItemBorrow, postClubItemReturn } from '@libs/api/item';
 import { getS3ImageUrl, putImageToS3 } from '@libs/api/util';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
@@ -30,35 +30,24 @@ const ClubItemDetailPage = () => {
   const { isModalOpen, openModal, closeModal, modalRef } = useModal();
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
   const [fileBytes, setFileBytes] = useState<ArrayBuffer | null>(null);
-  const [clubId, setClubId] = useState<number | null>(null);
-  const { isLoading: isItemInfoLoading, setIsLoading: setIsItemInfoLoading } = useLoading();
   const { isLoading: isBorrowLoading, setIsLoading: setIsBorrowLoading } = useLoading();
   const { isLoading: isReturnLoading, setIsLoading: setIsReturnLoading } = useLoading();
   const { setToastMessage } = useToast();
   const navigate = useNavigate();
+  const {
+    data: clubId,
+    isError: isClubIdError,
+    isLoading: isClubIdLoading,
+  } = useGetClubId({ clubEnglishName: clubEnglishName || '' });
   const { refetch: refetchClubItems } = useGetClubItems({ clubId: clubId ?? 0 });
   const { refetch: refetchClubItemsMy } = useGetClubItemsMy({ clubId: clubId ?? 0 });
   const { refetch: refetchClubItemsMyHistory } = useGetClubItemsMyHistory({ clubId: clubId ?? 0 });
 
   useEffect(() => {
-    if (!clubEnglishName) return;
-
-    (async () => {
-      setIsItemInfoLoading(true);
-      try {
-        const { clubId } = await getClubInfo({
-          clubEnglishName,
-        });
-
-        setClubId(clubId);
-      } catch (error) {
-        console.error(error);
-        setToastMessage(`물품 상세 정보를 불러오는 중 오류가 발생했어요\n${error}`);
-      } finally {
-        setIsItemInfoLoading(false);
-      }
-    })();
-  }, []);
+    if (isClubIdError) {
+      setToastMessage(`물품 상세 정보를 불러오는 중 오류가 발생했어요`);
+    }
+  }, [isClubIdError]);
 
   const handleBorrow = async () => {
     if (!clubId || borrowedReturnDate) return;
@@ -221,13 +210,15 @@ const ClubItemDetailPage = () => {
     return differenceInDays;
   };
 
+  const isLoading = isClubIdLoading;
+
   return (
     <div className="relative h-full pb-[70px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
         <AppBar />
       </div>
 
-      {isItemInfoLoading ? (
+      {isLoading ? (
         <div className="flex flex-col px-[20px]">
           <div className="flex flex-col items-center">
             <Skeleton width={192} height={192} borderRadius={14} className="mt-[20px]" />
@@ -293,7 +284,7 @@ const ClubItemDetailPage = () => {
           // disabled={!item.itemAvailable || item.itemUsing}
           bgColor={getButtonBgColor(item)}
           textColor={getTextColor(item)}
-          isLoading={isBorrowLoading}
+          isLoading={isBorrowLoading || isReturnLoading}
         />
       </div>
 
