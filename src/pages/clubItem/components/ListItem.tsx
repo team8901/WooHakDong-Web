@@ -8,7 +8,7 @@ import { ClubItemResponseData } from 'types/item';
 
 export type ClubItemListProps = {
   item: ClubItemResponseData;
-  borrowedReturnDate?: string | null | undefined;
+  borrowedReturnDate?: string | null;
   myPage?: boolean;
 };
 
