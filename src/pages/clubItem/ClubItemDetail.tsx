@@ -237,16 +237,14 @@ const ClubItemDetailPage = () => {
           />
 
           <div className="flex flex-col gap-[40px] px-[20px]">
-            <div className="flex flex-col gap-[8px]">
+            <div className="flex flex-col items-start gap-[8px]">
               <Body2 text={CLUB_ITEM_CATEGORY[item.itemCategory]} className="text-darkGray" />
-              <div className="flex items-center justify-between gap-[20px]">
-                <Title3 text={item.itemName} className="line-clamp-1" />
-                {borrowedReturnDate && (
-                  <div className="flex h-[30px] flex-shrink-0 items-center justify-center rounded-[7px] bg-lightPrimary px-[6px] text-primary">
-                    <Title4 text={`${getRemainingDays(borrowedReturnDate)}일`} />
-                  </div>
-                )}
-              </div>
+              <Title3 text={item.itemName} className="line-clamp-1" />
+              {borrowedReturnDate && (
+                <div className="flex h-[30px] items-center justify-center rounded-[7px] bg-lightPrimary px-[6px] text-primary">
+                  <Title4 text={`반납 ${getRemainingDays(borrowedReturnDate)}일 남음`} />
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col gap-[20px]">
