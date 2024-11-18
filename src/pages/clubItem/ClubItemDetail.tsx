@@ -253,8 +253,16 @@ const ClubItemDetailPage = () => {
               <Body2 text={CLUB_ITEM_CATEGORY[item.itemCategory]} className="text-darkGray" />
               <Title3 text={item.itemName} className="line-clamp-1" />
               {borrowedReturnDate && (
-                <div className="flex h-[30px] items-center justify-center rounded-[7px] bg-lightPrimary px-[6px] text-primary">
-                  <Title4 text={`반납 ${getRemainingDays(borrowedReturnDate)}일 남음`} />
+                <div
+                  className={`flex h-[30px] items-center justify-center rounded-[7px] ${getRemainingDays(borrowedReturnDate) > 0 ? 'bg-lightPrimary text-primary' : 'bg-lightRed text-red'} px-[6px]`}
+                >
+                  <Title4
+                    text={
+                      getRemainingDays(borrowedReturnDate) > 0
+                        ? `반납 ${getRemainingDays(borrowedReturnDate)}일 남음`
+                        : `연체 ${-getRemainingDays(borrowedReturnDate)}일 경과`
+                    }
+                  />
                 </div>
               )}
             </div>

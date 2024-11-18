@@ -27,6 +27,7 @@ export default {
         lightPrimary: 'var(--color-lightPrimary)',
         gray: 'var(--color-gray)',
         lightGray: 'var(--color-lightGray)',
+        lightRed: 'var(--color-lightRed)',
       },
     },
   },
