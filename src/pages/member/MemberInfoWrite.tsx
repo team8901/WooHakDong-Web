@@ -98,12 +98,12 @@ const MemberInfoWritePage = () => {
     !memberInfo.memberMajor?.trim() || !memberInfo.memberStudentNumber?.trim() || !memberInfo.memberPhoneNumber?.trim();
 
   return (
-    <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
+    <div className="relative h-full px-[20px] pb-[80px] pt-[56px]">
       <div className="absolute left-0 top-0">
         <AppBar />
       </div>
 
-      <form onSubmit={handleButtonClick}>
+      <form onSubmit={handleButtonClick} className="h-full">
         <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">
           <Title2 text="회원님의 정보를 알려주세요" />
 
