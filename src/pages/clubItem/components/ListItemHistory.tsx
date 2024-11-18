@@ -18,17 +18,15 @@ const ListItemHistory = ({ item }: Readonly<ClubItemHistoryListProps>) => {
         // src={'/logo.svg'}
         className="h-[72px] w-[72px] flex-shrink-0 rounded-[14px] border border-lightGray object-cover"
       />
-      <div className="flex w-full flex-col items-start gap-[4px]">
+      <div className="flex w-full flex-col items-start justify-center gap-[4px]">
         <Body2 text={item.itemName} className="line-clamp-1" />
-        <div className="flex flex-col gap-[4px] self-end">
-          <div className="flex items-center gap-[2px]">
-            <BorrowIcon />
-            <Caption2 text={formatDate(item.itemRentalDate)} className="text-darkGray" />
-          </div>
-          <div className="flex items-center gap-[2px]">
-            <ReturnIcon />
-            <Caption2 text={formatDate(item.itemReturnDate)} className="text-darkGray" />
-          </div>
+        <div className="flex items-center gap-[2px]">
+          <BorrowIcon />
+          <Caption2 text={formatDate(item.itemRentalDate)} className="text-darkGray" />
+        </div>
+        <div className="flex items-center gap-[2px]">
+          <ReturnIcon />
+          <Caption2 text={formatDate(item.itemReturnDate)} className="text-darkGray" />
         </div>
       </div>
     </div>

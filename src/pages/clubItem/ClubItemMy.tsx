@@ -112,10 +112,9 @@ const ClubItemMyPage = () => {
                   </div>
                 ) : (
                   <div className="flex flex-col gap-[20px] pb-[50px]">
-                    <ListItemHistory item={historyItemList[0]} />
-                    {historyItemList.slice(1).map((item) => (
+                    {historyItemList.map((item, index) => (
                       <div key={`${item.itemId}-${item.itemRentalDate}-history`} className="flex flex-col gap-[20px]">
-                        <div className="h-[0.6px] bg-lightGray" />
+                        {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
                         <ListItemHistory item={item} />
                       </div>
                     ))}
