@@ -136,10 +136,9 @@ const ClubDuesHomePage = () => {
               </div>
             ) : (
               <div className="flex flex-col gap-[20px] pb-[50px]">
-                <ListItem dues={filteredDuesList[0]} />
-                {filteredDuesList.slice(1).map((dues) => (
+                {filteredDuesList.map((dues, index) => (
                   <div key={dues.clubAccountHistoryTranDate} className="flex flex-col gap-[20px]">
-                    <div className="h-[0.6px] bg-lightGray" />
+                    {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
                     <ListItem key={dues.clubAccountHistoryId} dues={dues} />
                   </div>
                 ))}

@@ -64,10 +64,9 @@ const ClubItemSearchPage = () => {
             </div>
           ) : (
             <div className="flex flex-col gap-[20px]">
-              <SearchListItem item={itemList[0]} />
-              {itemList.slice(1).map((item) => (
+              {itemList.map((item, index) => (
                 <div key={item.itemId} className="flex flex-col gap-[20px]">
-                  <div className="h-[0.6px] bg-lightGray" />
+                  {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
                   <SearchListItem item={item} />
                 </div>
               ))}

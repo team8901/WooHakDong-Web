@@ -107,10 +107,9 @@ const ClubMemberHomePage = () => {
                   </div>
                 ) : (
                   <div className="flex flex-col gap-[20px]">
-                    <ListItem member={officeMemberList[0]} canClick={processCanClick(officeMemberList[0])} />
-                    {officeMemberList.slice(1).map((member) => (
+                    {officeMemberList.map((member, index) => (
                       <div key={member.memberId} className="flex flex-col gap-[20px]">
-                        <div className="h-[0.6px] bg-lightGray" />
+                        {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
                         <ListItem member={member} canClick={processCanClick(member)} />
                       </div>
                     ))}
@@ -128,10 +127,9 @@ const ClubMemberHomePage = () => {
                   </div>
                 ) : (
                   <div className="flex flex-col gap-[20px]">
-                    <ListItem member={memberList[0]} />
-                    {memberList.slice(1).map((member) => (
+                    {memberList.map((member, index) => (
                       <div key={member.memberId} className="flex flex-col gap-[20px]">
-                        <div className="h-[0.6px] bg-lightGray" />
+                        {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
                         <ListItem member={member} />
                       </div>
                     ))}

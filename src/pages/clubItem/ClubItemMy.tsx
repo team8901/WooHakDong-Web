@@ -94,10 +94,9 @@ const ClubItemMyPage = () => {
                   </div>
                 ) : (
                   <div className="flex flex-col gap-[20px] pb-[50px]">
-                    <ListItem item={itemList[0]} borrowedReturnDate={itemList[0].itemBorrowedReturnDate} myPage />
-                    {itemList.slice(1).map((item) => (
+                    {itemList.map((item, index) => (
                       <div key={item.itemId} className="flex flex-col gap-[20px]">
-                        <div className="h-[0.6px] bg-lightGray" />
+                        {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
                         <ListItem item={item} borrowedReturnDate={item.itemBorrowedReturnDate} myPage />
                       </div>
                     ))}

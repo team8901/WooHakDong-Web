@@ -104,10 +104,9 @@ const ClubScheduleHomePage = () => {
             </div>
           ) : (
             <div className="flex flex-col gap-[20px]">
-              <ListItem schedule={filteredScheduleList[0]} />
-              {filteredScheduleList.slice(1).map((schedule) => (
+              {filteredScheduleList.map((schedule, index) => (
                 <div key={schedule.scheduleId} className="flex flex-col gap-[20px]">
-                  <div className="h-[0.6px] bg-lightGray" />
+                  {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
                   <ListItem key={schedule.scheduleId} schedule={schedule} />
                 </div>
               ))}
