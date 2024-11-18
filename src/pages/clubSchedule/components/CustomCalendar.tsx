@@ -1,6 +1,5 @@
-import isSameDateBetweenDateString from '@libs/util/isSameDateBetweenDateString';
 import { SelectedDate } from '@pages/clubSchedule/ClubScheduleHome';
-import Dot from '@pages/clubSchedule/components/Dot';
+import TileContent from '@pages/clubSchedule/components/TileContent';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { ClubScheduleResponseData } from 'types/clubSchedule';
