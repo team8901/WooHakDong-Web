@@ -1,5 +1,6 @@
 import Body3 from '@components/Body3';
 import { CLIB_ITEM_CATEGORY_MENU } from '@libs/constant/item';
+import { useRef } from 'react';
 import { ClubItemCategory } from 'types/item';
 
 type TabNavProps = {
@@ -8,8 +9,40 @@ type TabNavProps = {
 };
 
 const TabNav = ({ activeTab, handleTabChange }: Readonly<TabNavProps>) => {
+  const containerRef = useRef<HTMLButtonElement>(null);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    isDragging.current = true;
+    startX.current = e.pageX - containerRef.current.offsetLeft;
+    scrollLeft.current = containerRef.current.scrollLeft;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current || !containerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - containerRef.current.offsetLeft;
+    const walk = (x - startX.current) * 2; // Adjust the scroll speed
+    containerRef.current.scrollLeft = scrollLeft.current - walk;
+  };
+
+  const handleMouseUp = () => {
+    isDragging.current = false;
+  };
+
   return (
-    <div className="flex overflow-x-auto scrollbar-hide">
+    <button
+      type="button"
+      ref={containerRef}
+      className="flex overflow-x-auto scrollbar-hide"
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+    >
       <button
         type="button"
         onClick={() => handleTabChange('ALL')}
@@ -27,7 +60,7 @@ const TabNav = ({ activeTab, handleTabChange }: Readonly<TabNavProps>) => {
           <Body3 text={menu.label} />
         </button>
       ))}
-    </div>
+    </button>
   );
 };
 
