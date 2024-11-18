@@ -16,6 +16,8 @@ const ROUTE = {
   DUES: '/dues',
   MEMBER: '/members',
   SCHEDULE: '/schedules',
+  ADMIN_LOGIN: '/admin/login',
+  ADMIN_STATS: '/admin/stats',
 };
 
 export default ROUTE;

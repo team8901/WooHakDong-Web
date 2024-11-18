@@ -5,7 +5,7 @@ type InputProps = {
   name: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
-  type?: 'text' | 'number';
+  type?: 'text' | 'number' | 'password';
   inputMode?: 'text' | 'numeric';
 };
 

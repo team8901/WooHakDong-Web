@@ -8,54 +8,59 @@ import Title3 from '@components/Title3';
 import { useToast } from '@contexts/ToastContext';
 import useModal from '@hooks/useModal';
 import { getClubInfo } from '@libs/api/club';
-import { postClubItemBorrow } from '@libs/api/item';
+import { postClubItemBorrow, postClubItemReturn } from '@libs/api/item';
 import { getS3ImageUrl, putImageToS3 } from '@libs/api/util';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
 import Modal from '@pages/clubItem/components/Modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { ClubItemResponseData } from 'types/item';
 
 const ClubItemDetailPage = () => {
   const { state } = useLocation();
-  const initialItem: ClubItemResponseData = state.item;
-  const borrowedReturnDate: string | null | undefined = state.borrowedReturnDate;
-  const shouldReturn = borrowedReturnDate === null;
-  const myPage: boolean = state.myPage;
-  const [item, setItem] = useState<ClubItemResponseData>(initialItem);
+  const item: ClubItemResponseData = state.item;
+  const borrowedReturnDate: string | undefined = state.borrowedReturnDate;
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { setToastMessage } = useToast();
   const { isModalOpen, openModal, closeModal, modalRef } = useModal();
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
-  const [image, setImage] = useState<File | null>(null);
   const [fileBytes, setFileBytes] = useState<ArrayBuffer | null>(null);
+  const [isReturned, setIsReturned] = useState(false);
+  const [isBorrowed, setIsBorrowed] = useState(false);
+  const [clubId, setClubId] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!clubEnglishName) return;
+
+    (async () => {
+      const { clubId } = await getClubInfo({
+        clubEnglishName,
+      });
+
+      setClubId(clubId);
+    })();
+  }, []);
 
   const handleBorrow = async () => {
-    if (!clubEnglishName || shouldReturn) return;
+    if (!clubId) return;
 
-    if (myPage) {
-      setToastMessage('대여 신청은 물품 목록에서 가능해요');
+    if (isReturned) {
+      setToastMessage('이미 반납이 완료되었어요');
       return;
     }
+
+    if (borrowedReturnDate) return;
 
     if (!item.itemAvailable || item.itemUsing) {
       setToastMessage('대여가능한 물품이 아니에요');
       return;
     }
 
-    const { clubId } = await getClubInfo({
-      clubEnglishName,
-    });
-
     try {
       await postClubItemBorrow({ clubId, itemId: item.itemId });
 
       setToastMessage('대여 신청이 완료되었어요');
-
-      setItem((prevItem) => ({
-        ...prevItem,
-        itemUsing: true,
-      }));
+      setIsBorrowed(true);
     } catch (error) {
       console.error(error);
       setToastMessage('대여 신청 중 오류가 발생했어요');
@@ -63,14 +68,31 @@ const ClubItemDetailPage = () => {
   };
 
   const handleReturn = async () => {
-    if (!image || !fileBytes) return;
+    if (!clubId) return;
+
+    if (isReturned) {
+      setToastMessage('이미 반납이 완료되었어요');
+      return;
+    }
+
+    if (!fileBytes) return;
 
     const imageCount = 1;
 
     const { result } = await getS3ImageUrl({ imageCount });
     const { imageUrl } = result[0];
 
-    await putImageToS3({ s3ImageUrl: imageUrl, fileBytes, contentType: image.type });
+    try {
+      await putImageToS3({ s3ImageUrl: imageUrl, fileBytes });
+      await postClubItemReturn({ clubId, itemId: item.itemId, itemReturnImage: imageUrl.split('?')[0] });
+
+      closeModal();
+      setToastMessage('반납이 완료되었어요');
+      setIsReturned(true);
+    } catch (error) {
+      console.error(error);
+      setToastMessage(`반납 중 오류가 발생했어요\n${error}`);
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,8 +115,6 @@ const ClubItemDetailPage = () => {
       setToastMessage('JPG 혹은 PNG 확장자의 이미지만 등록 가능해요');
       return;
     }
-
-    setImage(file);
 
     readFileForPreview(file);
     readFileForBytes(file);
@@ -127,12 +147,12 @@ const ClubItemDetailPage = () => {
   };
 
   const getButtonText = (item: ClubItemResponseData) => {
-    if (shouldReturn) {
-      return '반납하기';
+    if (isReturned) {
+      return '반납 완료';
     }
 
-    if (myPage && borrowedReturnDate !== undefined) {
-      return '반납 완료';
+    if (isBorrowed || borrowedReturnDate) {
+      return '반납하기';
     }
 
     if (!item.itemAvailable) {
@@ -147,12 +167,12 @@ const ClubItemDetailPage = () => {
   };
 
   const getButtonBgColor = (item: ClubItemResponseData) => {
-    if (shouldReturn) {
-      return 'var(--color-primary)';
+    if (isReturned) {
+      return 'var(--color-lightGray)';
     }
 
-    if (myPage && borrowedReturnDate !== undefined) {
-      return 'var(--color-lightGray)';
+    if (isBorrowed || borrowedReturnDate) {
+      return 'var(--color-primary)';
     }
 
     if (!item.itemAvailable) {
@@ -167,12 +187,12 @@ const ClubItemDetailPage = () => {
   };
 
   const getTextColor = (item: ClubItemResponseData) => {
-    if (shouldReturn) {
-      return 'white';
+    if (isReturned) {
+      return 'var(--color-darkGray)';
     }
 
-    if (myPage && borrowedReturnDate !== undefined) {
-      return 'var(--color-darkGray)';
+    if (isBorrowed || borrowedReturnDate) {
+      return 'white';
     }
 
     if (!item.itemAvailable) {
@@ -196,8 +216,8 @@ const ClubItemDetailPage = () => {
         <div className="flex flex-col items-center gap-[20px]">
           <img
             alt="물품"
-            // src={item.itemPhoto || '/logo.svg'}
-            src={'/logo.svg'}
+            src={item.itemPhoto || '/logo.svg'}
+            // src={'/logo.svg'}
             className="h-[192px] w-[192px] rounded-[14px] border border-lightGray"
           />
           <div className="flex flex-col items-center gap-[8px]">
@@ -226,7 +246,7 @@ const ClubItemDetailPage = () => {
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button
           text={getButtonText(item)}
-          onClick={shouldReturn ? openModal : handleBorrow}
+          onClick={!isReturned && (isBorrowed || borrowedReturnDate) ? openModal : handleBorrow}
           // disabled={!item.itemAvailable || item.itemUsing}
           bgColor={getButtonBgColor(item)}
           textColor={getTextColor(item)}
