@@ -7,6 +7,9 @@ import ScrollView from '@components/ScrollView';
 import Title3 from '@components/Title3';
 import Title4 from '@components/Title4';
 import { useToast } from '@contexts/ToastContext';
+import useGetClubItems from '@hooks/item/useGetClubItems';
+import useGetClubItemsMy from '@hooks/item/useGetClubItemsMy';
+import useGetClubItemsMyHistory from '@hooks/item/useGetClubItemsMyHistory';
 import useLoading from '@hooks/useLoading';
 import useModal from '@hooks/useModal';
 import { getClubInfo } from '@libs/api/club';
@@ -33,6 +36,9 @@ const ClubItemDetailPage = () => {
   const { isLoading: isReturnLoading, setIsLoading: setIsReturnLoading } = useLoading();
   const { setToastMessage } = useToast();
   const navigate = useNavigate();
+  const { refetch: refetchClubItems } = useGetClubItems({ clubId: clubId ?? 0 });
+  const { refetch: refetchClubItemsMy } = useGetClubItemsMy({ clubId: clubId ?? 0 });
+  const { refetch: refetchClubItemsMyHistory } = useGetClubItemsMyHistory({ clubId: clubId ?? 0 });
 
   useEffect(() => {
     if (!clubEnglishName) return;
@@ -67,6 +73,9 @@ const ClubItemDetailPage = () => {
       await postClubItemBorrow({ clubId, itemId: item.itemId });
 
       setToastMessage('대여 신청이 완료되었어요');
+      await refetchClubItems();
+      await refetchClubItemsMy();
+      await refetchClubItemsMyHistory();
       navigate(-1);
     } catch (error) {
       console.error(error);
@@ -91,6 +100,9 @@ const ClubItemDetailPage = () => {
 
       closeModal();
       setToastMessage('반납이 완료되었어요');
+      await refetchClubItems();
+      await refetchClubItemsMy();
+      await refetchClubItemsMyHistory();
       navigate(-1);
     } catch (error) {
       console.error(error);
