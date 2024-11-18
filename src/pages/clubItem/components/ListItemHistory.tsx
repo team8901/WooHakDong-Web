@@ -2,7 +2,7 @@ import BorrowIcon from '@assets/images/item/BorrowIcon';
 import ReturnIcon from '@assets/images/item/ReturnIcon';
 import Body2 from '@components/Body2';
 import Caption2 from '@components/Caption2';
-import { formatDate } from '@libs/util/formatDate';
+import { formatDateDetail } from '@libs/util/formatDate';
 import { ClubItemsMyHistoryResponseData } from 'types/item';
 
 type ClubItemHistoryListProps = {
@@ -22,11 +22,11 @@ const ListItemHistory = ({ item }: Readonly<ClubItemHistoryListProps>) => {
         <Body2 text={item.itemName} className="line-clamp-1" />
         <div className="flex items-center gap-[2px]">
           <BorrowIcon />
-          <Caption2 text={formatDate(item.itemRentalDate)} className="text-darkGray" />
+          <Caption2 text={formatDateDetail(item.itemRentalDate)} className="text-darkGray" />
         </div>
         <div className="flex items-center gap-[2px]">
           <ReturnIcon />
-          <Caption2 text={formatDate(item.itemReturnDate)} className="text-darkGray" />
+          <Caption2 text={formatDateDetail(item.itemReturnDate)} className="text-darkGray" />
         </div>
       </div>
     </div>
