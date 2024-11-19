@@ -96,7 +96,7 @@ const ClubMemberHomePage = () => {
           <Skeleton height={47} count={3} borderRadius={14} className="mt-[10px]" />
         </div>
       ) : (
-        <div className="flex h-full flex-col gap-[20px] pt-[20px]">
+        <div className="flex h-full flex-col gap-[20px]">
           <CustomPullToRefresh onRefresh={handleRefresh}>
             <div className="flex flex-col gap-[20px]">
               <div className="flex flex-col gap-[20px] px-[20px] pt-[20px]">
