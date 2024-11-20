@@ -18,10 +18,7 @@ const getGroupInfo = async ({ clubId }: Readonly<GroupInfoRequestData>) => {
 const postGroupJoin = async ({ merchantUid, groupId }: Readonly<GroupJoinProps>) => {
   const data: GroupJoinRequestData = { merchantUid };
 
-  const res = await axiosInstance.post<GroupJoinResponseData>(
-    `${import.meta.env.VITE_API_URL}/v1/groups/${groupId}/joins`,
-    data,
-  );
+  const res = await axiosInstance.post<GroupJoinResponseData>(`/v1/groups/${groupId}/orders`, data);
   const { orderId } = res.data;
 
   return orderId;
@@ -30,7 +27,7 @@ const postGroupJoin = async ({ merchantUid, groupId }: Readonly<GroupJoinProps>)
 const postGroupJoinConfirm = async ({ merchantUid, groupId, impUid, orderId }: Readonly<GroupJoinConfirmProps>) => {
   const data: GroupJoinConfirmRequestData = { merchantUid, impUid, orderId };
 
-  await axiosInstance.post(`${import.meta.env.VITE_API_URL}/v1/groups/${groupId}/joins/confirms`, data);
+  await axiosInstance.post(`/v1/groups/${groupId}/orders/confirms`, data);
 };
 
 export { getGroupInfo, postGroupJoin, postGroupJoinConfirm };
