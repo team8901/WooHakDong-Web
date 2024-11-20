@@ -12,7 +12,7 @@ const ClubLayout = () => {
   const [isClubJoin, setIsClubJoin] = useState(false);
 
   useEffect(() => {
-    const checkClubs = async () => {
+    (async () => {
       const { result } = await getClubsInfo();
 
       if (result.length === 0 || result.find((club) => club.clubEnglishName === clubEnglishName) === undefined) {
@@ -21,9 +21,7 @@ const ClubLayout = () => {
       }
 
       setIsClubJoin(true);
-    };
-
-    checkClubs();
+    })();
   }, []);
 
   return (

@@ -1,7 +1,7 @@
 import UnavailableIcon from '@assets/images/item/UnavailableIcon';
-import { ClubItem } from 'types/item';
+import { ClubItemResponseData } from 'types/item';
 
-const ItemUnavailable = ({ item }: { item: ClubItem }) => {
+const ItemUnavailable = ({ item }: { item: ClubItemResponseData }) => {
   return (
     <>
       {!item.itemAvailable && (

@@ -1,10 +1,10 @@
 import ChevronRightGrayIcon from '@assets/images/chevrons/ChevronRightGrayIcon';
 import Body1 from '@components/Body1';
 import Title1 from '@components/Title1';
+import useGetClubName from '@hooks/club/useGetClubName';
 import useCustomNavigate from '@hooks/useCustomNavigate';
-import { getClubInfo } from '@libs/api/club';
 import ROUTE from '@libs/constant/path';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 type DrawerProps = {
@@ -16,19 +16,7 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const navigate = useCustomNavigate();
-  const [clubName, setClubName] = useState('');
-
-  useEffect(() => {
-    if (!clubEnglishName) return;
-
-    (async () => {
-      const { clubName } = await getClubInfo({
-        clubEnglishName,
-      });
-
-      setClubName(clubName);
-    })();
-  }, [clubEnglishName]);
+  const { data: clubName } = useGetClubName({ clubEnglishName: clubEnglishName ?? '' });
 
   useEffect(() => {
     if (!dialogRef.current) return;
@@ -41,6 +29,17 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
     toggleDrawer();
   };
 
+  const DRAWER_MENU = [
+    { label: '회원', path: ROUTE.MEMBER },
+    { divider: true },
+    { label: '물품', path: ROUTE.ITEM },
+    { label: '나의 대여 물품', path: ROUTE.ITEM_MY },
+    { divider: true },
+    { label: '회비', path: ROUTE.DUES },
+    { divider: true },
+    { label: '일정', path: ROUTE.SCHEDULE },
+  ];
+
   return (
     <>
       <dialog
@@ -48,37 +47,20 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
         className={`absolute left-0 top-0 z-50 h-full w-[55%] transform bg-white transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0 shadow-lg' : '-translate-x-full'}`}
       >
         <div className="flex flex-col gap-[20px] px-[20px] py-[103px]">
-          <Title1 text={clubName} />
+          <Title1 text={clubName ?? ''} />
 
-          <button className="flex items-center justify-between" onClick={() => handleNavigate(ROUTE.MEMBER)}>
-            <Body1 text="회원" />
-            <ChevronRightGrayIcon />
-          </button>
-
-          <div className="h-[1px] bg-lightGray" />
-
-          <button className="flex items-center justify-between" onClick={() => handleNavigate(ROUTE.ITEM)}>
-            <Body1 text="물품" />
-            <ChevronRightGrayIcon />
-          </button>
-          <button className="flex items-center justify-between">
-            <Body1 text="나의 대여 물품" />
-            <ChevronRightGrayIcon />
-          </button>
-
-          <div className="h-[1px] bg-lightGray" />
-
-          <button className="flex items-center justify-between" onClick={() => handleNavigate(ROUTE.DUES)}>
-            <Body1 text="회비" />
-            <ChevronRightGrayIcon />
-          </button>
-
-          <div className="h-[1px] bg-lightGray" />
-
-          <button className="flex items-center justify-between">
-            <Body1 text="일정" />
-            <ChevronRightGrayIcon />
-          </button>
+          {DRAWER_MENU.map((menu, index) => (
+            <div className="flex flex-col gap-[20px]" key={index}>
+              {menu.divider ? (
+                <div className="h-[1px] bg-lightGray" />
+              ) : (
+                <button className="flex items-center justify-between" onClick={() => handleNavigate(menu.path!)}>
+                  <Body1 text={menu.label!} />
+                  <ChevronRightGrayIcon />
+                </button>
+              )}
+            </div>
+          ))}
         </div>
       </dialog>
       <button

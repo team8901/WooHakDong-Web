@@ -1,8 +1,15 @@
 import axiosInstance from '@libs/api/axiosInstance';
-import { ClubAccountRequestData, ClubAccountResponseData, ClubDuesProps, ClubsDuesResponseData } from 'types/dues';
+import {
+  ClubAccountRequestData,
+  ClubAccountResponseData,
+  ClubDuesRequestData,
+  ClubDuesResultResponseData,
+} from 'types/dues';
 
-const getClubDues = async ({ clubId, year, month }: Readonly<ClubDuesProps>) => {
-  const res = await axiosInstance.get<ClubsDuesResponseData>(`/v1/clubs/${clubId}/dues?year=${year}&month=${month}`);
+const getClubDues = async ({ clubId, year, month }: Readonly<ClubDuesRequestData>) => {
+  const res = await axiosInstance.get<ClubDuesResultResponseData>(
+    `/v1/clubs/${clubId}/dues?year=${year}&month=${month}`,
+  );
   return res.data;
 };
 

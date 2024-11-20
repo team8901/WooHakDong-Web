@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-export interface IMPResponse {
+type IMPResponse = {
   success: boolean;
   imp_uid: string;
   merchant_uid: string;
@@ -29,4 +29,6 @@ export interface IMPResponse {
   card_quota?: number;
   card_number?: string;
   card_type?: string;
-}
+};
+
+export type { IMPResponse };

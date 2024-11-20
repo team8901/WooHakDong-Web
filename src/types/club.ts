@@ -1,4 +1,4 @@
-type ClubInfoProps = {
+type ClubInfoRequestData = {
   clubEnglishName: string;
 };
 
@@ -13,8 +13,8 @@ type ClubInfoResponseData = {
   clubDues: number;
 };
 
-type ClubsInfoResponseData = {
+type ClubInfoResultResponseData = {
   result: ClubInfoResponseData[];
 };
 
-export type { ClubInfoProps, ClubInfoResponseData, ClubsInfoResponseData };
+export type { ClubInfoRequestData, ClubInfoResponseData, ClubInfoResultResponseData };

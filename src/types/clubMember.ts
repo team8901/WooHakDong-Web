@@ -29,18 +29,24 @@ type ClubMemberResponseData = {
   clubMemberAssignedTerm: string;
 };
 
-type ClubMembersResponseData = {
+type ClubMemberResultResponseData = {
   result: ClubMemberResponseData[];
 };
 
 type ClubMemberListProps = {
   member: ClubMemberResponseData;
+  canClick?: boolean;
+};
+
+type ClubMyInfoRequestData = {
+  clubId: number;
 };
 
 export type {
   ClubMemberRole,
   ClubMemberRequestData,
   ClubMemberResponseData,
-  ClubMembersResponseData,
+  ClubMemberResultResponseData,
   ClubMemberListProps,
+  ClubMyInfoRequestData,
 };

@@ -1,7 +1,7 @@
 import HistoryIcon from '@assets/images/item/HistoryIcon';
-import { ClubItem } from 'types/item';
+import { ClubItemResponseData } from 'types/item';
 
-const ItemRentalTime = ({ item }: { item: ClubItem }) => {
+const ItemRentalTime = ({ item }: { item: ClubItemResponseData }) => {
   return (
     <div className="flex items-center gap-[2px]">
       <HistoryIcon />

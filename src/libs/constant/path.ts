@@ -12,8 +12,14 @@ const ROUTE = {
   PAYMENT_REDIRECT: '/payment/redirect',
   ITEM: '/items',
   ITEM_SEARCH: '/items/search',
+  ITEM_MY: '/items/my',
   DUES: '/dues',
   MEMBER: '/members',
+  SCHEDULE: '/schedules',
+  ADMIN: '/admin',
+  ADMIN_LOGIN: '/admin/login',
+  ADMIN_STATS: '/admin/stats',
+  ADMIN_STATS_SCHOOL: '/admin/stats/schools',
 };
 
 export default ROUTE;

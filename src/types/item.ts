@@ -1,12 +1,12 @@
-type ClubItemProps = {
+type ClubItemCategory = 'DIGITAL' | 'SPORT' | 'BOOK' | 'CLOTHES' | 'STATIONERY' | 'ETC';
+
+type ClubItemRequestData = {
   clubId: number;
   keyword?: string;
   category?: ClubItemCategory;
 };
 
-type ClubItemCategory = 'DIGITAL' | 'SPORT' | 'BOOK' | 'CLOTHES' | 'STATIONERY' | 'ETC';
-
-type ClubItem = {
+interface ClubItemResponseData {
   itemId: number;
   itemName: string;
   itemPhoto: string;
@@ -16,36 +16,77 @@ type ClubItem = {
   itemRentalMaxDay: number;
   itemAvailable: boolean;
   itemUsing: boolean;
-  itemRentalDate: string;
+  itemRentalDate: string | null;
   itemRentalTime: number;
+}
+
+type ClubItemResultResponseData = {
+  result: ClubItemResponseData[];
 };
 
-type ClubItemListProps = {
-  item: ClubItem;
-};
-
-type ItemResponseData = {
-  result: ClubItem[];
-};
-
-type ClubItemBorrowProps = {
+interface ClubItemBorrowRequestData {
   clubId: number;
   itemId: number;
-};
+}
 
 type ClubItemBorrowResponseData = {
   itemId: number;
   itemHistoryId: number;
+  itemRentalDate: string | null;
+  itemDueDate: string;
+};
+
+type ClubItemsMyRequestData = {
+  clubId: number;
+};
+
+interface ClubItemsMyResponseData extends ClubItemResponseData {
+  itemBorrowedReturnDate: string | null;
+}
+
+type ClubItemsMyResultResponseData = {
+  result: ClubItemsMyResponseData[];
+};
+
+interface ClubItemReturnRequestData extends ClubItemBorrowRequestData {
+  itemReturnImage: string;
+}
+
+type ClubItemReturnResponseData = {
+  itemId: number;
+  itemHistoryId: number;
+  itemReturnDate: string;
+};
+
+type ClubItemsMyHistoryResponseData = {
+  itemHistoryId: number;
+  clubMemberId: number;
+  memberName: string;
   itemRentalDate: string;
   itemDueDate: string;
+  itemReturnDate: string;
+  itemReturnImage: string;
+  itemName: string;
+  itemOverdue: boolean;
+  itemId: number;
+};
+
+type ClubItemsMyHistoryResultResponseData = {
+  result: ClubItemsMyHistoryResponseData[];
 };
 
 export type {
   ClubItemCategory,
-  ClubItem,
-  ClubItemProps,
-  ItemResponseData,
-  ClubItemBorrowProps,
-  ClubItemListProps,
+  ClubItemResponseData,
+  ClubItemRequestData,
+  ClubItemResultResponseData,
+  ClubItemBorrowRequestData,
   ClubItemBorrowResponseData,
+  ClubItemsMyRequestData,
+  ClubItemsMyResponseData,
+  ClubItemsMyResultResponseData,
+  ClubItemReturnRequestData,
+  ClubItemReturnResponseData,
+  ClubItemsMyHistoryResponseData,
+  ClubItemsMyHistoryResultResponseData,
 };

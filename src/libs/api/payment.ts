@@ -42,18 +42,20 @@ const postPortOne = async ({
       //   );
       // }
       if (!response.success) {
+        resolve('cancel');
         return;
       }
       const impUid = response.imp_uid;
 
-      const { groupId } = await getGroupInfo({ clubId });
-      const orderId = await postGroupJoin({ merchantUid, groupId });
+      try {
+        const { groupId } = await getGroupInfo({ clubId });
+        const orderId = await postGroupJoin({ merchantUid, groupId });
 
-      if (orderId) {
         await postGroupJoinConfirm({ merchantUid, groupId, impUid, orderId });
-        resolve('동아리 가입이 완료되었습니다.');
-      } else {
-        reject(new Error('orderId를 받아오는 데 실패했습니다.'));
+        resolve('success');
+      } catch (error) {
+        console.error(error);
+        reject(new Error(`결제 중 오류가 발생했어요\n${error}`));
       }
     };
 

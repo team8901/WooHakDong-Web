@@ -4,22 +4,28 @@ import ItemRentalTime from '@pages/clubItem/components/ItemRentalTime';
 import ItemTitle from '@pages/clubItem/components/ItemTitle';
 import ItemUnavailable from '@pages/clubItem/components/ItemUnavailable';
 import ItemUsing from '@pages/clubItem/components/ItemUsing';
-import { ClubItem, ClubItemListProps } from 'types/item';
+import { ClubItemResponseData } from 'types/item';
 
-const ListItem = ({ item }: Readonly<ClubItemListProps>) => {
+export type ClubItemListProps = {
+  item: ClubItemResponseData;
+  borrowedReturnDate?: string | null;
+  myPage?: boolean;
+};
+
+const ListItem = ({ item, borrowedReturnDate, myPage = false }: Readonly<ClubItemListProps>) => {
   const navigate = useCustomNavigate();
 
-  const handleItemClick = (item: ClubItem) => {
-    navigate(`${ROUTE.ITEM}/${item.itemId}`, { state: { item } });
+  const handleItemClick = (item: ClubItemResponseData) => {
+    navigate(`${ROUTE.ITEM}/${item.itemId}`, { state: { item, borrowedReturnDate, myPage } });
   };
 
   return (
     <button className="flex cursor-pointer gap-[12px]" onClick={() => handleItemClick(item)}>
       <img
         alt="물품"
-        // src={item.itemPhoto || '/logo.svg'}
-        src={'/logo.svg'}
-        className="h-[72px] w-[72px] flex-shrink-0 rounded-[14px] border border-lightGray"
+        src={item.itemPhoto || '/logo.svg'}
+        // src={'/logo.svg'}
+        className="h-[72px] w-[72px] flex-shrink-0 rounded-[14px] border border-lightGray object-cover"
       />
       <div className="flex w-full flex-col items-start gap-[4px]">
         <ItemTitle item={item} />
