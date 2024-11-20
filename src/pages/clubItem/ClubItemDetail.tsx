@@ -3,7 +3,6 @@ import Body1 from '@components/Body1';
 import Body2 from '@components/Body2';
 import Button from '@components/Button';
 import Caption2 from '@components/Caption2';
-import ScrollView from '@components/ScrollView';
 import Title3 from '@components/Title3';
 import Title4 from '@components/Title4';
 import { useToast } from '@contexts/ToastContext';
@@ -231,7 +230,7 @@ const ClubItemDetailPage = () => {
           <Skeleton height={58} borderRadius={14} className="mt-[8px]" />
         </div>
       ) : (
-        <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[20px]">
+        <div className="flex h-full flex-col gap-[20px] overflow-y-auto scrollbar-hide">
           <img
             alt="물품"
             src={item.itemPhoto || '/logo.svg'}
@@ -274,7 +273,7 @@ const ClubItemDetailPage = () => {
               </div>
             </div>
           </div>
-        </ScrollView>
+        </div>
       )}
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
