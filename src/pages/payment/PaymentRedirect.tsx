@@ -26,17 +26,19 @@ const PaymentRedirectPage = () => {
     }
 
     (async () => {
-      const { groupId } = await getGroupInfo({ clubId: +clubId });
-      const orderId = await postGroupJoin({ merchantUid, groupId });
+      try {
+        const { groupId } = await getGroupInfo({ clubId: Number(clubId) });
+        const orderId = await postGroupJoin({ merchantUid, groupId });
 
-      if (orderId) {
         await postGroupJoinConfirm({ merchantUid, groupId, impUid, orderId });
         setToastMessage('동아리 가입이 완료되었어요');
-      } else {
-        setToastMessage('동아리 가입에 실패했어요');
-      }
 
-      navigate(ROUTE.ROOT);
+        navigate(ROUTE.ROOT);
+      } catch (error) {
+        console.error(error);
+        setToastMessage(`결제 중 오류가 발생했어요\n${error}`);
+        navigate(ROUTE.PAYMENT);
+      }
     })();
   }, []);
 

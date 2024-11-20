@@ -13,6 +13,8 @@ import TossPayIcon from '@assets/images/payment/TossPayIcon';
 import { useParams } from 'react-router-dom';
 import ScrollView from '@components/ScrollView';
 import { useToast } from '@contexts/ToastContext';
+import useLoading from '@hooks/useLoading';
+import Skeleton from 'react-loading-skeleton';
 
 const PaymentPage = () => {
   const navigate = useCustomNavigate();
@@ -26,6 +28,8 @@ const PaymentPage = () => {
   const [memberPhoneNumber, setMemberPhoneNumber] = useState('');
   const merchantUid = useRef('');
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
+  const { isLoading: isClubInfoLoading, setIsLoading: setIsClubInfoLoading } = useLoading();
+  const { isLoading: isPaymentLoading, setIsLoading: setIsPaymentLoading } = useLoading();
   const { setToastMessage } = useToast();
 
   useEffect(() => {
@@ -34,17 +38,25 @@ const PaymentPage = () => {
     merchantUid.current = `payment-${crypto.randomUUID()}`.slice(0, 40);
 
     (async () => {
-      const { memberEmail, memberName, memberPhoneNumber } = await getMemberInfo();
-      const { clubName, clubId, clubDues } = await getClubInfo({
-        clubEnglishName,
-      });
+      setIsClubInfoLoading(true);
+      try {
+        const { memberEmail, memberName, memberPhoneNumber } = await getMemberInfo();
+        const { clubName, clubId, clubDues } = await getClubInfo({
+          clubEnglishName,
+        });
 
-      setClubId(clubId);
-      setClubName(clubName);
-      setClubDues(clubDues);
-      setMemberEmail(memberEmail);
-      setMemberName(memberName);
-      setMemberPhoneNumber(memberPhoneNumber);
+        setClubId(clubId);
+        setClubName(clubName);
+        setClubDues(clubDues);
+        setMemberEmail(memberEmail);
+        setMemberName(memberName);
+        setMemberPhoneNumber(memberPhoneNumber);
+      } catch (error) {
+        console.error(error);
+        setToastMessage('동아리 정보를 불러오는 중 오류가 발생했어요');
+      } finally {
+        setIsClubInfoLoading(false);
+      }
     })();
   }, []);
 
@@ -69,12 +81,23 @@ const PaymentPage = () => {
       clubEnglishName: clubEnglishName || '',
     };
 
+    setIsPaymentLoading(true);
     try {
-      await postPortOne(data);
+      const res = await postPortOne(data);
+
+      if (res === 'cancel') {
+        setIsPaymentLoading(false);
+        return;
+      }
+
+      setToastMessage(`${clubName}에 가입되었어요`);
+
       navigate(ROUTE.ROOT);
     } catch (error) {
-      setToastMessage(`결제 중 오류가 발생했어요\n${error}`);
       console.error(error);
+      setToastMessage(`결제 중 오류가 발생했어요\n${error}`);
+    } finally {
+      setIsPaymentLoading(false);
     }
   };
 
@@ -115,26 +138,34 @@ const PaymentPage = () => {
     <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
       <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">
         <Title2 text="결제 방법을 선택해주세요" />
-        <div className="grid grid-cols-2 flex-wrap justify-center gap-[20px]">
-          {paymentMethods.map((method) => (
-            <PaymentMethodButton
-              key={method.id}
-              onClick={() => {
-                if (method.id === 1) {
-                  setToastMessage('준비중인 결제 수단이에요');
-                  return;
-                }
-                handlePaymentMethodButtonClick(method.id);
-              }}
-              icon={method.icon}
-              className={`${paymentButtonIndex === method.id ? 'border-primary' : ''}`}
-            />
-          ))}
-        </div>
+
+        {isClubInfoLoading ? (
+          <div className="grid grid-cols-2 gap-[20px]">
+            <Skeleton width="100%" height={56} borderRadius={14} />
+            <Skeleton width="100%" height={56} borderRadius={14} />
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 flex-wrap justify-center gap-[20px]">
+            {paymentMethods.map((method) => (
+              <PaymentMethodButton
+                key={method.id}
+                onClick={() => {
+                  if (method.id === 1) {
+                    setToastMessage('준비중인 결제 수단이에요');
+                    return;
+                  }
+                  handlePaymentMethodButtonClick(method.id);
+                }}
+                icon={method.icon}
+                className={`${paymentButtonIndex === method.id ? 'border-primary' : ''}`}
+              />
+            ))}
+          </div>
+        )}
       </ScrollView>
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
-        <Button text="결제하기" onClick={handleButtonClick} />
+        <Button text="결제하기" onClick={handleButtonClick} isLoading={isPaymentLoading} />
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import MemberInfoWritePage from '@pages/member/MemberInfoWrite';
 import MemberInfoConfirmPage from '@pages/member/MemberInfoConfirm';
 import PaymentPage from '@pages/payment';
 import ClubListPage from '@pages/club/ClubList';
-import LandingPage from '@pages/landing';
+// import LandingPage from '@pages/landing';
 import NotAuthLayout from '@layouts/NotAuthLayout';
 import AuthLayout from '@layouts/AuthLayout';
 import ClubLayout from '@layouts/ClubLayout';
@@ -28,20 +28,29 @@ import ClubScheduleDetailPage from '@pages/clubSchedule/ClubScheduleDetail';
 import ClubItemMyPage from '@pages/clubItem/ClubItemMy';
 import AdminLoginPage from '@pages/admin/AdminLogin';
 import StatsHomePage from '@pages/admin/StatsHome';
+import AdminLayout from '@layouts/AdminLayout';
+import StatsSchoolPage from '@pages/admin/StatsSchool';
 
 export const Router = () => {
   return (
     <Routes>
-      <Route path={ROUTE.ROOT} element={<LandingPage />} />
+      {/* <Route path={ROUTE.ROOT} element={<LandingPage />} /> */}
+      <Route path={ROUTE.ADMIN} element={<AdminLoginPage />} />
+      <Route path={ROUTE.ADMIN_LOGIN} element={<AdminLoginPage />} />
+      {/* 관리자가 아닌 사용자가 접근할 수 없는 페이지 */}
+      <Route element={<AdminLayout />}>
+        <Route path={ROUTE.ADMIN_STATS} element={<StatsHomePage />} />
+        <Route path={`${ROUTE.ADMIN_STATS_SCHOOL}/:schoolId`} element={<StatsSchoolPage />} />
+      </Route>
       {/* 인증된 사용자가 접근할 수 없는 페이지 */}
       <Route element={<NotAuthLayout />}>
-        <Route path={ROUTE.ADMIN_LOGIN} element={<AdminLoginPage />} />
-        <Route path={ROUTE.ADMIN_STATS} element={<StatsHomePage />} />
+        <Route path={ROUTE.ROOT} element={<LoginRegisterPage />} />
         <Route path={ROUTE.LOGIN_REGISTER} element={<LoginRegisterPage />} />
         <Route path={`${ROUTE.CLUB}/:clubEnglishName${ROUTE.LOGIN_REGISTER}`} element={<LoginRegisterPage />} />
       </Route>
       {/* 인증되지 않은 사용자가 접근할 수 없는 페이지 */}
       <Route element={<AuthLayout />}>
+        {/* <Route path={ROUTE.ROOT} element={<ClubListPage />} /> */}
         <Route path={ROUTE.CLUB_LIST} element={<ClubListPage />} />
         <Route path={`${ROUTE.CLUB}/:clubEnglishName`}>
           {/* 인적사항 등록한 사용자가 접근할 수 없는 페이지 */}

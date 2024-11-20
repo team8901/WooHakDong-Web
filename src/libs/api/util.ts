@@ -9,6 +9,8 @@ const getS3ImageUrl = async ({ imageCount }: Readonly<S3ImageUrlRequestData>) =>
 };
 
 const putImageToS3 = async ({ s3ImageUrl, fileBytes }: Readonly<PutS3ImageUrlRequestData>) => {
+  axios.defaults.headers.common['Authorization'] = undefined;
+
   await axios.put(`${s3ImageUrl}`, fileBytes, {
     headers: {
       'Content-Type': 'multipart/form-data',

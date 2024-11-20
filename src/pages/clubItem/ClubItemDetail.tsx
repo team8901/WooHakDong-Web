@@ -3,17 +3,22 @@ import Body1 from '@components/Body1';
 import Body2 from '@components/Body2';
 import Button from '@components/Button';
 import Caption2 from '@components/Caption2';
-import ScrollView from '@components/ScrollView';
 import Title3 from '@components/Title3';
+import Title4 from '@components/Title4';
 import { useToast } from '@contexts/ToastContext';
+import useGetClubId from '@hooks/club/useGetClubId';
+import useGetClubItems from '@hooks/item/useGetClubItems';
+import useGetClubItemsMy from '@hooks/item/useGetClubItemsMy';
+import useGetClubItemsMyHistory from '@hooks/item/useGetClubItemsMyHistory';
+import useLoading from '@hooks/useLoading';
 import useModal from '@hooks/useModal';
-import { getClubInfo } from '@libs/api/club';
 import { postClubItemBorrow, postClubItemReturn } from '@libs/api/item';
 import { getS3ImageUrl, putImageToS3 } from '@libs/api/util';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
 import Modal from '@pages/clubItem/components/Modal';
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ClubItemResponseData } from 'types/item';
 
 const ClubItemDetailPage = () => {
@@ -21,77 +26,77 @@ const ClubItemDetailPage = () => {
   const item: ClubItemResponseData = state.item;
   const borrowedReturnDate: string | undefined = state.borrowedReturnDate;
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
-  const { setToastMessage } = useToast();
   const { isModalOpen, openModal, closeModal, modalRef } = useModal();
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
   const [fileBytes, setFileBytes] = useState<ArrayBuffer | null>(null);
-  const [isReturned, setIsReturned] = useState(false);
-  const [isBorrowed, setIsBorrowed] = useState(false);
-  const [clubId, setClubId] = useState<number | null>(null);
+  const { isLoading: isBorrowLoading, setIsLoading: setIsBorrowLoading } = useLoading();
+  const { isLoading: isReturnLoading, setIsLoading: setIsReturnLoading } = useLoading();
+  const { setToastMessage } = useToast();
+  const navigate = useNavigate();
+  const {
+    data: clubId,
+    isError: isClubIdError,
+    isLoading: isClubIdLoading,
+  } = useGetClubId({ clubEnglishName: clubEnglishName || '' });
+  const { refetch: refetchClubItems } = useGetClubItems({ clubId: clubId ?? 0 });
+  const { refetch: refetchClubItemsMy } = useGetClubItemsMy({ clubId: clubId ?? 0 });
+  const { refetch: refetchClubItemsMyHistory } = useGetClubItemsMyHistory({ clubId: clubId ?? 0 });
 
   useEffect(() => {
-    if (!clubEnglishName) return;
-
-    (async () => {
-      const { clubId } = await getClubInfo({
-        clubEnglishName,
-      });
-
-      setClubId(clubId);
-    })();
-  }, []);
+    if (isClubIdError) {
+      setToastMessage(`물품 상세 정보를 불러오는 중 오류가 발생했어요`);
+    }
+  }, [isClubIdError]);
 
   const handleBorrow = async () => {
-    if (!clubId) return;
-
-    if (isReturned) {
-      setToastMessage('이미 반납이 완료되었어요');
-      return;
-    }
-
-    if (borrowedReturnDate) return;
+    if (!clubId || borrowedReturnDate) return;
 
     if (!item.itemAvailable || item.itemUsing) {
       setToastMessage('대여가능한 물품이 아니에요');
       return;
     }
 
+    setIsBorrowLoading(true);
     try {
       await postClubItemBorrow({ clubId, itemId: item.itemId });
 
       setToastMessage('대여 신청이 완료되었어요');
-      setIsBorrowed(true);
+      await refetchClubItems();
+      await refetchClubItemsMy();
+      await refetchClubItemsMyHistory();
+      navigate(-1);
     } catch (error) {
       console.error(error);
-      setToastMessage('대여 신청 중 오류가 발생했어요');
+      setToastMessage(`대여 신청 중 오류가 발생했어요\n${error}`);
+    } finally {
+      setIsBorrowLoading(false);
     }
   };
 
   const handleReturn = async () => {
-    if (!clubId) return;
-
-    if (isReturned) {
-      setToastMessage('이미 반납이 완료되었어요');
-      return;
-    }
-
-    if (!fileBytes) return;
+    if (!clubId || !fileBytes) return;
 
     const imageCount = 1;
 
     const { result } = await getS3ImageUrl({ imageCount });
     const { imageUrl } = result[0];
 
+    setIsReturnLoading(true);
     try {
       await putImageToS3({ s3ImageUrl: imageUrl, fileBytes });
       await postClubItemReturn({ clubId, itemId: item.itemId, itemReturnImage: imageUrl.split('?')[0] });
 
       closeModal();
       setToastMessage('반납이 완료되었어요');
-      setIsReturned(true);
+      await refetchClubItems();
+      await refetchClubItemsMy();
+      await refetchClubItemsMyHistory();
+      navigate(-1);
     } catch (error) {
       console.error(error);
       setToastMessage(`반납 중 오류가 발생했어요\n${error}`);
+    } finally {
+      setIsReturnLoading(false);
     }
   };
 
@@ -147,11 +152,7 @@ const ClubItemDetailPage = () => {
   };
 
   const getButtonText = (item: ClubItemResponseData) => {
-    if (isReturned) {
-      return '반납 완료';
-    }
-
-    if (isBorrowed || borrowedReturnDate) {
+    if (borrowedReturnDate) {
       return '반납하기';
     }
 
@@ -167,11 +168,7 @@ const ClubItemDetailPage = () => {
   };
 
   const getButtonBgColor = (item: ClubItemResponseData) => {
-    if (isReturned) {
-      return 'var(--color-lightGray)';
-    }
-
-    if (isBorrowed || borrowedReturnDate) {
+    if (borrowedReturnDate) {
       return 'var(--color-primary)';
     }
 
@@ -187,11 +184,7 @@ const ClubItemDetailPage = () => {
   };
 
   const getTextColor = (item: ClubItemResponseData) => {
-    if (isReturned) {
-      return 'var(--color-darkGray)';
-    }
-
-    if (isBorrowed || borrowedReturnDate) {
+    if (borrowedReturnDate) {
       return 'white';
     }
 
@@ -206,50 +199,91 @@ const ClubItemDetailPage = () => {
     return 'white';
   };
 
+  const getRemainingDays = (targetDate: string) => {
+    const current = new Date();
+    const target = new Date(targetDate);
+
+    const differenceInTime = target.getTime() - current.getTime();
+    const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+
+    return differenceInDays;
+  };
+
+  const isLoading = isClubIdLoading;
+
   return (
     <div className="relative h-full pb-[70px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
         <AppBar />
       </div>
 
-      <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px] px-[20px]">
-        <div className="flex flex-col items-center gap-[20px]">
+      {isLoading ? (
+        <div className="flex flex-col px-[20px]">
+          <div className="flex flex-col items-center">
+            <Skeleton width={192} height={192} borderRadius={14} className="mt-[20px]" />
+            <Skeleton width={100} height={22} borderRadius={14} className="mt-[20px]" />
+            <Skeleton width={100} height={22} borderRadius={14} className="mt-[8px]" />
+          </div>
+          <Skeleton width={100} height={22} borderRadius={14} className="mt-[40px]" />
+          <Skeleton height={58} borderRadius={14} className="mt-[8px]" />
+          <Skeleton width={100} height={22} borderRadius={14} className="mt-[20px]" />
+          <Skeleton height={58} borderRadius={14} className="mt-[8px]" />
+        </div>
+      ) : (
+        <div className="flex h-full flex-col gap-[20px] overflow-y-auto scrollbar-hide">
           <img
             alt="물품"
             src={item.itemPhoto || '/logo.svg'}
             // src={'/logo.svg'}
-            className="h-[192px] w-[192px] rounded-[14px] border border-lightGray"
+            className="aspect-square w-full object-cover"
           />
-          <div className="flex flex-col items-center gap-[8px]">
-            <Body2 text={CLUB_ITEM_CATEGORY[item.itemCategory]} className="text-darkGray" />
-            <Title3 text={item.itemName} className="text-center" />
-          </div>
-        </div>
 
-        <div className="flex flex-col gap-[20px]">
-          <div className="flex flex-col gap-[8px]">
-            <Caption2 text="물품 설명" className="text-darkGray" />
-            <div className="rounded-[14px] border border-lightGray p-[16px]">
-              <Body1 text={item.itemDescription} className="text-justify" />
+          <div className="flex flex-col gap-[40px] px-[20px]">
+            <div className="flex flex-col items-start gap-[8px]">
+              <Body2 text={CLUB_ITEM_CATEGORY[item.itemCategory]} className="text-darkGray" />
+              <Title3 text={item.itemName} className="line-clamp-1" />
+              {borrowedReturnDate && (
+                <div
+                  className={`flex h-[30px] items-center justify-center rounded-[7px] ${getRemainingDays(borrowedReturnDate) > 0 ? 'bg-lightPrimary text-primary' : 'bg-lightRed text-red'} px-[6px]`}
+                >
+                  <Title4
+                    text={
+                      getRemainingDays(borrowedReturnDate) > 0
+                        ? `반납 ${getRemainingDays(borrowedReturnDate)}일 남음`
+                        : `연체 ${-getRemainingDays(borrowedReturnDate)}일 경과`
+                    }
+                  />
+                </div>
+              )}
             </div>
-          </div>
-          <div className="flex flex-col gap-[8px]">
-            <Caption2 text="물품 위치 및 대여 가능 일 수" className="text-darkGray" />
-            <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray p-[16px]">
-              <Body1 text={item.itemLocation} />
-              <Body1 text={`${item.itemRentalMaxDay}일`} />
+
+            <div className="flex flex-col gap-[20px]">
+              <div className="flex flex-col gap-[8px]">
+                <Caption2 text="물품 설명" className="text-darkGray" />
+                <div className="rounded-[14px] border border-lightGray p-[16px]">
+                  <Body1 text={item.itemDescription} className="text-justify" />
+                </div>
+              </div>
+              <div className="flex flex-col gap-[8px]">
+                <Caption2 text="물품 위치 및 대여 가능 일 수" className="text-darkGray" />
+                <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray p-[16px]">
+                  <Body1 text={item.itemLocation} />
+                  <Body1 text={`${item.itemRentalMaxDay}일`} />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </ScrollView>
+      )}
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         <Button
           text={getButtonText(item)}
-          onClick={!isReturned && (isBorrowed || borrowedReturnDate) ? openModal : handleBorrow}
+          onClick={borrowedReturnDate ? openModal : handleBorrow}
           // disabled={!item.itemAvailable || item.itemUsing}
           bgColor={getButtonBgColor(item)}
           textColor={getTextColor(item)}
+          isLoading={isBorrowLoading || isReturnLoading}
         />
       </div>
 
@@ -260,6 +294,7 @@ const ClubItemDetailPage = () => {
         handleImageChange={handleImageChange}
         imagePreviewUrl={imagePreviewUrl}
         handleReturn={handleReturn}
+        isLoading={isReturnLoading}
       />
     </div>
   );

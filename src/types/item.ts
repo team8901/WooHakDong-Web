@@ -20,12 +20,6 @@ interface ClubItemResponseData {
   itemRentalTime: number;
 }
 
-type ClubItemListProps = {
-  item: ClubItemResponseData;
-  borrowedReturnDate?: string | null | undefined;
-  myPage?: boolean;
-};
-
 type ClubItemResultResponseData = {
   result: ClubItemResponseData[];
 };
@@ -64,17 +58,35 @@ type ClubItemReturnResponseData = {
   itemReturnDate: string;
 };
 
+type ClubItemsMyHistoryResponseData = {
+  itemHistoryId: number;
+  clubMemberId: number;
+  memberName: string;
+  itemRentalDate: string;
+  itemDueDate: string;
+  itemReturnDate: string;
+  itemReturnImage: string;
+  itemName: string;
+  itemOverdue: boolean;
+  itemId: number;
+};
+
+type ClubItemsMyHistoryResultResponseData = {
+  result: ClubItemsMyHistoryResponseData[];
+};
+
 export type {
   ClubItemCategory,
   ClubItemResponseData,
   ClubItemRequestData,
   ClubItemResultResponseData,
   ClubItemBorrowRequestData,
-  ClubItemListProps,
   ClubItemBorrowResponseData,
   ClubItemsMyRequestData,
   ClubItemsMyResponseData,
   ClubItemsMyResultResponseData,
   ClubItemReturnRequestData,
   ClubItemReturnResponseData,
+  ClubItemsMyHistoryResponseData,
+  ClubItemsMyHistoryResultResponseData,
 };

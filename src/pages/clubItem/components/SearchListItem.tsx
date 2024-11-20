@@ -5,7 +5,8 @@ import ItemRentalTime from '@pages/clubItem/components/ItemRentalTime';
 import ItemTitle from '@pages/clubItem/components/ItemTitle';
 import ItemUnavailable from '@pages/clubItem/components/ItemUnavailable';
 import ItemUsing from '@pages/clubItem/components/ItemUsing';
-import { ClubItemListProps, ClubItemResponseData } from 'types/item';
+import { ClubItemListProps } from '@pages/clubItem/components/ListItem';
+import { ClubItemResponseData } from 'types/item';
 
 const SearchListItem = ({ item }: Readonly<ClubItemListProps>) => {
   const navigate = useCustomNavigate();

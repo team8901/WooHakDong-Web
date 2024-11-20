@@ -25,12 +25,17 @@ const refreshAccessToken = async () => {
   } catch (error) {
     console.error(`/api/auth/refresh`, error);
     if (
-      (error as AxiosError)?.response?.status === 400 ||
+      // (error as AxiosError)?.response?.status === 400 ||
       (error as AxiosError)?.response?.status === 401 ||
       (error as AxiosError)?.response?.status === 403
     ) {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
+
+      if (localStorage.getItem('admin')) {
+        localStorage.removeItem('admin');
+      }
+
       alert('세션이 만료되어 로그인 페이지로 이동합니다.');
       location.href = '/';
     }

@@ -1,39 +1,75 @@
 import AppBar from '@components/AppBar';
 import EmptyText from '@components/EmptyText';
-import ScrollView from '@components/ScrollView';
-import useTabNav from '@hooks/useTabNav';
-import { getClubInfo } from '@libs/api/club';
-import { getClubItemsMy } from '@libs/api/item';
-// import { CLUB_ITEM_MY_DATA } from '@libs/constant/item';
+import CustomPullToRefresh from '@components/PullToRefresh';
+import { useToast } from '@contexts/ToastContext';
+import useGetClubId from '@hooks/club/useGetClubId';
+import useGetClubItemsMy from '@hooks/item/useGetClubItemsMy';
+import useGetClubItemsMyHistory from '@hooks/item/useGetClubItemsMyHistory';
 import ListItem from '@pages/clubItem/components/ListItem';
-import TabNav from '@pages/clubItem/components/TabNav';
+import ListItemHistory from '@pages/clubItem/components/ListItemHistory';
+import MyTabNav from '@pages/clubItem/components/TabNavMy';
 import { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
-import { ClubItemsMyResponseData } from 'types/item';
+import { ClubItemsMyHistoryResponseData, ClubItemsMyResponseData } from 'types/item';
 
 const ClubItemMyPage = () => {
   const [itemList, setItemList] = useState<ClubItemsMyResponseData[]>([]);
-  const [filteredItemList, setFilteredItemList] = useState<ClubItemsMyResponseData[]>([]);
+  const [historyItemList, setHistoryItemList] = useState<ClubItemsMyHistoryResponseData[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
-  const { activeTab, handleTabChange } = useTabNav({ itemList, setFilteredItemList });
+  const [activeTab, setActiveTab] = useState<'CURRENT' | 'ALL'>('CURRENT');
+  const { setToastMessage } = useToast();
+  const {
+    data: clubId,
+    isError: isClubIdError,
+    isLoading: isClubIdLoading,
+  } = useGetClubId({ clubEnglishName: clubEnglishName ?? '' });
+  const {
+    data: clubItemsMyData,
+    isError: isClubItemsMyError,
+    isLoading: isClubItemsMyLoading,
+    refetch: refetchClubItemsMy,
+  } = useGetClubItemsMy({ clubId: clubId ?? 0 });
+  const {
+    data: clubItemsMyHistoryData,
+    isError: isClubItemsMyHistoryError,
+    isLoading: isClubItemsMyHistoryLoading,
+    refetch: refetchClubItemsMyHistory,
+  } = useGetClubItemsMyHistory({ clubId: clubId ?? 0 });
+
+  const handleRefresh = async () => {
+    const { data: clubItemsMyData } = await refetchClubItemsMy();
+    if (!clubItemsMyData) return;
+    setItemList(clubItemsMyData.result);
+
+    const { data: clubItemsMyHistoryData } = await refetchClubItemsMyHistory();
+    if (!clubItemsMyHistoryData) return;
+    setHistoryItemList(clubItemsMyHistoryData.result.filter((item) => item.itemReturnDate !== null));
+
+    setToastMessage('물품 정보를 갱신했어요');
+  };
 
   useEffect(() => {
-    (async () => {
-      if (!clubEnglishName) return;
+    if (!clubItemsMyData) return;
 
-      const { clubId } = await getClubInfo({
-        clubEnglishName,
-      });
+    const { result } = clubItemsMyData;
+    setItemList(result);
+  }, [clubItemsMyData]);
 
-      const { result } = await getClubItemsMy({ clubId });
-      setItemList(result);
-      setFilteredItemList(result);
-    })();
+  useEffect(() => {
+    if (!clubItemsMyHistoryData) return;
 
-    /* 더미데이터 테스트 */
-    // setItemList(CLUB_ITEM_MY_DATA);
-    // setFilteredItemList(CLUB_ITEM_MY_DATA);
-  }, []);
+    const { result } = clubItemsMyHistoryData;
+    setHistoryItemList(result.filter((item) => item.itemReturnDate !== null));
+  }, [clubItemsMyHistoryData]);
+
+  useEffect(() => {
+    if (isClubIdError || isClubItemsMyError || isClubItemsMyHistoryError) {
+      setToastMessage(`물품 정보를 불러오는 중 오류가 발생했어요`);
+    }
+  }, [isClubIdError, isClubItemsMyError, isClubItemsMyHistoryError]);
+
+  const isLoading = isClubIdLoading || isClubItemsMyLoading || isClubItemsMyHistoryLoading;
 
   return (
     <div className="relative h-full pb-[50px] pt-[56px]">
@@ -41,29 +77,53 @@ const ClubItemMyPage = () => {
         <AppBar hasMenu />
       </div>
 
-      <TabNav activeTab={activeTab} handleTabChange={handleTabChange} />
+      <MyTabNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <ScrollView fadeTop className="flex h-full flex-col gap-[20px] px-[20px]">
-        {filteredItemList.length === 0 ? (
-          <div className="flex h-full items-center justify-center">
-            <EmptyText text="아직 대여한 물품이 없어요" />
-          </div>
-        ) : (
-          <div className="flex flex-col gap-[20px]">
-            <ListItem
-              item={filteredItemList[0]}
-              borrowedReturnDate={filteredItemList[0].itemBorrowedReturnDate}
-              myPage
-            />
-            {filteredItemList.slice(1).map((item) => (
-              <div key={item.itemId} className="flex flex-col gap-[20px]">
-                <div className="h-[0.6px] bg-lightGray" />
-                <ListItem item={item} borrowedReturnDate={item.itemBorrowedReturnDate} myPage />
-              </div>
-            ))}
-          </div>
-        )}
-      </ScrollView>
+      {isLoading ? (
+        <div className="flex flex-col gap-[20px] px-[20px]">
+          <Skeleton height={72} count={5} borderRadius={14} className="mt-[20px]" />
+        </div>
+      ) : (
+        <div className="flex h-full flex-col gap-[20px] px-[20px] pt-[20px]">
+          <CustomPullToRefresh onRefresh={handleRefresh}>
+            {activeTab === 'CURRENT' ? (
+              <>
+                {itemList.length === 0 ? (
+                  <div className="flex h-full items-center justify-center">
+                    <EmptyText text="아직 대여한 물품이 없어요" />
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-[20px] pb-[50px]">
+                    {itemList.map((item, index) => (
+                      <div key={item.itemId} className="flex flex-col gap-[20px]">
+                        {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
+                        <ListItem item={item} borrowedReturnDate={item.itemBorrowedReturnDate} myPage />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                {historyItemList.length === 0 ? (
+                  <div className="flex h-full items-center justify-center">
+                    <EmptyText text="아직 대여한 물품이 없어요" />
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-[20px] pb-[50px]">
+                    {historyItemList.map((item, index) => (
+                      <div key={`${item.itemId}-${item.itemRentalDate}-history`} className="flex flex-col gap-[20px]">
+                        {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
+                        <ListItemHistory item={item} />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </CustomPullToRefresh>
+        </div>
+      )}
     </div>
   );
 };
