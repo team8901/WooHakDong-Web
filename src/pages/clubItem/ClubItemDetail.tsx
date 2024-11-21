@@ -212,7 +212,7 @@ const ClubItemDetailPage = () => {
   const isLoading = isClubIdLoading;
 
   return (
-    <div className="relative h-full pb-[70px] pt-[56px]">
+    <div className="relative h-full pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
         <AppBar />
       </div>
@@ -230,7 +230,7 @@ const ClubItemDetailPage = () => {
           <Skeleton height={58} borderRadius={14} className="mt-[8px]" />
         </div>
       ) : (
-        <div className="flex h-full flex-col gap-[20px] overflow-y-auto scrollbar-hide">
+        <div className="flex h-full flex-col gap-[20px] overflow-y-auto pb-[80px] scrollbar-hide">
           <img
             alt="물품"
             src={item.itemPhoto || '/logo.svg'}

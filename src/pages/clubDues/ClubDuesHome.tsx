@@ -135,7 +135,7 @@ const ClubDuesHomePage = () => {
                 <EmptyText text="아직 사용한 회비가 없어요" />
               </div>
             ) : (
-              <div className="flex flex-col gap-[20px] pb-[50px] pt-[20px]">
+              <div className="flex flex-col gap-[20px] pb-[80px] pt-[20px]">
                 {filteredDuesList.map((dues, index) => (
                   <div key={dues.clubAccountHistoryTranDate} className="flex flex-col gap-[20px]">
                     {index > 0 && <div className="h-[0.6px] bg-lightGray" />}

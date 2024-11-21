@@ -47,7 +47,7 @@ const ClubItemSearchPage = () => {
   };
 
   return (
-    <div className="relative h-full pb-[50px] pt-[56px]">
+    <div className="relative h-full pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
         <AppBar goBackCallback={handleGoBack} hasSearch showSearchInput />
       </div>
@@ -63,7 +63,7 @@ const ClubItemSearchPage = () => {
               <EmptyText text="아직 등록된 물품이 없어요" />
             </div>
           ) : (
-            <div className="flex flex-col gap-[20px]">
+            <div className="flex flex-col gap-[20px] pb-[80px]">
               {itemList.map((item, index) => (
                 <div key={item.itemId} className="flex flex-col gap-[20px]">
                   {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
