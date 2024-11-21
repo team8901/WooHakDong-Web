@@ -1,17 +1,19 @@
 import Body3 from '@components/Body3';
 import Caption2 from '@components/Caption2';
 import Title1 from '@components/Title1';
+import useGetClubName from '@hooks/club/useGetClubName';
 import GoogleLoginButton from '@pages/login/components/GoogleLoginButton';
 import { useParams } from 'react-router-dom';
 
 const LoginRegisterPage = () => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
+  const { data: clubName } = useGetClubName({ clubEnglishName: clubEnglishName ?? '' });
 
   return (
     <div className="relative h-full px-[20px] pb-[40px] pt-[116px]">
       <div className="flex flex-col gap-[4px]">
         <div>
-          <Title1 text={clubEnglishName || ''} />
+          <Title1 text={clubName ?? ''} />
           <div>
             <Title1 text="우학동" className="text-primary" />
             <Title1 text="으로 이용하기" />
