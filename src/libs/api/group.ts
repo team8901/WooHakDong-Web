@@ -27,7 +27,7 @@ const postGroupJoin = async ({ merchantUid, groupId }: Readonly<GroupJoinProps>)
 const postGroupJoinConfirm = async ({ merchantUid, groupId, impUid, orderId }: Readonly<GroupJoinConfirmProps>) => {
   const data: GroupJoinConfirmRequestData = { merchantUid, impUid, orderId };
 
-  await axiosInstance.post(`/v1/groups/${groupId}/orders/confirms`, data);
+  await axiosInstance.post(`/v1/groups/${groupId}/orders/confirm`, data);
 };
 
 export { getGroupInfo, postGroupJoin, postGroupJoinConfirm };
