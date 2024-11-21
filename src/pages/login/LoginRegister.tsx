@@ -10,7 +10,7 @@ const LoginRegisterPage = () => {
   const { data: clubName } = useGetClubName({ clubEnglishName: clubEnglishName ?? '' });
 
   return (
-    <div className="relative h-full px-[20px] pb-[40px] pt-[116px]">
+    <div className="relative h-full px-[20px] pb-[50px] pt-[116px]">
       <div className="flex flex-col gap-[4px]">
         <div>
           <Title1 text={clubName ?? ''} />

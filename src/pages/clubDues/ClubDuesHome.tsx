@@ -128,14 +128,14 @@ const ClubDuesHomePage = () => {
           ))}
         </div>
       ) : (
-        <div className="h-full flex-col gap-[20px] px-[20px] py-[20px]">
+        <div className="h-full flex-col gap-[20px] px-[20px]">
           <CustomPullToRefresh onRefresh={handleRefresh}>
             {filteredDuesList.length === 0 ? (
               <div className="flex h-full items-center justify-center">
                 <EmptyText text="아직 사용한 회비가 없어요" />
               </div>
             ) : (
-              <div className="flex flex-col gap-[20px] pb-[50px]">
+              <div className="flex flex-col gap-[20px] pb-[50px] pt-[20px]">
                 {filteredDuesList.map((dues, index) => (
                   <div key={dues.clubAccountHistoryTranDate} className="flex flex-col gap-[20px]">
                     {index > 0 && <div className="h-[0.6px] bg-lightGray" />}

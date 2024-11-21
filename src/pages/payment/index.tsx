@@ -145,7 +145,7 @@ const PaymentPage = () => {
             <Skeleton width="100%" height={56} borderRadius={14} />
           </div>
         ) : (
-          <div className="grid grid-cols-2 flex-wrap justify-center gap-[20px]">
+          <div className="grid grid-cols-2 flex-wrap justify-center gap-[20px] pb-[50px]">
             {paymentMethods.map((method) => (
               <PaymentMethodButton
                 key={method.id}

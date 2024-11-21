@@ -98,7 +98,7 @@ const ClubMemberHomePage = () => {
       ) : (
         <div className="flex h-full flex-col gap-[20px]">
           <CustomPullToRefresh onRefresh={handleRefresh}>
-            <div className="flex flex-col gap-[20px]">
+            <div className="flex flex-col gap-[20px] pb-[50px]">
               <div className="flex flex-col gap-[20px] px-[20px] pt-[20px]">
                 <Body4 text="임원진" className="text-darkGray" />
                 {officeMemberList.length === 0 ? (

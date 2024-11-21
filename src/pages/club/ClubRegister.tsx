@@ -52,7 +52,7 @@ const ClubRegisterPage = () => {
   }, []);
 
   return (
-    <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
+    <div className="relative h-full px-[20px] pt-[56px]">
       <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">
         <Title1 text={`${josa(clubName, '와/과')} 함께해요! 🥳`} className="text-primary" />
 
@@ -66,7 +66,7 @@ const ClubRegisterPage = () => {
             <Skeleton height={47} borderRadius={14} className="mt-[8px]" />
           </div>
         ) : (
-          <div className="flex flex-col gap-[20px]">
+          <div className="flex flex-col gap-[20px] pb-[80px]">
             <div className="flex flex-col gap-[8px]">
               <Caption2 text="동아리 회비" />
               <InputBox text={`${clubDues.toLocaleString()} 원`} />
