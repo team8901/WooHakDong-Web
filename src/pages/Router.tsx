@@ -30,13 +30,17 @@ import AdminLoginPage from '@pages/admin/AdminLogin';
 import StatsHomePage from '@pages/admin/StatsHome';
 import AdminLayout from '@layouts/AdminLayout';
 import StatsSchoolPage from '@pages/admin/StatsSchool';
+import NotAdminLayout from '@layouts/NotAdminLayout';
 
 export const Router = () => {
   return (
     <Routes>
       {/* <Route path={ROUTE.ROOT} element={<LandingPage />} /> */}
-      <Route path={ROUTE.ADMIN} element={<AdminLoginPage />} />
-      <Route path={ROUTE.ADMIN_LOGIN} element={<AdminLoginPage />} />
+      {/* 관리자인 사용자가 접근할 수 없는 페이지 */}
+      <Route element={<NotAdminLayout />}>
+        <Route path={ROUTE.ADMIN} element={<AdminLoginPage />} />
+        <Route path={ROUTE.ADMIN_LOGIN} element={<AdminLoginPage />} />
+      </Route>
       {/* 관리자가 아닌 사용자가 접근할 수 없는 페이지 */}
       <Route element={<AdminLayout />}>
         <Route path={ROUTE.ADMIN_STATS} element={<StatsHomePage />} />

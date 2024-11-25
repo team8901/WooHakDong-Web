@@ -3,15 +3,15 @@ import ROUTE from '@libs/constant/path';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router';
 
-const NotAuthLayout = () => {
+const AdminLayout = () => {
   const navigate = useCustomNavigate();
-  const isAuth = !!localStorage.getItem('accessToken');
+  const isAdmin = !!localStorage.getItem('admin');
 
   useEffect(() => {
-    if (isAuth) navigate(ROUTE.ROOT);
-  }, [isAuth]);
+    if (isAdmin) navigate(ROUTE.ADMIN);
+  }, [isAdmin]);
 
-  return !isAuth && <Outlet />;
+  return !isAdmin && <Outlet />;
 };
 
-export default NotAuthLayout;
+export default AdminLayout;
