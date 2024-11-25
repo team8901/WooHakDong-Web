@@ -39,6 +39,10 @@ type AdminSchoolStatsRequestData = {
   schoolId: number;
 };
 
+type AssignedTermResquestData = {
+  assignedTerm?: string;
+};
+
 export type {
   AdminLoginRequestData,
   SchoolsResponseData,
@@ -47,4 +51,5 @@ export type {
   AdminClubsResponseData,
   AdminClubsResultResponseData,
   AdminSchoolStatsRequestData,
+  AssignedTermResquestData,
 };

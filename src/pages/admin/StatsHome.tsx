@@ -11,6 +11,9 @@ import ClubCard from '@pages/club/components/ClubCard';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { AdminClubsResponseData, SchoolsResponseData } from 'types/admin';
+import Chart from 'react-apexcharts';
+
+const categories = ['23-1', '23-2', '24-1', '24-2'];
 
 const StatsHomePage = () => {
   const [clubCount, setClubCount] = useState(0);
@@ -21,6 +24,9 @@ const StatsHomePage = () => {
   const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
   const navigate = useCustomNavigate();
+  const [clubCounts, setClubCounts] = useState<number[]>([]);
+  const [schoolCounts, setSchoolCounts] = useState<number[]>([]);
+  const [memberCounts, setMemberCounts] = useState<number[]>([]);
 
   useEffect(() => {
     document.body.style.minWidth = '100%';
@@ -29,9 +35,9 @@ const StatsHomePage = () => {
     (async () => {
       setIsLoading(true);
       try {
-        const { count: clubCount } = await getClubCount();
-        const { count: schoolCount } = await getSchoolCount();
-        const { count: memberCount } = await getMemberCount();
+        const { count: clubCount } = await getClubCount({ assignedTerm: '2024-09-01' });
+        const { count: schoolCount } = await getSchoolCount({ assignedTerm: '2024-09-01' });
+        const { count: memberCount } = await getMemberCount({ assignedTerm: '2024-09-01' });
         const { result: schoolsResult } = await getSchools();
         const { result: clubsResult } = await getClubs();
 
@@ -40,6 +46,21 @@ const StatsHomePage = () => {
         setMemberCount(memberCount);
         setSchools(schoolsResult);
         setClubs(clubsResult);
+
+        const { count: clubCount1 } = await getClubCount({ assignedTerm: '2023-03-01' });
+        const { count: clubCount2 } = await getClubCount({ assignedTerm: '2023-09-01' });
+        const { count: clubCount3 } = await getClubCount({ assignedTerm: '2024-03-01' });
+        setClubCounts([clubCount1, clubCount2, clubCount3, clubCount]);
+
+        const { count: schoolCount1 } = await getSchoolCount({ assignedTerm: '2023-03-01' });
+        const { count: schoolCount2 } = await getSchoolCount({ assignedTerm: '2023-09-01' });
+        const { count: schoolCount3 } = await getSchoolCount({ assignedTerm: '2024-03-01' });
+        setSchoolCounts([schoolCount1, schoolCount2, schoolCount3, schoolCount]);
+
+        const { count: memberCount1 } = await getMemberCount({ assignedTerm: '2023-03-01' });
+        const { count: memberCount2 } = await getMemberCount({ assignedTerm: '2023-09-01' });
+        const { count: memberCount3 } = await getMemberCount({ assignedTerm: '2024-03-01' });
+        setMemberCounts([memberCount1, memberCount2, memberCount3, memberCount]);
       } catch (error) {
         console.error(error);
         setToastMessage(`데이터를 불러오는데 실패했어요\n${error}`);
@@ -129,6 +150,54 @@ const StatsHomePage = () => {
             <ClubCard key={club.clubId} club={club} onClick={handleCardClick} />
           ))}
         </div>
+      </div>
+
+      <div className="grid w-full grid-cols-1 gap-[16px] md:grid-cols-2">
+        <Chart
+          options={{
+            title: {
+              text: '분기별 동아리 수',
+            },
+            chart: {
+              id: 'stats-club-count',
+            },
+            xaxis: {
+              categories,
+            },
+          }}
+          series={[{ name: '동아리 수', data: clubCounts }]}
+          type="bar"
+        />
+        <Chart
+          options={{
+            title: {
+              text: '분기별 학교 수',
+            },
+            chart: {
+              id: 'stats-school-count',
+            },
+            xaxis: {
+              categories,
+            },
+          }}
+          series={[{ name: '학교 수', data: schoolCounts }]}
+          type="bar"
+        />
+        <Chart
+          options={{
+            title: {
+              text: '분기별 회원 수',
+            },
+            chart: {
+              id: 'stats-member-count',
+            },
+            xaxis: {
+              categories,
+            },
+          }}
+          series={[{ name: '회원 수', data: memberCounts }]}
+          type="bar"
+        />
       </div>
     </div>
   );

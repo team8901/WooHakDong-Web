@@ -4,6 +4,7 @@ import {
   AdminClubsResultResponseData,
   AdminLoginRequestData,
   AdminSchoolStatsRequestData,
+  AssignedTermResquestData,
   CountResponseData,
   SchoolsResultResponseData,
 } from 'types/admin';
@@ -18,20 +19,20 @@ const fetchLoginData = async ({ memberLoginId, memberPassword }: Readonly<AdminL
   return res.data;
 };
 
-const getClubCount = async () => {
-  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/clubs/count`);
+const getClubCount = async ({ assignedTerm }: Readonly<AssignedTermResquestData>) => {
+  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/clubs/count?assignedTerm=${assignedTerm}`);
 
   return res.data;
 };
 
-const getSchoolCount = async () => {
-  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/schools/count`);
+const getSchoolCount = async ({ assignedTerm }: Readonly<AssignedTermResquestData>) => {
+  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/schools/count?assignedTerm=${assignedTerm}`);
 
   return res.data;
 };
 
-const getMemberCount = async () => {
-  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/members/count`);
+const getMemberCount = async ({ assignedTerm }: Readonly<AssignedTermResquestData>) => {
+  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/members/count?assignedTerm=${assignedTerm}`);
 
   return res.data;
 };
