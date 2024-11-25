@@ -70,26 +70,34 @@ const getClubPayments = async ({ assignedTerm }: Readonly<AssignedTermResquestDa
 };
 
 // admin-school-controller
-const getSchoolClubCount = async ({ schoolId }: Readonly<AdminSchoolStatsRequestData>) => {
-  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/schools/${schoolId}/clubs/count`);
+const getSchoolClubCount = async ({ schoolId, assignedTerm }: Readonly<AdminSchoolStatsRequestData>) => {
+  const res = await axiosInstance.get<CountResponseData>(
+    `/v1/admin/schools/${schoolId}/clubs/count${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
+  );
 
   return res.data;
 };
 
-const getSchoolMemberCount = async ({ schoolId }: Readonly<AdminSchoolStatsRequestData>) => {
-  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/schools/${schoolId}/members/count`);
+const getSchoolMemberCount = async ({ schoolId, assignedTerm }: Readonly<AdminSchoolStatsRequestData>) => {
+  const res = await axiosInstance.get<CountResponseData>(
+    `/v1/admin/schools/${schoolId}/members/count${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
+  );
 
   return res.data;
 };
 
-const getSchoolItemCount = async ({ schoolId }: Readonly<AdminSchoolStatsRequestData>) => {
-  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/schools/${schoolId}/items/count`);
+const getSchoolItemCount = async ({ schoolId, assignedTerm }: Readonly<AdminSchoolStatsRequestData>) => {
+  const res = await axiosInstance.get<CountResponseData>(
+    `/v1/admin/schools/${schoolId}/items/count${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
+  );
 
   return res.data;
 };
 
-const getSchoolClubs = async ({ schoolId }: Readonly<AdminSchoolStatsRequestData>) => {
-  const res = await axiosInstance.get<AdminClubsResultResponseData>(`/v1/admin/schools/${schoolId}/clubs`);
+const getSchoolClubs = async ({ schoolId, assignedTerm }: Readonly<AdminSchoolStatsRequestData>) => {
+  const res = await axiosInstance.get<AdminClubsResultResponseData>(
+    `/v1/admin/schools/${schoolId}/clubs${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
+  );
 
   return res.data;
 };

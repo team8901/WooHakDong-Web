@@ -8,7 +8,7 @@ const AdminLayout = () => {
   const isAdmin = !!localStorage.getItem('admin');
 
   useEffect(() => {
-    if (isAdmin) navigate(ROUTE.ADMIN);
+    if (isAdmin) navigate(ROUTE.ADMIN_STATS);
   }, [isAdmin]);
 
   return !isAdmin && <Outlet />;

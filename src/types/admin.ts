@@ -39,9 +39,9 @@ type AdminClubsResultResponseData = {
   result: AdminClubsResponseData[];
 };
 
-type AdminSchoolStatsRequestData = {
+interface AdminSchoolStatsRequestData extends AssignedTermResquestData {
   schoolId: number;
-};
+}
 
 type AssignedTermResquestData = {
   assignedTerm?: string | null;
