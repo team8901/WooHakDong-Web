@@ -12,13 +12,19 @@ import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { AdminClubsResponseData, SchoolsResponseData } from 'types/admin';
 import Chart from 'react-apexcharts';
+import ChevronBottomGrayIcon from '@assets/images/chevrons/ChevronBottomGrayIcon';
 
-const categories = ['23-1', '23-2', '24-1', '24-2'];
+const TERMS_MENU = [
+  { term: '', label: '전체' },
+  { term: '2024-09-01', label: '24-2' },
+  { term: '2024-03-01', label: '24-1' },
+  { term: '2023-09-01', label: '23-2' },
+  { term: '2023-03-01', label: '23-1' },
+];
+
+const TERMS = TERMS_MENU.slice(1).map(({ label }) => label);
 
 const StatsHomePage = () => {
-  const [clubCount, setClubCount] = useState(0);
-  const [schoolCount, setSchoolCount] = useState(0);
-  const [memberCount, setMemberCount] = useState(0);
   const [schools, setSchools] = useState<SchoolsResponseData[]>([]);
   const [clubs, setClubs] = useState<AdminClubsResponseData[]>([]);
   const { isLoading, setIsLoading } = useLoading();
@@ -27,6 +33,12 @@ const StatsHomePage = () => {
   const [clubCounts, setClubCounts] = useState<number[]>([]);
   const [schoolCounts, setSchoolCounts] = useState<number[]>([]);
   const [memberCounts, setMemberCounts] = useState<number[]>([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedIdx, setSelectedIdx] = useState(0);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     document.body.style.minWidth = '100%';
@@ -35,32 +47,32 @@ const StatsHomePage = () => {
     (async () => {
       setIsLoading(true);
       try {
-        const { count: clubCount } = await getClubCount({ assignedTerm: '2024-09-01' });
-        const { count: schoolCount } = await getSchoolCount({ assignedTerm: '2024-09-01' });
-        const { count: memberCount } = await getMemberCount({ assignedTerm: '2024-09-01' });
-        const { result: schoolsResult } = await getSchools();
-        const { result: clubsResult } = await getClubs();
+        const { count: clubCount } = await getClubCount({});
+        const { count: schoolCount } = await getSchoolCount({});
+        const { count: memberCount } = await getMemberCount({});
+        const { result: schoolsResult } = await getSchools({});
+        const { result: clubsResult } = await getClubs({});
 
-        setClubCount(clubCount);
-        setSchoolCount(schoolCount);
-        setMemberCount(memberCount);
         setSchools(schoolsResult);
         setClubs(clubsResult);
 
         const { count: clubCount1 } = await getClubCount({ assignedTerm: '2023-03-01' });
         const { count: clubCount2 } = await getClubCount({ assignedTerm: '2023-09-01' });
         const { count: clubCount3 } = await getClubCount({ assignedTerm: '2024-03-01' });
-        setClubCounts([clubCount1, clubCount2, clubCount3, clubCount]);
+        const { count: clubCount4 } = await getClubCount({ assignedTerm: '2024-09-01' });
+        setClubCounts([clubCount, clubCount4, clubCount3, clubCount2, clubCount1]);
 
         const { count: schoolCount1 } = await getSchoolCount({ assignedTerm: '2023-03-01' });
         const { count: schoolCount2 } = await getSchoolCount({ assignedTerm: '2023-09-01' });
         const { count: schoolCount3 } = await getSchoolCount({ assignedTerm: '2024-03-01' });
-        setSchoolCounts([schoolCount1, schoolCount2, schoolCount3, schoolCount]);
+        const { count: schoolCount4 } = await getSchoolCount({ assignedTerm: '2024-09-01' });
+        setSchoolCounts([schoolCount, schoolCount4, schoolCount3, schoolCount2, schoolCount1]);
 
         const { count: memberCount1 } = await getMemberCount({ assignedTerm: '2023-03-01' });
         const { count: memberCount2 } = await getMemberCount({ assignedTerm: '2023-09-01' });
         const { count: memberCount3 } = await getMemberCount({ assignedTerm: '2024-03-01' });
-        setMemberCounts([memberCount1, memberCount2, memberCount3, memberCount]);
+        const { count: memberCount4 } = await getMemberCount({ assignedTerm: '2024-09-01' });
+        setMemberCounts([memberCount, memberCount4, memberCount3, memberCount2, memberCount1]);
       } catch (error) {
         console.error(error);
         setToastMessage(`데이터를 불러오는데 실패했어요\n${error}`);
@@ -98,6 +110,39 @@ const StatsHomePage = () => {
     );
   return (
     <div className="flex h-full w-full flex-col items-center gap-[30px] overflow-auto px-[40px] py-[40px] md:px-[80px] lg:px-[200px]">
+      <div className="fixed left-[50px]">
+        <div className="relative inline-block text-left">
+          <button
+            type="button"
+            className="text-gray-900 hover:bg-gray-50 inline-flex w-[90px] items-center justify-between gap-x-1.5 rounded-md bg-white px-4 py-2 font-semiBold shadow-sm ring-1 ring-inset ring-gray-300"
+            onClick={toggleDropdown}
+          >
+            <span>{TERMS_MENU[selectedIdx].label}</span>
+            <ChevronBottomGrayIcon className={`transform transition-all ${isDropdownOpen && '-rotate-180'}`} />
+          </button>
+
+          <div
+            className={`absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none ${isDropdownOpen ? '' : 'hidden'}`}
+          >
+            <div className="py-1">
+              {TERMS_MENU.map(({ term, label }, index) => (
+                <button
+                  key={term}
+                  type="button"
+                  className={`${index === selectedIdx ? 'bg-primary text-white' : 'hover:bg-gray-100 text-gray-700'} block w-full px-4 py-2 text-left`}
+                  onClick={() => {
+                    setSelectedIdx(index);
+                    toggleDropdown();
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="flex w-full flex-wrap items-center justify-center gap-[24px] sm:grid sm:grid-cols-3">
         <button
           type="button"
@@ -105,7 +150,7 @@ const StatsHomePage = () => {
           onClick={handleCardClick}
         >
           <Body1 text="총 등록된 동아리 수" className="text-[1.8rem] text-darkGray" />
-          <Title1 text={`${clubCount}개`} />
+          <Title1 text={`${clubCounts[selectedIdx]}개`} />
         </button>
         <button
           type="button"
@@ -113,7 +158,7 @@ const StatsHomePage = () => {
           onClick={handleCardClick}
         >
           <Body1 text="총 등록된 학교 수" className="text-[1.8rem] text-darkGray" />
-          <Title1 text={`${schoolCount}개`} />
+          <Title1 text={`${schoolCounts[selectedIdx]}개`} />
         </button>
         <button
           type="button"
@@ -121,7 +166,7 @@ const StatsHomePage = () => {
           onClick={handleCardClick}
         >
           <Body1 text="총 가입한 회원 수" className="text-[1.8rem] text-darkGray" />
-          <Title1 text={`${memberCount}명`} />
+          <Title1 text={`${memberCounts[selectedIdx]}명`} />
         </button>
       </div>
 
@@ -162,7 +207,7 @@ const StatsHomePage = () => {
               id: 'stats-club-count',
             },
             xaxis: {
-              categories,
+              categories: TERMS,
             },
           }}
           series={[{ name: '동아리 수', data: clubCounts }]}
@@ -177,7 +222,7 @@ const StatsHomePage = () => {
               id: 'stats-school-count',
             },
             xaxis: {
-              categories,
+              categories: TERMS,
             },
           }}
           series={[{ name: '학교 수', data: schoolCounts }]}
@@ -192,7 +237,7 @@ const StatsHomePage = () => {
               id: 'stats-member-count',
             },
             xaxis: {
-              categories,
+              categories: TERMS,
             },
           }}
           series={[{ name: '회원 수', data: memberCounts }]}

@@ -17,6 +17,10 @@ type CountResponseData = {
   count: number;
 };
 
+type AdminClubPaymentResponseData = {
+  clubPayment: number;
+};
+
 type AdminClubsResponseData = {
   clubId: number;
   clubName: string;
@@ -40,7 +44,7 @@ type AdminSchoolStatsRequestData = {
 };
 
 type AssignedTermResquestData = {
-  assignedTerm?: string;
+  assignedTerm?: string | null;
 };
 
 export type {
@@ -48,6 +52,7 @@ export type {
   SchoolsResponseData,
   SchoolsResultResponseData,
   CountResponseData,
+  AdminClubPaymentResponseData,
   AdminClubsResponseData,
   AdminClubsResultResponseData,
   AdminSchoolStatsRequestData,

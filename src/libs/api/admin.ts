@@ -1,6 +1,7 @@
 import axiosInstance from '@libs/api/axiosInstance';
 import axios from 'axios';
 import {
+  AdminClubPaymentResponseData,
   AdminClubsResultResponseData,
   AdminLoginRequestData,
   AdminSchoolStatsRequestData,
@@ -19,32 +20,51 @@ const fetchLoginData = async ({ memberLoginId, memberPassword }: Readonly<AdminL
   return res.data;
 };
 
+// Admin overall statistics
 const getClubCount = async ({ assignedTerm }: Readonly<AssignedTermResquestData>) => {
-  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/clubs/count?assignedTerm=${assignedTerm}`);
+  const res = await axiosInstance.get<CountResponseData>(
+    `/v1/admin/clubs/count${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
+  );
 
   return res.data;
 };
 
 const getSchoolCount = async ({ assignedTerm }: Readonly<AssignedTermResquestData>) => {
-  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/schools/count?assignedTerm=${assignedTerm}`);
+  const res = await axiosInstance.get<CountResponseData>(
+    `/v1/admin/schools/count${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
+  );
 
   return res.data;
 };
 
 const getMemberCount = async ({ assignedTerm }: Readonly<AssignedTermResquestData>) => {
-  const res = await axiosInstance.get<CountResponseData>(`/v1/admin/members/count?assignedTerm=${assignedTerm}`);
+  const res = await axiosInstance.get<CountResponseData>(
+    `/v1/admin/members/count${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
+  );
 
   return res.data;
 };
 
-const getSchools = async () => {
-  const res = await axiosInstance.get<SchoolsResultResponseData>(`/v1/admin/schools`);
+const getSchools = async ({ assignedTerm }: Readonly<AssignedTermResquestData>) => {
+  const res = await axiosInstance.get<SchoolsResultResponseData>(
+    `/v1/admin/schools${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
+  );
 
   return res.data;
 };
 
-const getClubs = async () => {
-  const res = await axiosInstance.get<AdminClubsResultResponseData>(`/v1/admin/clubs`);
+const getClubs = async ({ assignedTerm }: Readonly<AssignedTermResquestData>) => {
+  const res = await axiosInstance.get<AdminClubsResultResponseData>(
+    `/v1/admin/clubs${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
+  );
+
+  return res.data;
+};
+
+const getClubPayments = async ({ assignedTerm }: Readonly<AssignedTermResquestData>) => {
+  const res = await axiosInstance.get<AdminClubPaymentResponseData>(
+    `/v1/admin/clubPayments${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
+  );
 
   return res.data;
 };
@@ -81,6 +101,7 @@ export {
   getMemberCount,
   getSchools,
   getClubs,
+  getClubPayments,
   getSchoolClubCount,
   getSchoolMemberCount,
   getSchoolItemCount,
