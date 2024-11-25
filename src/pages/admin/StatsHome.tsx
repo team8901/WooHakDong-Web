@@ -5,7 +5,7 @@ import Title4 from '@components/Title4';
 import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useLoading from '@hooks/useLoading';
-import { getClubCount, getClubs, getMemberCount, getSchoolCount, getSchools } from '@libs/api/admin';
+import { getClubCount, getClubPayments, getClubs, getMemberCount, getSchoolCount, getSchools } from '@libs/api/admin';
 import ROUTE from '@libs/constant/path';
 import ClubCard from '@pages/club/components/ClubCard';
 import { useEffect, useState } from 'react';
@@ -22,7 +22,9 @@ const TERMS_MENU = [
   { term: '2023-03-01', label: '23-1' },
 ];
 
-const TERMS = TERMS_MENU.slice(1).map(({ label }) => label);
+const TERMS = TERMS_MENU.slice(1)
+  .map(({ label }) => label)
+  .reverse();
 
 const StatsHomePage = () => {
   const [schools, setSchools] = useState<SchoolsResponseData[]>([]);
@@ -33,6 +35,7 @@ const StatsHomePage = () => {
   const [clubCounts, setClubCounts] = useState<number[]>([]);
   const [schoolCounts, setSchoolCounts] = useState<number[]>([]);
   const [memberCounts, setMemberCounts] = useState<number[]>([]);
+  const [payments, setPayments] = useState<number[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedIdx, setSelectedIdx] = useState(0);
 
@@ -48,31 +51,38 @@ const StatsHomePage = () => {
       setIsLoading(true);
       try {
         const { count: clubCount } = await getClubCount({});
-        const { count: schoolCount } = await getSchoolCount({});
-        const { count: memberCount } = await getMemberCount({});
-        const { result: schoolsResult } = await getSchools({});
-        const { result: clubsResult } = await getClubs({});
-
-        setSchools(schoolsResult);
-        setClubs(clubsResult);
-
         const { count: clubCount1 } = await getClubCount({ assignedTerm: '2023-03-01' });
         const { count: clubCount2 } = await getClubCount({ assignedTerm: '2023-09-01' });
         const { count: clubCount3 } = await getClubCount({ assignedTerm: '2024-03-01' });
         const { count: clubCount4 } = await getClubCount({ assignedTerm: '2024-09-01' });
         setClubCounts([clubCount, clubCount4, clubCount3, clubCount2, clubCount1]);
 
+        const { count: schoolCount } = await getSchoolCount({});
         const { count: schoolCount1 } = await getSchoolCount({ assignedTerm: '2023-03-01' });
         const { count: schoolCount2 } = await getSchoolCount({ assignedTerm: '2023-09-01' });
         const { count: schoolCount3 } = await getSchoolCount({ assignedTerm: '2024-03-01' });
         const { count: schoolCount4 } = await getSchoolCount({ assignedTerm: '2024-09-01' });
         setSchoolCounts([schoolCount, schoolCount4, schoolCount3, schoolCount2, schoolCount1]);
 
+        const { count: memberCount } = await getMemberCount({});
         const { count: memberCount1 } = await getMemberCount({ assignedTerm: '2023-03-01' });
         const { count: memberCount2 } = await getMemberCount({ assignedTerm: '2023-09-01' });
         const { count: memberCount3 } = await getMemberCount({ assignedTerm: '2024-03-01' });
         const { count: memberCount4 } = await getMemberCount({ assignedTerm: '2024-09-01' });
         setMemberCounts([memberCount, memberCount4, memberCount3, memberCount2, memberCount1]);
+
+        const { clubPayment: payment } = await getClubPayments({});
+        const { clubPayment: payment1 } = await getClubPayments({ assignedTerm: '2023-03-01' });
+        const { clubPayment: payment2 } = await getClubPayments({ assignedTerm: '2023-09-01' });
+        const { clubPayment: payment3 } = await getClubPayments({ assignedTerm: '2024-03-01' });
+        const { clubPayment: payment4 } = await getClubPayments({ assignedTerm: '2024-09-01' });
+        setPayments([payment, payment4, payment3, payment2, payment1]);
+
+        const { result: schoolsResult } = await getSchools({});
+        const { result: clubsResult } = await getClubs({});
+
+        setSchools(schoolsResult);
+        setClubs(clubsResult);
       } catch (error) {
         console.error(error);
         setToastMessage(`데이터를 불러오는데 실패했어요\n${error}`);
@@ -210,7 +220,7 @@ const StatsHomePage = () => {
               categories: TERMS,
             },
           }}
-          series={[{ name: '동아리 수', data: clubCounts }]}
+          series={[{ name: '동아리 수', data: clubCounts.slice(1) }]}
           type="bar"
         />
         <Chart
@@ -225,7 +235,7 @@ const StatsHomePage = () => {
               categories: TERMS,
             },
           }}
-          series={[{ name: '학교 수', data: schoolCounts }]}
+          series={[{ name: '학교 수', data: schoolCounts.slice(1) }]}
           type="bar"
         />
         <Chart
@@ -240,7 +250,22 @@ const StatsHomePage = () => {
               categories: TERMS,
             },
           }}
-          series={[{ name: '회원 수', data: memberCounts }]}
+          series={[{ name: '회원 수', data: memberCounts.slice(1) }]}
+          type="bar"
+        />
+        <Chart
+          options={{
+            title: {
+              text: '분기별 동아리 결제금액',
+            },
+            chart: {
+              id: 'stats-payments',
+            },
+            xaxis: {
+              categories: TERMS,
+            },
+          }}
+          series={[{ name: '결제금액', data: payments.slice(1) }]}
           type="bar"
         />
       </div>
