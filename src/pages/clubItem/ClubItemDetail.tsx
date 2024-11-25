@@ -15,6 +15,7 @@ import useModal from '@hooks/useModal';
 import { postClubItemBorrow, postClubItemReturn } from '@libs/api/item';
 import { getS3ImageUrl, putImageToS3 } from '@libs/api/util';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
+import getRemainingDays from '@libs/util/getRemainingDays';
 import Modal from '@pages/clubItem/components/Modal';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -204,16 +205,6 @@ const ClubItemDetailPage = () => {
     }
 
     return 'white';
-  };
-
-  const getRemainingDays = (targetDate: string) => {
-    const current = new Date();
-    const target = new Date(targetDate);
-
-    const differenceInTime = target.getTime() - current.getTime();
-    const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-
-    return differenceInDays;
   };
 
   const isLoading = isClubIdLoading;

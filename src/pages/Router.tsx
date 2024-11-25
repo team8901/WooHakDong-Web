@@ -31,6 +31,7 @@ import StatsHomePage from '@pages/admin/StatsHome';
 import AdminLayout from '@layouts/AdminLayout';
 import StatsSchoolPage from '@pages/admin/StatsSchool';
 import NotAdminLayout from '@layouts/NotAdminLayout';
+import StatsClubPage from '@pages/admin/StatsClub';
 
 export const Router = () => {
   return (
@@ -45,6 +46,7 @@ export const Router = () => {
       <Route element={<AdminLayout />}>
         <Route path={ROUTE.ADMIN_STATS} element={<StatsHomePage />} />
         <Route path={`${ROUTE.ADMIN_STATS_SCHOOL}/:schoolId`} element={<StatsSchoolPage />} />
+        <Route path={`${ROUTE.ADMIN_STATS_CLUB}/:clubId`} element={<StatsClubPage />} />
       </Route>
       {/* 인증된 사용자가 접근할 수 없는 페이지 */}
       <Route element={<NotAuthLayout />}>

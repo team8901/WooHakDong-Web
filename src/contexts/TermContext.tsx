@@ -1,3 +1,4 @@
+import { TERMS_MENU } from '@libs/constant/admin';
 import { createContext, useContext, useState, ReactNode, useMemo } from 'react';
 
 type TermContextProps = {
@@ -12,7 +13,7 @@ export const useTerm = () => {
 };
 
 export const TermProvider = ({ children }: { children: ReactNode }) => {
-  const [selectedTermIdx, setSelectedTermIdx] = useState(0);
+  const [selectedTermIdx, setSelectedTermIdx] = useState(TERMS_MENU.length - 1);
 
   const contextValue = useMemo(() => ({ selectedTermIdx, setSelectedTermIdx }), [selectedTermIdx]);
 

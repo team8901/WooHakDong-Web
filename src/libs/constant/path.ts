@@ -20,6 +20,7 @@ const ROUTE = {
   ADMIN_LOGIN: '/admin/login',
   ADMIN_STATS: '/admin/stats',
   ADMIN_STATS_SCHOOL: '/admin/stats/schools',
+  ADMIN_STATS_CLUB: '/admin/stats/clubs',
 };
 
 export default ROUTE;

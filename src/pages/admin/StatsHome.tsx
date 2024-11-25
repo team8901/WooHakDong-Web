@@ -74,10 +74,6 @@ const StatsHomePage = () => {
     navigate(`${ROUTE.ADMIN_STATS_SCHOOL}/${school.schoolId}`, { state: { school } });
   };
 
-  const handleCardClick = () => {
-    setToastMessage('서비스 준비 중이에요');
-  };
-
   if (isLoading)
     return (
       <div className="px-[40px] py-[40px] md:px-[80px] lg:px-[200px]">
@@ -103,30 +99,18 @@ const StatsHomePage = () => {
       </div>
 
       <div className="flex w-full flex-wrap items-center justify-center gap-[24px] sm:grid sm:grid-cols-3">
-        <button
-          type="button"
-          className="flex w-full flex-col justify-center gap-[4px] rounded-[14px] border border-lightGray p-[20px]"
-          onClick={handleCardClick}
-        >
+        <div className="flex w-full flex-col justify-center gap-[4px] rounded-[14px] border border-lightGray p-[20px]">
           <Body1 text="총 등록된 동아리 수" className="text-[1.8rem] text-darkGray" />
           <Title1 text={`${clubCounts[selectedTermIdx]}개`} />
-        </button>
-        <button
-          type="button"
-          className="flex w-full flex-col justify-center gap-[4px] rounded-[14px] border border-lightGray p-[20px]"
-          onClick={handleCardClick}
-        >
+        </div>
+        <div className="flex w-full flex-col justify-center gap-[4px] rounded-[14px] border border-lightGray p-[20px]">
           <Body1 text="총 등록된 학교 수" className="text-[1.8rem] text-darkGray" />
           <Title1 text={`${schoolCounts[selectedTermIdx]}개`} />
-        </button>
-        <button
-          type="button"
-          className="flex w-full flex-col justify-center gap-[4px] rounded-[14px] border border-lightGray p-[20px]"
-          onClick={handleCardClick}
-        >
+        </div>
+        <div className="flex w-full flex-col justify-center gap-[4px] rounded-[14px] border border-lightGray p-[20px]">
           <Body1 text="총 가입한 회원 수" className="text-[1.8rem] text-darkGray" />
           <Title1 text={`${memberCounts[selectedTermIdx]}명`} />
-        </button>
+        </div>
       </div>
 
       <div className="flex w-full flex-col gap-[12px]">
@@ -162,7 +146,7 @@ const StatsHomePage = () => {
         ) : (
           <div className="grid grid-cols-2 gap-[12px] sm:grid-cols-3 md:grid-cols-4">
             {clubs[selectedTermIdx].map((club) => (
-              <ClubCard key={club.clubId} club={club} onClick={handleCardClick} />
+              <ClubCard key={club.clubId} club={club} onClick={() => console.log(`${club.clubId}`)} />
             ))}
           </div>
         )}
