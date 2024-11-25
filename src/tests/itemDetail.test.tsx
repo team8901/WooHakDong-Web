@@ -4,6 +4,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import { getClubInfo } from '@libs/api/club';
 import ClubItemDetailPage from '@pages/clubItem/ClubItemDetail';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 vi.mock('@libs/api/club', () => ({
   getClubInfo: vi.fn(),
@@ -24,19 +25,23 @@ const mockItem = {
 };
 
 const renderComponent = (state = {}) => {
+  const queryClient = new QueryClient();
+
   render(
-    <MemoryRouter
-      initialEntries={[
-        {
-          pathname: `${ROUTE.CLUB}/doit${ROUTE.ITEM}/${mockItem.itemId}`,
-          state: { item: mockItem, ...state },
-        },
-      ]}
-    >
-      <Routes>
-        <Route path={`${ROUTE.CLUB}/:clubEnglishName${ROUTE.ITEM}/:itemId`} element={<ClubItemDetailPage />} />
-      </Routes>
-    </MemoryRouter>,
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter
+        initialEntries={[
+          {
+            pathname: `${ROUTE.CLUB}/doit${ROUTE.ITEM}/${mockItem.itemId}`,
+            state: { item: mockItem, ...state },
+          },
+        ]}
+      >
+        <Routes>
+          <Route path={`${ROUTE.CLUB}/:clubEnglishName${ROUTE.ITEM}/:itemId`} element={<ClubItemDetailPage />} />
+        </Routes>
+      </MemoryRouter>
+    </QueryClientProvider>,
   );
 };
 
