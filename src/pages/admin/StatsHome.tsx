@@ -98,7 +98,7 @@ const StatsHomePage = () => {
     );
   return (
     <div className="flex h-full w-full flex-col items-center gap-[30px] overflow-auto px-[40px] py-[40px] md:px-[80px] lg:px-[200px]">
-      <div className="fixed left-[50px]">
+      <div className="fixed left-[30px]">
         <Dropdown selectedTermIdx={selectedTermIdx} setSelectedTermIdx={setSelectedTermIdx} />
       </div>
 

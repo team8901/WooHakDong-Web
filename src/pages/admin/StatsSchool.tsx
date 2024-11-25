@@ -14,6 +14,9 @@ import { AdminClubsResponseData, SchoolsResponseData } from 'types/admin';
 import Chart from 'react-apexcharts';
 import { SLICED_TERMS_LABEL, TERMS_MENU } from '@libs/constant/admin';
 import EmptyText from '@components/EmptyText';
+import Button from '@components/Button';
+import useCustomNavigate from '@hooks/useCustomNavigate';
+import ROUTE from '@libs/constant/path';
 
 const StatsSchoolPage = () => {
   const { state } = useLocation();
@@ -26,6 +29,7 @@ const StatsSchoolPage = () => {
   const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
   const { selectedTermIdx, setSelectedTermIdx } = useTerm();
+  const navigate = useCustomNavigate();
 
   const initData = () => {
     setClubCounts([]);
@@ -84,7 +88,7 @@ const StatsSchoolPage = () => {
     );
   return (
     <div className="flex h-full w-full flex-col items-center gap-[30px] overflow-auto px-[40px] py-[40px] md:px-[80px] lg:px-[200px]">
-      <div className="fixed left-[50px]">
+      <div className="fixed left-[30px]">
         <Dropdown selectedTermIdx={selectedTermIdx} setSelectedTermIdx={setSelectedTermIdx} />
       </div>
 
@@ -179,6 +183,10 @@ const StatsSchoolPage = () => {
           series={[{ name: '물품 수', data: itemCounts.slice(1) }]}
           type="bar"
         />
+      </div>
+
+      <div className="fixed bottom-[20px] right-[30px]">
+        <Button text="전체 통계 보기" onClick={() => navigate(ROUTE.ADMIN_STATS)} className="w-[170px]" />
       </div>
     </div>
   );
