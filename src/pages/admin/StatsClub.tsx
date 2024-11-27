@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import Skeleton from 'react-loading-skeleton';
 import { useLocation } from 'react-router-dom';
-import { AdminClubItemsHistoryResponseData, AdminClubMembersResponseData, SchoolsResponseData } from 'types/admin';
+import { SchoolsResponseData } from 'types/admin';
 import { ClubInfoResponseData } from 'types/club';
 
 type PerDate = { [date: string]: number };
@@ -31,18 +31,14 @@ const StatsClubPage = () => {
   const [itemCounts, setItemCounts] = useState<number[]>([]);
   const [itemCountsPerDate, setItemCountsPerDate] = useState<PerDate[]>([]);
   const [itemCountsPerCategory, setItemCountsPerCategory] = useState<PerDate[]>([]);
-  const [members, setMembers] = useState<AdminClubMembersResponseData[][]>([]);
-  const [itemsHistory, setItemsHistory] = useState<AdminClubItemsHistoryResponseData[][]>([]);
   const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
   const { selectedTermIdx, setSelectedTermIdx } = useTerm();
   const navigate = useCustomNavigate();
-
+  console.log(memberCountsPerDate, itemCountsPerDate, itemCountsPerCategory);
   const initData = () => {
-    setMembers([]);
     setMemberCounts([]);
     setItemCounts([]);
-    setItemsHistory([]);
     setMemberCountsPerDate([]);
     setItemCountsPerDate([]);
     setItemCountsPerCategory([]);
@@ -64,10 +60,8 @@ const StatsClubPage = () => {
           const { count: itemCount } = await getClubItemCount({ clubId, assignedTerm: term });
           const { result: itemsHistoryResult } = await getClubItemsHistory({ clubId, assignedTerm: term });
 
-          setMembers((prev) => [...prev, membersResult]);
           setMemberCounts((prev) => [...prev, membersResult.length]);
           setItemCounts((prev) => [...prev, itemCount]);
-          setItemsHistory((prev) => [...prev, itemsHistoryResult]);
 
           // setMemberCountsPerDate
           // membersResult: [{ createAt }] 날짜별 회원 수 구하기

@@ -36,7 +36,7 @@ const ClubCard = ({ club, onClick }: Readonly<ClubCardProps>) => {
           </div>
           <div className="flex items-center gap-[4px]">
             <DuesIcon />
-            <Body2 text={`${club.clubDues.toLocaleString()}원`} className="line-clamp-1" />
+            <Body2 text={`${club.clubDues?.toLocaleString()}원`} className="line-clamp-1" />
           </div>
         </div>
       </div>
