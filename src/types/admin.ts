@@ -1,3 +1,7 @@
+import { ClubMemberRole } from 'types/clubMember';
+import { ClubItemCategory } from 'types/item';
+import { Gender } from 'types/member';
+
 type AdminLoginRequestData = {
   memberLoginId: string;
   memberPassword: string;
@@ -15,6 +19,10 @@ type SchoolsResultResponseData = {
 
 type CountResponseData = {
   count: number;
+};
+
+type AdminClubPaymentResponseData = {
+  clubPayment: number;
 };
 
 type AdminClubsResponseData = {
@@ -35,8 +43,49 @@ type AdminClubsResultResponseData = {
   result: AdminClubsResponseData[];
 };
 
-type AdminSchoolStatsRequestData = {
+interface AdminSchoolStatsRequestData extends AssignedTermResquestData {
   schoolId: number;
+}
+
+type AssignedTermResquestData = {
+  assignedTerm?: string | null;
+};
+
+// admin-club-controller
+interface AdminClubStatsRequestData extends AssignedTermResquestData {
+  clubId: number;
+}
+
+type AdminClubPeriodResponseData = {
+  startDate: string;
+};
+
+type AdminClubMembersResponseData = {
+  memberId: number;
+  memberName: string;
+  memberPhoneNumber: string;
+  memberEmail: string;
+  memberGender: Gender;
+  memberMajor: string;
+  memberStudentNumber: string;
+  clubMemberRole: ClubMemberRole;
+  clubMemberId: number;
+  clubJoinedDate: string;
+  clubMemberAssignedTerm: string;
+  createAt: string;
+};
+
+type AdminClubItemsHistoryResponseData = {
+  itemHistoryId: number;
+  memberName: string;
+  itemRentalDate: string;
+  itemDueDate: string;
+  itemReturnDate: string;
+  itemReturnImage: string;
+  itemName: string;
+  itemCategory: ClubItemCategory;
+  itemId: number;
+  assignedTerm: string;
 };
 
 export type {
@@ -44,7 +93,13 @@ export type {
   SchoolsResponseData,
   SchoolsResultResponseData,
   CountResponseData,
+  AdminClubPaymentResponseData,
   AdminClubsResponseData,
   AdminClubsResultResponseData,
   AdminSchoolStatsRequestData,
+  AssignedTermResquestData,
+  AdminClubStatsRequestData,
+  AdminClubPeriodResponseData,
+  AdminClubMembersResponseData,
+  AdminClubItemsHistoryResponseData,
 };

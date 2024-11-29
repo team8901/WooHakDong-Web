@@ -15,6 +15,8 @@ const fetchLoginData = async ({ accessToken }: Readonly<LoginRequestData>) => {
 
 const refreshAccessToken = async () => {
   try {
+    axios.defaults.headers.common['Authorization'] = undefined;
+
     const res = await axios.post<LoginResponseData>(`${import.meta.env.VITE_API_URL}/v1/auth/refresh`, {
       refreshToken: localStorage.getItem('refreshToken'),
     });
