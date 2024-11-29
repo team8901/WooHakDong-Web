@@ -5,11 +5,13 @@ import 'react-calendar/dist/Calendar.css';
 import { ClubScheduleResponseData } from 'types/clubSchedule';
 
 const CustomCalendar = ({
+  calendarRef,
   selectedDate,
   setSelectedDate,
   scheduleList,
   setCurrentMonth,
 }: {
+  calendarRef: React.LegacyRef<unknown>;
   selectedDate: SelectedDate;
   setSelectedDate: React.Dispatch<React.SetStateAction<SelectedDate>>;
   scheduleList: ClubScheduleResponseData[];
@@ -17,6 +19,7 @@ const CustomCalendar = ({
 }) => {
   return (
     <Calendar
+      ref={calendarRef}
       value={selectedDate}
       onChange={setSelectedDate}
       showNeighboringMonth={false} // 이전, 이후 달의 날짜는 보이지 않도록 설정
