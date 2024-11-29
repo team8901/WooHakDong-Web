@@ -5,6 +5,7 @@ import ROUTE from '@libs/constant/path';
 import { getClubInfo, getClubsInfo } from '@libs/api/club';
 import { Router } from '@pages/Router';
 import { getMemberInfo } from '@libs/api/member';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const mockNavigate = vi.fn();
 
@@ -25,19 +26,21 @@ vi.mock('@libs/api/payment', () => ({
   postPortOne: vi.fn(),
 }));
 
+const clubEnglishName = 'test';
+
 const ROUTES_TO_TEST = [
-  `${ROUTE.CLUB}/doit`,
-  `${ROUTE.CLUB}/doit${ROUTE.LOGIN_REGISTER}`,
-  `${ROUTE.CLUB}/doit${ROUTE.MEMBER_REGISTER}`,
-  `${ROUTE.CLUB}/doit${ROUTE.CLUB_JOIN_NOTICE}`,
-  `${ROUTE.CLUB}/doit${ROUTE.CLUB_REGISTER}`,
-  `${ROUTE.CLUB}/doit${ROUTE.MEMBER_INFO_WRITE}`,
-  `${ROUTE.CLUB}/doit${ROUTE.MEMBER_INFO_CONFIRM}`,
-  `${ROUTE.CLUB}/doit${ROUTE.PAYMENT}`,
-  `${ROUTE.CLUB}/doit${ROUTE.PAYMENT_REDIRECT}`,
-  `${ROUTE.CLUB}/doit${ROUTE.ITEM}`,
-  `${ROUTE.CLUB}/doit${ROUTE.ITEM_SEARCH}`,
-  `${ROUTE.CLUB}/doit${ROUTE.DUES}`,
+  `${ROUTE.CLUB}/${clubEnglishName}`,
+  `${ROUTE.CLUB}/${clubEnglishName}${ROUTE.LOGIN_REGISTER}`,
+  `${ROUTE.CLUB}/${clubEnglishName}${ROUTE.MEMBER_REGISTER}`,
+  `${ROUTE.CLUB}/${clubEnglishName}${ROUTE.CLUB_JOIN_NOTICE}`,
+  `${ROUTE.CLUB}/${clubEnglishName}${ROUTE.CLUB_REGISTER}`,
+  `${ROUTE.CLUB}/${clubEnglishName}${ROUTE.MEMBER_INFO_WRITE}`,
+  `${ROUTE.CLUB}/${clubEnglishName}${ROUTE.MEMBER_INFO_CONFIRM}`,
+  `${ROUTE.CLUB}/${clubEnglishName}${ROUTE.PAYMENT}`,
+  `${ROUTE.CLUB}/${clubEnglishName}${ROUTE.PAYMENT_REDIRECT}`,
+  `${ROUTE.CLUB}/${clubEnglishName}${ROUTE.ITEM}`,
+  `${ROUTE.CLUB}/${clubEnglishName}${ROUTE.ITEM_SEARCH}`,
+  `${ROUTE.CLUB}/${clubEnglishName}${ROUTE.DUES}`,
 ];
 
 describe('우학동 서비스에 가입되지 않았으면 loginRegister 페이지로 이동한다.', async () => {
@@ -46,10 +49,14 @@ describe('우학동 서비스에 가입되지 않았으면 loginRegister 페이�
   });
 
   test.each(ROUTES_TO_TEST)('%s 로 접속했을 때 loginRegister 페이지로 이동', async (route) => {
+    const queryClient = new QueryClient();
+
     render(
-      <MemoryRouter initialEntries={[route]}>
-        <Router />
-      </MemoryRouter>,
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={[route]}>
+          <Router />
+        </MemoryRouter>
+      </QueryClientProvider>,
     );
 
     await waitFor(() => {
@@ -63,14 +70,18 @@ describe('우학동 서비스에 가입되었지만 인적사항을 등록하지
     localStorage.setItem('accessToken', '123');
     (getMemberInfo as Mock).mockResolvedValue({ memberPhoneNumber: null });
     (getClubsInfo as Mock).mockResolvedValue({ result: [] });
-    (getClubInfo as Mock).mockResolvedValue({ clubName: '두잇' });
+    (getClubInfo as Mock).mockResolvedValue({ clubName: '테스트' });
   });
 
   test.each(ROUTES_TO_TEST)('%s 로 접속했을 때 memberRegister 페이지로 이동', async (route) => {
+    const queryClient = new QueryClient();
+
     render(
-      <MemoryRouter initialEntries={[route]}>
-        <Router />
-      </MemoryRouter>,
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={[route]}>
+          <Router />
+        </MemoryRouter>
+      </QueryClientProvider>,
     );
 
     await waitFor(() => {
@@ -84,14 +95,18 @@ describe('우학동 서비스에 가입되었고 인적사항을 등록했지만
     localStorage.setItem('accessToken', '123');
     (getMemberInfo as Mock).mockResolvedValue({ memberPhoneNumber: '01012345678' });
     (getClubsInfo as Mock).mockResolvedValue({ result: [] });
-    (getClubInfo as Mock).mockResolvedValue({ clubName: '두잇' });
+    (getClubInfo as Mock).mockResolvedValue({ clubName: '테스트' });
   });
 
   test.each(ROUTES_TO_TEST)('%s 로 접속했을 때 clubRegister 페이지로 이동', async (route) => {
+    const queryClient = new QueryClient();
+
     render(
-      <MemoryRouter initialEntries={[route]}>
-        <Router />
-      </MemoryRouter>,
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={[route]}>
+          <Router />
+        </MemoryRouter>
+      </QueryClientProvider>,
     );
 
     await waitFor(() => {
@@ -108,10 +123,10 @@ describe('우학동 서비스에 가입되었고 인적사항을 등록했고 �
     const result = [
       {
         clubId: 1,
-        clubName: '두잇',
-        clubEnglishName: 'doit',
+        clubName: '테스트',
+        clubEnglishName,
         clubImage: '',
-        clubDescription: '두잇입니다',
+        clubDescription: '테스트입니다',
         clubRoom: '구학생회관 234호',
         clubGeneration: '1기',
         clubDues: '10000',
@@ -121,10 +136,14 @@ describe('우학동 서비스에 가입되었고 인적사항을 등록했고 �
   });
 
   test.each(ROUTES_TO_TEST)('%s 로 접속했을 때 동아리 전용 페이지로 이동', async (route) => {
+    const queryClient = new QueryClient();
+
     render(
-      <MemoryRouter initialEntries={[route]}>
-        <Router />
-      </MemoryRouter>,
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={[route]}>
+          <Router />
+        </MemoryRouter>
+      </QueryClientProvider>,
     );
 
     await waitFor(() => {

@@ -56,8 +56,12 @@ const AdminLoginPage = () => {
         </div>
         <Title2 text="관리자 페이지" />
       </div>
-      <form method="POST" onSubmit={handleLogin} className="flex flex-wrap items-center justify-center gap-[20px]">
-        <div className="flex flex-col gap-[12px]">
+      <form
+        method="POST"
+        onSubmit={handleLogin}
+        className="flex w-full flex-wrap items-center justify-center gap-[20px] md:w-auto md:flex-nowrap"
+      >
+        <div className="flex w-full flex-col gap-[12px] md:w-auto">
           <Input
             type="text"
             label="아이디"
@@ -65,7 +69,7 @@ const AdminLoginPage = () => {
             value={loginId}
             name="loginId"
             onChange={(e) => setLoginId(e.target.value)}
-            className="w-[210px]"
+            className="md:w-[210px]"
           />
           <Input
             type="password"
@@ -74,10 +78,12 @@ const AdminLoginPage = () => {
             value={password}
             name="password"
             onChange={(e) => setPassword(e.target.value)}
-            className="w-[210px]"
+            className="md:w-[210px]"
           />
         </div>
-        <Button text="로그인" className="w-[100px]" isLoading={isLoading} />
+        <div className="w-full md:w-[100px]">
+          <Button text="로그인" isLoading={isLoading} />
+        </div>
       </form>
     </div>
   );

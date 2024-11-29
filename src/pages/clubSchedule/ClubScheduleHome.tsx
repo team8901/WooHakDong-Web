@@ -11,7 +11,7 @@ import { formatDateWithWeekday } from '@libs/util/formatDate';
 import isSameDateBetweenDateString from '@libs/util/isSameDateBetweenDateString';
 import CustomCalendar from '@pages/clubSchedule/components/CustomCalendar';
 import ListItem from '@pages/clubSchedule/components/ListItem';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 import { ClubScheduleResponseData } from 'types/clubSchedule';
@@ -26,6 +26,7 @@ const ClubScheduleHomePage = () => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
   const { setToastMessage } = useToast();
+  const calendarRef = useRef();
   const {
     data: clubId,
     isError: isClubIdError,
@@ -36,6 +37,17 @@ const ClubScheduleHomePage = () => {
     isError: isClubSchedulesError,
     isLoading: isClubSchedulesLoading,
   } = useGetClubSchedules({ clubId: clubId || 0, date: convertDate(selectedDate as Date), currentMonth });
+
+  const handleTodayClick = () => {
+    const today = new Date();
+    setSelectedDate(today);
+
+    const calendar = calendarRef.current;
+    if (!calendar) return;
+
+    const firstDayOfTodaysMonth = new Date(today.getFullYear(), today.getMonth(), 1); // 현재 월의 첫 번째 날을 생성
+    (calendar as any).setActiveStartDate(firstDayOfTodaysMonth);
+  };
 
   const filterList = (list: ClubScheduleResponseData[], date: Date) => {
     const filteredSchedule = list.filter((schedule) => isSameDateBetweenDateString(date, schedule.scheduleDateTime));
@@ -72,13 +84,14 @@ const ClubScheduleHomePage = () => {
 
       <button
         type="button"
-        onClick={() => setSelectedDate(new Date())}
+        onClick={handleTodayClick}
         className="absolute right-0 top-0 flex items-center justify-center px-[20px] py-[16px]"
       >
         <Body3 text="오늘" />
       </button>
       {scheduleList && (
         <CustomCalendar
+          calendarRef={calendarRef}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           scheduleList={scheduleList}

@@ -55,7 +55,7 @@ const MemberInfoConfirmPage = () => {
 
   if (memberInfo === null) return null;
   return (
-    <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
+    <div className="relative h-full px-[20px] pt-[56px]">
       <div className="absolute left-0 top-0">
         <AppBar />
       </div>
@@ -71,7 +71,7 @@ const MemberInfoConfirmPage = () => {
             <Skeleton height={150} borderRadius={14} className="mt-[10px]" />
           </div>
         ) : (
-          <div className="flex flex-col gap-[20px]">
+          <div className="flex flex-col gap-[20px] pb-[80px]">
             <div className="flex flex-col gap-[12px]">
               <Caption2 text="기본 정보" />
               <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray px-[16px] py-[12px]">

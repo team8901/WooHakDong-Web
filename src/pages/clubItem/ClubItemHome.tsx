@@ -111,7 +111,7 @@ const ClubItemHomePage = () => {
           <Skeleton height={72} count={5} borderRadius={14} className="mt-[20px]" />
         </div>
       ) : (
-        <div className="flex h-full flex-col gap-[20px] px-[20px] pt-[20px]">
+        <div className="flex h-full flex-col gap-[20px] px-[20px]">
           <CustomPullToRefresh onRefresh={handleRefresh}>
             {filteredItemList.length === 0 ? (
               <div className="flex h-full items-center justify-center">
@@ -120,7 +120,7 @@ const ClubItemHomePage = () => {
                 />
               </div>
             ) : (
-              <div className="flex flex-col gap-[20px] pb-[50px]">
+              <div className="flex flex-col gap-[20px] pb-[50px] pt-[20px]">
                 {filteredItemList.map((item, index) => (
                   <div key={item.itemId} className="flex flex-col gap-[20px]">
                     {index > 0 && <div className="h-[0.6px] bg-lightGray" />}

@@ -15,6 +15,7 @@ import useModal from '@hooks/useModal';
 import { postClubItemBorrow, postClubItemReturn } from '@libs/api/item';
 import { getS3ImageUrl, putImageToS3 } from '@libs/api/util';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
+import getRemainingDays from '@libs/util/getRemainingDays';
 import Modal from '@pages/clubItem/components/Modal';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -102,6 +103,7 @@ const ClubItemDetailPage = () => {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const MAX_IMAGE_LENGTH = 1;
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
     const files = e.target.files;
 
     if (!files) return;
@@ -118,6 +120,12 @@ const ClubItemDetailPage = () => {
     // 파일 업로드 시 모든 파일 (*.*) 선택 방지 위해 이미지 type을 한 번 더 검증
     if (file.type !== 'image/jpeg' && file.type !== 'image/jpg' && file.type !== 'image/png') {
       setToastMessage('JPG 혹은 PNG 확장자의 이미지만 등록 가능해요');
+      return;
+    }
+
+    // 파일 용량 제한 검증
+    if (file.size > MAX_FILE_SIZE) {
+      setToastMessage('이미지 파일 용량은 5MB 이하만 등록 가능해요');
       return;
     }
 
@@ -199,20 +207,10 @@ const ClubItemDetailPage = () => {
     return 'white';
   };
 
-  const getRemainingDays = (targetDate: string) => {
-    const current = new Date();
-    const target = new Date(targetDate);
-
-    const differenceInTime = target.getTime() - current.getTime();
-    const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24));
-
-    return differenceInDays;
-  };
-
   const isLoading = isClubIdLoading;
 
   return (
-    <div className="relative h-full pb-[70px] pt-[56px]">
+    <div className="relative h-full pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
         <AppBar />
       </div>
@@ -230,7 +228,7 @@ const ClubItemDetailPage = () => {
           <Skeleton height={58} borderRadius={14} className="mt-[8px]" />
         </div>
       ) : (
-        <div className="flex h-full flex-col gap-[20px] overflow-y-auto scrollbar-hide">
+        <div className="flex h-full flex-col gap-[20px] overflow-y-auto pb-[80px] scrollbar-hide">
           <img
             alt="물품"
             src={item.itemPhoto || '/logo.svg'}

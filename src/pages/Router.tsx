@@ -1,50 +1,69 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import ClubJoinNoticePage from '@pages/club/ClubJoinNotice';
-import ClubMemberHomePage from '@pages/clubMember/ClubMemberHome';
-import ClubRegisterPage from '@pages/club/ClubRegister';
-import MemberRegisterPage from '@pages/member/MemberRegister';
-import MemberInfoWritePage from '@pages/member/MemberInfoWrite';
-import MemberInfoConfirmPage from '@pages/member/MemberInfoConfirm';
-import PaymentPage from '@pages/payment';
 import ClubListPage from '@pages/club/ClubList';
+import ClubRegisterPage from '@pages/club/ClubRegister';
+import ClubMemberHomePage from '@pages/clubMember/ClubMemberHome';
+import MemberInfoConfirmPage from '@pages/member/MemberInfoConfirm';
+import MemberInfoWritePage from '@pages/member/MemberInfoWrite';
+import MemberRegisterPage from '@pages/member/MemberRegister';
+import PaymentPage from '@pages/payment';
 // import LandingPage from '@pages/landing';
-import NotAuthLayout from '@layouts/NotAuthLayout';
+import AdminLayout from '@layouts/AdminLayout';
 import AuthLayout from '@layouts/AuthLayout';
 import ClubLayout from '@layouts/ClubLayout';
-import LoginRegisterPage from '@pages/login/LoginRegister';
-import ROUTE from '@libs/constant/path';
 import MemberLayout from '@layouts/MemberLayout';
-import NotMemberLayout from '@layouts/NotMemberLayout';
+import NotAdminLayout from '@layouts/NotAdminLayout';
+import NotAuthLayout from '@layouts/NotAuthLayout';
 import NotClubLayout from '@layouts/NotClubLayout';
-import PaymentRedirectPage from '@pages/payment/PaymentRedirect';
-import ClubItemHomePage from '@pages/clubItem/ClubItemHome';
-import ClubItemSearchPage from '@pages/clubItem/ClubItemSearch';
-import ClubItemDetailPage from '@pages/clubItem/ClubItemDetail';
-import ClubDuesHomePage from '@pages/clubDues/ClubDuesHome';
-import ClubMemberDetailPage from '@pages/clubMember/ClubMemberDetail';
-import ClubScheduleHomePage from '@pages/clubSchedule/ClubScheduleHome';
-import ClubScheduleDetailPage from '@pages/clubSchedule/ClubScheduleDetail';
-import ClubItemMyPage from '@pages/clubItem/ClubItemMy';
+import NotMemberLayout from '@layouts/NotMemberLayout';
+import ROUTE from '@libs/constant/path';
 import AdminLoginPage from '@pages/admin/AdminLogin';
+import StatsClubPage from '@pages/admin/StatsClub';
 import StatsHomePage from '@pages/admin/StatsHome';
-import AdminLayout from '@layouts/AdminLayout';
 import StatsSchoolPage from '@pages/admin/StatsSchool';
+import ClubDuesHomePage from '@pages/clubDues/ClubDuesHome';
+import ClubItemDetailPage from '@pages/clubItem/ClubItemDetail';
+import ClubItemHomePage from '@pages/clubItem/ClubItemHome';
+import ClubItemMyPage from '@pages/clubItem/ClubItemMy';
+import ClubItemSearchPage from '@pages/clubItem/ClubItemSearch';
+import ClubMemberDetailPage from '@pages/clubMember/ClubMemberDetail';
+import ClubScheduleDetailPage from '@pages/clubSchedule/ClubScheduleDetail';
+import ClubScheduleHomePage from '@pages/clubSchedule/ClubScheduleHome';
+import LoginRegisterPage from '@pages/login/LoginRegister';
+import PaymentRedirectPage from '@pages/payment/PaymentRedirect';
+
+const RootRoute = () => {
+  const isAuth = !!localStorage.getItem('accessToken');
+
+  if (!isAuth) {
+    return <Navigate to={ROUTE.LOGIN_REGISTER} />;
+  }
+
+  return <Navigate to={ROUTE.CLUB_LIST} />;
+};
 
 export const Router = () => {
   return (
     <Routes>
       {/* <Route path={ROUTE.ROOT} element={<LandingPage />} /> */}
-      <Route path={ROUTE.ADMIN} element={<AdminLoginPage />} />
-      <Route path={ROUTE.ADMIN_LOGIN} element={<AdminLoginPage />} />
+      <Route path={ROUTE.ROOT} element={<RootRoute />}>
+        <Route path={ROUTE.ROOT} element={<ClubListPage />} />
+      </Route>
+      {/* 관리자인 사용자가 접근할 수 없는 페이지 */}
+      <Route element={<NotAdminLayout />}>
+        <Route path={ROUTE.ADMIN} element={<AdminLoginPage />} />
+        <Route path={ROUTE.ADMIN_LOGIN} element={<AdminLoginPage />} />
+      </Route>
       {/* 관리자가 아닌 사용자가 접근할 수 없는 페이지 */}
       <Route element={<AdminLayout />}>
         <Route path={ROUTE.ADMIN_STATS} element={<StatsHomePage />} />
         <Route path={`${ROUTE.ADMIN_STATS_SCHOOL}/:schoolId`} element={<StatsSchoolPage />} />
+        <Route path={`${ROUTE.ADMIN_STATS_CLUB}/:clubId`} element={<StatsClubPage />} />
       </Route>
       {/* 인증된 사용자가 접근할 수 없는 페이지 */}
       <Route element={<NotAuthLayout />}>
-        <Route path={ROUTE.ROOT} element={<LoginRegisterPage />} />
+        {/* <Route path={ROUTE.ROOT} element={<LoginRegisterPage />} /> */}
         <Route path={ROUTE.LOGIN_REGISTER} element={<LoginRegisterPage />} />
         <Route path={`${ROUTE.CLUB}/:clubEnglishName${ROUTE.LOGIN_REGISTER}`} element={<LoginRegisterPage />} />
       </Route>
@@ -84,6 +103,8 @@ export const Router = () => {
           </Route>
         </Route>
       </Route>
+      {/* Catch-all route for non-existent pages */}
+      <Route path="*" element={<Navigate to={ROUTE.CLUB_LIST} />} />
     </Routes>
   );
 };

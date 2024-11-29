@@ -15,7 +15,7 @@ const ClubJoinNoticePage = () => {
   };
 
   return (
-    <div className="relative h-full px-[20px] pb-[100px] pt-[56px]">
+    <div className="relative h-full px-[20px] pt-[56px]">
       <div className="absolute left-0 top-0">
         <AppBar />
       </div>
@@ -27,7 +27,7 @@ const ClubJoinNoticePage = () => {
           <Title2 text="이에요" />
         </div>
 
-        <div className="flex flex-col gap-[20px]">
+        <div className="flex flex-col gap-[20px] pb-[80px]">
           <div className="flex flex-col gap-[12px]">
             <Body4 text="&nbsp;1.&nbsp;&nbsp;동아리 회비 납부" />
             <div>

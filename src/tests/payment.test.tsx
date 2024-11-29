@@ -23,6 +23,12 @@ vi.mock('@libs/api/payment', () => ({
   postPortOne: vi.fn(),
 }));
 
+vi.mock('@contexts/ToastContext', () => ({
+  useToast: () => ({
+    setToastMessage: vi.fn(),
+  }),
+}));
+
 // US36
 describe('동아리 회원은 서비스에 연결된 은행 api를 통해 회비를 납부할 수 있다.', () => {
   beforeEach(() => {

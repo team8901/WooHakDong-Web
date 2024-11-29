@@ -1,4 +1,5 @@
 import MemberInfoWritePage from '@pages/member/MemberInfoWrite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -21,7 +22,13 @@ describe('동아리 회원은 우학동 서비스를 이용하기 위해 자신�
   });
 
   it('인적사항을 입력한다.', () => {
-    render(<MemberInfoWritePage />);
+    const queryClient = new QueryClient();
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <MemberInfoWritePage />
+      </QueryClientProvider>,
+    );
 
     // fireEvent.change(screen.getByLabelText('이름'), { target: { value: '홍길동' } });
     fireEvent.click(screen.getByText('남성'));

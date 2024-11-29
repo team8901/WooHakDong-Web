@@ -98,7 +98,7 @@ const MemberInfoWritePage = () => {
     !memberInfo.memberMajor?.trim() || !memberInfo.memberStudentNumber?.trim() || !memberInfo.memberPhoneNumber?.trim();
 
   return (
-    <div className="relative h-full px-[20px] pb-[80px] pt-[56px]">
+    <div className="relative h-full px-[20px] pt-[56px]">
       <div className="absolute left-0 top-0">
         <AppBar />
       </div>
@@ -115,7 +115,7 @@ const MemberInfoWritePage = () => {
               <Skeleton height={47} count={3} borderRadius={14} className="mt-[10px]" />
             </div>
           ) : (
-            <div className="flex flex-col gap-[20px]">
+            <div className="flex flex-col gap-[20px] pb-[80px]">
               <div className="flex flex-col gap-[12px]">
                 <Caption2 text="기본 정보" />
                 <InputBox text={memberInfo.memberName} />
