@@ -1,6 +1,5 @@
 import AppBar from '@components/AppBar';
 import Body1 from '@components/Body1';
-import Body4 from '@components/Body4';
 import Caption2 from '@components/Caption2';
 import ScrollView from '@components/ScrollView';
 import Title1 from '@components/Title1';
@@ -52,8 +51,6 @@ const ClubMemberDetailPage = () => {
             </div>
           </div>
         </div>
-
-        <Body4 text={member.clubMemberAssignedTerm} className="self-end text-darkGray" />
       </ScrollView>
     </div>
   );
