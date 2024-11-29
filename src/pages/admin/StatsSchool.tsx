@@ -11,10 +11,10 @@ import { getSchoolClubCount, getSchoolClubs, getSchoolItemCount, getSchoolMember
 import { SLICED_TERMS_LABEL, TERMS_MENU } from '@libs/constant/admin';
 import ROUTE from '@libs/constant/path';
 import Dropdown from '@pages/admin/components/Dropdown';
+import StatsSkeleton from '@pages/admin/components/StatsSkeleton';
 import ClubCard from '@pages/club/components/ClubCard';
 import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
-import Skeleton from 'react-loading-skeleton';
 import { useLocation } from 'react-router-dom';
 import { AdminClubsResponseData, SchoolsResponseData } from 'types/admin';
 import { ClubInfoResponseData } from 'types/club';
@@ -71,22 +71,7 @@ const StatsSchoolPage = () => {
     navigate(`${ROUTE.ADMIN_STATS_CLUB}/${club.clubId}`, { state: { school, club } });
   };
 
-  if (isLoading)
-    return (
-      <div className="px-[40px] py-[40px] md:px-[80px] lg:px-[200px]">
-        <div className="flex w-full flex-wrap items-center justify-center gap-[24px] sm:grid sm:grid-cols-3">
-          {Array.from({ length: 3 }, (_, index) => (
-            <Skeleton key={`${index}-top`} height={100} borderRadius={14} />
-          ))}
-        </div>
-        <Skeleton height={22} borderRadius={14} className="mt-[30px]" />
-        <div className="mt-[12px] grid grid-cols-2 gap-[12px] sm:grid-cols-3 md:grid-cols-4">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <Skeleton key={index} height={290} borderRadius={14} />
-          ))}
-        </div>
-      </div>
-    );
+  if (isLoading) return <StatsSkeleton />;
   return (
     <div className="flex h-full w-full flex-col items-center gap-[30px] overflow-auto px-[40px] py-[40px] md:px-[80px] lg:px-[200px]">
       <div className="fixed left-[30px]">
