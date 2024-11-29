@@ -1,11 +1,16 @@
 import ChevronBottomGrayIcon from '@assets/images/chevrons/ChevronBottomGrayIcon';
-import RefreshIcon from '@assets/images/dues/RefreshIcon';
+import InfoIcon from '@assets/images/dues/InfoIcon';
 import AppBar from '@components/AppBar';
 import Body4 from '@components/Body4';
+import Caption1 from '@components/Caption1';
 import Caption2 from '@components/Caption2';
 import EmptyText from '@components/EmptyText';
+import CustomPullToRefresh from '@components/PullToRefresh';
 import Title1 from '@components/Title1';
 import { useToast } from '@contexts/ToastContext';
+import useGetClubId from '@hooks/club/useGetClubId';
+import useGetClubAccount from '@hooks/dues/useGetClubAccount';
+import useGetClubDues from '@hooks/dues/useGetClubDues';
 import useBottomSheet from '@hooks/useBottomSheet';
 import { CLUB_DUES_SORT_OPTIONS } from '@libs/constant/dues';
 import { formatDate } from '@libs/util/formatDate';
@@ -16,10 +21,6 @@ import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 import { ClubDuesResponseData } from 'types/dues';
-import CustomPullToRefresh from '@components/PullToRefresh';
-import useGetClubId from '@hooks/club/useGetClubId';
-import useGetClubDues from '@hooks/dues/useGetClubDues';
-import useGetClubAccount from '@hooks/dues/useGetClubAccount';
 
 const ClubDuesHomePage = () => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
@@ -42,6 +43,7 @@ const ClubDuesHomePage = () => {
     month: new Date().getMonth() + 1,
   });
   const { data: clubAccountData } = useGetClubAccount({ clubId: clubId || 0 });
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
 
   const filterData = (duesList: ClubDuesResponseData[]) => {
     if (!clubDuesData) return;
@@ -60,6 +62,13 @@ const ClubDuesHomePage = () => {
   const { isOpen, selectedOption, bottomSheetRef, setIsOpen, setSelectedOption } = useBottomSheet(() =>
     filterData(duesList),
   );
+
+  const handleInfoClick = () => {
+    setIsInfoOpen(true);
+    setTimeout(() => {
+      setIsInfoOpen(false);
+    }, 1500);
+  };
 
   const handleRefresh = async () => {
     const { data } = await refetchClubDues();
@@ -110,8 +119,13 @@ const ClubDuesHomePage = () => {
             text={`${new Date(clubAccountData?.clubAccountLastUpdateDate ?? '').getFullYear()}년 ${formatDate(clubAccountData?.clubAccountLastUpdateDate ?? '')} 기준`}
             className="text-darkGray"
           />
-          <button type="button" onClick={handleRefresh}>
-            <RefreshIcon />
+          <button type="button" onClick={handleInfoClick} className="relative">
+            <InfoIcon />
+            {isInfoOpen && (
+              <div className="absolute bottom-[-44px] left-[-144px] flex items-center justify-center rounded-[12px] bg-[#7f8189cc] px-[12px] py-[8px]">
+                <Caption1 text="임원이 최근 갱신한 날짜에요" className="text-white" />
+              </div>
+            )}
           </button>
         </div>
       </div>
