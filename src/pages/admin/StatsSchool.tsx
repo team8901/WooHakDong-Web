@@ -175,7 +175,7 @@ const StatsSchoolPage = () => {
       </div>
 
       <div className="fixed bottom-[20px] right-[30px]">
-        <Button text="전체 통계 보기" onClick={() => navigate(ROUTE.ADMIN_STATS)} className="w-[170px]" />
+        <Button text="전체 통계 보기" onClick={() => navigate(ROUTE.ADMIN_STATS)} className="w-[170px] px-[20px]" />
       </div>
     </div>
   );
