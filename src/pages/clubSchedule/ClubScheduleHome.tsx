@@ -46,7 +46,7 @@ const ClubScheduleHomePage = () => {
     if (!calendar) return;
 
     const firstDayOfTodaysMonth = new Date(today.getFullYear(), today.getMonth(), 1); // 현재 월의 첫 번째 날을 생성
-    calendar.setActiveStartDate(firstDayOfTodaysMonth);
+    (calendar as any).setActiveStartDate(firstDayOfTodaysMonth);
   };
 
   const filterList = (list: ClubScheduleResponseData[], date: Date) => {
