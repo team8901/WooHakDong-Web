@@ -8,13 +8,13 @@ import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useLoading from '@hooks/useLoading';
 import { getSchoolClubCount, getSchoolClubs, getSchoolItemCount, getSchoolMemberCount } from '@libs/api/admin';
-import { SLICED_TERMS_LABEL, TERMS_MENU } from '@libs/constant/admin';
+import { TERMS_MENU } from '@libs/constant/admin';
 import ROUTE from '@libs/constant/path';
+import ChartPerTerm from '@pages/admin/components/ChartPerTerm';
 import Dropdown from '@pages/admin/components/Dropdown';
 import StatsSkeleton from '@pages/admin/components/StatsSkeleton';
 import ClubCard from '@pages/club/components/ClubCard';
 import { useEffect, useState } from 'react';
-import Chart from 'react-apexcharts';
 import { useLocation } from 'react-router-dom';
 import { AdminClubsResponseData, SchoolsResponseData } from 'types/admin';
 import { ClubInfoResponseData } from 'types/club';
@@ -112,50 +112,26 @@ const StatsSchoolPage = () => {
       </div>
 
       <div className="grid w-full grid-cols-1 gap-[16px] md:grid-cols-2">
-        <Chart
-          options={{
-            title: {
-              text: '분기별 동아리 수',
-            },
-            chart: {
-              id: 'stats-club-count',
-            },
-            xaxis: {
-              categories: SLICED_TERMS_LABEL,
-            },
-          }}
-          series={[{ name: '동아리 수', data: clubCounts.slice(0, -1) }]}
+        <ChartPerTerm
           type="bar"
+          title="분기별 동아리 수"
+          id="stats-club-count"
+          seriesData={clubCounts}
+          seriesName="동아리 수"
         />
-        <Chart
-          options={{
-            title: {
-              text: '분기별 회원 수',
-            },
-            chart: {
-              id: 'stats-member-count',
-            },
-            xaxis: {
-              categories: SLICED_TERMS_LABEL,
-            },
-          }}
-          series={[{ name: '회원 수', data: memberCounts.slice(0, -1) }]}
+        <ChartPerTerm
           type="bar"
+          title="분기별 회원 수"
+          id="stats-member-count"
+          seriesData={memberCounts}
+          seriesName="회원 수"
         />
-        <Chart
-          options={{
-            title: {
-              text: '분기별 물품 수',
-            },
-            chart: {
-              id: 'stats-payments',
-            },
-            xaxis: {
-              categories: SLICED_TERMS_LABEL,
-            },
-          }}
-          series={[{ name: '물품 수', data: itemCounts.slice(0, -1) }]}
+        <ChartPerTerm
           type="bar"
+          title="분기별 물품 수"
+          id="stats-item-count"
+          seriesData={itemCounts}
+          seriesName="물품 수"
         />
       </div>
 

@@ -8,12 +8,12 @@ import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useLoading from '@hooks/useLoading';
 import { getClubCount, getClubPayments, getClubs, getMemberCount, getSchoolCount, getSchools } from '@libs/api/admin';
-import { SLICED_TERMS_LABEL, TERMS_MENU } from '@libs/constant/admin';
+import { TERMS_MENU } from '@libs/constant/admin';
 import ROUTE from '@libs/constant/path';
+import ChartPerTerm from '@pages/admin/components/ChartPerTerm';
 import Dropdown from '@pages/admin/components/Dropdown';
 import ClubCard from '@pages/club/components/ClubCard';
 import { useEffect, useState } from 'react';
-import Chart from 'react-apexcharts';
 import Skeleton from 'react-loading-skeleton';
 import { AdminClubsResponseData, SchoolsResponseData } from 'types/admin';
 
@@ -153,65 +153,33 @@ const StatsHomePage = () => {
       </div>
 
       <div className="grid w-full grid-cols-1 gap-[16px] md:grid-cols-2">
-        <Chart
-          options={{
-            title: {
-              text: '분기별 동아리 수',
-            },
-            chart: {
-              id: 'stats-club-count',
-            },
-            xaxis: {
-              categories: SLICED_TERMS_LABEL,
-            },
-          }}
-          series={[{ name: '동아리 수', data: clubCounts.slice(0, -1) }]}
+        <ChartPerTerm
           type="bar"
+          title="분기별 동아리 수"
+          id="stats-club-count"
+          seriesData={clubCounts}
+          seriesName="동아리 수"
         />
-        <Chart
-          options={{
-            title: {
-              text: '분기별 학교 수',
-            },
-            chart: {
-              id: 'stats-school-count',
-            },
-            xaxis: {
-              categories: SLICED_TERMS_LABEL,
-            },
-          }}
-          series={[{ name: '학교 수', data: schoolCounts.slice(0, -1) }]}
+        <ChartPerTerm
           type="bar"
+          title="분기별 학교 수"
+          id="stats-school-count"
+          seriesData={schoolCounts}
+          seriesName="학교 수"
         />
-        <Chart
-          options={{
-            title: {
-              text: '분기별 회원 수',
-            },
-            chart: {
-              id: 'stats-member-count',
-            },
-            xaxis: {
-              categories: SLICED_TERMS_LABEL,
-            },
-          }}
-          series={[{ name: '회원 수', data: memberCounts.slice(0, -1) }]}
+        <ChartPerTerm
           type="bar"
+          title="분기별 회원 수"
+          id="stats-member-count"
+          seriesData={memberCounts}
+          seriesName="회원 수"
         />
-        <Chart
-          options={{
-            title: {
-              text: '분기별 동아리 결제금액',
-            },
-            chart: {
-              id: 'stats-payments',
-            },
-            xaxis: {
-              categories: SLICED_TERMS_LABEL,
-            },
-          }}
-          series={[{ name: '결제금액', data: payments.slice(0, -1) }]}
+        <ChartPerTerm
           type="bar"
+          title="분기별 동아리 결제금액"
+          id="stats-payments"
+          seriesData={payments}
+          seriesName="결제금액"
         />
       </div>
     </div>
