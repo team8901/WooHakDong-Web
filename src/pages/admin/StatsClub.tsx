@@ -140,7 +140,7 @@ const StatsClubPage = () => {
           </div>
           <div className="flex w-full flex-col justify-center gap-[4px] rounded-[14px] border border-lightGray p-[20px]">
             <Body1 text="동아리 운영 기간" className="text-[1.8rem] text-darkGray" />
-            <Title1 text={`${getRemainingDays(startDate)}일`} />
+            <Title1 text={`${-getRemainingDays(startDate)}일`} />
           </div>
         </div>
       </div>
