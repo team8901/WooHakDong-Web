@@ -103,6 +103,8 @@ export const Router = () => {
           </Route>
         </Route>
       </Route>
+      {/* Catch-all route for non-existent pages */}
+      <Route path="*" element={<Navigate to={ROUTE.CLUB_LIST} />} />
     </Routes>
   );
 };
