@@ -74,7 +74,13 @@ const SettingPage = () => {
             <button
               type="button"
               className="flex w-full items-center justify-between py-[12px]"
-              onClick={() => window.open('https://jjunhub.notion.site/956afbccfda44b87bf0c23dd7662b115?pvs=4')}
+              onClick={() =>
+                window.open(
+                  'https://jjunhub.notion.site/956afbccfda44b87bf0c23dd7662b115?pvs=4',
+                  '서비스 이용약관',
+                  'noopener',
+                )
+              }
             >
               <Body1 text="서비스 이용약관" />
               <ChevronRightGrayIcon />
@@ -82,7 +88,13 @@ const SettingPage = () => {
             <button
               type="button"
               className="flex w-full items-center justify-between py-[12px]"
-              onClick={() => window.open('https://jjunhub.notion.site/cc5e593f28234357ad49544a9a56d8bc?pvs=4')}
+              onClick={() =>
+                window.open(
+                  'https://jjunhub.notion.site/cc5e593f28234357ad49544a9a56d8bc?pvs=4',
+                  '개인정보 처리방침',
+                  'noopener',
+                )
+              }
             >
               <Body1 text="개인정보 처리방침" />
               <ChevronRightGrayIcon />
