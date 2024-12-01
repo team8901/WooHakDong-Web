@@ -32,6 +32,8 @@ import ClubScheduleDetailPage from '@pages/clubSchedule/ClubScheduleDetail';
 import ClubScheduleHomePage from '@pages/clubSchedule/ClubScheduleHome';
 import LoginRegisterPage from '@pages/login/LoginRegister';
 import PaymentRedirectPage from '@pages/payment/PaymentRedirect';
+import SettingPage from '@pages/setting';
+import InquiryPage from '@pages/setting/Inquiry';
 
 const RootRoute = () => {
   const isAuth = !!localStorage.getItem('accessToken');
@@ -81,6 +83,8 @@ export const Router = () => {
           </Route>
           {/* 인적사항 등록하지 않은 사용자가 접근할 수 없는 페이지 */}
           <Route element={<MemberLayout />}>
+            <Route path={ROUTE.SETTING.slice(1)} element={<SettingPage />} />
+            <Route path={ROUTE.INQUIRY.slice(1)} element={<InquiryPage />} />
             {/* 해당 동아리에 가입한 사용자가 접근할 수 없는 페이지 */}
             <Route element={<NotClubLayout />}>
               <Route path={ROUTE.CLUB_REGISTER.slice(1)} element={<ClubRegisterPage />} />

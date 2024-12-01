@@ -38,6 +38,8 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
     { label: '회비', path: ROUTE.DUES },
     { divider: true },
     { label: '일정', path: ROUTE.SCHEDULE },
+    { divider: true },
+    { label: '설정', path: ROUTE.SETTING },
   ];
 
   return (
