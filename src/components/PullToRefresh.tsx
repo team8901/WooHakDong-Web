@@ -21,7 +21,7 @@ const CustomPullToRefresh = ({ children, onRefresh }: Readonly<CustomPullToRefre
       </div>
     }
   >
-    {children}
+    <div className="h-full overflow-auto scrollbar-hide">{children}</div>
   </PullToRefresh>
 );
 
