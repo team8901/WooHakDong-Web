@@ -10,6 +10,7 @@ import useGetMemberInfo from '@hooks/member/useGetMemberInfo';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { GENDER_TYPE } from '@libs/constant/member';
 import ROUTE from '@libs/constant/path';
+import formatPhoneNumber from '@libs/util/formatPhoneNumber';
 import { useNavigate } from 'react-router-dom';
 
 const SettingPage = () => {
@@ -43,12 +44,12 @@ const SettingPage = () => {
               <div className="w-full">
                 <div className="flex flex-col gap-[4px]">
                   <div className="flex flex-col">
-                    <Body4 text={memberInfo?.memberPhoneNumber ?? ''} />
+                    <Body4 text={formatPhoneNumber(memberInfo?.memberPhoneNumber ?? '')} />
                     <Body4 text={memberInfo?.memberEmail ?? ''} />
                   </div>
                   <div className="h-[0.6px] bg-lightGray" />
                   <div className="flex flex-col">
-                    <Body4 text="202190349" />
+                    <Body4 text={memberInfo?.memberStudentNumber ?? ''} />
                     <div className="flex items-center gap-[4px]">
                       <Body4 text={memberInfo?.memberSchool ?? ''} />
                       <div className="h-[8px] w-[1px] bg-gray" />
@@ -61,6 +62,7 @@ const SettingPage = () => {
             <button
               type="button"
               className="flex h-[32px] items-center justify-center rounded-[7px] bg-lightGray p-[8px]"
+              onClick={() => customNavigate(ROUTE.MEMBER_INFO_WRITE, { state: { memberInfo, isSettingPage: true } })}
             >
               <Caption2 text="내 정보 수정" />
             </button>

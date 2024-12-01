@@ -1,29 +1,34 @@
 import AppBar from '@components/AppBar';
 import Button from '@components/Button';
-import Input from '@components/Input';
 import Caption2 from '@components/Caption2';
+import Input from '@components/Input';
+import InputBox from '@components/InputBox';
+import ScrollView from '@components/ScrollView';
 import Title2 from '@components/Title2';
+import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
+import useLoading from '@hooks/useLoading';
 import { getMemberInfo } from '@libs/api/member';
 import ROUTE from '@libs/constant/path';
-import { useEffect, useRef, useState } from 'react';
-import InputBox from '@components/InputBox';
-import GenderSelection from '@pages/member/components/GenderSelection';
-import { Gender, MemberInfoResponseData } from 'types/member';
 import formatPhoneNumber from '@libs/util/formatPhoneNumber';
-import ScrollView from '@components/ScrollView';
-import useLoading from '@hooks/useLoading';
-import { useToast } from '@contexts/ToastContext';
+import GenderSelection from '@pages/member/components/GenderSelection';
+import { useEffect, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
+import { useLocation } from 'react-router-dom';
+import { Gender, MemberInfoResponseData } from 'types/member';
 
 const MemberInfoWritePage = () => {
+  const { state } = useLocation();
   const navigate = useCustomNavigate();
   const { isLoading: isMemberInfoLoading, setIsLoading: setIsMemberInfoLoading } = useLoading();
   const { isLoading: isButtonLoading, setIsLoading: setIsButtonLoading } = useLoading();
   const { setToastMessage } = useToast();
 
   const [memberInfo, setMemberInfo] = useState<MemberInfoResponseData>({
-    memberGender: 'MAN',
+    memberGender: state?.memberInfo?.memberGender ?? 'MAN',
+    memberPhoneNumber: state?.memberInfo?.memberPhoneNumber ?? '',
+    memberMajor: state?.memberInfo?.memberMajor ?? '',
+    memberStudentNumber: state?.memberInfo?.memberStudentNumber ?? '',
   } as MemberInfoResponseData);
 
   useEffect(() => {
@@ -62,7 +67,7 @@ const MemberInfoWritePage = () => {
     setIsButtonLoading(true);
     setTimeout(() => {
       setIsButtonLoading(false);
-      navigate(ROUTE.MEMBER_INFO_CONFIRM, { state: memberInfo });
+      navigate(ROUTE.MEMBER_INFO_CONFIRM, { state: { memberInfo, isSettingPage: state?.isSettingPage } });
     }, 500);
   };
 

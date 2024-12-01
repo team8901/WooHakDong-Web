@@ -5,6 +5,7 @@ import Caption2 from '@components/Caption2';
 import ScrollView from '@components/ScrollView';
 import Title2 from '@components/Title2';
 import { useToast } from '@contexts/ToastContext';
+import useGetMemberInfo from '@hooks/member/useGetMemberInfo';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useLoading from '@hooks/useLoading';
 import { postMemberInfo } from '@libs/api/member';
@@ -18,17 +19,18 @@ import { MemberInfoRequestData, MemberInfoResponseData } from 'types/member';
 
 const MemberInfoConfirmPage = () => {
   const navigate = useCustomNavigate();
-  const location = useLocation();
+  const { state } = useLocation();
   const [memberInfo, setMemberInfo] = useState<MemberInfoResponseData | null>(null);
   const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
+  const { refetch: refetchMemberInfo } = useGetMemberInfo();
 
   useEffect(() => {
-    if (location.state === null) {
+    if (!state?.memberInfo) {
       navigate(ROUTE.MEMBER_REGISTER);
     }
 
-    setMemberInfo(location.state);
+    setMemberInfo(state.memberInfo);
   }, []);
 
   const handleButtonClick = async () => {
@@ -44,8 +46,9 @@ const MemberInfoConfirmPage = () => {
     setIsLoading(true);
     try {
       await postMemberInfo(postData);
-
-      navigate(ROUTE.CLUB_REGISTER);
+      await refetchMemberInfo();
+      navigate(state?.isSettingPage ? ROUTE.SETTING : ROUTE.CLUB_REGISTER);
+      setToastMessage('회원 정보가 저장되었어요');
     } catch (error) {
       setToastMessage(`회원 정보를 저장하는 데 실패했어요\n${error}`);
     } finally {
