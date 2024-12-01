@@ -6,7 +6,9 @@ import Caption2 from '@components/Caption2';
 import ScrollView from '@components/ScrollView';
 import { useAuth } from '@contexts/AuthContext';
 import { useToast } from '@contexts/ToastContext';
+import useGetMemberInfo from '@hooks/member/useGetMemberInfo';
 import useCustomNavigate from '@hooks/useCustomNavigate';
+import { GENDER_TYPE } from '@libs/constant/member';
 import ROUTE from '@libs/constant/path';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,6 +17,7 @@ const SettingPage = () => {
   const customNavigate = useCustomNavigate();
   const { logout } = useAuth();
   const { setToastMessage } = useToast();
+  const { data: memberInfo } = useGetMemberInfo();
 
   const handleLogout = () => {
     logout();
@@ -34,22 +37,22 @@ const SettingPage = () => {
           <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray p-[12px]">
             <div className="flex items-center gap-[32px] px-[20px]">
               <div className="flex flex-shrink-0 flex-col items-center">
-                <Body1 text="이재용" />
-                <Caption2 text="남성" className="text-darkGray" />
+                <Body1 text={memberInfo?.memberName ?? ''} />
+                <Caption2 text={GENDER_TYPE[memberInfo?.memberGender ?? 'MAN']} className="text-darkGray" />
               </div>
               <div className="w-full">
                 <div className="flex flex-col gap-[4px]">
                   <div className="flex flex-col">
-                    <Body4 text="010-5678-1234" />
-                    <Body4 text="samsung@ajou.ac.kr" />
+                    <Body4 text={memberInfo?.memberPhoneNumber ?? ''} />
+                    <Body4 text={memberInfo?.memberEmail ?? ''} />
                   </div>
                   <div className="h-[0.6px] bg-lightGray" />
                   <div className="flex flex-col">
                     <Body4 text="202190349" />
                     <div className="flex items-center gap-[4px]">
-                      <Body4 text="아주대학교" />
+                      <Body4 text={memberInfo?.memberSchool ?? ''} />
                       <div className="h-[8px] w-[1px] bg-gray" />
-                      <Body4 text="경영학과" />
+                      <Body4 text={memberInfo?.memberMajor ?? ''} />
                     </div>
                   </div>
                 </div>
@@ -112,7 +115,7 @@ const SettingPage = () => {
             <button
               type="button"
               className="flex w-full items-center justify-between py-[12px]"
-              onClick={() => customNavigate(ROUTE.INQUIRY)}
+              onClick={() => customNavigate(ROUTE.INQUIRY, { state: { memberEmail: memberInfo?.memberEmail } })}
             >
               <Body1 text="고객센터" />
               <ChevronRightGrayIcon />
