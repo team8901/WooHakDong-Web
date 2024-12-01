@@ -5,6 +5,7 @@ import Caption2 from '@components/Caption2';
 import ScrollView from '@components/ScrollView';
 import { DropDownProvider } from '@contexts/DropDownContext';
 import { useToast } from '@contexts/ToastContext';
+import useLoading from '@hooks/useLoading';
 import { postInquiry } from '@libs/api/inquiry';
 import Dropdown from '@pages/setting/components/Dropdown';
 import { useState } from 'react';
@@ -19,10 +20,12 @@ const InquiryPage = () => {
   const [content, setContent] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const { setToastMessage } = useToast();
+  const { isLoading, setIsLoading } = useLoading();
 
   const handleInquirySend = async () => {
     if (!selectedCategory || !content || !isChecked) return;
 
+    setIsLoading(true);
     try {
       await postInquiry({ inquiryCategory: selectedCategory, inquiryContent: content });
       setToastMessage('문의가 성공적으로 전송되었어요');
@@ -30,6 +33,8 @@ const InquiryPage = () => {
     } catch (error) {
       console.error(error);
       setToastMessage('문의 전송에 실패했어요');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -85,7 +90,7 @@ const InquiryPage = () => {
             text="보내기"
             onClick={handleInquirySend}
             disabled={!selectedCategory || !content || !isChecked}
-            //   isLoading={isBorrowLoading || isReturnLoading}
+            isLoading={isLoading}
           />
         </div>
       </div>
