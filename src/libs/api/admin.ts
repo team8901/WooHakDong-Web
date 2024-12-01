@@ -17,6 +17,8 @@ import { LoginResponseData } from 'types/auth';
 import { ResultResponse } from 'types/common';
 
 const fetchLoginData = async ({ memberLoginId, memberPassword }: Readonly<AdminLoginRequestData>) => {
+  axios.defaults.headers.common['Authorization'] = undefined;
+
   const res = await axios.post<LoginResponseData>(`${import.meta.env.VITE_API_URL}/v1/admin/auth/login`, {
     memberLoginId,
     memberPassword,
