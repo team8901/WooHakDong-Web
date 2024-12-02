@@ -6,9 +6,10 @@ import InputBox from '@components/InputBox';
 import ScrollView from '@components/ScrollView';
 import Title2 from '@components/Title2';
 import { useToast } from '@contexts/ToastContext';
+import useGetMemberInfo from '@hooks/member/useGetMemberInfo';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useLoading from '@hooks/useLoading';
-import { getMemberInfo } from '@libs/api/member';
+import { getMemberInfo, postMemberInfo } from '@libs/api/member';
 import ROUTE from '@libs/constant/path';
 import formatPhoneNumber from '@libs/util/formatPhoneNumber';
 import GenderSelection from '@pages/member/components/GenderSelection';
@@ -23,6 +24,8 @@ const MemberInfoWritePage = () => {
   const { isLoading: isMemberInfoLoading, setIsLoading: setIsMemberInfoLoading } = useLoading();
   const { isLoading: isButtonLoading, setIsLoading: setIsButtonLoading } = useLoading();
   const { setToastMessage } = useToast();
+  const { isLoading, setIsLoading } = useLoading();
+  const { refetch: refetchMemberInfo } = useGetMemberInfo();
 
   const [memberInfo, setMemberInfo] = useState<MemberInfoResponseData>({
     memberGender: state?.memberInfo?.memberGender ?? 'MAN',
@@ -61,13 +64,28 @@ const MemberInfoWritePage = () => {
     setMemberInfo((prev) => ({ ...prev, memberStudentNumber: input }));
   };
 
-  const handleGoNext = () => {
+  const handleGoNext = async () => {
     if (disabled) return;
+
+    if (state?.isSettingPage) {
+      setIsLoading(true);
+      try {
+        await postMemberInfo(memberInfo);
+        await refetchMemberInfo();
+        navigate(ROUTE.SETTING);
+        setToastMessage('회원 정보가 저장되었어요');
+      } catch (error) {
+        setToastMessage(`회원 정보를 저장하는 데 실패했어요\n${error}`);
+      } finally {
+        setIsLoading(false);
+      }
+      return;
+    }
 
     setIsButtonLoading(true);
     setTimeout(() => {
       setIsButtonLoading(false);
-      navigate(ROUTE.MEMBER_INFO_CONFIRM, { state: { memberInfo, isSettingPage: state?.isSettingPage } });
+      navigate(ROUTE.MEMBER_INFO_CONFIRM, { state: { memberInfo } });
     }, 500);
   };
 
@@ -100,7 +118,11 @@ const MemberInfoWritePage = () => {
   const studentNumberRef = useRef<HTMLInputElement>(null);
 
   const disabled =
-    !memberInfo.memberMajor?.trim() || !memberInfo.memberStudentNumber?.trim() || !memberInfo.memberPhoneNumber?.trim();
+    !memberInfo.memberMajor?.trim() ||
+    !memberInfo.memberStudentNumber?.trim() ||
+    !memberInfo.memberPhoneNumber?.trim() ||
+    isButtonLoading ||
+    isLoading;
 
   return (
     <div className="relative h-full px-[20px] pt-[56px]">
@@ -110,7 +132,7 @@ const MemberInfoWritePage = () => {
 
       <form onSubmit={handleButtonClick} className="h-full">
         <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">
-          <Title2 text="회원님의 정보를 알려주세요" />
+          <Title2 text={state?.isSettingPage ? '회원 정보 수정' : '회원님의 정보를 알려주세요'} />
 
           {isMemberInfoLoading ? (
             <div>
@@ -163,7 +185,11 @@ const MemberInfoWritePage = () => {
         </ScrollView>
 
         <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
-          <Button text="다음" disabled={disabled} isLoading={isButtonLoading} />
+          <Button
+            text={state?.isSettingPage ? '저장' : '다음'}
+            disabled={disabled}
+            isLoading={isButtonLoading || isLoading}
+          />
         </div>
       </form>
     </div>
