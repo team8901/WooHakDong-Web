@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-const useBottomSheet = (onSelectOption: () => void) => {
+const useBottomSheet = ({ onSelectOption }: Readonly<{ onSelectOption: () => void }>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(0);
   const optionIdx = useRef(-1);
