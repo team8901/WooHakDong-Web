@@ -6,7 +6,7 @@ import { useToast } from '@contexts/ToastContext';
 import useGetClubId from '@hooks/club/useGetClubId';
 import useGetClubMembers from '@hooks/clubMember/useGetClubMembers';
 import useGetClubMembersMy from '@hooks/clubMember/useGetClubMembersMy';
-import calculateClubAssignedTerm from '@libs/util/calculateClubAssignedTerm';
+import { calculateClubAssignedTerm } from '@libs/util/calculateClubAssignedTerm';
 import ListItem from '@pages/clubMember/components/ListItem';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';

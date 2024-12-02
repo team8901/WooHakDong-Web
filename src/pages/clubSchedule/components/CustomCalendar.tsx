@@ -1,3 +1,4 @@
+import { getTermRange } from '@libs/util/calculateClubAssignedTerm';
 import { SelectedDate } from '@pages/clubSchedule/ClubScheduleHome';
 import TileContent from '@pages/clubSchedule/components/TileContent';
 import Calendar from 'react-calendar';
@@ -17,6 +18,8 @@ const CustomCalendar = ({
   scheduleList: ClubScheduleResponseData[];
   setCurrentMonth: React.Dispatch<React.SetStateAction<number>>;
 }) => {
+  const { startDate, endDate } = getTermRange();
+
   return (
     <Calendar
       ref={calendarRef}
@@ -45,6 +48,9 @@ const CustomCalendar = ({
       }} // 달력의 시작 날짜가 바뀌면 selectedDate를 업데이트
       formatDay={(_, date) => date.toLocaleString('en', { day: 'numeric' })} // 날짜 형식을 설정
       tileContent={({ date }) => <TileContent scheduleList={scheduleList} date={date} />}
+      locale="ko"
+      minDate={new Date(startDate)}
+      maxDate={new Date(endDate)}
     />
   );
 };
