@@ -42,6 +42,13 @@ const RootRoute = () => {
     return <Navigate to={ROUTE.LOGIN_REGISTER} />;
   }
 
+  if (localStorage.getItem('admin')) {
+    localStorage.removeItem('admin');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    return <Navigate to={ROUTE.LOGIN_REGISTER} />;
+  }
+
   return <Navigate to={ROUTE.CLUB_LIST} />;
 };
 
