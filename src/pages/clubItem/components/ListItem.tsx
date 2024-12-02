@@ -2,7 +2,6 @@ import useCustomNavigate from '@hooks/useCustomNavigate';
 import ROUTE from '@libs/constant/path';
 import ItemRentalTime from '@pages/clubItem/components/ItemRentalTime';
 import ItemTitle from '@pages/clubItem/components/ItemTitle';
-import ItemUnavailable from '@pages/clubItem/components/ItemUnavailable';
 import ItemUsing from '@pages/clubItem/components/ItemUsing';
 import { ClubItemResponseData } from 'types/item';
 
@@ -30,7 +29,6 @@ const ListItem = ({ item, borrowedReturnDate, myPage = false }: Readonly<ClubIte
       <div className="flex w-full flex-col items-start gap-[4px]">
         <ItemTitle item={item} />
         <div className="flex items-center gap-[4px] self-end">
-          <ItemUnavailable item={item} />
           <ItemUsing item={item} />
           <ItemRentalTime item={item} />
         </div>
