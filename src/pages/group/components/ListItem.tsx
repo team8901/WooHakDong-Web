@@ -2,11 +2,19 @@ import PersonIcon from '@assets/images/group/PersonIcon';
 import Body1 from '@components/Body1';
 import Body2 from '@components/Body2';
 import Caption2 from '@components/Caption2';
+import useCustomNavigate from '@hooks/useCustomNavigate';
+import ROUTE from '@libs/constant/path';
 import { GroupInfoByGroupIdResponseData } from 'types/group';
 
 const ListItem = ({ group }: { group: GroupInfoByGroupIdResponseData }) => {
+  const navigate = useCustomNavigate();
+
   return (
-    <div className="flex flex-col">
+    <button
+      type="button"
+      className="flex flex-col text-start"
+      onClick={() => navigate(`${ROUTE.GROUP_DETAIL}/${group.groupId}`, { state: { group } })}
+    >
       <div className="flex flex-col gap-[2px]">
         <div className="flex items-center gap-[4px]">
           <Body2 text={group.groupName ?? ''} />
@@ -23,7 +31,7 @@ const ListItem = ({ group }: { group: GroupInfoByGroupIdResponseData }) => {
         <PersonIcon />
         <Caption2 text={`${group.groupMemberCount} / ${group.groupMemberLimit}`} className="text-darkGray" />
       </div>
-    </div>
+    </button>
   );
 };
 

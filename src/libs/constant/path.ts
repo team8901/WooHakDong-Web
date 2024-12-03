@@ -24,6 +24,7 @@ const ROUTE = {
   SETTING: '/setting',
   INQUIRY: '/inquiry',
   GROUP: '/groups',
+  GROUP_DETAIL: '/groups/detail',
 };
 
 export default ROUTE;

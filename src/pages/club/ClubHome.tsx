@@ -96,7 +96,7 @@ const ClubHomePage = () => {
                 <CustomPullToRefresh onRefresh={handleRefreshItem}>
                   <div className="flex flex-col gap-[20px] pb-[20px]">
                     {itemList.length === 0 ? (
-                      <div className="flex h-full min-h-[50px] items-center justify-center">
+                      <div className="flex h-full min-h-[90px] items-center justify-center">
                         <EmptyText text="아직 대여한 물품이 없어요" />
                       </div>
                     ) : (
@@ -133,7 +133,7 @@ const ClubHomePage = () => {
                 <CustomPullToRefresh onRefresh={handleRefreshSchedule}>
                   <div className="flex flex-col gap-[20px] pb-[80px]">
                     {scheduleList.length === 0 ? (
-                      <div className="flex h-full items-center justify-center">
+                      <div className="flex h-full min-h-[90px] items-center justify-center">
                         <EmptyText text="아직 등록된 일정이 없어요" />
                       </div>
                     ) : (

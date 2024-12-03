@@ -19,7 +19,6 @@ import { AxiosError } from 'axios';
 
 const PaymentPage = () => {
   const { state } = useLocation();
-  const { groupName, groupAmount, groupId } = state;
   const navigate = useCustomNavigate();
   const [paymentButtonIndex, setPaymentButtonIndex] = useState(0);
   const [clubId, setClubId] = useState(0);
@@ -64,8 +63,8 @@ const PaymentPage = () => {
 
   const handlePostPortOne = async (pg: string) => {
     const pay_method = 'card';
-    const name = `${clubName} ${groupName || '동아리원 등록하기'}`;
-    const amount = groupAmount || clubDues;
+    const name = `${clubName} ${state?.groupName || '동아리원 등록하기'}`;
+    const amount = state?.groupAmount || clubDues;
     const buyer_email = memberEmail || '8901test@test.com';
     const buyer_name = memberName || '박박준';
     const buyer_tel = memberPhoneNumber || '010-4242-4242';
@@ -81,7 +80,7 @@ const PaymentPage = () => {
       buyer_tel,
       merchantUid: merchantUid.current,
       clubEnglishName: clubEnglishName || '',
-      groupId: Number(groupId),
+      groupId: Number(state?.groupId),
     };
 
     setIsPaymentLoading(true);
@@ -93,7 +92,7 @@ const PaymentPage = () => {
         return;
       }
 
-      if (groupId) {
+      if (state?.groupId) {
         setToastMessage('모임에 참가했어요');
         navigate(ROUTE.GROUP);
         return;

@@ -37,6 +37,7 @@ import ClubHomePage from '@pages/club/ClubHome';
 import GroupLayout from '@layouts/GroupLayout';
 import GroupRegisterPage from '@pages/group/GroupRegister';
 import ClubGroupHomePage from '@pages/group/ClubGroupHome';
+import ClubGroupDetailPage from '@pages/group/ClubGroupDetail';
 
 const RootRoute = () => {
   const isAuth = !!localStorage.getItem('accessToken');
@@ -111,6 +112,7 @@ export const Router = () => {
               <Route path={ROUTE.SCHEDULE.slice(1)} element={<ClubScheduleHomePage />} />
               <Route path={`${ROUTE.SCHEDULE.slice(1)}/:scheduleId`} element={<ClubScheduleDetailPage />} />
               <Route path={ROUTE.GROUP.slice(1)} element={<ClubGroupHomePage />} />
+              <Route path={`${ROUTE.GROUP_DETAIL.slice(1)}/:groupId`} element={<ClubGroupDetailPage />} />
               <Route path={`${ROUTE.GROUP.slice(1)}/:groupId`} element={<GroupLayout />}>
                 <Route path={ROUTE.ROOT.slice(1)} element={<GroupRegisterPage />} />
                 <Route path={ROUTE.PAYMENT.slice(1)} element={<PaymentPage />} />
