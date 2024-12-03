@@ -8,7 +8,6 @@ import MemberInfoConfirmPage from '@pages/member/MemberInfoConfirm';
 import MemberInfoWritePage from '@pages/member/MemberInfoWrite';
 import MemberRegisterPage from '@pages/member/MemberRegister';
 import PaymentPage from '@pages/payment';
-// import LandingPage from '@pages/landing';
 import AdminLayout from '@layouts/AdminLayout';
 import AuthLayout from '@layouts/AuthLayout';
 import ClubLayout from '@layouts/ClubLayout';
@@ -35,6 +34,9 @@ import PaymentRedirectPage from '@pages/payment/PaymentRedirect';
 import SettingPage from '@pages/setting';
 import InquiryPage from '@pages/setting/Inquiry';
 import ClubHomePage from '@pages/club/ClubHome';
+import GroupLayout from '@layouts/GroupLayout';
+import GroupRegisterPage from '@pages/group/GroupRegister';
+import ClubGroupHomePage from '@pages/group/ClubGroupHome';
 
 const RootRoute = () => {
   const isAuth = !!localStorage.getItem('accessToken');
@@ -56,7 +58,6 @@ const RootRoute = () => {
 export const Router = () => {
   return (
     <Routes>
-      {/* <Route path={ROUTE.ROOT} element={<LandingPage />} /> */}
       <Route path={ROUTE.ROOT} element={<RootRoute />}>
         <Route path={ROUTE.ROOT} element={<ClubListPage />} />
       </Route>
@@ -73,13 +74,11 @@ export const Router = () => {
       </Route>
       {/* 인증된 사용자가 접근할 수 없는 페이지 */}
       <Route element={<NotAuthLayout />}>
-        {/* <Route path={ROUTE.ROOT} element={<LoginRegisterPage />} /> */}
         <Route path={ROUTE.LOGIN_REGISTER} element={<LoginRegisterPage />} />
         <Route path={`${ROUTE.CLUB}/:clubEnglishName${ROUTE.LOGIN_REGISTER}`} element={<LoginRegisterPage />} />
       </Route>
       {/* 인증되지 않은 사용자가 접근할 수 없는 페이지 */}
       <Route element={<AuthLayout />}>
-        {/* <Route path={ROUTE.ROOT} element={<ClubListPage />} /> */}
         <Route path={ROUTE.CLUB_LIST} element={<ClubListPage />} />
         <Route path={`${ROUTE.CLUB}/:clubEnglishName`}>
           <Route path={ROUTE.MEMBER_INFO_WRITE.slice(1)} element={<MemberInfoWritePage />} />
@@ -111,6 +110,12 @@ export const Router = () => {
               <Route path={ROUTE.DUES.slice(1)} element={<ClubDuesHomePage />} />
               <Route path={ROUTE.SCHEDULE.slice(1)} element={<ClubScheduleHomePage />} />
               <Route path={`${ROUTE.SCHEDULE.slice(1)}/:scheduleId`} element={<ClubScheduleDetailPage />} />
+              <Route path={ROUTE.GROUP.slice(1)} element={<ClubGroupHomePage />} />
+              <Route path={`${ROUTE.GROUP.slice(1)}/:groupId`} element={<GroupLayout />}>
+                <Route path={ROUTE.ROOT.slice(1)} element={<GroupRegisterPage />} />
+                <Route path={ROUTE.PAYMENT.slice(1)} element={<PaymentPage />} />
+                <Route path={ROUTE.PAYMENT_REDIRECT.slice(1)} element={<PaymentRedirectPage />} />
+              </Route>
             </Route>
           </Route>
         </Route>

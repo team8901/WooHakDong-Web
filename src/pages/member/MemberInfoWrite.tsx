@@ -15,12 +15,13 @@ import formatPhoneNumber from '@libs/util/formatPhoneNumber';
 import GenderSelection from '@pages/member/components/GenderSelection';
 import { useEffect, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Gender, MemberInfoResponseData } from 'types/member';
 
 const MemberInfoWritePage = () => {
   const { state } = useLocation();
-  const navigate = useCustomNavigate();
+  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const { isLoading: isMemberInfoLoading, setIsLoading: setIsMemberInfoLoading } = useLoading();
   const { isLoading: isButtonLoading, setIsLoading: setIsButtonLoading } = useLoading();
   const { setToastMessage } = useToast();
@@ -72,7 +73,7 @@ const MemberInfoWritePage = () => {
       try {
         await postMemberInfo(memberInfo);
         await refetchMemberInfo();
-        navigate(ROUTE.SETTING);
+        customNavigate(ROUTE.SETTING);
         setToastMessage('회원 정보가 저장되었어요');
       } catch (error) {
         setToastMessage(`회원 정보를 저장하는 데 실패했어요\n${error}`);
@@ -85,7 +86,7 @@ const MemberInfoWritePage = () => {
     setIsButtonLoading(true);
     setTimeout(() => {
       setIsButtonLoading(false);
-      navigate(ROUTE.MEMBER_INFO_CONFIRM, { state: { memberInfo } });
+      customNavigate(ROUTE.MEMBER_INFO_CONFIRM, { state: { memberInfo } });
     }, 500);
   };
 
@@ -127,7 +128,7 @@ const MemberInfoWritePage = () => {
   return (
     <div className="relative h-full px-[20px] pt-[56px]">
       <div className="absolute left-0 top-0">
-        <AppBar />
+        <AppBar goBackCallback={() => navigate(-1)} />
       </div>
 
       <form onSubmit={handleButtonClick} className="h-full">

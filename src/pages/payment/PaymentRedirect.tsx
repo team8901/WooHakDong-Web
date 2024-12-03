@@ -1,7 +1,7 @@
 import LoadingSpinner from '@components/LoadingSpinner';
 import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
-import { getGroupInfo, postGroupJoin, postGroupJoinConfirm } from '@libs/api/group';
+import { getGroupInfo, postGroupOrder, postGroupJoinConfirm } from '@libs/api/group';
 import ROUTE from '@libs/constant/path';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -13,6 +13,7 @@ const PaymentRedirectPage = () => {
   const impUid = searchParams.get('imp_uid');
   const merchantUid = searchParams.get('merchant_uid');
   const impSuccess = searchParams.get('imp_success');
+  const groupId = Number(searchParams.get('groupId'));
   const navigate = useCustomNavigate();
   const { setToastMessage } = useToast();
 
@@ -27,10 +28,11 @@ const PaymentRedirectPage = () => {
 
     (async () => {
       try {
-        const { groupId } = await getGroupInfo({ clubId: Number(clubId) });
-        const orderId = await postGroupJoin({ merchantUid, groupId });
+        const { groupId: clubGroupId } = await getGroupInfo({ clubId: Number(clubId) });
+        const paymentGroupId = groupId || clubGroupId;
+        const orderId = await postGroupOrder({ merchantUid, groupId: paymentGroupId });
 
-        await postGroupJoinConfirm({ merchantUid, groupId, impUid, orderId });
+        await postGroupJoinConfirm({ merchantUid, groupId: paymentGroupId, impUid, orderId });
         setToastMessage('동아리 가입이 완료되었어요');
 
         navigate(ROUTE.ROOT);

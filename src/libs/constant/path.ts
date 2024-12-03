@@ -23,6 +23,7 @@ const ROUTE = {
   ADMIN_STATS_CLUB: '/admin/stats/clubs',
   SETTING: '/setting',
   INQUIRY: '/inquiry',
+  GROUP: '/groups',
 };
 
 export default ROUTE;

@@ -35,23 +35,53 @@ describe('동아리 회원은 서비스에 연결된 은행 api를 통해 회비
     vi.clearAllMocks();
   });
 
-  it('결제에 성공한 경우', async () => {
-    // postPortOne이 성공적으로 호출되도록 설정
+  it('동아리 가입 결제', async () => {
     (postPortOne as Mock).mockResolvedValueOnce('동아리 가입이 완료되었습니다.');
 
     render(
-      <MemoryRouter initialEntries={['/doit/payment']}>
+      <MemoryRouter
+        initialEntries={[
+          {
+            pathname: '/doit/payment',
+            state: {},
+          },
+        ]}
+      >
         <PaymentPage />
       </MemoryRouter>,
     );
 
     fireEvent.click(screen.getByText('결제하기'));
 
-    // postPortOne이 호출되었는지 확인
     await waitFor(() => {
       expect(postPortOne).toHaveBeenCalled();
     });
 
     expect(mockNavigate).toHaveBeenCalledWith(ROUTE.ROOT);
+  });
+
+  it('모임 참가 결제', async () => {
+    (postPortOne as Mock).mockResolvedValueOnce('동아리 가입이 완료되었습니다.');
+
+    render(
+      <MemoryRouter
+        initialEntries={[
+          {
+            pathname: '/doit/payment',
+            state: { groupName: 'Test Group', groupAmount: 10000, groupId: '123' },
+          },
+        ]}
+      >
+        <PaymentPage />
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(screen.getByText('결제하기'));
+
+    await waitFor(() => {
+      expect(postPortOne).toHaveBeenCalled();
+    });
+
+    expect(mockNavigate).toHaveBeenCalledWith(ROUTE.GROUP);
   });
 });
