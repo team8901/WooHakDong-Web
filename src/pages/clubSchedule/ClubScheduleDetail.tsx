@@ -4,7 +4,7 @@ import InputBox from '@components/InputBox';
 import ScrollView from '@components/ScrollView';
 import convertColor from '@libs/util/convertColor';
 import { formatDateDetail } from '@libs/util/formatDate';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ClubScheduleResponseData } from 'types/clubSchedule';
 
 export type DatePiece = Date | null;
@@ -13,11 +13,12 @@ export type SelectedDate = DatePiece | [DatePiece, DatePiece];
 const ClubScheduleDetailPage = () => {
   const { state } = useLocation();
   const initalSchedule: ClubScheduleResponseData = state.schedule;
+  const navigate = useNavigate();
 
   return (
     <div className="relative h-full pb-[100px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
-        <AppBar />
+        <AppBar goBackCallback={() => navigate(-1)} />
       </div>
 
       <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[20px] px-[20px]">

@@ -13,11 +13,12 @@ import ROUTE from '@libs/constant/path';
 import formatPhoneNumber from '@libs/util/formatPhoneNumber';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { MemberInfoRequestData, MemberInfoResponseData } from 'types/member';
 
 const MemberInfoConfirmPage = () => {
-  const navigate = useCustomNavigate();
+  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const { state } = useLocation();
   const [memberInfo, setMemberInfo] = useState<MemberInfoResponseData | null>(null);
   const { isLoading, setIsLoading } = useLoading();
@@ -25,7 +26,7 @@ const MemberInfoConfirmPage = () => {
 
   useEffect(() => {
     if (!state?.memberInfo) {
-      navigate(ROUTE.MEMBER_REGISTER);
+      customNavigate(ROUTE.MEMBER_REGISTER);
     }
 
     setMemberInfo(state.memberInfo);
@@ -44,7 +45,7 @@ const MemberInfoConfirmPage = () => {
     setIsLoading(true);
     try {
       await postMemberInfo(postData);
-      navigate(ROUTE.CLUB_REGISTER);
+      customNavigate(ROUTE.CLUB_REGISTER);
       setToastMessage('회원 정보가 저장되었어요');
     } catch (error) {
       setToastMessage(`회원 정보를 저장하는 데 실패했어요\n${error}`);
@@ -57,7 +58,7 @@ const MemberInfoConfirmPage = () => {
   return (
     <div className="relative h-full px-[20px] pt-[56px]">
       <div className="absolute left-0 top-0">
-        <AppBar />
+        <AppBar goBackCallback={() => navigate(-1)} />
       </div>
 
       <ScrollView fadeTop fadeBottom className="flex h-full flex-col gap-[40px]">

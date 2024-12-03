@@ -218,7 +218,7 @@ const ClubItemDetailPage = () => {
   return (
     <div className="relative h-full pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
-        <AppBar />
+        <AppBar goBackCallback={() => navigate(-1)} />
       </div>
 
       {isLoading ? (

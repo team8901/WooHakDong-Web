@@ -3,18 +3,20 @@ import Button from '@components/Button';
 import Title2 from '@components/Title2';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import ROUTE from '@libs/constant/path';
+import { useNavigate } from 'react-router-dom';
 
 const MemberRegisterPage = () => {
-  const navigate = useCustomNavigate();
+  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
 
   const handleButtonClick = () => {
-    navigate(ROUTE.CLUB_JOIN_NOTICE);
+    customNavigate(ROUTE.CLUB_JOIN_NOTICE);
   };
 
   return (
     <div className="relative h-full px-[20px] pb-[100px] pt-[116px]">
       <div className="absolute left-0 top-0">
-        <AppBar />
+        <AppBar goBackCallback={() => navigate(-1)} />
       </div>
 
       <div className="flex flex-col">

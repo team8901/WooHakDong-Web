@@ -7,12 +7,13 @@ import Title4 from '@components/Title4';
 import { CLUB_MEMBER_ROLE } from '@libs/constant/clubMember';
 import { GENDER_TYPE } from '@libs/constant/member';
 import formatPhoneNumber from '@libs/util/formatPhoneNumber';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ClubMemberResponseData } from 'types/clubMember';
 
 const ClubMemberDetailPage = () => {
   const { state } = useLocation();
   const member: ClubMemberResponseData = state.member;
+  const navigate = useNavigate();
 
   const callPhone = (phoneNumber: string) => {
     location.href = `tel:${phoneNumber}`;
@@ -25,7 +26,7 @@ const ClubMemberDetailPage = () => {
   return (
     <div className="relative h-full pb-[70px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
-        <AppBar />
+        <AppBar goBackCallback={() => navigate(-1)} />
       </div>
 
       <ScrollView

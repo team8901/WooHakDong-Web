@@ -6,18 +6,20 @@ import ScrollView from '@components/ScrollView';
 import Title2 from '@components/Title2';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import ROUTE from '@libs/constant/path';
+import { useNavigate } from 'react-router-dom';
 
 const ClubJoinNoticePage = () => {
-  const navigate = useCustomNavigate();
+  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
 
   const handleButtonClick = () => {
-    navigate(ROUTE.MEMBER_INFO_WRITE);
+    customNavigate(ROUTE.MEMBER_INFO_WRITE);
   };
 
   return (
     <div className="relative h-full px-[20px] pt-[56px]">
       <div className="absolute left-0 top-0">
-        <AppBar />
+        <AppBar goBackCallback={() => navigate(-1)} />
       </div>
 
       <ScrollView className="flex h-full flex-col gap-[40px]">
