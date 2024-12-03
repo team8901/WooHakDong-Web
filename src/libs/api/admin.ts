@@ -7,6 +7,8 @@ import {
   AdminClubPeriodResponseData,
   AdminClubsResultResponseData,
   AdminClubStatsRequestData,
+  AdminInquiryRequestData,
+  AdminInquiryResponseData,
   AdminLoginRequestData,
   AdminSchoolStatsRequestData,
   AssignedTermResquestData,
@@ -125,6 +127,13 @@ const getClubItemsHistory = async ({ clubId, assignedTerm }: Readonly<AdminClubS
   return res.data;
 };
 
+const getAdminInquiryByCategory = async ({ category }: Readonly<AdminInquiryRequestData>) => {
+  const res = await axiosInstance.get<ResultResponse<AdminInquiryResponseData[]>>(
+    `/v1/admin/inquiry?category=${category}`,
+  );
+  return res.data;
+};
+
 export {
   fetchLoginData,
   getClubCount,
@@ -141,4 +150,5 @@ export {
   getClubStatsMembers,
   getClubItemCount,
   getClubItemsHistory,
+  getAdminInquiryByCategory,
 };

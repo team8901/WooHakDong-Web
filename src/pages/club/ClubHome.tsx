@@ -141,7 +141,7 @@ const ClubHomePage = () => {
                         {scheduleList.slice(0, 3).map((schedule, index) => (
                           <div key={schedule.scheduleId} className="flex flex-col gap-[20px]">
                             {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
-                            <ScheduleListItem key={schedule.scheduleId} schedule={schedule} />
+                            <ScheduleListItem key={schedule.scheduleId} schedule={schedule} isDetailDate />
                           </div>
                         ))}
                       </div>

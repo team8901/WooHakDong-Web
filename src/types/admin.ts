@@ -1,4 +1,5 @@
 import { ClubMemberRole } from 'types/clubMember';
+import { InquiryCategory } from 'types/inquiry';
 import { ClubItemCategory } from 'types/item';
 import { Gender } from 'types/member';
 
@@ -88,6 +89,18 @@ type AdminClubItemsHistoryResponseData = {
   assignedTerm: string;
 };
 
+type AdminInquiryRequestData = {
+  category?: InquiryCategory | null;
+};
+
+type AdminInquiryResponseData = {
+  inquiryId: number;
+  inquiryContent: string;
+  inquiryCategory: InquiryCategory;
+  memberEmail: string;
+  creatDate: string;
+};
+
 export type {
   AdminLoginRequestData,
   SchoolsResponseData,
@@ -102,4 +115,6 @@ export type {
   AdminClubPeriodResponseData,
   AdminClubMembersResponseData,
   AdminClubItemsHistoryResponseData,
+  AdminInquiryRequestData,
+  AdminInquiryResponseData,
 };

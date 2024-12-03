@@ -39,6 +39,7 @@ import GroupRegisterPage from '@pages/group/GroupRegister';
 import ClubGroupHomePage from '@pages/group/ClubGroupHome';
 import ClubGroupDetailPage from '@pages/group/ClubGroupDetail';
 import ClubDuesSearchPage from '@pages/clubDues/ClubDuesSearch';
+import AdminInquiryPage from '@pages/admin/AdminInquiry';
 
 const RootRoute = () => {
   const isAuth = !!localStorage.getItem('accessToken');
@@ -71,6 +72,7 @@ export const Router = () => {
       {/* 관리자가 아닌 사용자가 접근할 수 없는 페이지 */}
       <Route element={<AdminLayout />}>
         <Route path={ROUTE.ADMIN_STATS} element={<StatsHomePage />} />
+        <Route path={ROUTE.ADMIN_INQUIRY} element={<AdminInquiryPage />} />
         <Route path={`${ROUTE.ADMIN_STATS_SCHOOL}/:schoolId`} element={<StatsSchoolPage />} />
         <Route path={`${ROUTE.ADMIN_STATS_CLUB}/:clubId`} element={<StatsClubPage />} />
       </Route>

@@ -1,4 +1,5 @@
 import Body1 from '@components/Body1';
+import Button from '@components/Button';
 import EmptyText from '@components/EmptyText';
 import Title1 from '@components/Title1';
 import Title3 from '@components/Title3';
@@ -181,6 +182,10 @@ const StatsHomePage = () => {
           seriesData={payments}
           seriesName="결제금액"
         />
+      </div>
+
+      <div className="fixed bottom-[20px] right-[30px] flex flex-col gap-[12px]">
+        <Button text="문의 보기" onClick={() => navigate(ROUTE.ADMIN_INQUIRY)} className="w-[170px] px-[20px]" />
       </div>
     </div>
   );

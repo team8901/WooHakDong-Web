@@ -22,6 +22,7 @@ const ROUTE = {
   ADMIN_STATS: '/admin/stats',
   ADMIN_STATS_SCHOOL: '/admin/stats/schools',
   ADMIN_STATS_CLUB: '/admin/stats/clubs',
+  ADMIN_INQUIRY: '/admin/inquiry',
   SETTING: '/setting',
   INQUIRY: '/inquiry',
   GROUP: '/groups',
