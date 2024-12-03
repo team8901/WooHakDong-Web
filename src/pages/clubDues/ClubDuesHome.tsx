@@ -21,6 +21,9 @@ import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 import { ClubDuesResponseData } from 'types/dues';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import ChevronBottomBlackIcon from '@assets/images/chevrons/ChevronBottomBlackIcon';
 
 const ClubDuesHomePage = () => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
@@ -44,19 +47,20 @@ const ClubDuesHomePage = () => {
   });
   const { data: clubAccountData } = useGetClubAccount({ clubId: clubId || 0 });
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const filterData = (duesList: ClubDuesResponseData[]) => {
     if (!clubDuesData) return;
 
     const filterValue = CLUB_DUES_SORT_OPTIONS[selectedOption].value;
+    const categorizedData =
+      filterValue === 'ALL' ? duesList : duesList.filter((dues) => dues.clubAccountHistoryInOutType === filterValue);
 
-    if (filterValue === 'ALL') {
-      setFilteredDuesList(duesList);
-      return;
-    }
-
-    const filteredResult = duesList.filter((dues) => dues.clubAccountHistoryInOutType === filterValue);
-    setFilteredDuesList(filteredResult);
+    const filteredData = categorizedData.filter((dues) => {
+      const tranDate = new Date(dues.clubAccountHistoryTranDate);
+      return tranDate.getFullYear() === selectedDate.getFullYear() && tranDate.getMonth() === selectedDate.getMonth();
+    });
+    setFilteredDuesList(filteredData);
   };
 
   const { isOpen, selectedOption, bottomSheetRef, setIsOpen, setSelectedOption } = useBottomSheet({
@@ -96,6 +100,10 @@ const ClubDuesHomePage = () => {
     }
   }, [isClubIdError, isClubDuesError]);
 
+  useEffect(() => {
+    filterData(duesList);
+  }, [selectedDate]);
+
   const isLoading = isClubIdLoading || isClubDuesLoading;
 
   return (
@@ -109,12 +117,8 @@ const ClubDuesHomePage = () => {
         <Title1 text={formatMoney(clubAccountData?.clubAccountBalance ?? 0)} className="text-[2.8rem] font-extrabold" />
       </div>
 
-      <div className="flex items-center justify-between px-[20px]">
-        <button type="button" className="flex items-center gap-[4px]" onClick={() => setIsOpen((prev) => !prev)}>
-          <Body4 text={CLUB_DUES_SORT_OPTIONS[selectedOption].label} className="text-darkGray" />
-          <ChevronBottomGrayIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
-        </button>
-        <div className="flex items-center gap-[4px]">
+      <div className="flex flex-col gap-[8px] px-[20px]">
+        <div className="flex items-center gap-[4px] self-end">
           <Body4
             text={`${new Date(clubAccountData?.clubAccountLastUpdateDate ?? '').getFullYear()}년 ${formatDate(clubAccountData?.clubAccountLastUpdateDate ?? '')} 기준`}
             className="text-darkGray"
@@ -122,11 +126,32 @@ const ClubDuesHomePage = () => {
           <button type="button" onClick={handleInfoClick} className="relative">
             <InfoIcon />
             {isInfoOpen && (
-              <div className="absolute bottom-[-44px] left-[-144px] flex items-center justify-center rounded-[12px] bg-[#7f8189cc] px-[12px] py-[8px]">
+              <div className="absolute bottom-[-44px] left-[-144px] z-20 flex items-center justify-center rounded-[12px] bg-[#7f8189cc] px-[12px] py-[8px]">
                 <Caption1 text="임원이 최근 갱신한 날짜에요" className="text-white" />
               </div>
             )}
           </button>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <button type="button" className="flex items-center gap-[4px]" onClick={() => setIsOpen((prev) => !prev)}>
+            <Body4 text={CLUB_DUES_SORT_OPTIONS[selectedOption].label} className="text-darkGray" />
+            <ChevronBottomGrayIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
+          </button>
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => setSelectedDate(date!)}
+            dateFormat="yyyy년 MM월"
+            showMonthYearPicker
+            customInput={
+              <div className="flex items-center gap-[4px]">
+                <Body4 text={`${selectedDate.getFullYear()}년 ${selectedDate.getMonth() + 1}월`} />{' '}
+                <ChevronBottomBlackIcon />
+              </div>
+            }
+            className="cursor-pointer"
+            popperPlacement="bottom"
+          />
         </div>
       </div>
 
