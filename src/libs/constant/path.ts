@@ -14,6 +14,7 @@ const ROUTE = {
   ITEM_SEARCH: '/items/search',
   ITEM_MY: '/items/my',
   DUES: '/dues',
+  DUES_SEARCH: '/dues/search',
   MEMBER: '/members',
   SCHEDULE: '/schedules',
   ADMIN: '/admin',
