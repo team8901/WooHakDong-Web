@@ -72,10 +72,6 @@ const SettingPage = () => {
         <div className="flex flex-col gap-[12px]">
           <Caption2 text="이용 안내" />
           <div>
-            <div className="flex items-center justify-between py-[12px]">
-              <Body1 text="버전" />
-              <Body1 text="1.1.4+3" className="text-gray" />
-            </div>
             <button
               type="button"
               className="flex w-full items-center justify-between py-[12px]"

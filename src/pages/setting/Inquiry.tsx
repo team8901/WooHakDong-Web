@@ -51,10 +51,7 @@ const InquiryPage = () => {
             className="break-keep text-darkGray"
           />
 
-          <Body2
-            text={memberEmail ?? ''}
-            className="border-darkGray rounded-[14px] border bg-lightGray px-[16px] py-[12px]"
-          />
+          <Body2 text={memberEmail ?? ''} className="rounded-[14px] border border-lightGray px-[16px] py-[12px]" />
 
           <Dropdown selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
 
@@ -72,7 +69,7 @@ const InquiryPage = () => {
                 type="checkbox"
                 value={isChecked ? 'checked' : ''}
                 onChange={() => setIsChecked((prev) => !prev)}
-                className="border-darkGray h-[20px] w-[20px] rounded border checked:bg-primary"
+                className="h-[20px] w-[20px] rounded border border-darkGray checked:bg-primary"
               />
               <label htmlFor="checkbox" className="flex items-center">
                 <Caption2 text="이메일 정보 제공 동의" className="text-darkGray" />
