@@ -57,7 +57,7 @@ const postPortOne = async ({
         setTimeout(async () => {
           await postGroupJoinConfirm({ merchantUid, groupId: paymentGroupId, impUid, orderId });
           resolve('success');
-        }, 500);
+        }, 1000);
       } catch (error) {
         console.error(error);
         // reject(new Error(`결제 중 오류가 발생했어요\n${error}`));
