@@ -5,12 +5,33 @@ import { CLUB_ITEM_SORT_OPTIONS } from '@libs/constant/item';
 
 type BottomSheetProps = {
   isOpen: boolean;
-  selectedOption: number;
+  selectedOption: number | number[];
   bottomSheetRef: React.RefObject<HTMLDivElement>;
-  setSelectedOption: (index: number) => void;
+  setSelectedOption: (index: number | number[]) => void;
+  multiple?: boolean;
 };
 
-const BottomSheet = ({ isOpen, selectedOption, bottomSheetRef, setSelectedOption }: Readonly<BottomSheetProps>) => {
+const BottomSheet = ({
+  isOpen,
+  selectedOption,
+  bottomSheetRef,
+  setSelectedOption,
+  multiple = false,
+}: Readonly<BottomSheetProps>) => {
+  const handleOptionClick = (optionId: number) => {
+    if (multiple) {
+      if (Array.isArray(selectedOption)) {
+        if (selectedOption.includes(optionId)) {
+          setSelectedOption(selectedOption.filter((id) => id !== optionId));
+        } else {
+          setSelectedOption([...selectedOption, optionId]);
+        }
+      }
+    } else {
+      setSelectedOption(optionId);
+    }
+  };
+
   return (
     <div ref={bottomSheetRef} className={`absolute left-0 top-0 z-20 h-full w-full bg-black/30 ${isOpen || 'hidden'}`}>
       <div className="absolute bottom-0 left-0 w-full">
@@ -23,11 +44,13 @@ const BottomSheet = ({ isOpen, selectedOption, bottomSheetRef, setSelectedOption
                 <button
                   key={option.id}
                   type="button"
-                  onClick={() => setSelectedOption(option.id)}
+                  onClick={() => handleOptionClick(option.id)}
                   className="flex items-center justify-between"
                 >
                   <Body2 text={option.label} />
-                  {selectedOption === option.id && <CheckCircleIcon />}
+                  {Array.isArray(selectedOption)
+                    ? selectedOption.includes(option.id) && <CheckCircleIcon />
+                    : selectedOption === option.id && <CheckCircleIcon />}
                 </button>
               ))}
             </div>
