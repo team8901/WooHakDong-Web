@@ -71,6 +71,13 @@ const getClubPayments = async ({ assignedTerm }: Readonly<AssignedTermResquestDa
   return res.data;
 };
 
+const getAdminInquiryByCategory = async ({ category }: Readonly<AdminInquiryRequestData>) => {
+  const res = await axiosInstance.get<ResultResponse<AdminInquiryResponseData[]>>(
+    `/v1/admin/inquiry${category ? `?category=${category}` : ''}`,
+  );
+  return res.data;
+};
+
 // admin-school-controller
 const getSchoolClubCount = async ({ schoolId, assignedTerm }: Readonly<AdminSchoolStatsRequestData>) => {
   const res = await axiosInstance.get<CountResponseData>(
@@ -123,13 +130,6 @@ const getClubItemCount = async ({ clubId, assignedTerm }: Readonly<AdminClubStat
 const getClubItemsHistory = async ({ clubId, assignedTerm }: Readonly<AdminClubStatsRequestData>) => {
   const res = await axiosInstance.get<ResultResponse<AdminClubItemsHistoryResponseData[]>>(
     `/v1/admin/clubs/${clubId}/itemHistory${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
-  );
-  return res.data;
-};
-
-const getAdminInquiryByCategory = async ({ category }: Readonly<AdminInquiryRequestData>) => {
-  const res = await axiosInstance.get<ResultResponse<AdminInquiryResponseData[]>>(
-    `/v1/admin/inquiry?category=${category}`,
   );
   return res.data;
 };
