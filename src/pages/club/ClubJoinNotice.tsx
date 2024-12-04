@@ -24,24 +24,17 @@ const ClubJoinNoticePage = () => {
 
       <ScrollView className="flex h-full flex-col gap-[40px]">
         <div>
-          <Title2 text="가입 신청 전에 " />
-          <Title2 text="알아야 할 사항" className="text-primary" />
-          <Title2 text="이에요" />
+          <Title2 text="우학동" className="text-primary" />
+          <Title2 text="이 제공하는 기능들이에요" />
         </div>
 
         <div className="flex flex-col gap-[20px] pb-[80px]">
           <div className="flex flex-col gap-[12px]">
             <Body4 text="&nbsp;1.&nbsp;&nbsp;동아리 회비 납부" />
-            <div>
-              <Body2
-                text="임시 가입 후 2주 이내에 회비를 납부하지 않으면 탈퇴 처리돼요. "
-                className="text-justify text-primary"
-              />
-              <Body2
-                text="회비를 납부하면 이메일로 카카오톡 동아리 단체 채팅방 주소를 보내드려요."
-                className="text-justify"
-              />
-            </div>
+            <Body2
+              text="회비를 납부하면 이메일로 카카오톡 동아리 단체 채팅방 주소를 보내드려요."
+              className="text-justify"
+            />
           </div>
           <div className="flex flex-col gap-[12px]">
             <Body4 text="&nbsp;2&nbsp;&nbsp;동아리 물품 대여" />
