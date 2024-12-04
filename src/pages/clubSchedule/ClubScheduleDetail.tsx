@@ -1,3 +1,6 @@
+import InfoIcon from '@assets/images/schedule/InfoIcon';
+import TimeIcon from '@assets/images/schedule/TimeIcon';
+import TitleIcon from '@assets/images/schedule/TitleIcon';
 import AppBar from '@components/AppBar';
 import Caption2 from '@components/Caption2';
 import InputBox from '@components/InputBox';
@@ -25,14 +28,14 @@ const ClubScheduleDetailPage = () => {
         <div className="flex flex-col gap-[12px]">
           <Caption2 text="일정 정보" className="text-darkGray" />
           <div className="flex items-center gap-[12px]">
-            <InputBox text={initalSchedule.scheduleTitle} />
+            <InputBox text={initalSchedule.scheduleTitle} icon={<TitleIcon />} />
             <div
               className="h-[24px] w-[24px] flex-shrink-0 rounded-[7px]"
               style={{ backgroundColor: convertColor(initalSchedule.scheduleColor) }}
             />
           </div>
-          <InputBox text={formatDateDetail(initalSchedule.scheduleDateTime)} />
-          <InputBox text={initalSchedule.scheduleContent} />
+          <InputBox text={formatDateDetail(initalSchedule.scheduleDateTime)} icon={<TimeIcon />} />
+          <InputBox text={initalSchedule.scheduleContent} icon={<InfoIcon />} />
         </div>
       </ScrollView>
     </div>
