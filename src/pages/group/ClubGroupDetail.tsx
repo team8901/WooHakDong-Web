@@ -34,11 +34,20 @@ const ClubGroupDetailPage = () => {
           </div>
 
           <div className="flex flex-col gap-[8px]">
-            <Caption2 text="모임 결제 링크" className="text-darkGray" />
+            <Caption2
+              text={group.groupAmount === 0 ? '모임 채팅방 링크' : '모임 결제 링크'}
+              className="text-darkGray"
+            />
             <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray p-[16px]">
               <button
                 type="button"
-                onClick={() => window.open(group.groupChatLink, '채팅방 주소', 'noopener')}
+                onClick={() =>
+                  window.open(
+                    group.groupAmount === 0 ? group.groupChatLink : group.groupJoinLink,
+                    '모임 가입 주소',
+                    'noopener',
+                  )
+                }
                 className="text-start"
               >
                 <Body1 text={group.groupChatLink} />
