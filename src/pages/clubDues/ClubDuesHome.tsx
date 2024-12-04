@@ -58,7 +58,7 @@ const ClubDuesHomePage = () => {
   const filterData = (duesList: ClubDuesResponseData[]) => {
     if (!clubDuesData) return;
 
-    const filterValue = CLUB_DUES_SORT_OPTIONS[selectedOption].value;
+    const filterValue = CLUB_DUES_SORT_OPTIONS[selectedOption as number].value;
     const categorizedData =
       filterValue === 'ALL' ? duesList : duesList.filter((dues) => dues.clubAccountHistoryInOutType === filterValue);
 
@@ -162,7 +162,7 @@ const ClubDuesHomePage = () => {
             locale={ko}
           />
           <button type="button" className="flex items-center gap-[4px]" onClick={() => setIsOpen((prev) => !prev)}>
-            <Body4 text={CLUB_DUES_SORT_OPTIONS[selectedOption].label} className="text-darkGray" />
+            <Body4 text={CLUB_DUES_SORT_OPTIONS[selectedOption as number].label} className="text-darkGray" />
             <ChevronBottomGrayIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
           </button>
         </div>
@@ -202,7 +202,7 @@ const ClubDuesHomePage = () => {
 
       <BottomSheet
         isOpen={isOpen}
-        selectedOption={selectedOption}
+        selectedOption={selectedOption as number}
         bottomSheetRef={bottomSheetRef}
         setSelectedOption={setSelectedOption}
       />
