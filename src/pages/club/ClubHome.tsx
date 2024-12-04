@@ -95,13 +95,14 @@ const ClubHomePage = () => {
               <div className="flex h-full flex-col gap-[20px] px-[20px]">
                 <CustomPullToRefresh onRefresh={handleRefreshItem}>
                   <div className="flex flex-col gap-[20px] pb-[20px]">
-                    {itemList.length === 0 ? (
+                    {itemList.sort((a, b) => (a.itemBorrowedReturnDate! < b.itemBorrowedReturnDate! ? -1 : 1))
+                      .length === 0 ? (
                       <div className="flex h-full min-h-[90px] items-center justify-center">
                         <EmptyText text="아직 대여한 물품이 없어요" />
                       </div>
                     ) : (
                       <div className="flex flex-col gap-[20px]">
-                        {itemList.slice(0, 2).map((item, index) => (
+                        {itemList.slice(0, 3).map((item, index) => (
                           <div key={item.itemId} className="flex flex-col gap-[20px]">
                             {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
                             <ItemListItem item={item} borrowedReturnDate={item.itemBorrowedReturnDate} myPage />
