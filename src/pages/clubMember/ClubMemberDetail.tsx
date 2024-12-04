@@ -52,12 +52,12 @@ const ClubMemberDetailPage = () => {
             <Caption2 text="기본 정보" className="text-darkGray" />
             <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray p-[16px]">
               <IconText icon={<GenderIcon />} text={GENDER_TYPE[member.memberGender]} />
-              <button type="button" onClick={() => callPhone(member.memberPhoneNumber)} className="text-start">
-                <IconText icon={<CallIcon />} text={formatPhoneNumber(member.memberPhoneNumber)} />
-              </button>
-              <button type="button" onClick={() => sendMail(member.memberEmail)} className="text-start">
-                <IconText icon={<EmailIcon />} text={member.memberEmail} />
-              </button>
+              <IconText
+                icon={<CallIcon />}
+                text={formatPhoneNumber(member.memberPhoneNumber)}
+                onClick={() => callPhone(member.memberPhoneNumber)}
+              />
+              <IconText icon={<EmailIcon />} text={member.memberEmail} onClick={() => sendMail(member.memberEmail)} />
             </div>
           </div>
           <div className="flex flex-col gap-[8px]">
