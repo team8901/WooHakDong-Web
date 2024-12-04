@@ -169,6 +169,25 @@ scroll gradient in the top right */
   color: var(--color-gray);
 }
 
+/* react-datepicker */
+.react-datepicker-popper {
+  left: 20px !important;
+}
+
+.react-datepicker .react-datepicker__header {
+  font-size: 1.4rem;
+}
+
+.react-datepicker .react-datepicker__month-text {
+  font-size: 1.4rem;
+  line-height: 2.2rem;
+}
+
+.react-datepicker .react-datepicker__month-text--keyboard-selected {
+  background-color: var(--color-primary) !important;
+  color: white !important;
+}
+
 /* Pull to refresh */
 .ptr .ptr__children {
   -ms-overflow-style: none;

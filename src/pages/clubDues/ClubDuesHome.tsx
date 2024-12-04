@@ -27,6 +27,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 import { ClubDuesResponseData } from 'types/dues';
+import { ko } from 'date-fns/locale';
+import convertDate from '@libs/util/convertDate';
 
 const ClubDuesHomePage = () => {
   const navigate = useCustomNavigate();
@@ -47,7 +49,7 @@ const ClubDuesHomePage = () => {
     refetch: refetchClubDues,
   } = useGetClubDues({
     clubId: clubId || 0,
-    date: `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-01`,
+    date: convertDate(selectedDate),
   });
   const { data: clubAccountData } = useGetClubAccount({ clubId: clubId || 0 });
   const [isInfoOpen, setIsInfoOpen] = useState(false);
@@ -143,11 +145,7 @@ const ClubDuesHomePage = () => {
           </button>
         </div>
 
-        <div className="flex items-center gap-[8px]">
-          <button type="button" className="flex items-center gap-[4px]" onClick={() => setIsOpen((prev) => !prev)}>
-            <Body4 text={CLUB_DUES_SORT_OPTIONS[selectedOption].label} className="text-darkGray" />
-            <ChevronBottomGrayIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
-          </button>
+        <div className="flex items-center justify-between gap-[8px]">
           <DatePicker
             selected={selectedDate}
             onChange={(date) => setSelectedDate(date!)}
@@ -161,7 +159,12 @@ const ClubDuesHomePage = () => {
             }
             className="cursor-pointer"
             popperPlacement="bottom"
+            locale={ko}
           />
+          <button type="button" className="flex items-center gap-[4px]" onClick={() => setIsOpen((prev) => !prev)}>
+            <Body4 text={CLUB_DUES_SORT_OPTIONS[selectedOption].label} className="text-darkGray" />
+            <ChevronBottomGrayIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
+          </button>
         </div>
       </div>
 
