@@ -29,7 +29,7 @@ const refreshAccessToken = async () => {
   } catch (error) {
     console.error(`/api/auth/refresh`, error);
     if (
-      // (error as AxiosError)?.response?.status === 400 ||
+      (error as AxiosError)?.response?.status === 400 ||
       (error as AxiosError)?.response?.status === 401 ||
       (error as AxiosError)?.response?.status === 403
     ) {
