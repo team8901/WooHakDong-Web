@@ -8,12 +8,19 @@ const useBottomSheet = ({ onSelectOption }: Readonly<{ onSelectOption: () => voi
 
   useEffect(() => {
     if (!bottomSheetRef.current) return;
+    const bottomSheetNode = bottomSheetRef.current;
 
-    bottomSheetRef.current.addEventListener('click', (e) => {
-      if (e.target === bottomSheetRef.current) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (e.target === bottomSheetNode) {
         setIsOpen(false);
       }
-    });
+    };
+
+    bottomSheetNode.addEventListener('click', handleClickOutside);
+
+    return () => {
+      bottomSheetNode.removeEventListener('click', handleClickOutside);
+    };
   }, []);
 
   useEffect(() => {
