@@ -5,8 +5,8 @@ import { useToast } from '@contexts/ToastContext';
 import useGetAdminInquiryByCategory from '@hooks/admin/useGetAdminInquiryByCategory';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import ROUTE from '@libs/constant/path';
-import InquiryDropdown from '@pages/admin/components/InquiryDropdown';
 import InquiryListItem from '@pages/admin/components/InquiryListItem';
+import Dropdown from '@pages/setting/components/Dropdown';
 
 import { useEffect, useState } from 'react';
 import { InquiryCategory } from 'types/inquiry';
@@ -29,8 +29,8 @@ const AdminInquiryPage = () => {
 
   return (
     <div className="flex h-full w-full flex-col items-center gap-[30px] overflow-auto px-[40px] py-[40px] md:px-[80px] lg:px-[200px]">
-      <div className="fixed left-[30px]">
-        <InquiryDropdown selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+      <div className="fixed left-[30px] z-20">
+        <Dropdown selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} label="문의 유형" />
       </div>
 
       <div className="flex w-full flex-col gap-[12px] pt-[80px]">

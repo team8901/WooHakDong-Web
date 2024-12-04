@@ -6,6 +6,7 @@ import { InquiryCategory } from 'types/inquiry';
 type DropdownProps = {
   selectedCategory: InquiryCategory | null;
   setSelectedCategory: (category: InquiryCategory | null) => void;
+  label?: string;
 };
 
 const INQUIRY_CATEGORY: { category: InquiryCategory; content: string }[] = [
@@ -15,18 +16,21 @@ const INQUIRY_CATEGORY: { category: InquiryCategory; content: string }[] = [
   { category: 'ETC', content: '기타' },
 ];
 
-const Dropdown = ({ selectedCategory, setSelectedCategory }: Readonly<DropdownProps>) => {
+const Dropdown = ({ selectedCategory, setSelectedCategory, label }: Readonly<DropdownProps>) => {
   const { isDropdownOpen, toggleDropdown } = useDropDown();
 
   return (
     <div className="relative inline-block text-left">
       <button
         type="button"
-        className="flex w-full justify-between rounded-[14px] border border-lightGray px-[16px] py-[12px]"
+        className="flex w-full items-center justify-between rounded-[14px] border border-lightGray px-[16px] py-[12px]"
         onClick={toggleDropdown}
       >
         <Body1
-          text={INQUIRY_CATEGORY.find((v) => v.category === selectedCategory)?.content ?? '질문 유형을 선택해 주세요'}
+          text={
+            INQUIRY_CATEGORY.find((v) => v.category === selectedCategory)?.content ??
+            (label || '질문 유형을 선택해 주세요')
+          }
           className={`${selectedCategory ? 'text-black' : 'text-darkGray'}`}
         />
         <ChevronBottomBlackIcon className={`transform transition-all ${isDropdownOpen && '-rotate-180'}`} />
