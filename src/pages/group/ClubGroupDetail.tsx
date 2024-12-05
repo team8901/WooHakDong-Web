@@ -64,7 +64,7 @@ const ClubGroupDetailPage = () => {
                     text={group.groupChatLink}
                     onClick={() => window.open(group.groupChatLink, '모임 가입 링크', 'noopener')}
                   />
-                  <IconText icon={<PasswordIcon />} text={group.groupChatPassword} />
+                  {group.groupChatPassword && <IconText icon={<PasswordIcon />} text={group.groupChatPassword} />}
                 </div>
               </>
             ) : (
