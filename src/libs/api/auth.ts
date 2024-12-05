@@ -3,6 +3,8 @@ import { LoginRequestData, LoginResponseData } from 'types/auth';
 
 const fetchLoginData = async ({ accessToken }: Readonly<LoginRequestData>) => {
   try {
+    axios.defaults.headers.common['Authorization'] = undefined;
+
     const res = await axios.post<LoginResponseData>(`${import.meta.env.VITE_API_URL}/v1/auth/login/social`, {
       accessToken,
     });

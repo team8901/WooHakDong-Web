@@ -1,13 +1,14 @@
 import ChevronBottomBlackIcon from '@assets/images/chevrons/ChevronBottomBlackIcon';
 import Body1 from '@components/Body1';
 import { useDropDown } from '@contexts/DropDownContext';
+import { InquiryCategory } from 'types/inquiry';
 
 type DropdownProps = {
-  selectedCategory: string | null;
-  setSelectedCategory: (category: string | null) => void;
+  selectedCategory: InquiryCategory | null;
+  setSelectedCategory: (category: InquiryCategory | null) => void;
 };
 
-const INQUIRY_CATEGORY = [
+const INQUIRY_CATEGORY: { category: InquiryCategory; content: string }[] = [
   { category: 'INQUIRY', content: '문의' },
   { category: 'DECLARATION', content: '신고' },
   { category: 'SUGGESTION', content: '제안' },

@@ -1,12 +1,11 @@
 import { getMemberInfo } from '@libs/api/member';
 import { useQuery } from '@tanstack/react-query';
 
-const useGetMemberEmail = () => {
+const useGetMemberInfo = () => {
   return useQuery({
-    queryKey: ['getMemberInfo', 'memberEmail'],
+    queryKey: ['getMemberInfo'],
     queryFn: () => getMemberInfo(),
-    select: (data) => data?.memberEmail,
   });
 };
 
-export default useGetMemberEmail;
+export default useGetMemberInfo;

@@ -74,12 +74,12 @@ export const Router = () => {
         {/* <Route path={ROUTE.ROOT} element={<ClubListPage />} /> */}
         <Route path={ROUTE.CLUB_LIST} element={<ClubListPage />} />
         <Route path={`${ROUTE.CLUB}/:clubEnglishName`}>
+          <Route path={ROUTE.MEMBER_INFO_WRITE.slice(1)} element={<MemberInfoWritePage />} />
+          <Route path={ROUTE.MEMBER_INFO_CONFIRM.slice(1)} element={<MemberInfoConfirmPage />} />
           {/* 인적사항 등록한 사용자가 접근할 수 없는 페이지 */}
           <Route element={<NotMemberLayout />}>
             <Route path={ROUTE.MEMBER_REGISTER.slice(1)} element={<MemberRegisterPage />} />
             <Route path={ROUTE.CLUB_JOIN_NOTICE.slice(1)} element={<ClubJoinNoticePage />} />
-            <Route path={ROUTE.MEMBER_INFO_WRITE.slice(1)} element={<MemberInfoWritePage />} />
-            <Route path={ROUTE.MEMBER_INFO_CONFIRM.slice(1)} element={<MemberInfoConfirmPage />} />
           </Route>
           {/* 인적사항 등록하지 않은 사용자가 접근할 수 없는 페이지 */}
           <Route element={<MemberLayout />}>

@@ -4,19 +4,39 @@ import Button from '@components/Button';
 import Caption2 from '@components/Caption2';
 import ScrollView from '@components/ScrollView';
 import { DropDownProvider } from '@contexts/DropDownContext';
-import useGetMemberEmail from '@hooks/member/useGetMemberEmail';
+import { useToast } from '@contexts/ToastContext';
+import useLoading from '@hooks/useLoading';
+import { postInquiry } from '@libs/api/inquiry';
 import Dropdown from '@pages/setting/components/Dropdown';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { InquiryCategory } from 'types/inquiry';
 
 const InquiryPage = () => {
+  const { state } = useLocation();
+  const { memberEmail } = state;
   const navigate = useNavigate();
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<InquiryCategory | null>(null);
   const [content, setContent] = useState('');
-  const { data: memberEmail } = useGetMemberEmail();
   const [isChecked, setIsChecked] = useState(false);
+  const { setToastMessage } = useToast();
+  const { isLoading, setIsLoading } = useLoading();
 
-  const handleInquirySend = () => {};
+  const handleInquirySend = async () => {
+    if (!selectedCategory || !content || !isChecked) return;
+
+    setIsLoading(true);
+    try {
+      await postInquiry({ inquiryCategory: selectedCategory, inquiryContent: content });
+      setToastMessage('문의가 성공적으로 전송되었어요');
+      navigate(-1);
+    } catch (error) {
+      console.error(error);
+      setToastMessage('문의 전송에 실패했어요');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <DropDownProvider>
@@ -70,7 +90,7 @@ const InquiryPage = () => {
             text="보내기"
             onClick={handleInquirySend}
             disabled={!selectedCategory || !content || !isChecked}
-            //   isLoading={isBorrowLoading || isReturnLoading}
+            isLoading={isLoading}
           />
         </div>
       </div>
