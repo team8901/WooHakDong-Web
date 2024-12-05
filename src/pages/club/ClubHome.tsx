@@ -35,6 +35,7 @@ const ClubHomePage = () => {
     data: clubSchedulesData,
     isError: isClubSchedulesError,
     isLoading: isClubSchedulesLoading,
+    refetch: refetchClubSchedule,
   } = useGetClubSchedules({ clubId: clubId || 0, date: convertDate(today), currentMonth: today.getMonth() + 1 });
   const navigate = useCustomNavigate();
 
@@ -46,9 +47,9 @@ const ClubHomePage = () => {
   };
 
   const handleRefreshSchedule = async () => {
-    const { data: clubItemsMyData } = await refetchClubItemsMy();
-    if (!clubItemsMyData) return;
-    setItemList(clubItemsMyData.result);
+    const { data: clubSchedulesData } = await refetchClubSchedule();
+    if (!clubSchedulesData) return;
+    setScheduleList(clubSchedulesData.result);
     setToastMessage('일정 정보를 갱신했어요');
   };
 
