@@ -140,12 +140,15 @@ const ClubHomePage = () => {
                       </div>
                     ) : (
                       <div className="flex flex-col gap-[20px]">
-                        {scheduleList.slice(0, 3).map((schedule, index) => (
-                          <div key={schedule.scheduleId} className="flex flex-col gap-[20px]">
-                            {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
-                            <ScheduleListItem key={schedule.scheduleId} schedule={schedule} isDetailDate />
-                          </div>
-                        ))}
+                        {scheduleList
+                          .sort((a, b) => (a.scheduleDateTime < b.scheduleDateTime ? -1 : 1))
+                          .slice(0, 3)
+                          .map((schedule, index) => (
+                            <div key={schedule.scheduleId} className="flex flex-col gap-[20px]">
+                              {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
+                              <ScheduleListItem key={schedule.scheduleId} schedule={schedule} isDetailDate />
+                            </div>
+                          ))}
                       </div>
                     )}
                   </div>
