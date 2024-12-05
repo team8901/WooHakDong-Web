@@ -7,7 +7,7 @@ const ItemUsing = ({ item }: { item: ClubItemResponseData }) => {
     <div className="flex items-center gap-[2px]">
       {item.itemUsing ? <LockIcon /> : <LockOpenIcon />}
       <span className={`text-[1.2rem] ${item.itemUsing ? 'text-primary' : 'text-gray'}`}>
-        {item.itemUsing ? '대여 중' : '대여 가능'}
+        {item.itemUsing ? '대여 중' : '비대여 중'}
       </span>
     </div>
   );

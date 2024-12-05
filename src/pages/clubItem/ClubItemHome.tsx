@@ -1,6 +1,5 @@
 import ChevronBottomBlackIcon from '@assets/images/chevrons/ChevronBottomBlackIcon';
 import AppBar from '@components/AppBar';
-import Caption1 from '@components/Caption1';
 import Caption2 from '@components/Caption2';
 import EmptyText from '@components/EmptyText';
 import CustomPullToRefresh from '@components/PullToRefresh';
@@ -32,7 +31,6 @@ const ClubItemHomePage = () => {
   const { activeTab, handleTabChange } = useTabNav({ onClickTab: () => filterData(itemList) });
   const { isOpen, selectedOption, bottomSheetRef, setIsOpen, setSelectedOption } = useBottomSheet({
     onSelectOption: () => filterData(itemList),
-    multiple: true,
   });
   const { setToastMessage } = useToast();
   const {
@@ -55,23 +53,18 @@ const ClubItemHomePage = () => {
   const getItemStatus = (item: ClubItemResponseData) => {
     if (!item.itemAvailable) return '대여 불가';
     if (item.itemUsing) return '대여 중';
-    return '대여 가능';
+    return '비대여 중';
   };
 
   const filterData = (itemList: ClubItemResponseData[]) => {
     if (!clubItemsData) return;
-
     const tabData = activeTab === 'ALL' ? itemList : itemList.filter((item) => item.itemCategory === activeTab);
-
-    const selectedLabels = (selectedOption as number[]).map((option) => CLUB_ITEM_SORT_OPTIONS[option].label);
-    const isSelectAll = selectedLabels.length === 0 || selectedLabels.length === CLUB_ITEM_SORT_OPTIONS.length;
-
-    if (isSelectAll) {
+    const filterLabel = CLUB_ITEM_SORT_OPTIONS[selectedOption].label;
+    if (filterLabel === '전체') {
       setFilteredItemList(tabData);
       return;
     }
-
-    const filteredResult = tabData.filter((item) => selectedLabels.includes(getItemStatus(item)));
+    const filteredResult = tabData.filter((item) => getItemStatus(item) === filterLabel);
     setFilteredItemList(filteredResult);
   };
 
@@ -137,29 +130,14 @@ const ClubItemHomePage = () => {
       <TabNav activeTab={activeTab} handleTabChange={handleTabChange} />
 
       <div className="flex px-[20px] pb-[10px] pt-[20px]">
-        {(selectedOption as number[]).length === 0 ? (
-          <button
-            type="button"
-            className="flex h-[32px] items-center gap-[4px] rounded-[20px] border border-lightGray pl-[12px] pr-[6px]"
-            onClick={() => setIsOpen((prev) => !prev)}
-          >
-            <Caption2 text="대여 상태" />
-            <ChevronBottomBlackIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
-          </button>
-        ) : (
-          <div className="flex items-center gap-[8px]">
-            {(selectedOption as number[]).map((option) => (
-              <button
-                key={CLUB_ITEM_SORT_OPTIONS[option].label}
-                type="button"
-                className="flex h-[32px] items-center gap-[4px] rounded-[20px] bg-lightPrimary px-[12px]"
-                onClick={() => setIsOpen((prev) => !prev)}
-              >
-                <Caption1 text={CLUB_ITEM_SORT_OPTIONS[option].label} className="text-primary" />
-              </button>
-            ))}
-          </div>
-        )}
+        <button
+          type="button"
+          className="flex h-[32px] items-center gap-[4px] rounded-[20px] border border-lightGray pl-[12px] pr-[6px]"
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
+          <Caption2 text={selectedOption === 0 ? '대여 상태' : CLUB_ITEM_SORT_OPTIONS[selectedOption].label} />
+          <ChevronBottomBlackIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
+        </button>
       </div>
 
       {isLoading ? (
@@ -199,7 +177,6 @@ const ClubItemHomePage = () => {
         selectedOption={selectedOption}
         bottomSheetRef={bottomSheetRef}
         setSelectedOption={setSelectedOption}
-        multiple
       />
     </div>
   );
