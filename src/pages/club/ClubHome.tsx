@@ -35,6 +35,7 @@ const ClubHomePage = () => {
     data: clubSchedulesData,
     isError: isClubSchedulesError,
     isLoading: isClubSchedulesLoading,
+    refetch: refetchClubSchedule,
   } = useGetClubSchedules({ clubId: clubId || 0, date: convertDate(today), currentMonth: today.getMonth() + 1 });
   const navigate = useCustomNavigate();
 
@@ -46,9 +47,9 @@ const ClubHomePage = () => {
   };
 
   const handleRefreshSchedule = async () => {
-    const { data: clubItemsMyData } = await refetchClubItemsMy();
-    if (!clubItemsMyData) return;
-    setItemList(clubItemsMyData.result);
+    const { data: clubSchedulesData } = await refetchClubSchedule();
+    if (!clubSchedulesData) return;
+    setScheduleList(clubSchedulesData.result);
     setToastMessage('일정 정보를 갱신했어요');
   };
 
@@ -95,13 +96,14 @@ const ClubHomePage = () => {
               <div className="flex h-full flex-col gap-[20px] px-[20px]">
                 <CustomPullToRefresh onRefresh={handleRefreshItem}>
                   <div className="flex flex-col gap-[20px] pb-[20px]">
-                    {itemList.length === 0 ? (
-                      <div className="flex h-full min-h-[50px] items-center justify-center">
+                    {itemList.sort((a, b) => (a.itemBorrowedReturnDate! < b.itemBorrowedReturnDate! ? -1 : 1))
+                      .length === 0 ? (
+                      <div className="flex h-full min-h-[90px] items-center justify-center">
                         <EmptyText text="아직 대여한 물품이 없어요" />
                       </div>
                     ) : (
                       <div className="flex flex-col gap-[20px]">
-                        {itemList.slice(0, 2).map((item, index) => (
+                        {itemList.slice(0, 3).map((item, index) => (
                           <div key={item.itemId} className="flex flex-col gap-[20px]">
                             {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
                             <ItemListItem item={item} borrowedReturnDate={item.itemBorrowedReturnDate} myPage />
@@ -133,17 +135,20 @@ const ClubHomePage = () => {
                 <CustomPullToRefresh onRefresh={handleRefreshSchedule}>
                   <div className="flex flex-col gap-[20px] pb-[80px]">
                     {scheduleList.length === 0 ? (
-                      <div className="flex h-full items-center justify-center">
+                      <div className="flex h-full min-h-[90px] items-center justify-center">
                         <EmptyText text="아직 등록된 일정이 없어요" />
                       </div>
                     ) : (
                       <div className="flex flex-col gap-[20px]">
-                        {scheduleList.slice(0, 3).map((schedule, index) => (
-                          <div key={schedule.scheduleId} className="flex flex-col gap-[20px]">
-                            {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
-                            <ScheduleListItem key={schedule.scheduleId} schedule={schedule} />
-                          </div>
-                        ))}
+                        {scheduleList
+                          .sort((a, b) => (a.scheduleDateTime < b.scheduleDateTime ? -1 : 1))
+                          .slice(0, 3)
+                          .map((schedule, index) => (
+                            <div key={schedule.scheduleId} className="flex flex-col gap-[20px]">
+                              {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
+                              <ScheduleListItem key={schedule.scheduleId} schedule={schedule} isDetailDate />
+                            </div>
+                          ))}
                       </div>
                     )}
                   </div>

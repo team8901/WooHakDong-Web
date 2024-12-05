@@ -1,3 +1,4 @@
+import ChevronBottomBlackIcon from '@assets/images/chevrons/ChevronBottomBlackIcon';
 import ChevronBottomGrayIcon from '@assets/images/chevrons/ChevronBottomGrayIcon';
 import InfoIcon from '@assets/images/dues/InfoIcon';
 import AppBar from '@components/AppBar';
@@ -7,26 +8,35 @@ import Caption2 from '@components/Caption2';
 import EmptyText from '@components/EmptyText';
 import CustomPullToRefresh from '@components/PullToRefresh';
 import Title1 from '@components/Title1';
+import { useSearch } from '@contexts/SearchContext';
 import { useToast } from '@contexts/ToastContext';
 import useGetClubId from '@hooks/club/useGetClubId';
 import useGetClubAccount from '@hooks/dues/useGetClubAccount';
 import useGetClubDues from '@hooks/dues/useGetClubDues';
 import useBottomSheet from '@hooks/useBottomSheet';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import { CLUB_DUES_SORT_OPTIONS } from '@libs/constant/dues';
+import ROUTE from '@libs/constant/path';
 import { formatDate } from '@libs/util/formatDate';
 import formatMoney from '@libs/util/formatMoney';
 import BottomSheet from '@pages/clubDues/components/BottomSheet';
 import ListItem from '@pages/clubDues/components/ListItem';
 import { useEffect, useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 import { ClubDuesResponseData } from 'types/dues';
+import { ko } from 'date-fns/locale';
+import convertDate from '@libs/util/convertDate';
 
 const ClubDuesHomePage = () => {
+  const navigate = useCustomNavigate();
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
-  const [duesList, setDuesList] = useState<ClubDuesResponseData[]>([]);
+  // const [duesList, setDuesList] = useState<ClubDuesResponseData[]>([]);
   const [filteredDuesList, setFilteredDuesList] = useState<ClubDuesResponseData[]>([]);
   const { setToastMessage } = useToast();
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const {
     data: clubId,
     isError: isClubIdError,
@@ -39,28 +49,28 @@ const ClubDuesHomePage = () => {
     refetch: refetchClubDues,
   } = useGetClubDues({
     clubId: clubId || 0,
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
+    date: convertDate(selectedDate),
   });
   const { data: clubAccountData } = useGetClubAccount({ clubId: clubId || 0 });
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const { searchQuery } = useSearch();
 
   const filterData = (duesList: ClubDuesResponseData[]) => {
     if (!clubDuesData) return;
 
-    const filterValue = CLUB_DUES_SORT_OPTIONS[selectedOption].value;
+    const filterValue = CLUB_DUES_SORT_OPTIONS[selectedOption as number].value;
+    const categorizedData =
+      filterValue === 'ALL' ? duesList : duesList.filter((dues) => dues.clubAccountHistoryInOutType === filterValue);
 
-    if (filterValue === 'ALL') {
-      setFilteredDuesList(duesList);
-      return;
-    }
-
-    const filteredResult = duesList.filter((dues) => dues.clubAccountHistoryInOutType === filterValue);
-    setFilteredDuesList(filteredResult);
+    const filteredData = categorizedData.filter((dues) => {
+      const tranDate = new Date(dues.clubAccountHistoryTranDate);
+      return tranDate.getFullYear() === selectedDate.getFullYear() && tranDate.getMonth() === selectedDate.getMonth();
+    });
+    setFilteredDuesList(filteredData);
   };
 
   const { isOpen, selectedOption, bottomSheetRef, setIsOpen, setSelectedOption } = useBottomSheet({
-    onSelectOption: () => filterData(duesList),
+    onSelectOption: () => filterData(clubDuesData?.result ?? []),
   });
 
   const handleInfoClick = () => {
@@ -75,7 +85,7 @@ const ClubDuesHomePage = () => {
     if (!data) return;
 
     const { result } = data;
-    setDuesList(result);
+    // setDuesList(result);
     filterData(result);
 
     setToastMessage('회비 내역을 갱신했어요');
@@ -86,7 +96,7 @@ const ClubDuesHomePage = () => {
 
     const { result } = clubDuesData;
 
-    setDuesList(result);
+    // setDuesList(result);
     filterData(result);
   }, [clubDuesData]);
 
@@ -96,12 +106,22 @@ const ClubDuesHomePage = () => {
     }
   }, [isClubIdError, isClubDuesError]);
 
+  // useEffect(() => {
+  //   filterData(clubDuesData?.result ?? []);
+  // }, [selectedDate]);
+
+  useEffect(() => {
+    if (!searchQuery) return;
+
+    navigate(ROUTE.DUES_SEARCH);
+  }, [searchQuery]);
+
   const isLoading = isClubIdLoading || isClubDuesLoading;
 
   return (
     <div className="relative h-full pb-[100px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
-        <AppBar hasMenu />
+        <AppBar hasMenu hasSearch />
       </div>
 
       <div className="flex flex-col items-end gap-[4px] px-[20px] py-[20px] pb-[40px]">
@@ -109,12 +129,8 @@ const ClubDuesHomePage = () => {
         <Title1 text={formatMoney(clubAccountData?.clubAccountBalance ?? 0)} className="text-[2.8rem] font-extrabold" />
       </div>
 
-      <div className="flex items-center justify-between px-[20px]">
-        <button type="button" className="flex items-center gap-[4px]" onClick={() => setIsOpen((prev) => !prev)}>
-          <Body4 text={CLUB_DUES_SORT_OPTIONS[selectedOption].label} className="text-darkGray" />
-          <ChevronBottomGrayIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
-        </button>
-        <div className="flex items-center gap-[4px]">
+      <div className="flex flex-col gap-[8px] px-[20px]">
+        <div className="flex items-center gap-[4px] self-end">
           <Body4
             text={`${new Date(clubAccountData?.clubAccountLastUpdateDate ?? '').getFullYear()}년 ${formatDate(clubAccountData?.clubAccountLastUpdateDate ?? '')} 기준`}
             className="text-darkGray"
@@ -122,10 +138,32 @@ const ClubDuesHomePage = () => {
           <button type="button" onClick={handleInfoClick} className="relative">
             <InfoIcon />
             {isInfoOpen && (
-              <div className="absolute bottom-[-44px] left-[-144px] flex items-center justify-center rounded-[12px] bg-[#7f8189cc] px-[12px] py-[8px]">
+              <div className="absolute bottom-[-44px] left-[-144px] z-20 flex items-center justify-center rounded-[12px] bg-[#7f8189cc] px-[12px] py-[8px]">
                 <Caption1 text="임원이 최근 갱신한 날짜에요" className="text-white" />
               </div>
             )}
+          </button>
+        </div>
+
+        <div className="flex items-center justify-between gap-[8px]">
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => setSelectedDate(date!)}
+            dateFormat="yyyy년 MM월"
+            showMonthYearPicker
+            customInput={
+              <div className="flex items-center gap-[4px]">
+                <Body4 text={`${selectedDate.getFullYear()}년 ${selectedDate.getMonth() + 1}월`} />{' '}
+                <ChevronBottomBlackIcon />
+              </div>
+            }
+            className="cursor-pointer"
+            popperPlacement="bottom"
+            locale={ko}
+          />
+          <button type="button" className="flex items-center gap-[4px]" onClick={() => setIsOpen((prev) => !prev)}>
+            <Body4 text={CLUB_DUES_SORT_OPTIONS[selectedOption as number].label} className="text-darkGray" />
+            <ChevronBottomGrayIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
           </button>
         </div>
       </div>
@@ -164,7 +202,7 @@ const ClubDuesHomePage = () => {
 
       <BottomSheet
         isOpen={isOpen}
-        selectedOption={selectedOption}
+        selectedOption={selectedOption as number}
         bottomSheetRef={bottomSheetRef}
         setSelectedOption={setSelectedOption}
       />

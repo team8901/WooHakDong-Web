@@ -10,15 +10,16 @@ import { PortOneProps } from 'types/payment';
 import { postPortOne } from '@libs/api/payment';
 import KakaoPayIcon from '@assets/images/payment/KakaoPayIcon';
 import TossPayIcon from '@assets/images/payment/TossPayIcon';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import ScrollView from '@components/ScrollView';
 import { useToast } from '@contexts/ToastContext';
 import useLoading from '@hooks/useLoading';
 import Skeleton from 'react-loading-skeleton';
+import { AxiosError } from 'axios';
 
 const PaymentPage = () => {
+  const { state } = useLocation();
   const navigate = useCustomNavigate();
-  // 결제 버튼 인덱스를 저장하는 상태
   const [paymentButtonIndex, setPaymentButtonIndex] = useState(0);
   const [clubId, setClubId] = useState(0);
   const [clubName, setClubName] = useState('');
@@ -62,8 +63,8 @@ const PaymentPage = () => {
 
   const handlePostPortOne = async (pg: string) => {
     const pay_method = 'card';
-    const name = `${clubName} 동아리원 등록하기`;
-    const amount = clubDues;
+    const name = `${clubName} ${state?.groupName || '동아리원 등록하기'}`;
+    const amount = state?.groupAmount || clubDues;
     const buyer_email = memberEmail || '8901test@test.com';
     const buyer_name = memberName || '박박준';
     const buyer_tel = memberPhoneNumber || '010-4242-4242';
@@ -79,6 +80,7 @@ const PaymentPage = () => {
       buyer_tel,
       merchantUid: merchantUid.current,
       clubEnglishName: clubEnglishName || '',
+      groupId: Number(state?.groupId),
     };
 
     setIsPaymentLoading(true);
@@ -90,12 +92,21 @@ const PaymentPage = () => {
         return;
       }
 
+      if (state?.groupId) {
+        setToastMessage('모임에 참가했어요');
+        navigate(ROUTE.GROUP);
+        return;
+      }
       setToastMessage(`${clubName}에 가입되었어요`);
-
       navigate(ROUTE.ROOT);
     } catch (error) {
       console.error(error);
-      setToastMessage(`결제 중 오류가 발생했어요\n${error}`);
+      setToastMessage(
+        (error as AxiosError).message === 'club group already joined'
+          ? '이미 참가한 모임이에요'
+          : '결제 중 오류가 발생했어요',
+      );
+      navigate(ROUTE.GROUP);
     } finally {
       setIsPaymentLoading(false);
     }

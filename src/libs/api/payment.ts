@@ -1,4 +1,4 @@
-import { getGroupInfo, postGroupJoin, postGroupJoinConfirm } from '@libs/api/group';
+import { getGroupInfo, postGroupOrder, postGroupJoinConfirm } from '@libs/api/group';
 import ROUTE from '@libs/constant/path';
 import { IMPResponse } from 'types/iamport';
 import { PortOneProps, PortOneRequestData } from 'types/payment';
@@ -16,9 +16,10 @@ const postPortOne = async ({
   buyer_email,
   buyer_name,
   buyer_tel,
+  groupId,
 }: Readonly<PortOneProps>) => {
   return new Promise((resolve, reject) => {
-    const m_redirect_url = `${import.meta.env.VITE_WEB_URL}${ROUTE.CLUB}/${clubEnglishName}${ROUTE.PAYMENT_REDIRECT}?clubId=${clubId}`;
+    const m_redirect_url = `${import.meta.env.VITE_WEB_URL}${ROUTE.CLUB}/${clubEnglishName}${groupId ? `${ROUTE.GROUP}/${groupId}` : ''}${ROUTE.PAYMENT_REDIRECT}?clubId=${clubId}&groupId=${groupId}`;
 
     const data: PortOneRequestData = {
       pg,
@@ -48,16 +49,19 @@ const postPortOne = async ({
       const impUid = response.imp_uid;
 
       try {
-        const { groupId } = await getGroupInfo({ clubId });
-        const orderId = await postGroupJoin({ merchantUid, groupId });
+        const { groupId: clubGroupId } = await getGroupInfo({ clubId });
+        const paymentGroupId = groupId || clubGroupId;
+
+        const orderId = await postGroupOrder({ merchantUid, groupId: paymentGroupId });
 
         setTimeout(async () => {
-          await postGroupJoinConfirm({ merchantUid, groupId, impUid, orderId });
+          await postGroupJoinConfirm({ merchantUid, groupId: paymentGroupId, impUid, orderId });
           resolve('success');
-        }, 500);
+        }, 1000);
       } catch (error) {
         console.error(error);
-        reject(new Error(`결제 중 오류가 발생했어요\n${error}`));
+        // reject(new Error(`결제 중 오류가 발생했어요\n${error}`));
+        reject(error);
       }
     };
 

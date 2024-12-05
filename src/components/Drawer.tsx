@@ -30,6 +30,8 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
   };
 
   const DRAWER_MENU = [
+    { label: '홈', path: ROUTE.ROOT },
+    { divider: true },
     { label: '회원', path: ROUTE.MEMBER },
     { divider: true },
     { label: '물품', path: ROUTE.ITEM },
@@ -38,6 +40,7 @@ const Drawer = ({ isOpen, toggleDrawer }: Readonly<DrawerProps>) => {
     { label: '회비', path: ROUTE.DUES },
     { divider: true },
     { label: '일정', path: ROUTE.SCHEDULE },
+    { label: '모임', path: ROUTE.GROUP },
     { divider: true },
     { label: '설정', path: ROUTE.SETTING },
   ];

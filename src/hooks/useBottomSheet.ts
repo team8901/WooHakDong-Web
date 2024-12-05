@@ -1,6 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 
-const useBottomSheet = ({ onSelectOption }: Readonly<{ onSelectOption: () => void }>) => {
+type UseBottomSheetProps = {
+  onSelectOption: () => void;
+};
+
+const useBottomSheet = ({ onSelectOption }: Readonly<UseBottomSheetProps>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(0);
   const optionIdx = useRef(-1);

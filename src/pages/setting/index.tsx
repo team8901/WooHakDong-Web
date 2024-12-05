@@ -29,7 +29,7 @@ const SettingPage = () => {
   return (
     <div className="relative h-full px-[20px] pt-[56px]">
       <div className="absolute left-0 top-0">
-        <AppBar goBackCallback={() => customNavigate(ROUTE.MEMBER)} title="설정" />
+        <AppBar goBackCallback={() => customNavigate(ROUTE.ROOT.slice(1))} title="설정" />
       </div>
 
       <ScrollView className="flex h-full flex-col gap-[20px]">
@@ -72,10 +72,6 @@ const SettingPage = () => {
         <div className="flex flex-col gap-[12px]">
           <Caption2 text="이용 안내" />
           <div>
-            <div className="flex items-center justify-between py-[12px]">
-              <Body1 text="버전" />
-              <Body1 text="1.1.4+3" className="text-gray" />
-            </div>
             <button
               type="button"
               className="flex w-full items-center justify-between py-[12px]"

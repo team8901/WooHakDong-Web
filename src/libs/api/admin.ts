@@ -7,6 +7,8 @@ import {
   AdminClubPeriodResponseData,
   AdminClubsResultResponseData,
   AdminClubStatsRequestData,
+  AdminInquiryRequestData,
+  AdminInquiryResponseData,
   AdminLoginRequestData,
   AdminSchoolStatsRequestData,
   AssignedTermResquestData,
@@ -65,6 +67,13 @@ const getClubs = async ({ assignedTerm }: Readonly<AssignedTermResquestData>) =>
 const getClubPayments = async ({ assignedTerm }: Readonly<AssignedTermResquestData>) => {
   const res = await axiosInstance.get<AdminClubPaymentResponseData>(
     `/v1/admin/clubPayments${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
+  );
+  return res.data;
+};
+
+const getAdminInquiryByCategory = async ({ category }: Readonly<AdminInquiryRequestData>) => {
+  const res = await axiosInstance.get<ResultResponse<AdminInquiryResponseData[]>>(
+    `/v1/admin/inquiry${category ? `?category=${category}` : ''}`,
   );
   return res.data;
 };
@@ -141,4 +150,5 @@ export {
   getClubStatsMembers,
   getClubItemCount,
   getClubItemsHistory,
+  getAdminInquiryByCategory,
 };

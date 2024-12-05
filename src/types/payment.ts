@@ -9,6 +9,7 @@ type PortOneProps = {
   buyer_email: string;
   buyer_name: string;
   buyer_tel: string;
+  groupId?: number;
 };
 
 type PortOneRequestData = {

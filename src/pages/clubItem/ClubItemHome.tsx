@@ -29,6 +29,9 @@ const ClubItemHomePage = () => {
   const { searchQuery } = useSearch();
   const navigate = useCustomNavigate();
   const { activeTab, handleTabChange } = useTabNav({ onClickTab: () => filterData(itemList) });
+  const { isOpen, selectedOption, bottomSheetRef, setIsOpen, setSelectedOption } = useBottomSheet({
+    onSelectOption: () => filterData(itemList),
+  });
   const { setToastMessage } = useToast();
   const {
     data: clubId,
@@ -50,28 +53,20 @@ const ClubItemHomePage = () => {
   const getItemStatus = (item: ClubItemResponseData) => {
     if (!item.itemAvailable) return '대여 불가';
     if (item.itemUsing) return '대여 중';
-    return '대여 가능';
+    return '비대여 중';
   };
 
   const filterData = (itemList: ClubItemResponseData[]) => {
     if (!clubItemsData) return;
-
     const tabData = activeTab === 'ALL' ? itemList : itemList.filter((item) => item.itemCategory === activeTab);
-
     const filterLabel = CLUB_ITEM_SORT_OPTIONS[selectedOption].label;
-
     if (filterLabel === '전체') {
       setFilteredItemList(tabData);
       return;
     }
-
     const filteredResult = tabData.filter((item) => getItemStatus(item) === filterLabel);
     setFilteredItemList(filteredResult);
   };
-
-  const { isOpen, selectedOption, bottomSheetRef, setIsOpen, setSelectedOption } = useBottomSheet({
-    onSelectOption: () => filterData(itemList),
-  });
 
   const isMyBorrowedItem = (itemId: number) => myBorrowedItemList.some((item) => item.itemId === itemId);
 
@@ -133,11 +128,6 @@ const ClubItemHomePage = () => {
       </div>
 
       <TabNav activeTab={activeTab} handleTabChange={handleTabChange} />
-
-      {/* <button type="button" className="flex items-center gap-[4px]" onClick={() => setIsOpen((prev) => !prev)}>
-          <Body4 text={CLUB_DUES_SORT_OPTIONS[selectedOption].label} className="text-darkGray" />
-          <ChevronBottomGrayIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
-        </button> */}
 
       <div className="flex px-[20px] pb-[10px] pt-[20px]">
         <button

@@ -1,5 +1,6 @@
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import ROUTE from '@libs/constant/path';
+import getItemImage from '@libs/util/getItemImage';
 import ItemRentalTime from '@pages/clubItem/components/ItemRentalTime';
 import ItemTitle from '@pages/clubItem/components/ItemTitle';
 import ItemUsing from '@pages/clubItem/components/ItemUsing';
@@ -22,8 +23,7 @@ const ListItem = ({ item, borrowedReturnDate, myPage = false }: Readonly<ClubIte
     <button className="flex cursor-pointer gap-[12px]" onClick={() => handleItemClick(item)}>
       <img
         alt="물품"
-        src={item.itemPhoto || '/logo.svg'}
-        // src={'/logo.svg'}
+        src={item.itemPhoto || getItemImage(item.itemCategory)}
         className="h-[72px] w-[72px] flex-shrink-0 rounded-[14px] border border-lightGray object-cover"
       />
       <div className="flex w-full flex-col items-start gap-[4px]">

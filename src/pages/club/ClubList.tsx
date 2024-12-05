@@ -1,3 +1,5 @@
+import EmailIcon from '@assets/images/clubMember/EmailIcon';
+import Caption1 from '@components/Caption1';
 import Caption2 from '@components/Caption2';
 import ScrollView from '@components/ScrollView';
 import Title2 from '@components/Title2';
@@ -38,11 +40,6 @@ const ClubListPage = () => {
       <div className="flex flex-col">
         {clubs.length === 0 ? (
           <>
-            {/* <div className="flex">
-              <Title2 text="우학동" className="text-primary" />
-              <Title2 text="과 함께 하는" />
-            </div>
-            <Title2 text="아주대학교 동아리 목록이에요" /> */}
             <Title2 text="아직 가입한 동아리가 없어요" />
             <Caption2 text="공유된 링크 및 QR코드를 통해 동아리에 가입해 주세요!" className="mt-[8px]" />
           </>
@@ -60,12 +57,23 @@ const ClubListPage = () => {
           <Skeleton width="100%" height={292} borderRadius={14} />
         </div>
       ) : (
-        <ScrollView fadeTop className="grid grid-cols-2 gap-[12px]">
+        <ScrollView fadeTop className="grid grid-cols-2 gap-[12px]" style={{ paddingBottom: 80 }}>
           {clubs.map((club) => (
             <ClubCard key={club.clubId} club={club} onClick={() => navigate(`${ROUTE.CLUB}/${club.clubEnglishName}`)} />
           ))}
         </ScrollView>
       )}
+
+      <div className="absolute bottom-[20px] right-[20px]">
+        <button
+          type="button"
+          onClick={() => (location.href = 'mailto:sangjun1389@ajou.ac.kr')}
+          className="flex items-center justify-center gap-[4px] rounded-[10px] bg-lightPrimary px-[12px] py-[8px] text-primary"
+        >
+          <EmailIcon />
+          <Caption1 text="이메일로 서비스 문의하기" />
+        </button>
+      </div>
     </div>
   );
 };

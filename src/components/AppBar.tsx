@@ -1,4 +1,3 @@
-import HomeIcon from '@assets/images/appBar/HomeIcon';
 import MenuIcon from '@assets/images/appBar/MenuIcon';
 import SearchIcon from '@assets/images/appBar/SearchIcon';
 import ChevronLeftBlackIcon from '@assets/images/chevrons/ChevronLeftBlackIcon';
@@ -57,7 +56,10 @@ const AppBar = ({
           <button type="button" onClick={toggleDrawer}>
             <MenuIcon />
           </button>
-          <Title3 text={clubName ?? ''} />
+
+          <button type="button" onClick={() => customNavigate(ROUTE.ROOT.slice(1))}>
+            <Title3 text={clubName ?? ''} />
+          </button>
         </div>
       ) : (
         <button type="button" onClick={goBackCallback ? () => goBackCallback() : () => navigate(-1)}>
@@ -65,11 +67,6 @@ const AppBar = ({
         </button>
       )}
       {title && <Title3 text={title} className="ml-[-4px] flex-shrink-0" />}
-      {!goBackCallback && (
-        <button type="button" onClick={() => customNavigate(ROUTE.ROOT.slice(1))} className="ml-[-12px] flex-shrink-0">
-          <HomeIcon />
-        </button>
-      )}
       <div className="relative flex w-full items-center">
         {hasSearch && (
           <>

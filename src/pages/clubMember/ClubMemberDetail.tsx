@@ -1,18 +1,24 @@
+import BookIcon from '@assets/images/clubMember/BookIcon';
+import CallIcon from '@assets/images/clubMember/CallIcon';
+import EmailIcon from '@assets/images/clubMember/EmailIcon';
+import GenderIcon from '@assets/images/clubMember/GenderIcon';
+import IdCardIcon from '@assets/images/clubMember/IdCardIcon';
 import AppBar from '@components/AppBar';
-import Body1 from '@components/Body1';
 import Caption2 from '@components/Caption2';
+import IconText from '@components/IconText';
 import ScrollView from '@components/ScrollView';
 import Title1 from '@components/Title1';
 import Title4 from '@components/Title4';
 import { CLUB_MEMBER_ROLE } from '@libs/constant/clubMember';
 import { GENDER_TYPE } from '@libs/constant/member';
 import formatPhoneNumber from '@libs/util/formatPhoneNumber';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ClubMemberResponseData } from 'types/clubMember';
 
 const ClubMemberDetailPage = () => {
   const { state } = useLocation();
   const member: ClubMemberResponseData = state.member;
+  const navigate = useNavigate();
 
   const callPhone = (phoneNumber: string) => {
     location.href = `tel:${phoneNumber}`;
@@ -25,7 +31,7 @@ const ClubMemberDetailPage = () => {
   return (
     <div className="relative h-full pb-[70px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
-        <AppBar />
+        <AppBar goBackCallback={() => navigate(-1)} />
       </div>
 
       <ScrollView
@@ -45,21 +51,20 @@ const ClubMemberDetailPage = () => {
           <div className="flex flex-col gap-[8px]">
             <Caption2 text="기본 정보" className="text-darkGray" />
             <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray p-[16px]">
-              <Body1 text={GENDER_TYPE[member.memberGender]} />
-              <button type="button" onClick={() => callPhone(member.memberPhoneNumber)} className="text-start">
-                <Body1 text={formatPhoneNumber(member.memberPhoneNumber)} />
-              </button>
-              <button type="button" onClick={() => sendMail(member.memberEmail)} className="text-start">
-                <Body1 text={member.memberEmail} />
-              </button>
+              <IconText icon={<GenderIcon />} text={GENDER_TYPE[member.memberGender]} />
+              <IconText
+                icon={<CallIcon />}
+                text={formatPhoneNumber(member.memberPhoneNumber)}
+                onClick={() => callPhone(member.memberPhoneNumber)}
+              />
+              <IconText icon={<EmailIcon />} text={member.memberEmail} onClick={() => sendMail(member.memberEmail)} />
             </div>
           </div>
           <div className="flex flex-col gap-[8px]">
             <Caption2 text="학교 정보" className="text-darkGray" />
             <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray p-[16px]">
-              <Body1 text={'아주대학교'} />
-              <Body1 text={member.memberMajor} />
-              <Body1 text={member.memberStudentNumber} />
+              <IconText icon={<BookIcon />} text={member.memberMajor} />
+              <IconText icon={<IdCardIcon />} text={member.memberStudentNumber} />
             </div>
           </div>
         </div>

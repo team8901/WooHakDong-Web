@@ -135,7 +135,8 @@ const StatsSchoolPage = () => {
         />
       </div>
 
-      <div className="fixed bottom-[20px] right-[30px]">
+      <div className="fixed bottom-[20px] right-[30px] flex flex-col gap-[12px]">
+        <Button text="문의 보기" onClick={() => navigate(ROUTE.ADMIN_INQUIRY)} className="w-[170px] px-[20px]" />
         <Button text="전체 통계 보기" onClick={() => navigate(ROUTE.ADMIN_STATS)} className="w-[170px] px-[20px]" />
       </div>
     </div>

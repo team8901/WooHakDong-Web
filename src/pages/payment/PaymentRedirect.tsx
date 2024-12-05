@@ -1,8 +1,9 @@
 import LoadingSpinner from '@components/LoadingSpinner';
 import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
-import { getGroupInfo, postGroupJoin, postGroupJoinConfirm } from '@libs/api/group';
+import { getGroupInfo, postGroupOrder, postGroupJoinConfirm } from '@libs/api/group';
 import ROUTE from '@libs/constant/path';
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -13,6 +14,7 @@ const PaymentRedirectPage = () => {
   const impUid = searchParams.get('imp_uid');
   const merchantUid = searchParams.get('merchant_uid');
   const impSuccess = searchParams.get('imp_success');
+  const groupId = Number(searchParams.get('groupId'));
   const navigate = useCustomNavigate();
   const { setToastMessage } = useToast();
 
@@ -27,16 +29,30 @@ const PaymentRedirectPage = () => {
 
     (async () => {
       try {
-        const { groupId } = await getGroupInfo({ clubId: Number(clubId) });
-        const orderId = await postGroupJoin({ merchantUid, groupId });
+        const { groupId: clubGroupId } = await getGroupInfo({ clubId: Number(clubId) });
+        const paymentGroupId = groupId || clubGroupId;
+        const orderId = await postGroupOrder({ merchantUid, groupId: paymentGroupId });
 
-        await postGroupJoinConfirm({ merchantUid, groupId, impUid, orderId });
+        await postGroupJoinConfirm({ merchantUid, groupId: paymentGroupId, impUid, orderId });
+
+        if (groupId) {
+          setToastMessage('모임에 참가했어요');
+          navigate(ROUTE.GROUP);
+          return;
+        }
         setToastMessage('동아리 가입이 완료되었어요');
-
         navigate(ROUTE.ROOT);
       } catch (error) {
         console.error(error);
-        setToastMessage(`결제 중 오류가 발생했어요\n${error}`);
+        setToastMessage(
+          (error as AxiosError).message === 'club group already joined'
+            ? '이미 참가한 모임이에요'
+            : '결제 중 오류가 발생했어요',
+        );
+        if (groupId) {
+          navigate(ROUTE.GROUP);
+          return;
+        }
         navigate(ROUTE.PAYMENT);
       }
     })();
