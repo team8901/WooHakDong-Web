@@ -19,6 +19,7 @@ import useModal from '@hooks/useModal';
 import { postClubItemBorrow, postClubItemReturn } from '@libs/api/item';
 import { getS3ImageUrl, putImageToS3 } from '@libs/api/util';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
+import getItemImage from '@libs/util/getItemImage';
 import getRemainingDays from '@libs/util/getRemainingDays';
 import Modal from '@pages/clubItem/components/Modal';
 import { AxiosError } from 'axios';
@@ -241,8 +242,7 @@ const ClubItemDetailPage = () => {
         <div className="flex h-full flex-col gap-[20px] overflow-y-auto pb-[100px] scrollbar-hide">
           <img
             alt="물품"
-            src={item.itemPhoto || '/logo.svg'}
-            // src={'/logo.svg'}
+            src={item.itemPhoto || getItemImage(item.itemCategory)}
             className="aspect-square w-full object-cover"
           />
 
