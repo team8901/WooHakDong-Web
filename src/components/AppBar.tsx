@@ -13,9 +13,16 @@ type AppBarProps = {
   hasSearch?: boolean;
   showSearchInput?: boolean;
   goBackCallback?: () => void;
+  title?: string;
 };
 
-const AppBar = ({ hasMenu = false, hasSearch, showSearchInput = false, goBackCallback }: Readonly<AppBarProps>) => {
+const AppBar = ({
+  hasMenu = false,
+  hasSearch,
+  showSearchInput = false,
+  goBackCallback,
+  title,
+}: Readonly<AppBarProps>) => {
   const navigate = useNavigate();
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { toggleDrawer } = useDrawer();
@@ -53,6 +60,7 @@ const AppBar = ({ hasMenu = false, hasSearch, showSearchInput = false, goBackCal
           <ChevronLeftBlackIcon />
         </button>
       )}
+      {title && <Title3 text={title} className="ml-[-4px] flex-shrink-0" />}
       <div className="relative flex w-full items-center">
         {hasSearch && (
           <>
