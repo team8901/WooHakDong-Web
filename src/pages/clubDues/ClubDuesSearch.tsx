@@ -5,15 +5,17 @@ import { useSearch } from '@contexts/SearchContext';
 import { useToast } from '@contexts/ToastContext';
 import useGetClubId from '@hooks/club/useGetClubId';
 import useGetClubDues from '@hooks/dues/useGetClubDues';
+import useCustomNavigate from '@hooks/useCustomNavigate';
+import ROUTE from '@libs/constant/path';
 import ListItem from '@pages/clubDues/components/ListItem';
 import { useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const ClubDuesSearchPage = () => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { searchQuery, setSearchQuery } = useSearch();
-  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const { setToastMessage } = useToast();
   const {
     data: clubId,
@@ -28,7 +30,7 @@ const ClubDuesSearchPage = () => {
 
   const handleGoBack = () => {
     setSearchQuery('');
-    navigate(-1);
+    customNavigate(ROUTE.DUES);
   };
 
   useEffect(() => {

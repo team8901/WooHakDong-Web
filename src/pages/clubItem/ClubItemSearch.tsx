@@ -3,20 +3,22 @@ import EmptyText from '@components/EmptyText';
 import ScrollView from '@components/ScrollView';
 import { useSearch } from '@contexts/SearchContext';
 import { useToast } from '@contexts/ToastContext';
+import useCustomNavigate from '@hooks/useCustomNavigate';
 import useLoading from '@hooks/useLoading';
 import { getClubInfo } from '@libs/api/club';
 import { getClubItems } from '@libs/api/item';
+import ROUTE from '@libs/constant/path';
 import SearchListItem from '@pages/clubItem/components/SearchListItem';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ClubItemResponseData } from 'types/item';
 
 const ClubItemSearchPage = () => {
   const [itemList, setItemList] = useState<ClubItemResponseData[]>([]);
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { searchQuery, setSearchQuery } = useSearch();
-  const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const { isLoading, setIsLoading } = useLoading();
   const { setToastMessage } = useToast();
 
@@ -43,7 +45,7 @@ const ClubItemSearchPage = () => {
 
   const handleGoBack = () => {
     setSearchQuery('');
-    navigate(-1);
+    customNavigate(ROUTE.ITEM);
   };
 
   return (
