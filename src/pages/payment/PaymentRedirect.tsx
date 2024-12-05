@@ -3,6 +3,7 @@ import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import { getGroupInfo, postGroupOrder, postGroupJoinConfirm } from '@libs/api/group';
 import ROUTE from '@libs/constant/path';
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -43,7 +44,15 @@ const PaymentRedirectPage = () => {
         navigate(ROUTE.ROOT);
       } catch (error) {
         console.error(error);
-        setToastMessage(`결제 중 오류가 발생했어요\n${error}`);
+        setToastMessage(
+          (error as AxiosError).message === 'club group already joined'
+            ? '이미 참가한 모임이에요'
+            : '결제 중 오류가 발생했어요',
+        );
+        if (groupId) {
+          navigate(ROUTE.GROUP);
+          return;
+        }
         navigate(ROUTE.PAYMENT);
       }
     })();

@@ -90,7 +90,7 @@ const GroupRegisterPage = () => {
 
       <div className="absolute bottom-[20px] left-0 w-full px-[20px]">
         {groupInfoData?.groupAmount ? (
-          <Button text="회비 납부하기" onClick={handlePay} />
+          <Button text="결제하기" onClick={handlePay} />
         ) : (
           <Button text="참가하기" onClick={handleGroupJoin} />
         )}
