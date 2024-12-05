@@ -11,6 +11,7 @@ import { postMemberInfo } from '@libs/api/member';
 import { GENDER_TYPE } from '@libs/constant/member';
 import ROUTE from '@libs/constant/path';
 import formatPhoneNumber from '@libs/util/formatPhoneNumber';
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -48,7 +49,11 @@ const MemberInfoConfirmPage = () => {
       customNavigate(ROUTE.CLUB_REGISTER);
       setToastMessage('회원 정보가 저장되었어요');
     } catch (error) {
-      setToastMessage(`회원 정보를 저장하는 데 실패했어요\n${error}`);
+      if ((error as AxiosError).message === 'Invalid phone number format') {
+        setToastMessage('올바른 전화번호 형식이 아니에요');
+        return;
+      }
+      setToastMessage(`회원 정보를 저장하는 데 실패했어요`);
     } finally {
       setIsLoading(false);
     }
