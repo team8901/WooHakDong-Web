@@ -33,8 +33,13 @@ const PaymentRedirectPage = () => {
         const orderId = await postGroupOrder({ merchantUid, groupId: paymentGroupId });
 
         await postGroupJoinConfirm({ merchantUid, groupId: paymentGroupId, impUid, orderId });
-        setToastMessage('동아리 가입이 완료되었어요');
 
+        if (groupId) {
+          setToastMessage('모임에 참가했어요');
+          navigate(ROUTE.GROUP);
+          return;
+        }
+        setToastMessage('동아리 가입이 완료되었어요');
         navigate(ROUTE.ROOT);
       } catch (error) {
         console.error(error);

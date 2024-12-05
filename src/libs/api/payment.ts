@@ -19,7 +19,7 @@ const postPortOne = async ({
   groupId,
 }: Readonly<PortOneProps>) => {
   return new Promise((resolve, reject) => {
-    const m_redirect_url = `${import.meta.env.VITE_WEB_URL}${ROUTE.CLUB}/${clubEnglishName}${ROUTE.PAYMENT_REDIRECT}?clubId=${clubId}&groupId=${groupId}`;
+    const m_redirect_url = `${import.meta.env.VITE_WEB_URL}${ROUTE.CLUB}/${clubEnglishName}${groupId ? `${ROUTE.GROUP}/${groupId}` : ''}${ROUTE.PAYMENT_REDIRECT}?clubId=${clubId}&groupId=${groupId}`;
 
     const data: PortOneRequestData = {
       pg,
