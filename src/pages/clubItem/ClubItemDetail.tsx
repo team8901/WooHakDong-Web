@@ -17,6 +17,7 @@ import { getS3ImageUrl, putImageToS3 } from '@libs/api/util';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
 import getRemainingDays from '@libs/util/getRemainingDays';
 import Modal from '@pages/clubItem/components/Modal';
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -68,7 +69,12 @@ const ClubItemDetailPage = () => {
       navigate(-1);
     } catch (error) {
       console.error(error);
-      setToastMessage(`대여 신청 중 오류가 발생했어요\n${error}`);
+      setToastMessage(
+        (error as AxiosError).message === 'item using'
+          ? '이미 대여 완료된 물품이에요'
+          : `대여 신청 중 오류가 발생했어요`,
+      );
+      navigate(-1);
     } finally {
       setIsBorrowLoading(false);
     }

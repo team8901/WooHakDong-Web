@@ -59,9 +59,9 @@ const ClubDuesHomePage = () => {
     setFilteredDuesList(filteredResult);
   };
 
-  const { isOpen, selectedOption, bottomSheetRef, setIsOpen, setSelectedOption } = useBottomSheet(() =>
-    filterData(duesList),
-  );
+  const { isOpen, selectedOption, bottomSheetRef, setIsOpen, setSelectedOption } = useBottomSheet({
+    onSelectOption: () => filterData(duesList),
+  });
 
   const handleInfoClick = () => {
     setIsInfoOpen(true);

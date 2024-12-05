@@ -141,8 +141,8 @@ scroll gradient in the top right */
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  width: 32px !important;
-  height: 32px !important;
+  width: 34px !important;
+  height: 34px !important;
 }
 
 .react-calendar .react-calendar__tile--active abbr {

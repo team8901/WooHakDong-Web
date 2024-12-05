@@ -13,4 +13,15 @@ const calculateClubAssignedTerm = () => {
   return `${year}-09-01`;
 };
 
-export default calculateClubAssignedTerm;
+const getTermRange = () => {
+  const today = new Date();
+  const month = today.getMonth() + 1;
+  const year = today.getFullYear();
+
+  if (month >= 3 && month <= 8) {
+    return { startDate: `${year}-03-01`, endDate: `${year}-08-31` };
+  }
+  return { startDate: `${year}-09-01`, endDate: `${year + 1}-02-30` };
+};
+
+export { calculateClubAssignedTerm, getTermRange };

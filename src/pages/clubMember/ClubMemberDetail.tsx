@@ -14,6 +14,14 @@ const ClubMemberDetailPage = () => {
   const { state } = useLocation();
   const member: ClubMemberResponseData = state.member;
 
+  const callPhone = (phoneNumber: string) => {
+    location.href = `tel:${phoneNumber}`;
+  };
+
+  const sendMail = (email: string) => {
+    location.href = `mailto:${email}`;
+  };
+
   return (
     <div className="relative h-full pb-[70px] pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
@@ -38,8 +46,12 @@ const ClubMemberDetailPage = () => {
             <Caption2 text="기본 정보" className="text-darkGray" />
             <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray p-[16px]">
               <Body1 text={GENDER_TYPE[member.memberGender]} />
-              <Body1 text={formatPhoneNumber(member.memberPhoneNumber)} />
-              <Body1 text={member.memberEmail} />
+              <button type="button" onClick={() => callPhone(member.memberPhoneNumber)} className="text-start">
+                <Body1 text={formatPhoneNumber(member.memberPhoneNumber)} />
+              </button>
+              <button type="button" onClick={() => sendMail(member.memberEmail)} className="text-start">
+                <Body1 text={member.memberEmail} />
+              </button>
             </div>
           </div>
           <div className="flex flex-col gap-[8px]">

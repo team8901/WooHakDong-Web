@@ -34,11 +34,19 @@ import LoginRegisterPage from '@pages/login/LoginRegister';
 import PaymentRedirectPage from '@pages/payment/PaymentRedirect';
 import SettingPage from '@pages/setting';
 import InquiryPage from '@pages/setting/Inquiry';
+import ClubHomePage from '@pages/club/ClubHome';
 
 const RootRoute = () => {
   const isAuth = !!localStorage.getItem('accessToken');
 
   if (!isAuth) {
+    return <Navigate to={ROUTE.LOGIN_REGISTER} />;
+  }
+
+  if (localStorage.getItem('admin')) {
+    localStorage.removeItem('admin');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     return <Navigate to={ROUTE.LOGIN_REGISTER} />;
   }
 
@@ -93,7 +101,7 @@ export const Router = () => {
             </Route>
             {/* 해당 동아리에 가입하지 않은 사용자가 접근할 수 없는 페이지 */}
             <Route element={<ClubLayout />}>
-              <Route path={ROUTE.ROOT.slice(1)} element={<ClubMemberHomePage />} />
+              <Route path={ROUTE.ROOT.slice(1)} element={<ClubHomePage />} />
               <Route path={ROUTE.MEMBER.slice(1)} element={<ClubMemberHomePage />} />
               <Route path={`${ROUTE.MEMBER.slice(1)}/:memberId`} element={<ClubMemberDetailPage />} />
               <Route path={ROUTE.ITEM.slice(1)} element={<ClubItemHomePage />} />

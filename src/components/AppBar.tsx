@@ -1,3 +1,4 @@
+import HomeIcon from '@assets/images/appBar/HomeIcon';
 import MenuIcon from '@assets/images/appBar/MenuIcon';
 import SearchIcon from '@assets/images/appBar/SearchIcon';
 import ChevronLeftBlackIcon from '@assets/images/chevrons/ChevronLeftBlackIcon';
@@ -5,6 +6,8 @@ import Title3 from '@components/Title3';
 import { useDrawer } from '@contexts/DrawerContext';
 import { useSearch } from '@contexts/SearchContext';
 import useGetClubName from '@hooks/club/useGetClubName';
+import useCustomNavigate from '@hooks/useCustomNavigate';
+import ROUTE from '@libs/constant/path';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -24,6 +27,7 @@ const AppBar = ({
   title,
 }: Readonly<AppBarProps>) => {
   const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { toggleDrawer } = useDrawer();
   const { setSearchQuery } = useSearch();
@@ -61,6 +65,11 @@ const AppBar = ({
         </button>
       )}
       {title && <Title3 text={title} className="ml-[-4px] flex-shrink-0" />}
+      {!goBackCallback && (
+        <button type="button" onClick={() => customNavigate(ROUTE.ROOT.slice(1))} className="ml-[-12px] flex-shrink-0">
+          <HomeIcon />
+        </button>
+      )}
       <div className="relative flex w-full items-center">
         {hasSearch && (
           <>
