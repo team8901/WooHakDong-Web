@@ -11,7 +11,7 @@ type ClubCardProps = {
 const ClubCard = ({ club, onClick }: Readonly<ClubCardProps>) => {
   return (
     <button
-      className="flex h-[228px] flex-col gap-[12px] rounded-[14px] border border-lightGray p-[8px]"
+      className="flex h-[245px] flex-col gap-[12px] rounded-[14px] border border-lightGray p-[8px]"
       onClick={onClick}
     >
       <img
