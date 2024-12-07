@@ -6,7 +6,13 @@ import { useTerm } from '@contexts/TermContext';
 import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useLoading from '@hooks/useLoading';
-import { getClubItemCount, getClubItemsHistory, getClubPeriod, getClubStatsMembers } from '@libs/api/admin';
+import {
+  getClubItemCount,
+  getClubItemsHistory,
+  getClubPaymentsByClubId,
+  getClubPeriod,
+  getClubStatsMembers,
+} from '@libs/api/admin';
 import { TERMS_MENU } from '@libs/constant/admin';
 import ROUTE from '@libs/constant/path';
 import getRemainingDays from '@libs/util/getRemainingDays';
@@ -35,6 +41,7 @@ const StatsClubPage = () => {
   const { setToastMessage } = useToast();
   const { selectedTermIdx, setSelectedTermIdx } = useTerm();
   const navigate = useCustomNavigate();
+  const [payments, setPayments] = useState<number[]>([]);
   console.log(memberCountsPerDate, itemCountsPerDate, itemCountsPerCategory);
   const initData = () => {
     setMemberCounts([]);
@@ -59,9 +66,11 @@ const StatsClubPage = () => {
           const { result: membersResult } = await getClubStatsMembers({ clubId, assignedTerm: term });
           const { count: itemCount } = await getClubItemCount({ clubId, assignedTerm: term });
           const { result: itemsHistoryResult } = await getClubItemsHistory({ clubId, assignedTerm: term });
+          const { clubPayment: payment } = await getClubPaymentsByClubId({ clubId, assignedTerm: term });
 
           setMemberCounts((prev) => [...prev, membersResult.length]);
           setItemCounts((prev) => [...prev, itemCount]);
+          setPayments((prev) => [...prev, payment]);
 
           // setMemberCountsPerDate
           // membersResult: [{ createAt }] 날짜별 회원 수 구하기
@@ -165,6 +174,13 @@ const StatsClubPage = () => {
           id="stats-item-count"
           seriesData={itemCounts}
           seriesName="물품 수"
+        />
+        <ChartPerTerm
+          type="bar"
+          title="분기별 동아리 결제금액"
+          id="stats-payments"
+          seriesData={payments}
+          seriesName="결제금액"
         />
       </div>
 

@@ -26,8 +26,11 @@ type AdminClubPaymentResponseData = {
   clubPayment: number;
 };
 
-type AdminClubsResponseData = {
+type ClubIdRequestData = {
   clubId: number;
+};
+
+interface AdminClubsResponseData extends ClubIdRequestData {
   clubName: string;
   clubEnglishName: string;
   clubDescription: string;
@@ -38,24 +41,22 @@ type AdminClubsResponseData = {
   clubGroupChatPassword: string;
   clubDues: number;
   schoolName: string;
-};
+}
 
 type AdminClubsResultResponseData = {
   result: AdminClubsResponseData[];
+};
+
+type AssignedTermResquestData = {
+  assignedTerm?: string | null;
 };
 
 interface AdminSchoolStatsRequestData extends AssignedTermResquestData {
   schoolId: number;
 }
 
-type AssignedTermResquestData = {
-  assignedTerm?: string | null;
-};
-
 // admin-club-controller
-interface AdminClubStatsRequestData extends AssignedTermResquestData {
-  clubId: number;
-}
+type AdminClubStatsRequestData = ClubIdRequestData & AssignedTermResquestData;
 
 type AdminClubPeriodResponseData = {
   startDate: string;
