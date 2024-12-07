@@ -8,9 +8,20 @@ import { useTerm } from '@contexts/TermContext';
 import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useLoading from '@hooks/useLoading';
-import { getClubCount, getClubPayments, getClubs, getMemberCount, getSchoolCount, getSchools } from '@libs/api/admin';
+import {
+  getClubCount,
+  getClubItemCount,
+  getClubPayments,
+  getClubPaymentsByClubId,
+  getClubs,
+  getClubStatsMembers,
+  getMemberCount,
+  getSchoolCount,
+  getSchools,
+} from '@libs/api/admin';
 import { TERMS_MENU } from '@libs/constant/admin';
 import ROUTE from '@libs/constant/path';
+import ChartPerCategory from '@pages/admin/components/ChartPerCategory';
 import ChartPerTerm from '@pages/admin/components/ChartPerTerm';
 import Dropdown from '@pages/admin/components/Dropdown';
 import ClubCard from '@pages/club/components/ClubCard';
@@ -28,7 +39,10 @@ const StatsHomePage = () => {
   const [clubCounts, setClubCounts] = useState<number[]>([]);
   const [schoolCounts, setSchoolCounts] = useState<number[]>([]);
   const [memberCounts, setMemberCounts] = useState<number[]>([]);
+  const [memberCountsPerClub, setMemberCountsPerClub] = useState<{ [clubId: number]: number }[]>([]);
   const [payments, setPayments] = useState<number[]>([]);
+  const [paymentsPerClub, setPaymentsPerClub] = useState<{ [clubId: number]: number }[]>([]);
+  const [itemCountsPerClub, setItemCountsPerClub] = useState<{ [clubId: number]: number }[]>([]);
   const { selectedTermIdx, setSelectedTermIdx } = useTerm();
 
   const initData = () => {
@@ -62,6 +76,26 @@ const StatsHomePage = () => {
           setPayments((prev) => [...prev, payment]);
           setSchools((prev) => [...prev, schoolsResult]);
           setClubs((prev) => [...prev, clubsResult]);
+
+          const clubIds = clubsResult.map((club) => club.clubId);
+          const paymentsPerClubObj: { [clubId: number]: number } = {};
+          const memberCountsPerClubObj: { [clubId: number]: number } = {};
+          const itemCountsPerClubObj: { [clubId: number]: number } = {};
+
+          for (const clubId of clubIds) {
+            const { clubPayment } = await getClubPaymentsByClubId({ clubId, assignedTerm: term });
+            paymentsPerClubObj[clubId] = clubPayment;
+
+            const { result: membersResult } = await getClubStatsMembers({ clubId, assignedTerm: term });
+            memberCountsPerClubObj[clubId] = membersResult.length;
+
+            const { count: itemCount } = await getClubItemCount({ clubId, assignedTerm: term });
+            itemCountsPerClubObj[clubId] = itemCount;
+          }
+          // [{ [clubId: number]: number }]
+          setPaymentsPerClub((prev) => [...prev, paymentsPerClubObj]);
+          setMemberCountsPerClub((prev) => [...prev, memberCountsPerClubObj]);
+          setItemCountsPerClub((prev) => [...prev, itemCountsPerClubObj]);
         }
       } catch (error) {
         console.error(error);
@@ -186,6 +220,38 @@ const StatsHomePage = () => {
           id="stats-payments"
           seriesData={payments}
           seriesName="결제금액"
+        />
+        <ChartPerCategory
+          type="bar"
+          title="동아리별 결제금액"
+          id="stats-payments-per-club"
+          xaxisCategories={(paymentsPerClub[selectedTermIdx] ? Object.keys(paymentsPerClub[selectedTermIdx]) : []).map(
+            (clubId) => clubs[selectedTermIdx].find((club) => club.clubId === Number(clubId))!.clubName,
+          )}
+          seriesData={paymentsPerClub[selectedTermIdx] ? Object.values(paymentsPerClub[selectedTermIdx]) : []}
+          seriesName="결제금액"
+        />
+        <ChartPerCategory
+          type="bar"
+          title="동아리별 회원 수"
+          id="stats-member-count-per-club"
+          xaxisCategories={(memberCountsPerClub[selectedTermIdx]
+            ? Object.keys(memberCountsPerClub[selectedTermIdx])
+            : []
+          ).map((clubId) => clubs[selectedTermIdx].find((club) => club.clubId === Number(clubId))!.clubName)}
+          seriesData={memberCountsPerClub[selectedTermIdx] ? Object.values(memberCountsPerClub[selectedTermIdx]) : []}
+          seriesName="회원 수"
+        />
+        <ChartPerCategory
+          type="bar"
+          title="동아리별 물품 수"
+          id="stats-item-count-per-club"
+          xaxisCategories={(itemCountsPerClub[selectedTermIdx]
+            ? Object.keys(itemCountsPerClub[selectedTermIdx])
+            : []
+          ).map((clubId) => clubs[selectedTermIdx].find((club) => club.clubId === Number(clubId))!.clubName)}
+          seriesData={itemCountsPerClub[selectedTermIdx] ? Object.values(itemCountsPerClub[selectedTermIdx]) : []}
+          seriesName="물품 수"
         />
       </div>
 
