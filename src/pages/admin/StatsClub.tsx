@@ -14,8 +14,10 @@ import {
   getClubStatsMembers,
 } from '@libs/api/admin';
 import { TERMS_MENU } from '@libs/constant/admin';
+import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
 import ROUTE from '@libs/constant/path';
 import getRemainingDays from '@libs/util/getRemainingDays';
+import ChartPerCategory from '@pages/admin/components/ChartPerCategory';
 import ChartPerTerm from '@pages/admin/components/ChartPerTerm';
 import Dropdown from '@pages/admin/components/Dropdown';
 import StatsSkeleton from '@pages/admin/components/StatsSkeleton';
@@ -23,6 +25,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { SchoolsResponseData } from 'types/admin';
 import { ClubInfoResponseData } from 'types/club';
+import { ClubItemCategory } from 'types/item';
 
 type PerDate = { [date: string]: number };
 
@@ -93,7 +96,7 @@ const StatsClubPage = () => {
             },
             {} as Record<string, number>,
           );
-          setItemCountsPerDate((prev) => ({ ...prev, ...itemCountsPerDate }));
+          setItemCountsPerDate((prev) => [...prev, itemCountsPerDate]);
 
           // setItemCountsPerCategory
           // itemsHistoryResult: [{ itemCategory, itemRentalDate, itemReturnDate }] 카테고리별 물품 수 구하기
@@ -105,7 +108,7 @@ const StatsClubPage = () => {
             },
             {} as Record<string, number>,
           );
-          setItemCountsPerCategory((prev) => ({ ...prev, ...itemCountsPerCategory }));
+          setItemCountsPerCategory((prev) => [...prev, itemCountsPerCategory]);
         }
       } catch (error) {
         console.error(error);
@@ -149,31 +152,37 @@ const StatsClubPage = () => {
           seriesData={memberCounts}
           seriesName="회원 수"
         />
-        {/* <Chart
-          options={{
-            title: {
-              text: '날짜별 회원 수',
-            },
-            chart: {
-              id: 'stats-member-count-per-date',
-            },
-            xaxis: {
-              categories: Object.keys(memberCountsPerDate[selectedTermIdx]),
-            },
-          }}
-          series={[
-            {
-              name: '회원 수',
-              data: Object.values(memberCountsPerDate[selectedTermIdx]),
-            },
-          ]}
+        <ChartPerCategory
           type="bar"
-        /> */}
+          title="날짜별 회원 수"
+          id="stats-member-count-per-date"
+          xaxisCategories={Object.keys(memberCountsPerDate[selectedTermIdx] ?? [])}
+          seriesData={Object.values(memberCountsPerDate[selectedTermIdx] ?? [])}
+          seriesName="회원 수"
+        />
         <ChartPerTerm
           type="bar"
           title="분기별 물품 수"
           id="stats-item-count"
           seriesData={itemCounts}
+          seriesName="물품 수"
+        />
+        <ChartPerCategory
+          type="bar"
+          title="날짜별 물품 수"
+          id="stats-item-count-per-date"
+          xaxisCategories={Object.keys(itemCountsPerDate[selectedTermIdx] ?? [])}
+          seriesData={Object.values(itemCountsPerDate[selectedTermIdx] ?? [])}
+          seriesName="물품 수"
+        />
+        <ChartPerCategory
+          type="bar"
+          title="카테고리별 물품 수"
+          id="stats-item-count-per-category"
+          xaxisCategories={Object.keys(itemCountsPerCategory[selectedTermIdx] ?? []).map(
+            (category) => CLUB_ITEM_CATEGORY[category as ClubItemCategory],
+          )}
+          seriesData={Object.values(itemCountsPerCategory[selectedTermIdx] ?? [])}
           seriesName="물품 수"
         />
         <ChartPerTerm
