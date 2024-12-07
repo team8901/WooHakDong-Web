@@ -49,6 +49,7 @@ const StatsClubPage = () => {
     setMemberCountsPerDate([]);
     setItemCountsPerDate([]);
     setItemCountsPerCategory([]);
+    setPayments([]);
   };
 
   useEffect(() => {
