@@ -114,7 +114,7 @@ const StatsClubPage = () => {
       </div>
 
       <div className="flex w-full flex-col gap-[12px]">
-        <Title3 text={`학교별 동아리 > ${school.schoolName} > ${club.clubName}`} />
+        <Title3 text={`학교별 동아리 > ${school?.schoolName ? `${school?.schoolName} >` : ''} ${club.clubName}`} />
         <div className="flex w-full flex-wrap items-center justify-center gap-[24px] sm:grid sm:grid-cols-3">
           <div className="flex w-full flex-col justify-center gap-[4px] rounded-[14px] border border-lightGray p-[20px]">
             <Body1 text="총 가입한 회원 수" className="text-[1.8rem] text-darkGray" />

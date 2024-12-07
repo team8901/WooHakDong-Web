@@ -17,6 +17,7 @@ import ClubCard from '@pages/club/components/ClubCard';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { AdminClubsResponseData, SchoolsResponseData } from 'types/admin';
+import { ClubInfoResponseData } from 'types/club';
 
 const StatsHomePage = () => {
   const [schools, setSchools] = useState<SchoolsResponseData[][]>([]);
@@ -73,6 +74,10 @@ const StatsHomePage = () => {
 
   const handleSchoolClick = (school: SchoolsResponseData) => {
     navigate(`${ROUTE.ADMIN_STATS_SCHOOL}/${school.schoolId}`, { state: { school } });
+  };
+
+  const handleClubClick = (club: ClubInfoResponseData) => {
+    navigate(`${ROUTE.ADMIN_STATS_CLUB}/${club.clubId}`, { state: { club } });
   };
 
   if (isLoading)
@@ -147,7 +152,7 @@ const StatsHomePage = () => {
         ) : (
           <div className="grid grid-cols-2 gap-[12px] sm:grid-cols-3 md:grid-cols-4">
             {clubs[selectedTermIdx].map((club) => (
-              <ClubCard key={club.clubId} club={club} onClick={() => console.log(`${club.clubId}`)} />
+              <ClubCard key={club.clubId} club={club} onClick={() => handleClubClick(club)} />
             ))}
           </div>
         )}
