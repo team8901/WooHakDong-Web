@@ -1,4 +1,5 @@
 import { AdminInquiryResponseData } from 'types/admin';
+import { InquiryCategory } from 'types/inquiry';
 
 const TERMS_MENU = [
   { term: '2023-03-01', label: '23-1' },
@@ -21,12 +22,17 @@ const INQUIRY_MAPPING = {
   ETC: '기타',
 };
 
-// const INQUIRY_MENU: { category: InquiryCategory; label: string }[] = [
-//   { category: 'INQUIRY', label: '문의' },
-//   { category: 'SUGGESTION', label: '건의' },
-//   { category: 'DECLARATION', label: '신고' },
-//   { category: 'ETC', label: '기타' },
-// ];
+const INQUIRY_CATEGORY: { category: InquiryCategory; content: string }[] = [
+  { category: 'INQUIRY', content: '문의' },
+  { category: 'DECLARATION', content: '신고' },
+  { category: 'SUGGESTION', content: '제안' },
+  { category: 'ETC', content: '기타' },
+];
+
+const INQUIRY_CATEGORY_ALL: { category: InquiryCategory | 'ALL'; content: string }[] = [
+  { category: 'ALL', content: '전체' },
+  ...INQUIRY_CATEGORY,
+];
 
 const INQUIRY_DATA: AdminInquiryResponseData[] = [
   {
@@ -59,4 +65,13 @@ const INQUIRY_DATA: AdminInquiryResponseData[] = [
   },
 ];
 
-export { INQUIRY_MAPPING, SLICED_TERMS_LABEL, TERMS_LABEL, TERMS_MENU, TERMS_MENU_REVERSE, INQUIRY_DATA };
+export {
+  INQUIRY_MAPPING,
+  SLICED_TERMS_LABEL,
+  TERMS_LABEL,
+  TERMS_MENU,
+  TERMS_MENU_REVERSE,
+  INQUIRY_CATEGORY,
+  INQUIRY_CATEGORY_ALL,
+  INQUIRY_DATA,
+};
