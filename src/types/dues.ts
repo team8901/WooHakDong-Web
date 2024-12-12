@@ -2,8 +2,8 @@ type ClubAccountHistoryInOutType = 'DEPOSIT' | 'WITHDRAW';
 
 type ClubDuesRequestData = {
   clubId: number;
-  year: number;
-  month: number;
+  date?: string;
+  keyword?: string;
 };
 
 type ClubDuesResponseData = {

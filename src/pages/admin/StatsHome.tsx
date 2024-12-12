@@ -1,4 +1,5 @@
 import Body1 from '@components/Body1';
+import Button from '@components/Button';
 import EmptyText from '@components/EmptyText';
 import Title1 from '@components/Title1';
 import Title3 from '@components/Title3';
@@ -7,15 +8,27 @@ import { useTerm } from '@contexts/TermContext';
 import { useToast } from '@contexts/ToastContext';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useLoading from '@hooks/useLoading';
-import { getClubCount, getClubPayments, getClubs, getMemberCount, getSchoolCount, getSchools } from '@libs/api/admin';
+import {
+  getClubCount,
+  getClubItemCount,
+  getClubPayments,
+  getClubPaymentsByClubId,
+  getClubs,
+  getClubStatsMembers,
+  getMemberCount,
+  getSchoolCount,
+  getSchools,
+} from '@libs/api/admin';
 import { TERMS_MENU } from '@libs/constant/admin';
 import ROUTE from '@libs/constant/path';
+import ChartPerCategory from '@pages/admin/components/ChartPerCategory';
 import ChartPerTerm from '@pages/admin/components/ChartPerTerm';
 import Dropdown from '@pages/admin/components/Dropdown';
 import ClubCard from '@pages/club/components/ClubCard';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { AdminClubsResponseData, SchoolsResponseData } from 'types/admin';
+import { ClubInfoResponseData } from 'types/club';
 
 const StatsHomePage = () => {
   const [schools, setSchools] = useState<SchoolsResponseData[][]>([]);
@@ -26,7 +39,10 @@ const StatsHomePage = () => {
   const [clubCounts, setClubCounts] = useState<number[]>([]);
   const [schoolCounts, setSchoolCounts] = useState<number[]>([]);
   const [memberCounts, setMemberCounts] = useState<number[]>([]);
+  const [memberCountsPerClub, setMemberCountsPerClub] = useState<{ [clubId: number]: number }[]>([]);
   const [payments, setPayments] = useState<number[]>([]);
+  const [paymentsPerClub, setPaymentsPerClub] = useState<{ [clubId: number]: number }[]>([]);
+  const [itemCountsPerClub, setItemCountsPerClub] = useState<{ [clubId: number]: number }[]>([]);
   const { selectedTermIdx, setSelectedTermIdx } = useTerm();
 
   const initData = () => {
@@ -60,6 +76,26 @@ const StatsHomePage = () => {
           setPayments((prev) => [...prev, payment]);
           setSchools((prev) => [...prev, schoolsResult]);
           setClubs((prev) => [...prev, clubsResult]);
+
+          const clubIds = clubsResult.map((club) => club.clubId);
+          const paymentsPerClubObj: { [clubId: number]: number } = {};
+          const memberCountsPerClubObj: { [clubId: number]: number } = {};
+          const itemCountsPerClubObj: { [clubId: number]: number } = {};
+
+          for (const clubId of clubIds) {
+            const { clubPayment } = await getClubPaymentsByClubId({ clubId, assignedTerm: term });
+            paymentsPerClubObj[clubId] = clubPayment;
+
+            const { result: membersResult } = await getClubStatsMembers({ clubId, assignedTerm: term });
+            memberCountsPerClubObj[clubId] = membersResult.length;
+
+            const { count: itemCount } = await getClubItemCount({ clubId, assignedTerm: term });
+            itemCountsPerClubObj[clubId] = itemCount;
+          }
+          // [{ [clubId: number]: number }]
+          setPaymentsPerClub((prev) => [...prev, paymentsPerClubObj]);
+          setMemberCountsPerClub((prev) => [...prev, memberCountsPerClubObj]);
+          setItemCountsPerClub((prev) => [...prev, itemCountsPerClubObj]);
         }
       } catch (error) {
         console.error(error);
@@ -72,6 +108,10 @@ const StatsHomePage = () => {
 
   const handleSchoolClick = (school: SchoolsResponseData) => {
     navigate(`${ROUTE.ADMIN_STATS_SCHOOL}/${school.schoolId}`, { state: { school } });
+  };
+
+  const handleClubClick = (club: ClubInfoResponseData) => {
+    navigate(`${ROUTE.ADMIN_STATS_CLUB}/${club.clubId}`, { state: { club } });
   };
 
   if (isLoading)
@@ -146,7 +186,7 @@ const StatsHomePage = () => {
         ) : (
           <div className="grid grid-cols-2 gap-[12px] sm:grid-cols-3 md:grid-cols-4">
             {clubs[selectedTermIdx].map((club) => (
-              <ClubCard key={club.clubId} club={club} onClick={() => console.log(`${club.clubId}`)} />
+              <ClubCard key={club.clubId} club={club} onClick={() => handleClubClick(club)} />
             ))}
           </div>
         )}
@@ -181,6 +221,42 @@ const StatsHomePage = () => {
           seriesData={payments}
           seriesName="결제금액"
         />
+        <ChartPerCategory
+          type="bar"
+          title="동아리별 결제금액"
+          id="stats-payments-per-club"
+          xaxisCategories={(paymentsPerClub[selectedTermIdx] ? Object.keys(paymentsPerClub[selectedTermIdx]) : []).map(
+            (clubId) => clubs[selectedTermIdx].find((club) => club.clubId === Number(clubId))!.clubName,
+          )}
+          seriesData={paymentsPerClub[selectedTermIdx] ? Object.values(paymentsPerClub[selectedTermIdx]) : []}
+          seriesName="결제금액"
+        />
+        <ChartPerCategory
+          type="bar"
+          title="동아리별 회원 수"
+          id="stats-member-count-per-club"
+          xaxisCategories={(memberCountsPerClub[selectedTermIdx]
+            ? Object.keys(memberCountsPerClub[selectedTermIdx])
+            : []
+          ).map((clubId) => clubs[selectedTermIdx].find((club) => club.clubId === Number(clubId))!.clubName)}
+          seriesData={memberCountsPerClub[selectedTermIdx] ? Object.values(memberCountsPerClub[selectedTermIdx]) : []}
+          seriesName="회원 수"
+        />
+        <ChartPerCategory
+          type="bar"
+          title="동아리별 물품 수"
+          id="stats-item-count-per-club"
+          xaxisCategories={(itemCountsPerClub[selectedTermIdx]
+            ? Object.keys(itemCountsPerClub[selectedTermIdx])
+            : []
+          ).map((clubId) => clubs[selectedTermIdx].find((club) => club.clubId === Number(clubId))!.clubName)}
+          seriesData={itemCountsPerClub[selectedTermIdx] ? Object.values(itemCountsPerClub[selectedTermIdx]) : []}
+          seriesName="물품 수"
+        />
+      </div>
+
+      <div className="fixed bottom-[20px] right-[30px] flex flex-col gap-[12px]">
+        <Button text="문의 보기" onClick={() => navigate(ROUTE.ADMIN_INQUIRY)} className="w-[170px] px-[20px]" />
       </div>
     </div>
   );

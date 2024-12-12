@@ -5,6 +5,8 @@ import Title3 from '@components/Title3';
 import { useDrawer } from '@contexts/DrawerContext';
 import { useSearch } from '@contexts/SearchContext';
 import useGetClubName from '@hooks/club/useGetClubName';
+import useCustomNavigate from '@hooks/useCustomNavigate';
+import ROUTE from '@libs/constant/path';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -13,10 +15,18 @@ type AppBarProps = {
   hasSearch?: boolean;
   showSearchInput?: boolean;
   goBackCallback?: () => void;
+  title?: string;
 };
 
-const AppBar = ({ hasMenu = false, hasSearch, showSearchInput = false, goBackCallback }: Readonly<AppBarProps>) => {
+const AppBar = ({
+  hasMenu = false,
+  hasSearch,
+  showSearchInput = false,
+  goBackCallback,
+  title,
+}: Readonly<AppBarProps>) => {
   const navigate = useNavigate();
+  const customNavigate = useCustomNavigate();
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { toggleDrawer } = useDrawer();
   const { setSearchQuery } = useSearch();
@@ -46,13 +56,17 @@ const AppBar = ({ hasMenu = false, hasSearch, showSearchInput = false, goBackCal
           <button type="button" onClick={toggleDrawer}>
             <MenuIcon />
           </button>
-          <Title3 text={clubName ?? ''} />
+
+          <button type="button" onClick={() => customNavigate(ROUTE.ROOT.slice(1))}>
+            <Title3 text={clubName ?? ''} />
+          </button>
         </div>
       ) : (
         <button type="button" onClick={goBackCallback ? () => goBackCallback() : () => navigate(-1)}>
           <ChevronLeftBlackIcon />
         </button>
       )}
+      {title && <Title3 text={title} className="ml-[-4px] flex-shrink-0" />}
       <div className="relative flex w-full items-center">
         {hasSearch && (
           <>

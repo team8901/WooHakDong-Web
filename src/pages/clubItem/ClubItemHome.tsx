@@ -1,4 +1,6 @@
+import ChevronBottomBlackIcon from '@assets/images/chevrons/ChevronBottomBlackIcon';
 import AppBar from '@components/AppBar';
+import Caption2 from '@components/Caption2';
 import EmptyText from '@components/EmptyText';
 import CustomPullToRefresh from '@components/PullToRefresh';
 import { useSearch } from '@contexts/SearchContext';
@@ -6,10 +8,12 @@ import { useToast } from '@contexts/ToastContext';
 import useGetClubId from '@hooks/club/useGetClubId';
 import useGetClubItems from '@hooks/item/useGetClubItems';
 import useGetClubItemsMy from '@hooks/item/useGetClubItemsMy';
+import useBottomSheet from '@hooks/useBottomSheet';
 import useCustomNavigate from '@hooks/useCustomNavigate';
 import useTabNav from '@hooks/useTabNav';
-import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
+import { CLUB_ITEM_CATEGORY, CLUB_ITEM_SORT_OPTIONS } from '@libs/constant/item';
 import ROUTE from '@libs/constant/path';
+import BottomSheet from '@pages/clubItem/components/BottomSheet';
 import ListItem from '@pages/clubItem/components/ListItem';
 import TabNav from '@pages/clubItem/components/TabNav';
 import { useEffect, useState } from 'react';
@@ -24,7 +28,10 @@ const ClubItemHomePage = () => {
   const { clubEnglishName } = useParams<{ clubEnglishName: string }>();
   const { searchQuery } = useSearch();
   const navigate = useCustomNavigate();
-  const { activeTab, handleTabChange } = useTabNav({ itemList, setFilteredItemList });
+  const { activeTab, handleTabChange } = useTabNav({ onClickTab: () => filterData(itemList) });
+  const { isOpen, selectedOption, bottomSheetRef, setIsOpen, setSelectedOption } = useBottomSheet({
+    onSelectOption: () => filterData(itemList),
+  });
   const { setToastMessage } = useToast();
   const {
     data: clubId,
@@ -43,6 +50,24 @@ const ClubItemHomePage = () => {
     isLoading: isClubItemsMyLoading,
   } = useGetClubItemsMy({ clubId: clubId || 0 });
 
+  const getItemStatus = (item: ClubItemResponseData) => {
+    if (!item.itemAvailable) return '대여 불가';
+    if (item.itemUsing) return '대여 중';
+    return '비대여 중';
+  };
+
+  const filterData = (itemList: ClubItemResponseData[]) => {
+    if (!clubItemsData) return;
+    const tabData = activeTab === 'ALL' ? itemList : itemList.filter((item) => item.itemCategory === activeTab);
+    const filterLabel = CLUB_ITEM_SORT_OPTIONS[selectedOption].label;
+    if (filterLabel === '전체') {
+      setFilteredItemList(tabData);
+      return;
+    }
+    const filteredResult = tabData.filter((item) => getItemStatus(item) === filterLabel);
+    setFilteredItemList(filteredResult);
+  };
+
   const isMyBorrowedItem = (itemId: number) => myBorrowedItemList.some((item) => item.itemId === itemId);
 
   const getBorrowedReturnDate = (itemId: number) => {
@@ -56,13 +81,11 @@ const ClubItemHomePage = () => {
 
     const { result } = data;
     setItemList(result);
+    filterData(result);
 
     if (activeTab === 'ALL') {
-      setFilteredItemList(result);
       setToastMessage('물품 정보를 갱신했어요');
     } else {
-      const filteredResult = result.filter((item) => item.itemCategory === activeTab);
-      setFilteredItemList(filteredResult);
       setToastMessage(`${CLUB_ITEM_CATEGORY[activeTab]} 카테고리의 물품 정보를 갱신했어요`);
     }
   };
@@ -106,6 +129,17 @@ const ClubItemHomePage = () => {
 
       <TabNav activeTab={activeTab} handleTabChange={handleTabChange} />
 
+      <div className="flex px-[20px] pb-[10px] pt-[20px]">
+        <button
+          type="button"
+          className="flex h-[32px] items-center gap-[4px] rounded-[20px] border border-lightGray pl-[12px] pr-[6px]"
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
+          <Caption2 text={selectedOption === 0 ? '대여 상태' : CLUB_ITEM_SORT_OPTIONS[selectedOption].label} />
+          <ChevronBottomBlackIcon className={`transform transition-all ${isOpen && '-rotate-180'}`} />
+        </button>
+      </div>
+
       {isLoading ? (
         <div className="flex flex-col gap-[20px] px-[20px]">
           <Skeleton height={72} count={5} borderRadius={14} className="mt-[20px]" />
@@ -120,7 +154,7 @@ const ClubItemHomePage = () => {
                 />
               </div>
             ) : (
-              <div className="flex flex-col gap-[20px] pb-[50px] pt-[20px]">
+              <div className="flex flex-col gap-[20px] pb-[80px] pt-[10px]">
                 {filteredItemList.map((item, index) => (
                   <div key={item.itemId} className="flex flex-col gap-[20px]">
                     {index > 0 && <div className="h-[0.6px] bg-lightGray" />}
@@ -137,6 +171,13 @@ const ClubItemHomePage = () => {
           </CustomPullToRefresh>
         </div>
       )}
+
+      <BottomSheet
+        isOpen={isOpen}
+        selectedOption={selectedOption}
+        bottomSheetRef={bottomSheetRef}
+        setSelectedOption={setSelectedOption}
+      />
     </div>
   );
 };

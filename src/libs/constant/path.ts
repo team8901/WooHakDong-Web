@@ -14,6 +14,7 @@ const ROUTE = {
   ITEM_SEARCH: '/items/search',
   ITEM_MY: '/items/my',
   DUES: '/dues',
+  DUES_SEARCH: '/dues/search',
   MEMBER: '/members',
   SCHEDULE: '/schedules',
   ADMIN: '/admin',
@@ -21,6 +22,11 @@ const ROUTE = {
   ADMIN_STATS: '/admin/stats',
   ADMIN_STATS_SCHOOL: '/admin/stats/schools',
   ADMIN_STATS_CLUB: '/admin/stats/clubs',
+  ADMIN_INQUIRY: '/admin/inquiry',
+  SETTING: '/setting',
+  INQUIRY: '/inquiry',
+  GROUP: '/groups',
+  GROUP_DETAIL: '/groups/detail',
 };
 
 export default ROUTE;

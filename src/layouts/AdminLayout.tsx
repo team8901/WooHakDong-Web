@@ -17,7 +17,6 @@ const AdminLayout = () => {
     isAdmin && (
       <TermProvider>
         <DropDownProvider>
-          {' '}
           <Outlet />
         </DropDownProvider>
       </TermProvider>

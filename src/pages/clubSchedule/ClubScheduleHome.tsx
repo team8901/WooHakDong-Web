@@ -39,14 +39,18 @@ const ClubScheduleHomePage = () => {
   } = useGetClubSchedules({ clubId: clubId || 0, date: convertDate(selectedDate as Date), currentMonth });
 
   const handleTodayClick = () => {
-    const today = new Date();
-    setSelectedDate(today);
+    // const today = new Date();
+    // setSelectedDate(today);
 
-    const calendar = calendarRef.current;
-    if (!calendar) return;
+    // const calendar = calendarRef.current;
+    // if (!calendar) return;
 
-    const firstDayOfTodaysMonth = new Date(today.getFullYear(), today.getMonth(), 1); // 현재 월의 첫 번째 날을 생성
-    (calendar as any).setActiveStartDate(firstDayOfTodaysMonth);
+    // const firstDayOfTodaysMonth = new Date(today.getFullYear(), today.getMonth(), 1); // 현재 월의 첫 번째 날을 생성
+    // (calendar as any).setActiveStartDate(firstDayOfTodaysMonth);
+
+    // TODO: 일정에서 년도와 달 선택하는 화면에서 '오늘' 버튼 누르면 캘린더 다시 나오게 하기
+    // 라이브러리 제공 기능을 못 찾아서 페이지 새로고침으로 대체
+    location.reload();
   };
 
   const filterList = (list: ClubScheduleResponseData[], date: Date) => {

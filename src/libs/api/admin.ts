@@ -7,6 +7,8 @@ import {
   AdminClubPeriodResponseData,
   AdminClubsResultResponseData,
   AdminClubStatsRequestData,
+  AdminInquiryRequestData,
+  AdminInquiryResponseData,
   AdminLoginRequestData,
   AdminSchoolStatsRequestData,
   AssignedTermResquestData,
@@ -17,6 +19,8 @@ import { LoginResponseData } from 'types/auth';
 import { ResultResponse } from 'types/common';
 
 const fetchLoginData = async ({ memberLoginId, memberPassword }: Readonly<AdminLoginRequestData>) => {
+  axios.defaults.headers.common['Authorization'] = undefined;
+
   const res = await axios.post<LoginResponseData>(`${import.meta.env.VITE_API_URL}/v1/admin/auth/login`, {
     memberLoginId,
     memberPassword,
@@ -63,6 +67,13 @@ const getClubs = async ({ assignedTerm }: Readonly<AssignedTermResquestData>) =>
 const getClubPayments = async ({ assignedTerm }: Readonly<AssignedTermResquestData>) => {
   const res = await axiosInstance.get<AdminClubPaymentResponseData>(
     `/v1/admin/clubPayments${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
+  );
+  return res.data;
+};
+
+const getAdminInquiryByCategory = async ({ category }: Readonly<AdminInquiryRequestData>) => {
+  const res = await axiosInstance.get<ResultResponse<AdminInquiryResponseData[]>>(
+    `/v1/admin/inquiry${category ? `?category=${category}` : ''}`,
   );
   return res.data;
 };
@@ -123,6 +134,13 @@ const getClubItemsHistory = async ({ clubId, assignedTerm }: Readonly<AdminClubS
   return res.data;
 };
 
+const getClubPaymentsByClubId = async ({ clubId, assignedTerm }: Readonly<AdminClubStatsRequestData>) => {
+  const res = await axiosInstance.get<AdminClubPaymentResponseData>(
+    `/v1/admin/clubs/${clubId}/clubPayments${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
+  );
+  return res.data;
+};
+
 export {
   fetchLoginData,
   getClubCount,
@@ -139,4 +157,6 @@ export {
   getClubStatsMembers,
   getClubItemCount,
   getClubItemsHistory,
+  getAdminInquiryByCategory,
+  getClubPaymentsByClubId,
 };

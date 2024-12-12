@@ -8,6 +8,13 @@ const AuthLayout = () => {
   const isAuth = !!localStorage.getItem('accessToken');
 
   useEffect(() => {
+    if (localStorage.getItem('admin')) {
+      localStorage.removeItem('admin');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      return navigate(ROUTE.LOGIN_REGISTER);
+    }
+
     if (!isAuth) navigate(ROUTE.LOGIN_REGISTER);
   }, [isAuth]);
 

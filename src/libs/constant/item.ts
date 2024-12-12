@@ -166,4 +166,11 @@ const CLUB_ITEM_MY_DATA: ClubItemsMyResponseData[] = [
   },
 ];
 
-export { CLUB_ITEM_CATEGORY, CLIB_ITEM_CATEGORY_MENU, CLUB_ITEM_DATA, CLUB_ITEM_MY_DATA };
+const CLUB_ITEM_SORT_OPTIONS = [
+  { label: '전체', id: 0 },
+  { label: '비대여 중', id: 1 },
+  { label: '대여 중', id: 2 },
+  { label: '대여 불가', id: 3 },
+];
+
+export { CLUB_ITEM_CATEGORY, CLIB_ITEM_CATEGORY_MENU, CLUB_ITEM_DATA, CLUB_ITEM_MY_DATA, CLUB_ITEM_SORT_OPTIONS };

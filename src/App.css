@@ -141,8 +141,8 @@ scroll gradient in the top right */
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  width: 32px !important;
-  height: 32px !important;
+  width: 34px !important;
+  height: 34px !important;
 }
 
 .react-calendar .react-calendar__tile--active abbr {
@@ -167,6 +167,25 @@ scroll gradient in the top right */
 
 .react-calendar .react-calendar__month-view__weekdays .react-calendar__month-view__weekdays__weekday--weekend abbr {
   color: var(--color-gray);
+}
+
+/* react-datepicker */
+.react-datepicker-popper {
+  left: 20px !important;
+}
+
+.react-datepicker .react-datepicker__header {
+  font-size: 1.4rem;
+}
+
+.react-datepicker .react-datepicker__month-text {
+  font-size: 1.4rem;
+  line-height: 2.2rem;
+}
+
+.react-datepicker .react-datepicker__month-text--keyboard-selected {
+  background-color: var(--color-primary) !important;
+  color: white !important;
 }
 
 /* Pull to refresh */

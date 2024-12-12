@@ -3,6 +3,8 @@ import { LoginRequestData, LoginResponseData } from 'types/auth';
 
 const fetchLoginData = async ({ accessToken }: Readonly<LoginRequestData>) => {
   try {
+    axios.defaults.headers.common['Authorization'] = undefined;
+
     const res = await axios.post<LoginResponseData>(`${import.meta.env.VITE_API_URL}/v1/auth/login/social`, {
       accessToken,
     });
@@ -27,7 +29,7 @@ const refreshAccessToken = async () => {
   } catch (error) {
     console.error(`/api/auth/refresh`, error);
     if (
-      // (error as AxiosError)?.response?.status === 400 ||
+      (error as AxiosError)?.response?.status === 400 ||
       (error as AxiosError)?.response?.status === 401 ||
       (error as AxiosError)?.response?.status === 403
     ) {

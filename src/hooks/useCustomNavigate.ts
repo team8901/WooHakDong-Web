@@ -8,9 +8,10 @@ const useCustomNavigate = () => {
   const customNavigate = (path: string, options?: { replace?: boolean; state?: Record<string, unknown> }) => {
     if (clubEnglishName) {
       navigate(`${ROUTE.CLUB}/${clubEnglishName}${path}`, options);
-    } else {
-      navigate(path, options);
+      return;
     }
+
+    navigate(path, options);
   };
 
   return customNavigate;

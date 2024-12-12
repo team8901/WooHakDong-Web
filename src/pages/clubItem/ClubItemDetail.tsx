@@ -1,8 +1,12 @@
+import LocationIcon from '@assets/images/item/LocationIcon';
+import RemainingTimeIcon from '@assets/images/item/RemainingTimeIcon';
+import InfoIcon from '@assets/images/schedule/InfoIcon';
 import AppBar from '@components/AppBar';
-import Body1 from '@components/Body1';
 import Body2 from '@components/Body2';
 import Button from '@components/Button';
 import Caption2 from '@components/Caption2';
+import IconText from '@components/IconText';
+import InputBox from '@components/InputBox';
 import Title3 from '@components/Title3';
 import Title4 from '@components/Title4';
 import { useToast } from '@contexts/ToastContext';
@@ -15,8 +19,10 @@ import useModal from '@hooks/useModal';
 import { postClubItemBorrow, postClubItemReturn } from '@libs/api/item';
 import { getS3ImageUrl, putImageToS3 } from '@libs/api/util';
 import { CLUB_ITEM_CATEGORY } from '@libs/constant/item';
+import getItemImage from '@libs/util/getItemImage';
 import getRemainingDays from '@libs/util/getRemainingDays';
 import Modal from '@pages/clubItem/components/Modal';
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -68,7 +74,12 @@ const ClubItemDetailPage = () => {
       navigate(-1);
     } catch (error) {
       console.error(error);
-      setToastMessage(`대여 신청 중 오류가 발생했어요\n${error}`);
+      setToastMessage(
+        (error as AxiosError).message === 'item using'
+          ? '이미 대여 완료된 물품이에요'
+          : `대여 신청 중 오류가 발생했어요`,
+      );
+      navigate(-1);
     } finally {
       setIsBorrowLoading(false);
     }
@@ -212,7 +223,7 @@ const ClubItemDetailPage = () => {
   return (
     <div className="relative h-full pt-[56px]">
       <div className="absolute left-0 top-0 w-full">
-        <AppBar />
+        <AppBar goBackCallback={() => navigate(-1)} />
       </div>
 
       {isLoading ? (
@@ -228,11 +239,10 @@ const ClubItemDetailPage = () => {
           <Skeleton height={58} borderRadius={14} className="mt-[8px]" />
         </div>
       ) : (
-        <div className="flex h-full flex-col gap-[20px] overflow-y-auto pb-[80px] scrollbar-hide">
+        <div className="flex h-full flex-col gap-[20px] overflow-y-auto pb-[100px] scrollbar-hide">
           <img
             alt="물품"
-            src={item.itemPhoto || '/logo.svg'}
-            // src={'/logo.svg'}
+            src={item.itemPhoto || getItemImage(item.itemCategory)}
             className="aspect-square w-full object-cover"
           />
 
@@ -258,15 +268,13 @@ const ClubItemDetailPage = () => {
             <div className="flex flex-col gap-[20px]">
               <div className="flex flex-col gap-[8px]">
                 <Caption2 text="물품 설명" className="text-darkGray" />
-                <div className="rounded-[14px] border border-lightGray p-[16px]">
-                  <Body1 text={item.itemDescription} className="text-justify" />
-                </div>
+                <InputBox icon={<InfoIcon />} text={item.itemDescription} />
               </div>
               <div className="flex flex-col gap-[8px]">
-                <Caption2 text="물품 위치 및 대여 가능 일 수" className="text-darkGray" />
+                <Caption2 text="물품 추가 정보" className="text-darkGray" />
                 <div className="flex flex-col gap-[12px] rounded-[14px] border border-lightGray p-[16px]">
-                  <Body1 text={item.itemLocation} />
-                  <Body1 text={`${item.itemRentalMaxDay}일`} />
+                  <IconText icon={<LocationIcon />} text={item.itemLocation} />
+                  <IconText icon={<RemainingTimeIcon />} text={`${item.itemRentalMaxDay}일 대여 가능`} />
                 </div>
               </div>
             </div>
