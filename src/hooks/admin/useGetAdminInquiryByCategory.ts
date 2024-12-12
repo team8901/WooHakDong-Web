@@ -6,7 +6,6 @@ const useGetAdminInquiryByCategory = ({ category }: Readonly<AdminInquiryRequest
   return useQuery({
     queryKey: ['getAdminInquiryByCategory', category],
     queryFn: () => getAdminInquiryByCategory({ category }),
-    enabled: !!category,
   });
 };
 

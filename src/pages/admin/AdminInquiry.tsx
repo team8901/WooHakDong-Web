@@ -12,8 +12,10 @@ import { useEffect, useState } from 'react';
 import { InquiryCategory } from 'types/inquiry';
 
 const AdminInquiryPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState<InquiryCategory | null>(null);
-  const { data, refetch } = useGetAdminInquiryByCategory({ category: selectedCategory });
+  const [selectedCategory, setSelectedCategory] = useState<InquiryCategory | 'ALL'>('ALL');
+  const { data, refetch } = useGetAdminInquiryByCategory({
+    category: selectedCategory === 'ALL' ? null : selectedCategory,
+  });
   const navigate = useCustomNavigate();
   const { setToastMessage } = useToast();
 
@@ -30,7 +32,12 @@ const AdminInquiryPage = () => {
   return (
     <div className="flex h-full w-full flex-col items-center gap-[30px] overflow-auto px-[40px] py-[40px] md:px-[80px] lg:px-[200px]">
       <div className="fixed left-[30px] z-20">
-        <Dropdown selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} label="문의 유형" />
+        <Dropdown
+          selectedCategory={selectedCategory === 'ALL' ? null : selectedCategory}
+          setSelectedCategory={(category) => setSelectedCategory(category ?? 'ALL')}
+          label="문의 유형"
+          isAdmin
+        />
       </div>
 
       <div className="flex w-full flex-col gap-[12px] pt-[80px]">

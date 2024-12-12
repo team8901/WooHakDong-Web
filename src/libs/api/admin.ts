@@ -134,6 +134,13 @@ const getClubItemsHistory = async ({ clubId, assignedTerm }: Readonly<AdminClubS
   return res.data;
 };
 
+const getClubPaymentsByClubId = async ({ clubId, assignedTerm }: Readonly<AdminClubStatsRequestData>) => {
+  const res = await axiosInstance.get<AdminClubPaymentResponseData>(
+    `/v1/admin/clubs/${clubId}/clubPayments${assignedTerm ? `?assignedTerm=${assignedTerm}` : ''}`,
+  );
+  return res.data;
+};
+
 export {
   fetchLoginData,
   getClubCount,
@@ -151,4 +158,5 @@ export {
   getClubItemCount,
   getClubItemsHistory,
   getAdminInquiryByCategory,
+  getClubPaymentsByClubId,
 };
