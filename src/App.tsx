@@ -1,7 +1,10 @@
+import usePageViewTracker from '@hooks/usePageViewTracker';
 import { Router } from '@pages/Router';
 import { useEffect } from 'react';
 
-function App() {
+const App = () => {
+  usePageViewTracker();
+
   const setScreenHeight = () => {
     const vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -14,6 +17,6 @@ function App() {
   }, []);
 
   return <Router />;
-}
+};
 
 export default App;
